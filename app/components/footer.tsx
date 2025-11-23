@@ -139,11 +139,6 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
                 message: "Status",
               })}
             </Link>
-            <NextLink href="/statistics" passHref legacyBehavior>
-              <Link>
-                {t({ id: "footer.statistics", message: "Statistics" })}
-              </Link>
-            </NextLink>
           </Box>
         </Box>
       </Box>
