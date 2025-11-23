@@ -5,7 +5,6 @@ import { useClient } from "urql";
 import { ChartPublished } from "@/components/chart-published";
 import { ContentWrapper } from "@/components/content-wrapper";
 import { EmbedQueryParams } from "@/components/embed-params";
-import { LoadingDataError } from "@/components/hint";
 import { ConfiguratorState } from "@/configurator";
 import { getExampleState1, getExampleState2 } from "@/homepage/constants";
 import { HomepageSectionTitle } from "@/homepage/generic";

@@ -56,10 +56,14 @@ const nextConfig = withPreconstruct(
   withBundleAnalyzer(
     withMDX({
       output: isGitHubPages ? "export" : "standalone",
+      trailingSlash: true,
+      turbo: {
+        resolveAlias: {},
+      },
       basePath: basePath,
       assetPrefix: basePath,
       images: {
-        unoptimized: isGitHubPages,
+        unoptimized: true,
       },
       i18n: isGitHubPages
         ? undefined
@@ -171,11 +175,11 @@ const nextConfig = withPreconstruct(
           "d3-time-format",
           "framer-motion",
           "@emotion/react",
-        "@emotion/styled",
-      ],
-      // Enable parallel compilation
-      cpus: require("os").cpus().length - 1 || 1,
-    },
+          "@emotion/styled",
+        ],
+        // Enable parallel compilation
+        cpus: require("os").cpus().length - 1 || 1,
+      },
 
       // Modularize imports for better tree-shaking
       modularizeImports: {

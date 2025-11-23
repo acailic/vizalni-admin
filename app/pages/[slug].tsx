@@ -4,7 +4,7 @@ import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import localesConfig from "@/locales/locales.json";
 import { staticPages } from "@/static-pages";
 
-const { defaultLocale } = localesConfig;
+const { defaultLocale, locales } = localesConfig;
 
 /**
  * TODO: this page can be combined with index.tsx into [[...slug]].tsx,
@@ -33,6 +33,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const isGitHubPages = process.env.NEXT_PUBLIC_BASE_PATH !== undefined;
   const paths = Object.keys(staticPages)
     .filter((path) => !path.endsWith("/index"))
+    .filter((path) => {
+      const [, locale] = path.split("/");
+      return !locale || locales.includes(locale);
+    })
     .filter((path) => {
       if (!isGitHubPages) {
         return true;
