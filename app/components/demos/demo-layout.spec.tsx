@@ -37,12 +37,12 @@ describe("DemoLayout", () => {
       </DemoLayout>
     );
 
-    expect(screen.getByText("Test Demo")).toBeInTheDocument();
-    expect(screen.getByText("Description")).toBeInTheDocument();
-    expect(screen.getByText(/Org/)).toBeInTheDocument();
+    expect(screen.getByText("Test Demo")).toBeTruthy();
+    expect(screen.getByText("Description")).toBeTruthy();
+    expect(screen.getByText(/Org/)).toBeTruthy();
     // the formatted date can vary by locale; assert year is present
-    expect(screen.getByText(/2024/)).toBeInTheDocument();
-    expect(screen.getByText("content")).toBeInTheDocument();
+    expect(screen.getByText(/2024/)).toBeTruthy();
+    expect(screen.getByText("content")).toBeTruthy();
   });
 
   it("hides back button when hideBackButton is true", () => {
@@ -54,7 +54,7 @@ describe("DemoLayout", () => {
 
     expect(
       screen.queryByText(/Nazad na demo galeriju/)
-    ).not.toBeInTheDocument();
+    ).toBeNull();
   });
 });
 
@@ -63,7 +63,7 @@ describe("Demo helper states", () => {
     render(<DemoLoading />);
     expect(
       screen.getByText(/Učitavanje podataka sa data.gov.rs/i)
-    ).toBeInTheDocument();
+    ).toBeTruthy();
   });
 
   it("renders error with retry", () => {
@@ -75,6 +75,6 @@ describe("Demo helper states", () => {
 
   it("renders empty state message", () => {
     render(<DemoEmpty message="nothing here" />);
-    expect(screen.getByText("nothing here")).toBeInTheDocument();
+    expect(screen.getByText("nothing here")).toBeTruthy();
   });
 });

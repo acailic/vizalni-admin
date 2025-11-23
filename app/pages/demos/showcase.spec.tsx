@@ -24,14 +24,14 @@ describe("DemoShowcasePage", () => {
   it("renders hero content and charts with Serbian locale", () => {
     render(<DemoShowcasePage />);
 
-    expect(screen.getByText(/Demo Showcase vizualizacija/i)).toBeInTheDocument();
+    expect(screen.getByText(/Demo Showcase vizualizacija/i)).toBeTruthy();
     expect(
       screen.getByText(/Snop najtrazenijih pokazatelja/i)
-    ).toBeInTheDocument();
+    ).toBeTruthy();
 
-    expect(screen.getByTestId("column-chart")).toBeInTheDocument();
-    expect(screen.getByTestId("line-chart")).toBeInTheDocument();
-    expect(screen.getByTestId("pie-chart")).toBeInTheDocument();
+    expect(screen.getByTestId("column-chart")).toBeTruthy();
+    expect(screen.getByTestId("line-chart")).toBeTruthy();
+    expect(screen.getByTestId("pie-chart")).toBeTruthy();
   });
 
   it("switches copy when locale is English", async () => {
@@ -42,7 +42,7 @@ describe("DemoShowcasePage", () => {
     render(<Page />);
     expect(
       screen.getByText(/Demo Showcase Visualizations/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/Browse all demo pages/i)).toBeInTheDocument();
+    ).toBeTruthy();
+    expect(screen.getByText(/Browse all demo pages/i)).toBeTruthy();
   });
 });

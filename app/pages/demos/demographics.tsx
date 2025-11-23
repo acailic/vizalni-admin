@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { t, Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {

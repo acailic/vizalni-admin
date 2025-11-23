@@ -22,12 +22,12 @@ describe("DemographicsDemo", () => {
 
     expect(
       screen.getByText(/Demografija Srbije/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/DEMOGRAFSKO UPOZORENJE/i)).toBeInTheDocument();
+    ).toBeTruthy();
+    expect(screen.getByText(/DEMOGRAFSKO UPOZORENJE/i)).toBeTruthy();
     // Total population number cards (uses calculated totals)
     expect(screen.getByText(/M/)).toBeInTheDocument();
-    expect(screen.getByTestId("pyramid")).toBeInTheDocument();
-    expect(screen.getByTestId("trends")).toBeInTheDocument();
+    expect(screen.getByTestId("pyramid")).toBeTruthy();
+    expect(screen.getByTestId("trends")).toBeTruthy();
   });
 
   it("renders English strings when locale is en", async () => {
@@ -39,7 +39,7 @@ describe("DemographicsDemo", () => {
 
     expect(
       screen.getByText(/Serbia Demographics/i)
-    ).toBeInTheDocument();
-    expect(screen.getByText(/DEMOGRAPHIC WARNING/i)).toBeInTheDocument();
+    ).toBeTruthy();
+    expect(screen.getByText(/DEMOGRAPHIC WARNING/i)).toBeTruthy();
   });
 });

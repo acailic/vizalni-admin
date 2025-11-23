@@ -13,37 +13,3393 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.mail.subject"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "select.controls.filters.search"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.categorical-contrast-warning"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.sequential-contrast-warning"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.diverging-contrast-warning"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.sequential"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.diverging"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.categorical"
+msgstr ""
+
+#: app/components/chart-footnotes.jsx
 #: app/components/chart-footnotes.tsx
+#: app/components/chart-published.jsx
 #: app/components/chart-published.tsx
+#: app/components/chart-shared.jsx
 #: app/components/chart-shared.tsx
 msgid "metadata.link.created.with"
 msgstr "Kreiran sa"
 
+#: app/components/move-drag-button.jsx
 #: app/components/move-drag-button.tsx
 msgid "Drag filters to reorganize"
 msgstr "Prevucite filtere da ih reorganizujete"
 
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
 #: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
 msgid "dataset.search.search-options.no-options-selected"
 msgstr "Nijedna opcija nije izabrana"
 
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
 #: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
 #: app/login/components/color-palettes/profile-color-palette-form.tsx
 msgid "controls.custom-color-palettes.title"
 msgstr "Naslov palete (obavezno)"
 
+#: app/configurator/components/chart-options-selector.jsx
 #: app/configurator/components/chart-options-selector.tsx
 msgid "controls.section.show-total-values"
 msgstr "Uvek prikaži ukupne vrednosti"
 
+#: app/configurator/components/chart-options-selector.jsx
 #: app/configurator/components/chart-options-selector.tsx
 msgid "controls.section.show-standard-error"
 msgstr "Prikaži standardnu grešku"
 
+#: app/configurator/components/chart-options-selector.jsx
 #: app/configurator/components/chart-options-selector.tsx
 msgid "controls.section.show-confidence-interval"
 msgstr "Prikaži interval poverenja"
 
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
 #: app/configurator/components/chart-options-selector/show-dots-field.tsx
 msgid "controls.section.show-dots"
 msgstr "Prikaži tačke podataka"
+
+#: app/configurator/components/chart-options-selector/imputation-field.jsx
+#: app/configurator/components/chart-options-selector/imputation-field.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.imputation.type.none"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+msgid "annotator.add.description"
+msgstr ""
+
+#: app/components/text-block.jsx
+#: app/components/text-block.tsx
+msgid "annotation.add.text"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "annotator.add.title"
+msgstr ""
+
+#: app/browse/ui/search-dataset-results-count.jsx
+#: app/browse/ui/search-dataset-results-count.tsx
+msgid "dataset.results"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "dataset.search.search-options.more-2-options-selected"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.nb-elements"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.urbanization.detail"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.regional.share"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.back"
+msgstr ""
+
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.alert.detail"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+msgid "demos.demographics.alert"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.title"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.about.title"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.hero.title"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byMeasure.ascending"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.calculation.percent"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.calculation.disabled-by-grouped"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.dependency.detail"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byMeasure.descending"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byDimensionLabel.ascending"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.showcase.description"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.description"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.body"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.about_us.label"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/add-annotation-button.jsx
+#: app/configurator/components/chart-annotations/add-annotation-button.tsx
+msgid "controls.annotations.add"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "controls.add.chart"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-selection-tabs.add-chart"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-selection-tabs.add-chart-different-dataset.caption"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-selection-tabs.add-chart-same-dataset.caption"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.add-color"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+#: app/login/components/color-palettes/profile-color-palette-content.jsx
+#: app/login/components/color-palettes/profile-color-palette-content.tsx
+msgid "login.profile.my-color-palettes.add"
+msgstr ""
+
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "wmts.custom-layer.section-title"
+msgstr ""
+
+#: app/configurator/components/dataset-control-section.jsx
+#: app/configurator/components/dataset-control-section.tsx
+msgid "chart.datasets.add"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+#: app/configurator/table/table-chart-sorting-options.jsx
+#: app/configurator/table/table-chart-sorting-options.tsx
+msgid "controls.sorting.addDimension"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+msgid "controls.add-filter"
+msgstr ""
+
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "chart.map.layers.add-layer"
+msgstr ""
+
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.section.block-options.block-add"
+msgstr ""
+
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.section.block-options.block-add.text"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+#: app/configurator/components/chart-annotations/chart-annotations.jsx
+#: app/configurator/components/chart-annotations/chart-annotations.tsx
+msgid "controls.annotations.annotation.add.text"
+msgstr ""
+
+#: app/configurator/components/chart-controls/control-tab.jsx
+#: app/configurator/components/chart-controls/control-tab.tsx
+msgid "controls.color.add"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/scale-domain.jsx
+#: app/configurator/components/chart-options-selector/scale-domain.tsx
+msgid "controls.adjust-scale-domain"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.advanced-settings"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.aging"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/calculation-field.jsx
+#: app/configurator/components/chart-options-selector/calculation-field.tsx
+msgid "controls.filters.interactive.calculation"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.interactive.tooltip"
+msgstr ""
+
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.tsx
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+msgid "controls.section.data.filters.possible-filters-error"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.chartunexpected.message"
+msgstr ""
+
+#: app/components/app-error-boundary.jsx
+#: app/components/app-error-boundary.tsx
+msgid "error.boundary.message"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.description"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.animation"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.duration"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.section.animation.disabled-by-sorting"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.settings"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.type"
+msgstr ""
+
+#: app/configurator/interactive-filters/interactive-filters-configurator.jsx
+#: app/configurator/interactive-filters/interactive-filters-configurator.jsx
+#: app/configurator/interactive-filters/interactive-filters-configurator.tsx
+#: app/configurator/interactive-filters/interactive-filters-configurator.tsx
+msgid "controls.section.interactive.filters"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.element.title"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.annotation.title"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.annotation"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations.jsx
+#: app/configurator/components/chart-annotations/chart-annotations.tsx
+msgid "controls.section.annotations"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.set-values-apply"
+msgstr ""
+
+#: app/components/dashboard-shared.jsx
+#: app/components/dashboard-shared.tsx
+msgid "block-controls.delete.confirmation"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chat-preview.delete.confirmation"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.delete.confirmation"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.delete.confirmation"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.delete-draft.confirmation"
+msgstr ""
+
+#: app/components/confirmation-dialog.jsx
+#: app/components/confirmation-dialog.tsx
+msgid "login.profile.chart.confirmation.default"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "chart.map.layers.area"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.area"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.categorical"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "dataset.search.at-least-one-compatible-dimension-selected"
+msgstr ""
+
+#: app/charts/shared/legend-color.jsx
+#: app/charts/shared/legend-color.tsx
+msgid "controls.filters.interactive.color.min-1-filter"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.geographical"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.numerical"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.js
+#: app/charts/index.ts
+#: app/charts/index.ts
+msgid "controls.chart.disabled.temporal"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.multiple-measures"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.different-unit"
+msgstr ""
+
+#: app/charts/index.js
+#: app/charts/index.ts
+msgid "controls.chart.disabled.same-unit"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/sorting-field.jsx
+#: app/configurator/components/chart-options-selector/sorting-field.tsx
+msgid "controls.sorting.byAuto"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.stats.available"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "controls.metadata-panel.available-values"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "button.back"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "controls.nav.back-to-configurator"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "controls.nav.back-to-preview"
+msgstr ""
+
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.tsx
+msgid "dataset-preview.back-to-results"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.barColorBackground"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.bar"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.bar"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.base"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+#: app/configurator/components/chart-options-selector/base-layer-field.jsx
+#: app/configurator/components/chart-options-selector/base-layer-field.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "chart.map.layers.base"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.tableSettings.baseUrl"
+msgstr ""
+
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "chart.map.layers.base.behind-area-layer"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat1.hint"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.birth-rate"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.textStyle.bold"
+msgstr ""
+
+#: app/login/components/profile-header.jsx
+#: app/login/components/profile-header.tsx
+msgid "browse.dataset.all"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.cta"
+msgstr ""
+
+#: app/charts/map/wms-wmts-provider-info.jsx
+#: app/charts/map/wms-wmts-provider-info.tsx
+msgid "provider-info.can-display-layers"
+msgstr ""
+
+#: app/charts/map/wms-wmts-provider-info.jsx
+#: app/charts/map/wms-wmts-provider-info.tsx
+msgid "provider-info.can-display-on-map-geo-admin"
+msgstr ""
+
+#: app/charts/map/wms-wmts-provider-info.jsx
+#: app/charts/map/wms-wmts-provider-info.tsx
+msgid "provider-info.can-list-layers"
+msgstr ""
+
+#: app/components/chart-published.jsx
+#: app/components/chart-published.tsx
+msgid "dataset.publicationStatus.expires.warning"
+msgstr ""
+
+#: app/browse/ui/dataset-preview.jsx
+#: app/browse/ui/dataset-preview.tsx
+#: app/components/chart-preview.jsx
+#: app/components/chart-preview.tsx
+#: app/components/chart-published.jsx
+#: app/components/chart-published.tsx
+msgid "dataset.publicationStatus.draft.warning"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.categories"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.change.title"
+msgstr ""
+
+#: app/components/form.jsx
+#: app/components/form.tsx
+msgid "controls.form.max-length-reached"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "controls.layout.chart"
+msgstr ""
+
+#: app/components/data-download.jsx
+#: app/components/data-download.tsx
+msgid "button.download.data.visible"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/calculation-field.jsx
+#: app/configurator/components/chart-options-selector/calculation-field.tsx
+msgid "controls.select.calculation.mode"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+msgid "controls.section.chart.options"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.select.chart.type"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.chart.url"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.chart-view"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.dataloadingerror.status"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.caption-diverging"
+msgstr ""
+
+#: app/components/form.jsx
+#: app/components/form.tsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "controls.search.clear"
+msgstr ""
+
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.tsx
+#: app/components/multi-select/option.jsx
+#: app/components/multi-select/option.tsx
+msgid "controls.clear-selection"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.annotation.clear-text"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.hero.body"
+msgstr ""
+
+#: app/components/copy-to-clipboard-text-input.jsx
+#: app/components/copy-to-clipboard-text-input.jsx
+#: app/components/copy-to-clipboard-text-input.tsx
+#: app/components/copy-to-clipboard-text-input.tsx
+msgid "button.hint.click.to.copy"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat3.label"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.color"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+msgid "controls.color.palette"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drag-and-drop-tab.jsx
+#: app/configurator/components/chart-controls/drag-and-drop-tab.tsx
+msgid "table.column.no"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.columnColor"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/layout-field.jsx
+#: app/configurator/components/chart-options-selector/layout-field.tsx
+msgid "controls.select.column.layout"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.section.columnstyle"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.comboLineColumn"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.column"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.section.columns"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.common-unit"
+msgstr ""
+
+#: app/charts/table/table.jsx
+#: app/charts/table/table.tsx
+msgid "chart.published.toggle.mobile.view"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "controls.chart.category.combo"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "controls.chart.category.combo.hint"
+msgstr ""
+
+#: app/browse/ui/search-filters.jsx
+#: app/browse/ui/search-filters.tsx
+msgid "browse-panel.termsets"
+msgstr ""
+
+#: app/browse/ui/search-filters.jsx
+#: app/browse/ui/search-filters.tsx
+msgid "browse-panel.termsets.explanation"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "button.confirm"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.email"
+msgstr ""
+
+#: app/browse/ui/dataset-result.jsx
+#: app/browse/ui/dataset-result.tsx
+msgid "dataset-result.dimension-joined-by"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.type.continuous"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.type.continuous"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.coordinatesloadingerror.title"
+msgstr ""
+
+#: app/components/copy-to-clipboard-text-input.jsx
+#: app/components/copy-to-clipboard-text-input.tsx
+msgid "button.hint.copied"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.copy-and-edit"
+msgstr ""
+
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "button.copy.visualization"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.url.description"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.copy-preview-link"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.text.copy"
+msgstr ""
+
+#: app/utils/flashes.jsx
+#: app/utils/flashes.tsx
+msgid "flashes.couldnt-load-cube.title"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.save-draft.error"
+msgstr ""
+
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "button.new.visualization"
+msgstr ""
+
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.tsx
+#: app/browse/ui/select-dataset-step.tsx
+msgid "browse.dataset.create-visualization"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.create-palette"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.create-chart"
+msgstr ""
+
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.tsx
+#: app/browse/ui/select-dataset-step.tsx
+msgid "browse.dataset.create-visualization-visualize"
+msgstr ""
+
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "hint.create.your.own.chart"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.symbol.cross"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+msgid "controls.custom-color-palettes"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.custom-labels"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.text.description"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "controls.layout.dashboard"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.line.dashed"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "controls.metadata-panel.section.data"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.dataloadingerror.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
+#: app/configurator/components/chart-options-selector/show-dots-field.tsx
+msgid "controls.section.data-points"
+msgstr ""
+
+#: app/components/data-source-menu.jsx
+#: app/components/data-source-menu.tsx
+msgid "data.source"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.source"
+msgstr ""
+
+#: app/components/chart-footnotes.jsx
+#: app/components/chart-footnotes.tsx
+#: app/configurator/components/dataset-control-section.jsx
+#: app/configurator/components/dataset-control-section.tsx
+msgid "dataset.footnotes.dataset"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.dataset-name"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "dataset.search.preview.datasets"
+msgstr ""
+
+#: app/configurator/components/dataset-control-section.jsx
+#: app/configurator/components/dataset-control-section.tsx
+msgid "controls.section.datasets.title"
+msgstr ""
+
+#: app/charts/shared/use-combined-temporal-dimension.js
+#: app/charts/shared/use-combined-temporal-dimension.ts
+msgid "controls.section.shared-filters.date"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.date.created"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Day"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.death-rate"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.change.detail"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.default-value.label"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.delete"
+msgstr ""
+
+#: app/components/dashboard-shared.jsx
+#: app/components/dashboard-shared.tsx
+msgid "block-controls.delete"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.delete"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.delete"
+msgstr ""
+
+#: app/components/dashboard-shared.jsx
+#: app/components/dashboard-shared.tsx
+msgid "block-controls.delete.title"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chat-preview.delete.title"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.delete.title"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-content.jsx
+#: app/login/components/color-palettes/profile-color-palette-content.tsx
+msgid "login.profile.my-color-palettes.delete"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.title"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.title"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.description"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+#: app/components/metadata-panel.tsx
+msgid "controls.metadata-panel.metadata"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.chip.digital"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.digital.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.type.discrete"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.display.title"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+msgid "controls.color.palette.diverging"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.symbol.dot"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.download.title"
+msgstr ""
+
+#: app/components/data-download.jsx
+#: app/components/data-download.tsx
+msgid "button.download.data"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.download.button"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.download.description"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.download.downloading"
+msgstr ""
+
+#: app/browse/ui/dataset-result.jsx
+#: app/browse/ui/dataset-result.tsx
+msgid "dataset.tag.draft"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.save-draft.saved"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.groups.empty-help"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.comboLineDual"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.duplicate"
+msgstr ""
+
+#: app/components/dashboard-shared.jsx
+#: app/components/dashboard-shared.tsx
+msgid "block-controls.duplicate"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.duplicate"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.dynamic-scaling"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.chip.economy"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.edit"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "login.chart.edit"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-content.jsx
+#: app/login/components/color-palettes/profile-color-palette-content.tsx
+msgid "login.profile.my-color-palettes.edit"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+#: app/configurator/components/filters.tsx
+msgid "controls.set-filters"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-controls.edit-tab-label"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.dependency.title"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "button.embed"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.embed"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.external-application"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.dynamic-scaling.explanation"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.tableSettings.showLinks"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.enable"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.end"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.chip.energy"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.energy.title"
+msgstr ""
+
+#: app/components/rename-dialog.jsx
+#: app/components/rename-dialog.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.language.english"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.text.placeholder"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.error-title"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-examples.jsx
+#: app/login/components/color-palettes/color-palette-examples.tsx
+msgid "controls.custom-color-palettes.example"
+msgstr ""
+
+#: app/browse/ui/select-dataset-banner.jsx
+#: app/browse/ui/select-dataset-banner.tsx
+msgid "browse.datasets.description"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.description"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.export-png"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+msgid "login.profile.feedback"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.fill-and-text"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/multi-filter-field.jsx
+#: app/configurator/components/chart-options-selector/multi-filter-field.jsx
+#: app/configurator/components/chart-options-selector/multi-filter-field.tsx
+#: app/configurator/components/chart-options-selector/multi-filter-field.tsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+#: app/configurator/table/table-chart-options.tsx
+#: app/configurator/table/table-chart-options.tsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.section.filter"
+msgstr ""
+
+#: app/components/chart-filters-list.jsx
+#: app/components/chart-filters-list.jsx
+#: app/components/chart-filters-list.tsx
+#: app/components/chart-filters-list.tsx
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.section.data.filters"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.set-filters-caption"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-border.warn"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.static.warn"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.responsive.warn"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+#: app/configurator/components/chart-options-selector/imputation-field.jsx
+#: app/configurator/components/chart-options-selector/imputation-field.tsx
+msgid "controls.section.imputation.explanation"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.layout.canvas"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.language.french"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.filters.select.from"
+msgstr ""
+
+#: app/components/data-download.jsx
+#: app/components/data-download.tsx
+msgid "button.download.data.all"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.furtherinformation"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.information.title"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat1.label"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "controls.metadata-panel.section.general"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.language.german"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.copy-preview-link.explanation"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.column.grouped"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.bar.grouped"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.section.groups"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.economy.ylabel"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.growth-rate"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.heatmap"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.mail.body"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.table.column.hide"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-filters"
+msgstr ""
+
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.tsx
+msgid "interactive.data.filters.hide"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-legend"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-axis-labels-interactivity"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.high-death"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.elderly-ratio"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.trends.description"
+msgstr ""
+
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.tsx
+msgid "login.profile.home"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.axis.horizontal"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Hour"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.mail.body"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "chart.map.layers.custom-layers"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.imputation"
+msgstr ""
+
+#: app/browse/ui/search-dataset-drafts-control.jsx
+#: app/browse/ui/search-dataset-drafts-control.tsx
+msgid "dataset.includeDrafts"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+#: app/configurator/components/chart-options-selector/calculation-field.jsx
+#: app/configurator/components/chart-options-selector/calculation-field.tsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.interactive.toggle"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.interpolation"
+msgstr ""
+
+#: app/charts/map/wms-wmts-selector.jsx
+#: app/charts/map/wms-wmts-selector.tsx
+msgid "wmts.error-invalid-url"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.language.italian"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.discretization.jenks"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+#: app/components/metadata-panel.tsx
+#: app/configurator/components/chart-options-selector/utils.js
+#: app/configurator/components/chart-options-selector/utils.ts
+msgid "dimension.joined"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "dimension.joined-info-icon"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "select.controls.metadata.search"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.update.warning"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.title"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset-preview.keywords"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations.jsx
+#: app/configurator/components/chart-annotations/chart-annotations.tsx
+msgid "controls.annotations.label"
+msgstr ""
+
+#: app/components/mdx-editor/link-dialog.jsx
+#: app/components/mdx-editor/link-dialog.tsx
+msgid "mdx-editor.link-dialog.label-placeholder"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
+#: app/configurator/components/chart-options-selector/show-dots-field.tsx
+msgid "controls.section.dots-size.large"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byTotalSize.largestBottom"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byTotalSize.largestFirst"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byTotalSize.ascending"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byTotalSize.largestTop"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.chart-updated-date"
+msgstr ""
+
+#: app/components/chart-footnotes.jsx
+#: app/components/chart-footnotes.tsx
+msgid "dataset.footnotes.updated"
+msgstr ""
+
+#: app/charts/map/wms-wmts-selector.jsx
+#: app/charts/map/wms-wmts-selector.tsx
+msgid "wmts.layer-not-supported-crs"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+#: app/configurator/components/chart-options-selector/layout-field.jsx
+#: app/configurator/components/chart-options-selector/layout-field.tsx
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.section.layout-options"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.column-measure"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.left-axis-measure"
+msgstr ""
+
+#: app/charts/map/wms-wmts-selector.jsx
+#: app/charts/map/wms-wmts-selector.tsx
+msgid "wmts.legend-title"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.life-expectancy"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.button.lindas"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/imputation-field.jsx
+#: app/configurator/components/chart-options-selector/imputation-field.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.imputation.type.linear"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.line"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.section.links"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.loading"
+msgstr ""
+
+#: app/components/chart-filters-list.jsx
+#: app/components/chart-filters-list.tsx
+#: app/components/hint.jsx
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+#: app/components/hint.tsx
+msgid "hint.loading.data"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/base-layer-field.jsx
+#: app/configurator/components/chart-options-selector/base-layer-field.tsx
+msgid "chart.map.layers.base.view.locked"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.low-birth"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.total.detail"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.life-expectancy.detail"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.map"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/scale-domain.jsx
+#: app/configurator/components/chart-options-selector/scale-domain.tsx
+msgid "controls.adjust-scale-domain.max-error"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/sorting-field.jsx
+#: app/configurator/components/chart-options-selector/sorting-field.tsx
+msgid "controls.sorting.byMeasure"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.measure"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.median.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
+#: app/configurator/components/chart-options-selector/show-dots-field.tsx
+msgid "controls.section.dots-size.medium"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.mid"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.transport.ylabel"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/scale-domain.jsx
+#: app/configurator/components/chart-options-selector/scale-domain.tsx
+msgid "controls.adjust-scale-domain.min-error"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Minute"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/imputation-field.jsx
+#: app/configurator/components/chart-options-selector/imputation-field.tsx
+msgid "controls.section.imputation"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.chip.mobility"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Month"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.learnmore"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.comboLineSingle"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.multiple-datasets"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.multiplier"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.positive-number-error"
+msgstr ""
+
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.tsx
+#: app/login/components/profile-content-tabs.tsx
+msgid "login.profile.my-color-palettes"
+msgstr ""
+
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.tsx
+#: app/login/components/profile-content-tabs.tsx
+#: app/login/components/profile-content-tabs.tsx
+msgid "login.profile.my-drafts"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "login.profile.my-color-palettes.create.back-button"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+msgid "login.profile.my-visualizations"
+msgstr ""
+
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.jsx
+#: app/login/components/profile-content-tabs.tsx
+#: app/login/components/profile-content-tabs.tsx
+#: app/login/components/profile-content-tabs.tsx
+msgid "login.profile.my-published-visualizations"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/sorting-field.jsx
+#: app/configurator/components/chart-options-selector/sorting-field.tsx
+msgid "controls.sorting.byDimensionLabel"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.chart-name"
+msgstr ""
+
+#: app/browse/ui/search-dataset-input.jsx
+#: app/browse/ui/search-dataset-input.tsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "dataset.search.placeholder"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat3.hint"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.barColorNegative"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.only.negative.data.message"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.negative-growth"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.only.negative.data.title"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "dataset.search.preview.new-dimension"
+msgstr ""
+
+#: app/configurator/components/dataset-control-section.jsx
+#: app/configurator/components/dataset-control-section.tsx
+msgid "dataset.search.preview.added-dataset"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.showcase.title"
+msgstr ""
+
+#: app/browse/ui/search-dataset-sort-control.jsx
+#: app/browse/ui/search-dataset-sort-control.tsx
+msgid "dataset.order.newest"
+msgstr ""
+
+#: app/components/confirmation-dialog.jsx
+#: app/components/confirmation-dialog.tsx
+msgid "no"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.no-charts"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.no-compatible-measures"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.empty"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.nodata.title"
+msgstr ""
+
+#: app/configurator/components/chart-configurator.jsx
+#: app/configurator/components/chart-configurator.tsx
+msgid "controls.section.data.filters.none"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.nogeometries.title"
+msgstr ""
+
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "chart.map.layers.no-layers"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-selection-tabs.no-label"
+msgstr ""
+
+#: app/browse/ui/dataset-results.jsx
+#: app/browse/ui/dataset-results.tsx
+#: app/components/select-tree.jsx
+#: app/components/select-tree.tsx
+msgid "No results"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.no-unit"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "hint.no.visualization.with.dataset"
+msgstr ""
+
+#: app/components/multi-select/input.jsx
+#: app/components/multi-select/input.tsx
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.tsx
+#: app/configurator/components/field.tsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.none"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.calculation.identity"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.combine-different-unit"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.combine-same-unit"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.number.of.classes"
+msgstr ""
+
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.section.block-options"
+msgstr ""
+
+#: app/configurator/components/chart-controls/control-tab.jsx
+#: app/configurator/components/chart-controls/control-tab.tsx
+msgid "controls.option.isNotActive"
+msgstr ""
+
+#: app/configurator/components/chart-controls/control-tab.jsx
+#: app/configurator/components/chart-controls/control-tab.tsx
+msgid "controls.option.isActive"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.opacity"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-picker.jsx
+#: app/configurator/components/chart-controls/color-picker.tsx
+msgid "controls.colorpicker.open"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.showcase.cta"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.optimize-space"
+msgstr ""
+
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.tsx
+msgid "controls.select.optional"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.organization"
+msgstr ""
+
+#: app/browse/ui/search-filters.jsx
+#: app/browse/ui/search-filters.tsx
+msgid "browse-panel.organizations"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.stats.organizations"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.original"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.pie"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+#: app/configurator/components/annotators.tsx
+msgid "controls.annotator.add-description-warning"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+msgid "controls.annotator.add-tab-label-warning"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+#: app/configurator/components/annotators.tsx
+msgid "controls.annotator.add-title-warning"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+#: app/configurator/components/annotators.tsx
+msgid "controls.section.title.warning"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit.invalid-number-error"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/scale-domain.jsx
+#: app/configurator/components/chart-options-selector/scale-domain.tsx
+msgid "controls.adjust-scale-domain.invalid-number-error"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.tableSettings.baseUrlInvalid"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.nodata.message"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.nogeometries.message"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.pyramid.title"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.pyramid.description"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.dataset.title"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.trends.title"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.barColorPositive"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.preview"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.copy-preview-link.success"
+msgstr ""
+
+#: app/configurator/components/preview-breakpoint.jsx
+#: app/configurator/components/preview-breakpoint.tsx
+msgid "controls.layout.preview-xl"
+msgstr ""
+
+#: app/configurator/components/preview-breakpoint.jsx
+#: app/configurator/components/preview-breakpoint.tsx
+msgid "controls.layout.preview-lg"
+msgstr ""
+
+#: app/configurator/components/preview-breakpoint.jsx
+#: app/configurator/components/preview-breakpoint.tsx
+msgid "controls.layout.preview-md"
+msgstr ""
+
+#: app/configurator/components/preview-breakpoint.jsx
+#: app/configurator/components/preview-breakpoint.tsx
+msgid "controls.layout.preview-sm"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.layout"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.transport.title"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.publish"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.discretization.quantiles"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.scale.discretization.quantize"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.economy.xlabel"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.economy.title"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.regional.title"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "controls.chart.category.regular"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.textStyle.regular"
+msgstr ""
+
+#: app/browse/ui/search-dataset-sort-control.jsx
+#: app/browse/ui/search-dataset-sort-control.tsx
+msgid "dataset.order.relevance"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-border"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-picker.jsx
+#: app/configurator/components/chart-controls/color-picker.tsx
+msgid "controls.colorpicker.remove"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.remove-more-options-button"
+msgstr ""
+
+#: app/configurator/table/table-chart-sorting-options.jsx
+#: app/configurator/table/table-chart-sorting-options.tsx
+msgid "controls.sorting.removeOption"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.rename"
+msgstr ""
+
+#: app/components/rename-dialog.jsx
+#: app/components/rename-dialog.tsx
+msgid "profile.chart.rename-dialog.title"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+msgid "login.profile.bug-report"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+msgid "login.profile.feature-request"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+msgid "controls.color.palette.reset"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.select.reset-colors"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.stats.resources"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.responsive"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "dataset.search.preview.description"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/preview-table.jsx
+#: app/configurator/components/add-dataset-drawer/preview-table.tsx
+msgid "dataset.search.preview.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.line-measure"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/combo-y-field.jsx
+#: app/configurator/components/chart-options-selector/combo-y-field.tsx
+msgid "controls.chart.combo.y.right-axis-measure"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.dataset.organization"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-content.jsx
+#: app/login/components/color-palettes/profile-color-palette-content.tsx
+msgid "login.profile.my-color-palettes.description"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+msgid "controls.custom-color-palettes.set-values-apply"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.save-draft"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.scale.type"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.scatterplot"
+msgstr ""
+
+#: app/browse/ui/search-dataset-input.jsx
+#: app/browse/ui/search-dataset-input.tsx
+#: app/components/form.jsx
+#: app/components/form.tsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "dataset.search.label"
+msgstr ""
+
+#: app/charts/map/wms-wmts-selector.jsx
+#: app/charts/map/wms-wmts-selector.tsx
+msgid "wmts.search-placeholder"
+msgstr ""
+
+#: app/charts/table/table.jsx
+#: app/charts/table/table.tsx
+msgid "table.search.placeholder"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Second"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.digital.xlabel"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.segment"
+msgstr ""
+
+#: app/components/select-tree.jsx
+#: app/components/select-tree.tsx
+msgid "controls.tree.select-value"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.tsx
+msgid "controls.select.color"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+msgid "controls.color.select"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+msgid "controls.color.palette.select"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.type"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.caption-sequential"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector.tsx
+msgid "controls.select.dimension"
+msgstr ""
+
+#: app/configurator/table/table-chart-sorting-options.jsx
+#: app/configurator/table/table-chart-sorting-options.tsx
+msgid "controls.sorting.selectDimension"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.tsx
+#: app/configurator/components/chart-options-selector/color-component-field.jsx
+#: app/configurator/components/chart-options-selector/color-component-field.tsx
+#: app/configurator/components/chart-options-selector/size-field.jsx
+#: app/configurator/components/chart-options-selector/size-field.tsx
+msgid "controls.select.measure"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
+#: app/configurator/components/chart-options-selector/show-dots-field.tsx
+msgid "controls.section.dots-size"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.select.all"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.element.cta"
+msgstr ""
+
+#: app/browse/ui/select-dataset-step.jsx
+#: app/browse/ui/select-dataset-step.tsx
+msgid "chart.datasets.add-dataset-drawer.title"
+msgstr ""
+
+#: app/components/chart-selection-tabs.jsx
+#: app/components/chart-selection-tabs.tsx
+msgid "chart-selection-tabs.add-chart-different-dataset.button"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "chart.datasets.add-dataset-dialog.title"
+msgstr ""
+
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.tsx
+#: app/charts/shared/chart-data-filters/index.tsx
+#: app/components/select-tree.jsx
+#: app/components/select-tree.tsx
+#: app/configurator/components/field-date-picker.jsx
+#: app/configurator/components/field-date-picker.tsx
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.tsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.dimensionvalue.select"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.section.targets-and-limit-values.line-type"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.select.none"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.section.targets-and-limit-values.symbol-type"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "controls.layout.singleURLs.publish"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.select.selected-filters"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.layout.singleURLs"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+msgid "controls.color.palette.sequential"
+msgstr ""
+
+#: app/components/rename-dialog.jsx
+#: app/components/rename-dialog.tsx
+msgid "controls.language.serbian-cyrillic"
+msgstr ""
+
+#: app/components/rename-dialog.jsx
+#: app/components/rename-dialog.tsx
+msgid "controls.language.serbian-latin"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "button.share"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.popup.share"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.share"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.digital.ylabel"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.quick.description"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.energy.description"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.digital.description"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.linktitle.facebook"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.facebook"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.linktitle.linkedin"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.linkedin"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.title"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.linktitle.x"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.x"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.text.title"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.url.title"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.linktitle.mail"
+msgstr ""
+
+#: app/components/social-media-share.jsx
+#: app/components/social-media-share.tsx
+msgid "social.share.email"
+msgstr ""
+
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.section.shared-filters"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/base-layer-field.jsx
+#: app/configurator/components/chart-options-selector/base-layer-field.tsx
+msgid "chart.map.layers.base.show"
+msgstr ""
+
+#: app/browse/ui/navigation-section.jsx
+#: app/browse/ui/navigation-section.tsx
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "show.all"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.show-values.all"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.barShowBackground"
+msgstr ""
+
+#: app/configurator/components/chart-controls/show-filter-area-open.jsx
+#: app/configurator/components/chart-controls/show-filter-area-open.tsx
+msgid "controls.section.data.filters.default-open"
+msgstr ""
+
+#: app/charts/shared/chart-data-filters/index.jsx
+#: app/charts/shared/chart-data-filters/index.tsx
+msgid "interactive.data.filters.show"
+msgstr ""
+
+#: app/charts/shared/interactive-filter-calculation-toggle.jsx
+#: app/charts/shared/interactive-filter-calculation-toggle.tsx
+msgid "controls.calculation.show-in-percentage"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filters.show-legend.toggle"
+msgstr ""
+
+#: app/browse/ui/navigation-section.jsx
+#: app/browse/ui/navigation-section.tsx
+msgid "show.less"
+msgstr ""
+
+#: app/components/metadata-panel.jsx
+#: app/components/metadata-panel.tsx
+msgid "controls.metadata-panel.show-more"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.show-values.none"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.display.default-open"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.show-play-button"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.tableSettings.showSearch"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.section.targets-and-limit-values.show-target"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.tsx
+msgid "controls.section.show-confidence-interval.explanation"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector.jsx
+#: app/configurator/components/chart-options-selector.tsx
+msgid "controls.section.show-standard-error.explanation"
+msgstr ""
+
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.tsx
+msgid "controls.filter.show-values"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.dataset.title"
+msgstr ""
+
+#: app/browse/ui/first-ten-rows-caption.jsx
+#: app/browse/ui/first-ten-rows-caption.tsx
+msgid "datatable.showing.first.rows"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+msgid "controls.filters.select.refresh-colors"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+msgid "login.sign-in"
+msgstr ""
+
+#: app/login/components/login-menu.jsx
+#: app/login/components/login-menu.tsx
+#: app/login/components/profile-header.jsx
+#: app/login/components/profile-header.tsx
+msgid "login.sign-out"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+#: app/configurator/components/chart-options-selector/size-field.jsx
+#: app/configurator/components/chart-options-selector/size-field.tsx
+msgid "controls.size"
+msgstr ""
+
+#: app/components/skip-to-content.jsx
+#: app/components/skip-to-content.tsx
+msgid "a11y.skip.to.content"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/show-dots-field.jsx
+#: app/configurator/components/chart-options-selector/show-dots-field.tsx
+msgid "controls.section.dots-size.small"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.line.solid"
+msgstr ""
+
+#: app/components/chart-published.jsx
+#: app/components/chart-published.tsx
+msgid "dataset.hasImputedValues"
+msgstr ""
+
+#: app/components/app-error-boundary.jsx
+#: app/components/app-error-boundary.tsx
+msgid "error.boundary.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/sorting-field.jsx
+#: app/configurator/components/chart-options-selector/sorting-field.tsx
+msgid "controls.section.sorting"
+msgstr ""
+
+#: app/browse/ui/search-dataset-sort-control.jsx
+#: app/browse/ui/search-dataset-sort-control.tsx
+msgid "dataset.sortby"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+#: app/configurator/table/table-chart-sorting-options.jsx
+#: app/configurator/table/table-chart-sorting-options.tsx
+msgid "controls.sorting.sortBy"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.table.sorting"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.sorting.byTotalSize.disabled-by-animation"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.source"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.tableSettings.linkComponentId"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "chart-controls.sparql-query"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.column.stacked"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.bar.stacked"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+#: app/charts/chart-config-ui-options.ts
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.segment.stacked.disabled-by-scale-type"
+msgstr ""
+
+#: app/login/components/color-palettes/color-palette-types.jsx
+#: app/login/components/color-palettes/color-palette-types.tsx
+msgid "controls.custom-color-palettes.start"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.static"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.dataset.organization"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.statistics"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.status"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.contact.title"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat2.hint"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.type.stepped"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.annotations.highlight.section.style.title"
+msgstr ""
+
+#: app/configurator/components/chart-type-selector.jsx
+#: app/configurator/components/chart-type-selector.tsx
+msgid "controls.switch.chart.type"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "chart.map.layers.symbol"
+msgstr ""
+
+#: app/configurator/components/custom-layers-selector.jsx
+#: app/configurator/components/custom-layers-selector.tsx
+msgid "chart.map.layers.base.enable-temporal-filtering"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.label"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.layout.tab"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.chart.type.table"
+msgstr ""
+
+#: app/configurator/table/table-chart-configurator.jsx
+#: app/configurator/table/table-chart-configurator.tsx
+msgid "controls.section.tableoptions"
+msgstr ""
+
+#: app/configurator/table/table-chart-sorting-options.jsx
+#: app/configurator/table/table-chart-sorting-options.tsx
+msgid "controls.section.tableSorting"
+msgstr ""
+
+#: app/components/chart-shared.jsx
+#: app/components/chart-shared.tsx
+msgid "chart-controls.table-view"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.layout.tall"
+msgstr ""
+
+#: app/configurator/table/configurator/links-section.jsx
+#: app/configurator/table/configurator/links-section.tsx
+msgid "controls.tableSettings.targetComponentId"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.section.targets-and-limit-values"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+#: app/configurator/table/table-chart-options.tsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "columnStyle.text"
+msgstr ""
+
+#: app/configurator/components/chart-annotations/chart-annotations-selector.jsx
+#: app/configurator/components/chart-annotations/chart-annotations-selector.tsx
+msgid "controls.text-only"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.textColor"
+msgstr ""
+
+#: app/configurator/components/block-options-selector.jsx
+#: app/configurator/components/block-options-selector.tsx
+msgid "controls.section.block-options.block.text"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.select.columnStyle.textStyle"
+msgstr ""
+
+#: app/components/data-download.jsx
+#: app/components/data-download.jsx
+#: app/components/data-download.tsx
+#: app/components/data-download.tsx
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.dataloadingerror.message"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/caution-alert.jsx
+#: app/configurator/components/add-dataset-drawer/caution-alert.tsx
+msgid "dataset.search.caution.body"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.about_us.text"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.about.paragraph2"
+msgstr ""
+
+#: app/charts/map/wms-wmts-provider-info.jsx
+#: app/charts/map/wms-wmts-provider-info.tsx
+msgid "provider-info.title"
+msgstr ""
+
+#: app/browse/ui/search-filters.jsx
+#: app/browse/ui/search-filters.tsx
+msgid "browse-panel.themes"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.section.animation.no-available-temporal-dimensions"
+msgstr ""
+
+#: app/charts/chart-config-ui-options.js
+#: app/charts/chart-config-ui-options.ts
+msgid "controls.section.animation.no-temporal-dimensions"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.coordinatesloadingerror.message"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.about.paragraph1"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.chart.delete-draft.warning"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.chart.delete.warning"
+msgstr ""
+
+#: app/components/chart-published.jsx
+#: app/components/chart-published.tsx
+msgid "data.source.notTrusted"
+msgstr ""
+
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "hint.publication.draft"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.title-unavailable"
+msgstr ""
+
+#: app/browse/ui/search-dataset-sort-control.jsx
+#: app/browse/ui/search-dataset-sort-control.tsx
+msgid "dataset.order.title"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.title"
+msgstr ""
+
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.jsx
+#: app/configurator/components/annotators.tsx
+#: app/configurator/components/annotators.tsx
+msgid "controls.section.description"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.jsx
+#: app/configurator/components/layout-configurator.tsx
+#: app/configurator/components/layout-configurator.tsx
+msgid "controls.filters.select.to"
+msgstr ""
+
+#: app/charts/table/table.jsx
+#: app/charts/table/table.tsx
+msgid "chart.table.number.of.lines"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.total.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/sorting-field.jsx
+#: app/configurator/components/chart-options-selector/sorting-field.tsx
+msgid "controls.sorting.byTotalSize"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/limits-field.jsx
+#: app/configurator/components/chart-options-selector/limits-field.tsx
+msgid "controls.symbol.triangle"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.hero.stat2.label"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.transport.description"
+msgstr ""
+
+#: app/components/app-error-boundary.jsx
+#: app/components/app-error-boundary.tsx
+msgid "error.boundary.retry"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.retry"
+msgstr ""
+
+#: app/components/footer.jsx
+#: app/components/footer.tsx
+msgid "footer.tutorials"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.chart-type"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/caution-alert.jsx
+#: app/configurator/components/add-dataset-drawer/caution-alert.tsx
+msgid "dataset.search.caution.acknowledge"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.chartunexpected.title"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/conversion-units-field.jsx
+#: app/configurator/components/chart-options-selector/conversion-units-field.tsx
+msgid "controls.convert-unit"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.actions.unpublish"
+msgstr ""
+
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.update-palette"
+msgstr ""
+
+#: app/configurator/components/configurator.jsx
+#: app/configurator/components/configurator.tsx
+msgid "button.update"
+msgstr ""
+
+#: app/components/demos/demo-layout.jsx
+#: app/components/demos/demo-layout.tsx
+msgid "demos.layout.updated"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.challenges.urbanization"
+msgstr ""
+
+#: app/components/mdx-editor/link-dialog.jsx
+#: app/components/mdx-editor/link-dialog.tsx
+msgid "mdx-editor.link-dialog.url-placeholder"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.abbreviations"
+msgstr ""
+
+#: app/configurator/components/chart-controls/drawer-color-palette-content.jsx
+#: app/configurator/components/chart-controls/drawer-color-palette-content.tsx
+#: app/login/components/color-palettes/profile-color-palette-form.jsx
+#: app/login/components/color-palettes/profile-color-palette-form.tsx
+msgid "controls.custom-color-palettes.caption-categorical"
+msgstr ""
+
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.jsx
+#: app/configurator/components/field.tsx
+#: app/configurator/components/field.tsx
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.use-most-recent"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/animation-field.jsx
+#: app/configurator/components/chart-options-selector/animation-field.tsx
+msgid "controls.section.animation.type.explanation"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.iframe.caption"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.embed.external-application.caption"
+msgstr ""
+
+#: app/configurator/table/table-chart-options.jsx
+#: app/configurator/table/table-chart-options.tsx
+msgid "controls.table.column.group"
+msgstr ""
+
+#: app/components/dataset-metadata.jsx
+#: app/components/dataset-metadata.tsx
+msgid "dataset.metadata.version"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.layout.vertical"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.axis.vertical"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.chart.view"
+msgstr ""
+
+#: app/utils/flashes.jsx
+#: app/utils/flashes.tsx
+msgid "flashes.couldnt-load-cube.view-cube-checker"
+msgstr ""
+
+#: app/login/components/profile-tables.jsx
+#: app/login/components/profile-tables.tsx
+msgid "login.profile.my-visualizations.chart-views"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.cta.body"
+msgstr ""
+
+#: app/configurator/components/chart-controls/color-palette.jsx
+#: app/configurator/components/chart-controls/color-palette.tsx
+#: app/configurator/components/chart-controls/color-ramp.jsx
+#: app/configurator/components/chart-controls/color-ramp.tsx
+msgid "controls.visualize-color-palette"
+msgstr ""
+
+#: app/components/publish-actions.jsx
+#: app/components/publish-actions.tsx
+msgid "publication.share.mail.subject"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.cta.title"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Week"
+msgstr ""
+
+#: app/pages/demos/index.jsx
+#: app/pages/demos/index.tsx
+msgid "demos.index.hero.intro"
+msgstr ""
+
+#: app/configurator/components/filters.jsx
+#: app/configurator/components/filters.tsx
+msgid "controls.filter.use-most-recent-explanation"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.loading.data.large.datasets"
+msgstr ""
+
+#: app/charts/map/wms-wmts-providers-autocomplete.jsx
+#: app/charts/map/wms-wmts-providers-autocomplete.tsx
+msgid "wmts-providers-autocomplete.placeholder"
+msgstr ""
+
+#: app/charts/map/wms-wmts-provider-info.jsx
+#: app/charts/map/wms-wmts-provider-info.tsx
+msgid "provider-info.working-layers"
+msgstr ""
+
+#: app/configurator/components/ui-helpers.js
+#: app/configurator/components/ui-helpers.ts
+msgid "time-units.Year"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.transport.xlabel"
+msgstr ""
+
+#: app/pages/demos/showcase.jsx
+#: app/pages/demos/showcase.tsx
+msgid "demos.showcase.economy.description"
+msgstr ""
+
+#: app/pages/demos/demographics.jsx
+#: app/pages/demos/demographics.tsx
+msgid "demos.demographics.cards.median.detail"
+msgstr ""
+
+#: app/components/confirmation-dialog.jsx
+#: app/components/confirmation-dialog.tsx
+msgid "yes"
+msgstr ""
+
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.jsx
+#: app/configurator/components/add-dataset-drawer/add-dataset-drawer.tsx
+msgid "chart.datasets.add-dataset-dialog.description"
+msgstr ""
+
+#: app/pages/v/[chartId].jsx
+#: app/pages/v/[chartId].tsx
+msgid "hint.how.to.share"
+msgstr ""
+
+#: app/components/hint.jsx
+#: app/components/hint.tsx
+msgid "hint.publication.success"
+msgstr ""
+
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+#: app/configurator/components/field-i18n.ts
+msgid "controls.sorting.byDimensionLabel.descending"
+msgstr ""
+
+#: app/configurator/components/chart-options-selector/imputation-field.jsx
+#: app/configurator/components/chart-options-selector/imputation-field.tsx
+#: app/configurator/components/field-i18n.js
+#: app/configurator/components/field-i18n.ts
+msgid "controls.imputation.type.zeros"
+msgstr ""

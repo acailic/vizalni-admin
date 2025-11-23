@@ -15,13 +15,13 @@ describe("DemosIndex", () => {
 
     expect(
       screen.getByText(/Galerija Demo Vizualizacija/i)
-    ).toBeInTheDocument();
+    ).toBeTruthy();
 
     const sampleTitles = Object.values(DEMO_CONFIGS)
       .slice(0, 3)
       .map((c) => c.title.sr);
     sampleTitles.forEach((title) => {
-      expect(screen.getByText(title)).toBeInTheDocument();
+      expect(screen.getByText(title)).toBeTruthy();
     });
 
     const cards = container.querySelectorAll(".MuiCard-root");
@@ -30,6 +30,6 @@ describe("DemosIndex", () => {
 
   it("shows CTA to open showcase", () => {
     render(<DemosIndex />);
-    expect(screen.getByText(/Otvori showcase/i)).toBeInTheDocument();
+    expect(screen.getByText(/Otvori showcase/i)).toBeTruthy();
   });
 });

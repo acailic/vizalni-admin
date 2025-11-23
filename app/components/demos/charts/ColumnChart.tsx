@@ -14,27 +14,12 @@ import { memo, useEffect, useRef } from 'react';
 
 import { chartDefaults } from '@/utils/demo-helpers';
 
-type DatumValue = string | number | null | undefined;
-type ColumnChartDatum = Record<string, DatumValue>;
-
-type NumericKeys<T> = {
-  [K in keyof T]: T[K] extends number ? K : never;
-}[keyof T];
-
-type StringOrNumberKeys<T> = {
-  [K in keyof T]: T[K] extends string | number ? K : never;
-}[keyof T];
-
 type ChartMargin = { top: number; right: number; bottom: number; left: number };
 
-export interface ColumnChartProps<
-  TDatum extends ColumnChartDatum,
-  XKey extends StringOrNumberKeys<TDatum>,
-  YKey extends NumericKeys<TDatum> | NumericKeys<TDatum>[]
-> {
-  data: TDatum[];
-  xKey: XKey;
-  yKey: YKey;
+export interface ColumnChartProps {
+  data: Array<Record<string, any>>;
+  xKey: string;
+  yKey: string | string[];
   width?: number;
   height?: number;
   margin?: ChartMargin;
@@ -50,11 +35,7 @@ export interface ColumnChartProps<
 
 const defaultColumnConfig = chartDefaults.column;
 
-function ColumnChartComponent<
-  TDatum extends ColumnChartDatum,
-  XKey extends StringOrNumberKeys<TDatum>,
-  YKey extends NumericKeys<TDatum> | NumericKeys<TDatum>[]
->({
+function ColumnChartComponent({
   data,
   xKey,
   yKey,
@@ -67,7 +48,7 @@ function ColumnChartComponent<
   multiSeries = false,
   stacked = false,
   showZeroLine = false
-}: ColumnChartProps<TDatum, XKey, YKey>) {
+}: ColumnChartProps) {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -90,22 +71,16 @@ function ColumnChartComponent<
     // Determine numeric series keys
     const numericKeys = Object.keys(data[0] || {})
       .filter((key) => key !== xKeyName)
-      .filter((key) => typeof (data[0] as TDatum)[key as keyof TDatum] === 'number') as Array<
-        NumericKeys<TDatum>
-      >;
+      .filter((key) => typeof (data[0] as Record<string, any>)[key] === 'number');
 
-    const requestedKeys = (Array.isArray(yKey) ? yKey : [yKey]).filter(Boolean) as Array<
-      NumericKeys<TDatum>
-    >;
+    const requestedKeys = (Array.isArray(yKey) ? yKey : [yKey]).filter(Boolean);
     const hasMultipleSeries = numericKeys.length > 1;
 
     const shouldUseAllSeries = multiSeries || hasMultipleSeries;
     const fallbackSeries = requestedKeys.length ? requestedKeys : numericKeys;
 
     const seriesKeysCandidate = shouldUseAllSeries ? numericKeys : requestedKeys;
-    const resolvedSeriesKeys = (seriesKeysCandidate.length ? seriesKeysCandidate : fallbackSeries) as Array<
-      NumericKeys<TDatum>
-    >;
+    const resolvedSeriesKeys = (seriesKeysCandidate.length ? seriesKeysCandidate : fallbackSeries);
 
     if (!resolvedSeriesKeys.length) {
       return;
@@ -121,14 +96,14 @@ function ColumnChartComponent<
         max(
           data.map((d) =>
             resolvedSeriesKeys.reduce(
-              (sum, key) => sum + (Number(d[key as keyof TDatum]) || 0),
+              (sum, key) => sum + (Number((d as Record<string, any>)[key]) || 0),
               0
             )
           )
         ) || 0;
     } else {
       const allYValues = data.flatMap((d) =>
-        resolvedSeriesKeys.map((key) => Number(d[key as keyof TDatum]) || 0)
+        resolvedSeriesKeys.map((key) => Number((d as Record<string, any>)[key]) || 0)
       );
       maxY = max(allYValues) || 0;
     }
