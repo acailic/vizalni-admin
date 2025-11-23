@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,8 +19,17 @@
     "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"]
-    }
+      "@/*": [
+        "app/*"
+      ]
+    },
+    "noEmit": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "app/**/*.ts",
@@ -26,7 +39,11 @@
     "embed/**/*.ts",
     "embed/**/*.tsx",
     "*.ts",
-    "*.tsx"
+    "*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "app/.next"]
+  "exclude": [
+    "node_modules",
+    "app/.next"
+  ]
 }

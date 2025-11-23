@@ -31,12 +31,18 @@ export default function ContentPage({ staticPage }: ContentPageProps) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const isGitHubPages = process.env.NEXT_PUBLIC_BASE_PATH !== undefined;
+  const reservedSlugs = new Set(["tutorials"]);
   const paths = Object.keys(staticPages)
     .filter((path) => !path.endsWith("/index"))
     .map((path) => {
       const [, rawLocale, ...slugParts] = path.split("/");
       const normalizedLocale = rawLocale === "sr" ? defaultLocale : rawLocale;
       const slug = slugParts.join("/");
+
+      // Avoid conflicts with dedicated routes (e.g., /tutorials folder)
+      if (reservedSlugs.has(slug)) {
+        return null;
+      }
 
       if (!normalizedLocale || !locales.includes(normalizedLocale)) {
         return null;
@@ -55,7 +61,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
       return {
         params: { slug },
-        locale: normalizedLocale,
+        locale: normalizedLocale === defaultLocale ? undefined : normalizedLocale,
       };
     })
     .filter(

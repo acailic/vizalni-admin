@@ -6,9 +6,6 @@ const pages = [
   { path: "/en/index", locale: "en" },
   { path: "/en/imprint", locale: "en" },
   { path: "/en/legal-framework", locale: "en" },
-
-  { path: "/sr/tutorials", locale: "sr-Latn" },
-  { path: "/en/tutorials", locale: "en" },
 ];
 
 export const staticPages = Object.fromEntries(

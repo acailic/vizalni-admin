@@ -56,7 +56,6 @@ const nextConfig = withPreconstruct(
   withBundleAnalyzer(
     withMDX({
       output: isGitHubPages ? "export" : "standalone",
-      trailingSlash: true,
       basePath: basePath,
       assetPrefix: basePath,
       images: {
