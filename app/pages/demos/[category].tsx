@@ -15,6 +15,7 @@ import { ExportControls } from '@/components/demos/ExportControls';
 import { SimpleChart } from '@/components/demos/simple-chart';
 import { useDataGovRs } from '@/hooks/use-data-gov-rs';
 import { DEMO_CONFIGS, getDemoConfig } from '@/lib/demos/config';
+import { DEMO_FALLBACKS } from '@/lib/demos/fallbacks';
 import localesConfig from '@/locales/locales.json';
 
 const DEDICATED_DEMO_PAGES = new Set([
@@ -51,7 +52,12 @@ export default function DemoPage() {
   // Fetch data using custom hook (only if config exists)
   // MUST be called before any conditional returns (Rules of Hooks)
   const { dataset, resource, data, loading, error, refetch } = useDataGovRs({
-    searchQuery: config?.searchQuery,
+    searchQuery:
+      (config && DEMO_FALLBACKS[config.id]?.searchQueries) || config?.searchQuery,
+    fallbackData: config ? DEMO_FALLBACKS[config.id]?.fallbackData : undefined,
+    fallbackDatasetInfo: config
+      ? DEMO_FALLBACKS[config.id]?.fallbackDatasetInfo
+      : undefined,
     autoFetch: !!config && category !== 'air-quality'
   });
 

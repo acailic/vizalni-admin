@@ -34,11 +34,21 @@ export interface DemoConfig {
   id: string;
   title: LocaleContent<string>;
   description: LocaleContent<string>;
-  searchQuery: string;
+  /**
+   * Primary query (or list of queries) used to search data.gov.rs datasets.
+   * The hook will try them in order until it finds data.
+   */
+  searchQuery: string | string[];
   chartType: DemoChartType;
   defaultDatasetId?: string;
   tags?: string[];
   icon: string;
+  /**
+   * Optional fallback dataset info and data used when the live API returns no results.
+   * Keeps the demo usable/offline-friendly.
+   */
+  fallbackData?: any[];
+  fallbackDatasetInfo?: DemoDatasetInfo;
 }
 
 export type DemoTranslationMap<T extends Record<string, LocaleContent<unknown>>> = T;

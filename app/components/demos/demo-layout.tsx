@@ -212,6 +212,11 @@ export function DemoError({
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
         {errorMessage}
       </Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+        <Trans id="demos.layout.error-suggestions">
+          Suggestions: try again, check internet connection, or open a different dataset from data.gov.rs.
+        </Trans>
+      </Typography>
       {onRetry && (
         <Button
           variant="contained"

@@ -15,9 +15,9 @@ interface UseDataGovRsOptions {
   datasetId?: string;
 
   /**
-   * Search query to find datasets
+   * Search query (or list of queries) to find datasets
    */
-  searchQuery?: string;
+  searchQuery?: string | string[];
 
   /**
    * Auto-fetch on mount
@@ -30,6 +30,12 @@ interface UseDataGovRsOptions {
    * @default true
    */
   parseCSV?: boolean;
+
+  /**
+   * Optional fallback dataset info and data when the API returns nothing.
+   */
+  fallbackDatasetInfo?: Partial<DatasetMetadata>;
+  fallbackData?: any[];
 }
 
 interface UseDataGovRsReturn {
@@ -80,7 +86,9 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
     datasetId,
     searchQuery,
     autoFetch = true,
-    parseCSV = true
+    parseCSV = true,
+    fallbackDatasetInfo,
+    fallbackData
   } = options;
 
   const [dataset, setDataset] = useState<DatasetMetadata | null>(null);
@@ -100,17 +108,43 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
         // Fetch by specific ID
         fetchedDataset = await dataGovRsClient.getDataset(datasetId);
       } else if (searchQuery) {
-        // Search for datasets
-        const results = await dataGovRsClient.searchDatasets({
-          q: searchQuery,
-          page_size: 1
-        });
+        const queries = Array.isArray(searchQuery) ? searchQuery : [searchQuery];
+        let foundDataset: DatasetMetadata | null = null;
 
-        if (results.data.length === 0) {
-          throw new Error(`No datasets found for query: "${searchQuery}"`);
+        for (const q of queries) {
+          const results = await dataGovRsClient.searchDatasets({
+            q,
+            page_size: 1
+          });
+
+          if (results.data.length > 0) {
+            foundDataset = results.data[0];
+            break;
+          }
         }
 
-        fetchedDataset = results.data[0];
+        if (!foundDataset) {
+          if (fallbackData && fallbackData.length > 0) {
+            setDataset(
+              (fallbackDatasetInfo as DatasetMetadata) || {
+                id: 'demo-fallback',
+                title: fallbackDatasetInfo?.title || 'Demo fallback data',
+                organization: {
+                  title: fallbackDatasetInfo?.organization || 'Demo data.gov.rs'
+                }
+              } as unknown as DatasetMetadata
+            );
+            setResource(null);
+            setData(fallbackData);
+            return;
+          }
+
+          throw new Error(
+            `No datasets found for queries: ${queries.map((q) => `"${q}"`).join(", ")}`
+          );
+        }
+
+        fetchedDataset = foundDataset;
       } else {
         throw new Error('Either datasetId or searchQuery must be provided');
       }
@@ -121,6 +155,11 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
       const bestResource = getBestVisualizationResource(fetchedDataset);
 
       if (!bestResource) {
+        if (fallbackData && fallbackData.length > 0) {
+          setResource(null);
+          setData(fallbackData);
+          return;
+        }
         throw new Error('No suitable resource found for visualization');
       }
 
@@ -143,8 +182,24 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err : new Error('Unknown error occurred');
-      setError(errorMessage);
-      console.error('useDataGovRs error:', errorMessage);
+      if (fallbackData && fallbackData.length > 0) {
+        setDataset(
+          (fallbackDatasetInfo as DatasetMetadata) || {
+            id: 'demo-fallback',
+            title: fallbackDatasetInfo?.title || 'Demo fallback data',
+            organization: {
+              title: fallbackDatasetInfo?.organization || 'Demo data.gov.rs'
+            }
+          } as unknown as DatasetMetadata
+        );
+        setResource(null);
+        setData(fallbackData);
+        setError(null);
+        console.warn('useDataGovRs: using fallback demo data due to error:', errorMessage);
+      } else {
+        setError(errorMessage);
+        console.error('useDataGovRs error:', errorMessage);
+      }
     } finally {
       setLoading(false);
     }
