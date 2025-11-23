@@ -171,17 +171,11 @@ const nextConfig = withPreconstruct(
           "d3-time-format",
           "framer-motion",
           "@emotion/react",
-          "@emotion/styled",
-        ],
-        // Enable parallel compilation
-        cpus: require("os").cpus().length - 1 || 1,
-        // Enable verbose logging for fetches to aid debugging
-        logging: {
-          fetches: {
-            fullUrl: true,
-          },
-        },
-      },
+        "@emotion/styled",
+      ],
+      // Enable parallel compilation
+      cpus: require("os").cpus().length - 1 || 1,
+    },
 
       // Modularize imports for better tree-shaking
       modularizeImports: {
@@ -199,6 +193,9 @@ const nextConfig = withPreconstruct(
       // Configure logging to show info for debugging when enabled
       logging: {
         level: process.env.NEXT_PUBLIC_DEBUG === "true" ? "info" : "error",
+        fetches: {
+          fullUrl: true,
+        },
       },
 
       eslint: {

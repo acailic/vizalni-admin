@@ -118,6 +118,7 @@ const SelectDatasetStepInner = ({
     isStaticExport && GRAPHQL_ENDPOINT === "/api/graphql";
 
   const [debouncedQuery] = useDebounce(search, 500, { leading: true });
+  const debouncedQueryString = debouncedQuery ?? "";
   const handleHeightChange = useCallback(
     ({ height }: { width: number; height: number }) => {
       window.parent.postMessage({ type: CHART_RESIZE_EVENT_TYPE, height }, "*");
@@ -172,7 +173,7 @@ const SelectDatasetStepInner = ({
     pause: !!dataset || useDataGovFallback,
   });
   const dataGovSearch = useDataGovFallback
-    ? useDataGovSearch(debouncedQuery)
+    ? useDataGovSearch(debouncedQueryString)
     : undefined;
 
   useRedirectToLatestCube({
