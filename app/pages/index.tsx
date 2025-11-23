@@ -1,17 +1,17 @@
+import { t, Trans } from "@lingui/macro";
 import {
   Box,
-  Grid,
   Card,
-  CardContent,
-  Typography,
-  Button,
   CardActions,
+  CardContent,
+  Button,
+  Grid,
   Stack,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { GetStaticProps } from "next";
 import Link from "next/link";
-import { t, Trans } from "@lingui/macro";
 import { type ReactNode } from "react";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
