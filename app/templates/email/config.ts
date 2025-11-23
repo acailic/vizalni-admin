@@ -1,2 +1,2 @@
-export const OWNER_ORGANIZATION_EMAIL = "visualize@bafu.admin.ch";
-export const SUPPORT_EMAIL = "support@interactivethings.com";
+export const OWNER_ORGANIZATION_EMAIL = "info@data.gov.rs";
+export const SUPPORT_EMAIL = "support@data.gov.rs";

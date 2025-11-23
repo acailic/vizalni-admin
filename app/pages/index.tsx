@@ -1,4 +1,3 @@
-import { t, Trans } from "@lingui/macro";
 import {
   Box,
   Card,
@@ -17,18 +16,101 @@ import { type ReactNode } from "react";
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import { staticPages } from "@/static-pages";
 
-/**
- * TODO: this page can be combined with [slug].tsx into [[...slug]].tsx,
- * once these issues are resolved:
- *
- * - https://github.com/vercel/next.js/issues/19934
- * - https://github.com/vercel/next.js/issues/19950
- *
- */
-
 interface ContentPageProps {
   staticPage: string;
 }
+
+type Locale = "sr" | "en";
+
+const heroCopy: Record<Locale, { overline: string; title: string; body: string; primary: string; secondary: string; badge: string; trusted: string; embeds: string }> = {
+  en: {
+    overline: "Visualize open data",
+    title: "Get to insights from Serbian open data faster",
+    body: "Browse data.gov.rs, pick a dataset, and craft visualizations you can share or embed instantly.",
+    primary: "Browse datasets",
+    secondary: "Start guide",
+    badge: "Open data",
+    trusted: "Data from trusted sources",
+    embeds: "Tailored visuals and embeds",
+  },
+  sr: {
+    overline: "Vizualizujte otvorene podatke",
+    title: "Brže do uvida iz otvorenih podataka Srbije",
+    body: "Pregledajte data.gov.rs, izaberite dataset i kreirajte vizualizacije koje možete odmah deliti ili ugraditi.",
+    primary: "Pregledaj datasete",
+    secondary: "Vodič za početak",
+    badge: "Otvoreni podaci",
+    trusted: "Podaci iz proverenih izvora",
+    embeds: "Prilagođene vizualizacije i embed",
+  },
+};
+
+const tutorialsCopy: Record<Locale, { heading: string; subheading: string; label: string; learnMore: string; cards: Array<{ title: string; description: string; link: string; icon: string }> }> = {
+  en: {
+    heading: "Learn and Explore",
+    subheading: "Discover our tutorials and guides for creating amazing visualizations",
+    label: "Knowledge",
+    learnMore: "Learn More",
+    cards: [
+      {
+        title: "Getting Started",
+        description: "Learn the basics of using Vizualni Admin",
+        link: "/docs/getting-started",
+        icon: "🚀",
+      },
+      {
+        title: "Chart Types",
+        description: "Explore different chart types",
+        link: "/docs/chart-types-guide",
+        icon: "📊",
+      },
+      {
+        title: "Embedding",
+        description: "How to embed visualizations on your site",
+        link: "/docs/embedding-guide",
+        icon: "🔗",
+      },
+      {
+        title: "API Guide",
+        description: "Using the data.gov.rs API",
+        link: "/docs/data-gov-rs-guide",
+        icon: "📡",
+      },
+    ],
+  },
+  sr: {
+    heading: "Naučite i istražite",
+    subheading: "Otkrijte tutorijale i vodiče za kreiranje vrhunskih vizualizacija",
+    label: "Znanje",
+    learnMore: "Saznaj više",
+    cards: [
+      {
+        title: "Početak",
+        description: "Upoznajte osnove rada u Vizualni Admin",
+        link: "/docs/getting-started",
+        icon: "🚀",
+      },
+      {
+        title: "Tipovi grafikona",
+        description: "Istražite različite tipove grafikona",
+        link: "/docs/chart-types-guide",
+        icon: "📊",
+      },
+      {
+        title: "Ugrađivanje",
+        description: "Kako ugraditi vizualizacije na vaš sajt",
+        link: "/docs/embedding-guide",
+        icon: "🔗",
+      },
+      {
+        title: "API vodič",
+        description: "Korišćenje data.gov.rs API-ja",
+        link: "/docs/data-gov-rs-guide",
+        icon: "📡",
+      },
+    ],
+  },
+};
 
 const SectionShell = ({
   children,
@@ -61,72 +143,24 @@ const SectionShell = ({
   );
 };
 
-const TutorialsSection = () => {
-  const tutorials = [
-    {
-      title: t({
-        id: "home.tutorials.gettingStarted.title",
-        message: "Getting Started",
-      }),
-      description: t({
-        id: "home.tutorials.gettingStarted.description",
-        message: "Learn the basics of using Vizualni Admin",
-      }),
-      link: "/docs/getting-started",
-      icon: "🚀",
-    },
-    {
-      title: t({
-        id: "home.tutorials.chartTypes.title",
-        message: "Chart Types",
-      }),
-      description: t({
-        id: "home.tutorials.chartTypes.description",
-        message: "Explore different chart types",
-      }),
-      link: "/docs/chart-types-guide",
-      icon: "📊",
-    },
-    {
-      title: t({ id: "home.tutorials.embedding.title", message: "Embedding" }),
-      description: t({
-        id: "home.tutorials.embedding.description",
-        message: "How to embed visualizations on your site",
-      }),
-      link: "/docs/embedding-guide",
-      icon: "🔗",
-    },
-    {
-      title: t({ id: "home.tutorials.apiGuide.title", message: "API Guide" }),
-      description: t({
-        id: "home.tutorials.apiGuide.description",
-        message: "Using the data.gov.rs API",
-      }),
-      link: "/docs/data-gov-rs-guide",
-      icon: "📡",
-    },
-  ];
+const TutorialsSection = ({ locale }: { locale: Locale }) => {
+  const copy = tutorialsCopy[locale];
 
   return (
     <SectionShell>
       <Box sx={{ textAlign: "center" }}>
-        <Typography
-          variant="overline"
-          sx={{ letterSpacing: 2, color: "text.secondary" }}
-        >
-          <Trans id="home.tutorials.label">Knowledge</Trans>
+        <Typography variant="overline" sx={{ letterSpacing: 2, color: "text.secondary" }}>
+          {copy.label}
         </Typography>
         <Typography variant="h3" sx={{ fontWeight: 800, mt: 1 }}>
-          <Trans id="home.tutorials.title">Learn and Explore</Trans>
+          {copy.heading}
         </Typography>
         <Typography variant="body1" sx={{ mt: 1.5, color: "text.secondary" }}>
-          <Trans id="home.tutorials.subtitle">
-            Discover our tutorials and guides for creating amazing visualizations
-          </Trans>
+          {copy.subheading}
         </Typography>
       </Box>
       <Grid container spacing={3.5}>
-        {tutorials.map((tutorial, index) => (
+        {copy.cards.map((tutorial, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <Card
               elevation={0}
@@ -137,8 +171,7 @@ const TutorialsSection = () => {
                 border: "1px solid",
                 borderColor: "divider",
                 borderRadius: 3,
-                background:
-                  "linear-gradient(135deg, rgba(12,64,118,0.04), rgba(12,64,118,0.01))",
+                background: "linear-gradient(135deg, rgba(12,64,118,0.04), rgba(12,64,118,0.01))",
               }}
             >
               <CardContent sx={{ flexGrow: 1, textAlign: "left", p: 3 }}>
@@ -173,7 +206,7 @@ const TutorialsSection = () => {
                   variant="text"
                   sx={{ fontWeight: 600, textTransform: "none" }}
                 >
-                  <Trans id="home.tutorials.learnMore">Learn More</Trans>
+                  {copy.learnMore}
                 </Button>
               </CardActions>
             </Card>
@@ -184,21 +217,17 @@ const TutorialsSection = () => {
   );
 };
 
-const HeroSection = () => {
+const HeroSection = ({ locale }: { locale: Locale }) => {
   const theme = useTheme();
   const accent = theme.palette.primary.main;
+  const copy = heroCopy[locale];
 
   return (
     <SectionShell background="linear-gradient(135deg, #0b1a2d, #0e2a45)">
-      <Grid
-        container
-        spacing={{ xs: 4, md: 6 }}
-        alignItems="center"
-        sx={{ color: "white" }}
-      >
+      <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center" sx={{ color: "white" }}>
         <Grid item xs={12} md={6}>
           <Typography variant="overline" sx={{ letterSpacing: 3, opacity: 0.85 }}>
-            <Trans id="home.hero.overline">Visualize open data</Trans>
+            {copy.overline}
           </Typography>
           <Typography
             variant="h2"
@@ -208,15 +237,10 @@ const HeroSection = () => {
               mt: 2,
             }}
           >
-            <Trans id="home.hero.title">
-              Get to insights from Serbian open data faster
-            </Trans>
+            {copy.title}
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.9, mt: 2.5, maxWidth: 540 }}>
-            <Trans id="home.hero.description">
-              Browse data.gov.rs, pick a dataset, and craft visualizations you can
-              share or embed instantly.
-            </Trans>
+            {copy.body}
           </Typography>
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2.5} sx={{ mt: 4 }}>
             <Button
@@ -231,7 +255,7 @@ const HeroSection = () => {
                 boxShadow: "0 12px 30px rgba(12,64,118,0.4)",
               }}
             >
-              <Trans id="home.hero.browseButton">Browse datasets</Trans>
+              {copy.primary}
             </Button>
             <Button
               variant="outlined"
@@ -250,14 +274,10 @@ const HeroSection = () => {
                 },
               }}
             >
-              <Trans id="home.hero.guideButton">Start guide</Trans>
+              {copy.secondary}
             </Button>
           </Stack>
-          <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            sx={{ mt: 4, opacity: 0.9 }}
-          >
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} sx={{ mt: 4, opacity: 0.9 }}>
             <Box
               sx={{
                 display: "inline-flex",
@@ -280,7 +300,7 @@ const HeroSection = () => {
                 }}
               />
               <Typography variant="body2" sx={{ color: "white" }}>
-                <Trans id="home.hero.trusted">Data from trusted sources</Trans>
+                {copy.trusted}
               </Typography>
             </Box>
             <Box
@@ -305,7 +325,7 @@ const HeroSection = () => {
                 }}
               />
               <Typography variant="body2" sx={{ color: "white" }}>
-                <Trans id="home.hero.embeds">Tailored visuals and embeds</Trans>
+                {copy.embeds}
               </Typography>
             </Box>
           </Stack>
@@ -384,7 +404,7 @@ const HeroSection = () => {
                 letterSpacing: 0.4,
               }}
             >
-              <Trans id="home.hero.badge">Open data</Trans>
+              {copy.badge}
             </Box>
           </Box>
         </Grid>
@@ -396,24 +416,20 @@ const HeroSection = () => {
 export default function ContentPage({ staticPage }: ContentPageProps) {
   const Component = staticPages[staticPage]?.component;
   const isHomePage = staticPage === "/sr/index" || staticPage === "/en/index";
+  const locale: Locale = staticPage.startsWith("/sr") ? "sr" : "en";
 
   return (
     <ContentMDXProvider>
-      {isHomePage && <HeroSection />}
+      {isHomePage && <HeroSection key={locale} locale={locale} />}
       {Component ? <Component /> : "NOT FOUND"}
-      {isHomePage && <TutorialsSection />}
+      {isHomePage && <TutorialsSection locale={locale} />}
     </ContentMDXProvider>
   );
 }
 
-export const getStaticProps: GetStaticProps<ContentPageProps> = async ({
-  locale,
-}) => {
-  // When i18n is disabled (e.g., for GitHub Pages), use the default locale
-  const actualLocale = locale || "sr";
-  const path = `/${actualLocale}/index`;
-
-  // FIXME: this check should not be needed when fallback: false can be used
+export const getStaticProps: GetStaticProps<ContentPageProps> = async ({ locale }) => {
+  const normalizedLocale: Locale = locale && locale.startsWith("en") ? "en" : "sr";
+  const path = normalizedLocale === "sr" ? "/sr/index" : "/en/index";
   const pageExists = !!staticPages[path];
 
   if (!pageExists) {

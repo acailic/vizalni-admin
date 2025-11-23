@@ -15,7 +15,12 @@ export const createMailtoLink = <T extends Record<string, string>>(
     subject: string;
   }
 ) => {
-  const template = _template[lang];
+  const template =
+    _template[lang] ??
+    // Common fallback for Serbian locale variants
+    (_template["sr-Latn" as keyof T] as string | undefined) ??
+    // Last resort: first available template string
+    Object.values(_template)[0];
 
   return `mailto:${recipients.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
     template
