@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
-import { staticPages } from "@/static-pages";
 import { defaultLocale } from "@/locales/locales.json";
+import { staticPages } from "@/static-pages";
 
 /**
  * TODO: this page can be combined with index.tsx into [[...slug]].tsx,
