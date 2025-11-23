@@ -101,7 +101,7 @@ export default function TutorialPage() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   // Tutorial progress hook
-  const { progress, markStepCompleted, isStepCompleted, isTutorialCompleted } =
+  const { markStepCompleted, isStepCompleted, isTutorialCompleted } =
     useTutorialProgress(config?.id || "");
 
   // Reset to first step when tutorial changes

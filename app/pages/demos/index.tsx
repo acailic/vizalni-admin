@@ -1,4 +1,4 @@
-import { t } from "@lingui/macro";
+import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Box,
@@ -20,78 +20,72 @@ export default function DemosIndex() {
   const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
 
   const pageTitle = i18n._(
-    t({ id: "demos.index.title", message: "Demo Visualizations" })
+    defineMessage({ id: "demos.index.title", message: "Demo Visualizations" })
   );
   const pageDescription = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.description",
       message: "Explore different visualizations of Serbian open data",
     })
   );
   const heroTitle = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.hero.title",
       message: "📊 Demo Visualization Gallery",
     })
   );
   const heroIntro = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.hero.intro",
       message:
         "Welcome to the demo visualization gallery using data from data.gov.rs. Each demo showcases different ways to visualize open data from the Republic of Serbia.",
     })
   );
   const heroBody = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.hero.body",
       message:
         "Click on any demo below to see an interactive visualization with real data.",
     })
   );
   const showcaseTitle = i18n._(
-    t({ id: "demos.index.showcase.title", message: "New Demo Showcase" })
+    defineMessage({ id: "demos.index.showcase.title", message: "New Demo Showcase" })
   );
   const showcaseDesc = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.showcase.description",
       message:
         "A compact set of highlight charts across economy, transport, energy, and digitalization.",
     })
   );
   const showcaseCta = i18n._(
-    t({ id: "demos.index.showcase.cta", message: "Open showcase" })
+    defineMessage({ id: "demos.index.showcase.cta", message: "Open showcase" })
   );
   const aboutTitle = i18n._(
-    t({
-      id: "demos.index.about.title",
-      message: "💡 About Demo Visualizations",
-    })
+    defineMessage({ id: "demos.index.about.title", message: "💡 About Demo Visualizations" })
   );
   const aboutParagraph1 = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.about.paragraph1",
       message:
         "These visualizations use real data from the Republic of Serbia open data portal (data.gov.rs). Data is loaded in real-time directly from the API.",
     })
   );
   const aboutParagraph2 = i18n._(
-    t({
+    defineMessage({
       id: "demos.index.about.paragraph2",
       message:
         "The project is built with Next.js and optimized for GitHub Pages deployment with static export.",
     })
   );
   const statsAvailable = i18n._(
-    t({ id: "demos.index.stats.available", message: "Available Demos" })
+    defineMessage({ id: "demos.index.stats.available", message: "Available Demos" })
   );
   const statsResources = i18n._(
-    t({
-      id: "demos.index.stats.resources",
-      message: "Resources on data.gov.rs",
-    })
+    defineMessage({ id: "demos.index.stats.resources", message: "Resources on data.gov.rs" })
   );
   const statsOrganizations = i18n._(
-    t({ id: "demos.index.stats.organizations", message: "Organizations" })
+    defineMessage({ id: "demos.index.stats.organizations", message: "Organizations" })
   );
 
   return (
@@ -107,7 +101,7 @@ export default function DemosIndex() {
           position: "relative",
           overflow: "hidden",
           "&::before": {
-            content: '""',
+            content: "\"\"",
             position: "absolute",
             top: 0,
             left: 0,
@@ -121,10 +115,7 @@ export default function DemosIndex() {
         }}
       >
         <Box sx={{ position: "relative", zIndex: 1 }}>
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: 700, mb: 2, textAlign: "center" }}
-          >
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 2, textAlign: "center" }}>
             {heroTitle}
           </Typography>
           <Typography
@@ -134,10 +125,7 @@ export default function DemosIndex() {
           >
             {heroIntro}
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ textAlign: "center", opacity: 0.9 }}
-          >
+          <Typography variant="body1" sx={{ textAlign: "center", opacity: 0.9 }}>
             {heroBody}
           </Typography>
         </Box>
@@ -150,8 +138,7 @@ export default function DemosIndex() {
           borderRadius: 3,
           border: "1px solid",
           borderColor: "divider",
-          background:
-            "linear-gradient(115deg, rgba(14,165,233,0.08), rgba(124,58,237,0.06))",
+          background: "linear-gradient(115deg, rgba(14,165,233,0.08), rgba(124,58,237,0.06))",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: { xs: "flex-start", md: "center" },
@@ -203,14 +190,13 @@ export default function DemosIndex() {
                       boxShadow: "0 20px 40px rgba(102, 126, 234, 0.25)",
                     },
                     "&::before": {
-                      content: '""',
+                      content: "\"\"",
                       position: "absolute",
                       top: 0,
                       left: 0,
                       right: 0,
                       height: "5px",
-                      background:
-                        "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+                      background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
                       opacity: 0,
                       transition: "opacity 0.3s ease",
                     },
@@ -267,20 +253,12 @@ export default function DemosIndex() {
                         {description}
                       </Typography>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: 1,
-                          mt: "auto",
-                        }}
-                      >
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: "auto" }}>
                         <Chip
                           label={config.chartType}
                           size="small"
                           sx={{
-                            background:
-                              "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                             color: "white",
                             fontWeight: 600,
                             fontSize: "0.75rem",
@@ -325,10 +303,7 @@ export default function DemosIndex() {
           boxShadow: "0 10px 40px rgba(67, 233, 123, 0.1)",
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{ mb: 3, fontWeight: 700, color: "text.primary" }}
-        >
+        <Typography variant="h5" sx={{ mb: 3, fontWeight: 700, color: "text.primary" }}>
           {aboutTitle}
         </Typography>
         <Typography
@@ -368,10 +343,7 @@ export default function DemosIndex() {
               <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
                 {Object.keys(DEMO_CONFIGS).length}
               </Typography>
-              <Typography
-                variant="body1"
-                sx={{ opacity: 0.9, fontWeight: 500 }}
-              >
+              <Typography variant="body1" sx={{ opacity: 0.9, fontWeight: 500 }}>
                 {statsAvailable}
               </Typography>
             </Box>
@@ -394,10 +366,7 @@ export default function DemosIndex() {
               <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
                 6,162+
               </Typography>
-              <Typography
-                variant="body1"
-                sx={{ opacity: 0.9, fontWeight: 500 }}
-              >
+              <Typography variant="body1" sx={{ opacity: 0.9, fontWeight: 500 }}>
                 {statsResources}
               </Typography>
             </Box>
@@ -420,10 +389,7 @@ export default function DemosIndex() {
               <Typography variant="h3" sx={{ fontWeight: 800, mb: 1 }}>
                 93
               </Typography>
-              <Typography
-                variant="body1"
-                sx={{ opacity: 0.9, fontWeight: 500 }}
-              >
+              <Typography variant="body1" sx={{ opacity: 0.9, fontWeight: 500 }}>
                 {statsOrganizations}
               </Typography>
             </Box>

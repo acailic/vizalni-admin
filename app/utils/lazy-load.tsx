@@ -20,7 +20,7 @@ export function lazyLoad<T extends ComponentType<any>>(
   importFunc: () => Promise<{ default: T }>,
   options: LazyLoadOptions = {}
 ): LazyExoticComponent<T> {
-  const { fallback = <LoadingSpinner />, onError } = options;
+  const { fallback: _fallback = <LoadingSpinner />, onError } = options;
 
   const LazyComponent = lazy(() =>
     importFunc().catch((error) => {

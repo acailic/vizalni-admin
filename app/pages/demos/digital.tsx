@@ -32,7 +32,6 @@ export default function DigitalDemo() {
 
   const latestSkills = digitalSkillsTrends[digitalSkillsTrends.length - 1];
   const latestEcommerce = eCommerceTrends[eCommerceTrends.length - 1];
-  const earliestEcommerce = eCommerceTrends[0];
 
   const latestTech = techIndustryGrowth[techIndustryGrowth.length - 1];
   const earliestTech = techIndustryGrowth[0];

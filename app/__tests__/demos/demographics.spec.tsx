@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { describe, expect, it, vi } from "vitest";
 
-import DemographicsDemo from "./demographics";
+import DemographicsDemo from "@/pages/demos/demographics";
 
 vi.mock("next/router", () => ({
   useRouter: () => ({ locale: "sr" }),
@@ -25,7 +25,7 @@ describe("DemographicsDemo", () => {
     ).toBeTruthy();
     expect(screen.getByText(/DEMOGRAFSKO UPOZORENJE/i)).toBeTruthy();
     // Total population number cards (uses calculated totals)
-    expect(screen.getByText(/M/)).toBeInTheDocument();
+    expect(screen.getByText(/M/)).toBeTruthy();
     expect(screen.getByTestId("pyramid")).toBeTruthy();
     expect(screen.getByTestId("trends")).toBeTruthy();
   });
@@ -34,7 +34,7 @@ describe("DemographicsDemo", () => {
     vi.doMock("next/router", () => ({
       useRouter: () => ({ locale: "en" }),
     }));
-    const { default: Page } = await import("./demographics");
+    const { default: Page } = await import("@/pages/demos/demographics");
     render(<Page />);
 
     expect(

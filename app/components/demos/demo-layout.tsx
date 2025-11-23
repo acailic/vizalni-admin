@@ -1,5 +1,5 @@
-import { t, Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
+import { defineMessage } from '@lingui/macro';
+import { Trans, useLingui } from '@lingui/react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import Link from 'next/link';
 import { ReactNode } from 'react';
@@ -99,12 +99,12 @@ export function DemoLayout({
               >
                 {datasetInfo.organization && (
                   <Typography variant="body2" color="text.secondary">
-                    <strong>{i18n._(t({ id: 'demos.layout.organization', message: 'Organization' }))}:</strong> {datasetInfo.organization}
+                    <strong>{i18n._(defineMessage({ id: 'demos.layout.organization', message: 'Organization' }))}:</strong> {datasetInfo.organization}
                   </Typography>
                 )}
                 {formattedUpdatedAt && (
                   <Typography variant="body2" color="text.secondary">
-                    <strong>{i18n._(t({ id: 'demos.layout.updated', message: 'Updated' }))}:</strong> {formattedUpdatedAt}
+                    <strong>{i18n._(defineMessage({ id: 'demos.layout.updated', message: 'Updated' }))}:</strong> {formattedUpdatedAt}
                   </Typography>
                 )}
               </Box>
@@ -125,7 +125,7 @@ export function DemoLayout({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              {i18n._(t({ id: 'demos.layout.source', message: 'Data source' }))}:{' '}
+              {i18n._(defineMessage({ id: 'demos.layout.source', message: 'Data source' }))}:{' '}
               <Link href="https://data.gov.rs" passHref legacyBehavior>
                 <a
                   target="_blank"
@@ -175,7 +175,7 @@ export function DemoLoading({ message }: { message?: string }) {
       <Typography variant="body1" color="text.secondary">
         {message ||
           i18n._(
-            t({
+            defineMessage({
               id: 'demos.layout.loading',
               message: 'Loading data from data.gov.rs...'
             })
@@ -219,7 +219,7 @@ export function DemoError({
           onClick={onRetry}
           sx={{ textTransform: 'none' }}
         >
-          {i18n._(t({ id: 'demos.layout.retry', message: 'Try again' }))}
+          {i18n._(defineMessage({ id: 'demos.layout.retry', message: 'Try again' }))}
         </Button>
       )}
     </Box>
@@ -239,7 +239,7 @@ export function DemoEmpty({ message }: { message?: string }) {
       <Typography variant="h6" color="text.secondary">
         {message ||
           i18n._(
-            t({
+            defineMessage({
               id: 'demos.layout.empty',
               message: 'No data available'
             })

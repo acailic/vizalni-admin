@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { describe, expect, it, vi } from "vitest";
 
-import DemosIndex from "./index";
+import DemosIndex from "@/pages/demos/index";
 import { DEMO_CONFIGS } from "@/lib/demos/config";
 
 vi.mock("next/router", () => ({

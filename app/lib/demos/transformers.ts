@@ -292,7 +292,7 @@ function detectColumn(row: Record<string, any>, possibleNames: string[]): string
  */
 export function transformBudgetData(
   rawData: Array<Record<string, any>>,
-  locale: 'sr' | 'en' = 'sr'
+  _locale: 'sr' | 'en' = 'sr'
 ): Array<Record<string, any>> {
   if (!rawData || rawData.length === 0) {
     return [];

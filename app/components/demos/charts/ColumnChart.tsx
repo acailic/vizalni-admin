@@ -10,7 +10,7 @@ import { format } from 'd3-format';
 import { scaleBand, scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
 import 'd3-transition';
-import { memo, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { chartDefaults } from '@/utils/demo-helpers';
 
@@ -179,15 +179,15 @@ function ColumnChartComponent({
           .transition()
           .duration(800)
           .delay((_, i) => i * 50 + index * 20)
-          .attr('y', (d) => yScale(Number(d[key as keyof TDatum]) || 0))
-          .attr('height', (d) => innerHeight - yScale(Number(d[key as keyof TDatum]) || 0));
+          .attr('y', (d) => yScale(Number((d as Record<string, any>)[key]) || 0))
+          .attr('height', (d) => innerHeight - yScale(Number((d as Record<string, any>)[key]) || 0));
       });
     } else if (shouldUseAllSeries && stacked) {
       // Stacked bars
       data.forEach((d, i) => {
         let cumulativeY = 0;
         resolvedSeriesKeys.forEach((key, index) => {
-          const value = Number(d[key as keyof TDatum]) || 0;
+          const value = Number((d as Record<string, any>)[key]) || 0;
           const barHeight = innerHeight - yScale(value);
 
           g.append('rect')
@@ -324,7 +324,7 @@ function ColumnChartComponent({
   );
 }
 
-export const ColumnChart: typeof ColumnChartComponent = memo(
-  ColumnChartComponent as any
-);
-(ColumnChart as any).displayName = 'ColumnChart';
+export function ColumnChart(props: ColumnChartProps) {
+  return <ColumnChartComponent {...props} />;
+}
+ColumnChart.displayName = 'ColumnChart';

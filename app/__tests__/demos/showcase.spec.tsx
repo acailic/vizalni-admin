@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import { describe, expect, it, vi } from "vitest";
 
-import DemoShowcasePage from "./showcase";
+import DemoShowcasePage from "@/pages/demos/showcase";
 
 vi.mock("next/router", () => ({
   useRouter: () => ({ locale: "sr" }),
@@ -38,7 +38,7 @@ describe("DemoShowcasePage", () => {
     vi.doMock("next/router", () => ({
       useRouter: () => ({ locale: "en" }),
     }));
-    const { default: Page } = await import("./showcase");
+    const { default: Page } = await import("@/pages/demos/showcase");
     render(<Page />);
     expect(
       screen.getByText(/Demo Showcase Visualizations/i)

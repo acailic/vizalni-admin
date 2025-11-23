@@ -25,8 +25,6 @@ export default function EconomyDemo() {
   // Calculate recent trends
   const latestYear = economicIndicators[economicIndicators.length - 1];
   const previousYear = economicIndicators[economicIndicators.length - 2];
-  const preCovidYear = economicIndicators.find(y => y.year === 2019);
-
   // Calculate average GDP growth (last 5 years excluding COVID)
   const avgGrowth = economicIndicators
     .slice(-6, -1)

@@ -14,6 +14,23 @@ import { ExportControls } from '@/components/demos/ExportControls';
 import { SimpleChart } from '@/components/demos/simple-chart';
 import { useDataGovRs } from '@/hooks/use-data-gov-rs';
 import { DEMO_CONFIGS, getDemoConfig } from '@/lib/demos/config';
+import localesConfig from '@/locales/locales.json';
+
+const DEDICATED_DEMO_PAGES = new Set([
+  'air-quality',
+  'climate',
+  'demographics',
+  'digital',
+  'economy',
+  'employment',
+  'energy',
+  'healthcare',
+  'presentation',
+  'presentation-enhanced',
+  'showcase',
+  'social-media-sharing',
+  'transport'
+]);
 
 // Import enhanced air quality page
 const AirQualityDemo = dynamic(() => import('./air-quality'), { ssr: true });
@@ -143,7 +160,7 @@ export default function DemoPage() {
 
           {/* Tabs for different views */}
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
+            <Tabs value={activeTab} onChange={(_, v) => setActiveTab(v)}>
               <Tab label="📊 Vizualizacija" />
               <Tab label="📋 Tabela podataka" />
             </Tabs>
@@ -233,12 +250,18 @@ export default function DemoPage() {
  * Pre-generate static pages for known demo categories
  */
 export async function getStaticPaths() {
-  const categories = Object.keys(DEMO_CONFIGS);
+  const categories = Object.keys(DEMO_CONFIGS).filter(
+    (category) => !DEDICATED_DEMO_PAGES.has(category)
+  );
+  const locales = localesConfig.locales || ['sr-Latn', 'sr-Cyrl', 'en'];
 
   return {
-    paths: categories.map((category) => ({
-      params: { category }
-    })),
+    paths: locales.flatMap((locale) =>
+      categories.map((category) => ({
+        params: { category },
+        locale
+      }))
+    ),
     fallback: false // Don't generate unknown routes on-demand
   };
 }

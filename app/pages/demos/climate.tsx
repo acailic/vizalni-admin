@@ -34,8 +34,6 @@ export default function ClimateDemo() {
   const totalDamage = extremeWeatherEvents.reduce((sum, e) => sum + (e.economicDamage || 0), 0);
 
   const latestRenewable = renewableEnergyTrends[renewableEnergyTrends.length - 1];
-  const earliestRenewable = renewableEnergyTrends[0];
-
   const title = locale === 'sr'
     ? '🌍 Klimatske promene u Srbiji - Temperature i ekstremni događaji'
     : '🌍 Climate Change in Serbia - Temperature and Extreme Events';
