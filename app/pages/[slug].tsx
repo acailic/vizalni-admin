@@ -42,6 +42,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     })
     .map((path) => {
       const [, locale, slug] = path.split("/");
+      // When i18n is disabled (GitHub Pages), don't include locale in paths
+      if (isGitHubPages) {
+        return {
+          params: { slug },
+        };
+      }
       return {
         params: { slug },
         locale,

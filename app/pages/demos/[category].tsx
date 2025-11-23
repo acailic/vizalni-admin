@@ -250,9 +250,21 @@ export default function DemoPage() {
  * Pre-generate static pages for known demo categories
  */
 export async function getStaticPaths() {
+  const isGitHubPages = process.env.NEXT_PUBLIC_BASE_PATH !== undefined;
   const categories = Object.keys(DEMO_CONFIGS).filter(
     (category) => !DEDICATED_DEMO_PAGES.has(category)
   );
+
+  // When i18n is disabled (GitHub Pages), don't include locale in paths
+  if (isGitHubPages) {
+    return {
+      paths: categories.map((category) => ({
+        params: { category }
+      })),
+      fallback: false
+    };
+  }
+
   const locales = localesConfig.locales || ['sr-Latn', 'sr-Cyrl', 'en'];
 
   return {
