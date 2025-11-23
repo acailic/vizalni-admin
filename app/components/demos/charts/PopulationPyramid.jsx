@@ -6,7 +6,7 @@ import { Box, useTheme } from '@mui/material';
 import { max } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { scaleBand, scaleLinear } from 'd3-scale';
-import * as d3 from 'd3-selection';
+import 'd3-transition';
 import { useEffect, useRef } from 'react';
 export const PopulationPyramid = ({ data, width = 800, height = 600, margin = { top: 40, right: 60, bottom: 60, left: 60 }, maleColor = '#2196f3', femaleColor = '#f50057', title = 'Population Pyramid' }) => {
     const svgRef = useRef(null);

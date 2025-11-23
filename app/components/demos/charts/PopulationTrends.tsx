@@ -8,9 +8,10 @@ import { extent } from 'd3-array';
 import { axisBottom, axisLeft } from 'd3-axis';
 import { easeLinear } from 'd3-ease';
 import { scaleLinear } from 'd3-scale';
-import * as d3 from 'd3-selection';
+import { select, pointer } from 'd3-selection';
+import 'd3-transition';
 import { area, curveMonotoneX, line } from 'd3-shape';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 export interface TrendDataPoint {
   year: number;
@@ -28,7 +29,7 @@ export interface PopulationTrendsProps {
   title?: string;
 }
 
-export const PopulationTrends = ({
+export const PopulationTrends = memo(({
   data,
   width = 900,
   height = 500,
@@ -44,9 +45,9 @@ export const PopulationTrends = ({
     if (!svgRef.current || !data || data.length === 0) return;
 
     // Clear previous chart
-    d3.select(svgRef.current).selectAll('*').remove();
+    select(svgRef.current).selectAll('*').remove();
 
-    const svg = d3.select(svgRef.current);
+    const svg = select(svgRef.current);
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -320,7 +321,7 @@ export const PopulationTrends = ({
       .on('mouseover', () => focus.style('display', null))
       .on('mouseout', () => focus.style('display', 'none'))
       .on('mousemove', function(event) {
-        const [mouseX] = d3.pointer(event);
+        const [mouseX] = pointer(event);
         const year = Math.round(xScale.invert(mouseX));
         const dataPoint = data.find(d => d.year === year);
 
@@ -376,4 +377,6 @@ export const PopulationTrends = ({
       />
     </Box>
   );
-};
+});
+
+PopulationTrends.displayName = 'PopulationTrends';

@@ -1,4 +1,5 @@
 import { act, render } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
 import { LineChart } from "./LineChart";
 

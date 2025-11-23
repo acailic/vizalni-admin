@@ -9,6 +9,8 @@ import { ReactNode } from 'react';
 
 import { Flex } from '@/components/flex';
 import { Header } from '@/components/header';
+import { useDemoLocale, useDemoTranslations } from '@/hooks/use-demo-locale';
+import type { DemoDatasetInfo } from '@/types/demos';
 
 interface DemoLayoutProps {
   /**
@@ -29,11 +31,7 @@ interface DemoLayoutProps {
   /**
    * Dataset metadata (optional)
    */
-  datasetInfo?: {
-    title?: string;
-    organization?: string;
-    updatedAt?: string;
-  };
+  datasetInfo?: DemoDatasetInfo;
 
   /**
    * Hide back button
@@ -48,6 +46,36 @@ export function DemoLayout({
   datasetInfo,
   hideBackButton = false
 }: DemoLayoutProps) {
+  const locale = useDemoLocale();
+  const labels = useDemoTranslations({
+    backButton: {
+      sr: '← Nazad na demo galeriju',
+      en: '← Back to demo gallery'
+    },
+    organizationLabel: {
+      sr: 'Organizacija',
+      en: 'Organization'
+    },
+    updatedAtLabel: {
+      sr: 'Ažurirano',
+      en: 'Updated'
+    },
+    dataSource: {
+      sr: 'Izvor podataka',
+      en: 'Data source'
+    }
+  });
+
+  const formattedUpdatedAt = datasetInfo?.updatedAt
+    ? new Date(datasetInfo.updatedAt).toLocaleDateString(
+        locale === 'sr' ? 'sr-RS' : 'en-US',
+        {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        }
+      )
+    : undefined;
 
   return (
     <Flex sx={{ minHeight: '100vh', flexDirection: 'column' }}>
@@ -70,7 +98,7 @@ export function DemoLayout({
                   component="a"
                   sx={{ textTransform: 'none' }}
                 >
-                  ← Nazad na demo galeriju
+                  {labels.backButton}
                 </Button>
               </Link>
             </Box>
@@ -115,17 +143,12 @@ export function DemoLayout({
               >
                 {datasetInfo.organization && (
                   <Typography variant="body2" color="text.secondary">
-                    <strong>Organizacija:</strong> {datasetInfo.organization}
+                    <strong>{labels.organizationLabel}:</strong> {datasetInfo.organization}
                   </Typography>
                 )}
-                {datasetInfo.updatedAt && (
+                {formattedUpdatedAt && (
                   <Typography variant="body2" color="text.secondary">
-                    <strong>Ažurirano:</strong>{' '}
-                    {new Date(datasetInfo.updatedAt).toLocaleDateString('sr-RS', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    <strong>{labels.updatedAtLabel}:</strong> {formattedUpdatedAt}
                   </Typography>
                 )}
               </Box>
@@ -148,7 +171,7 @@ export function DemoLayout({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Izvor podataka:{' '}
+              {labels.dataSource}:{' '}
               <Link href="https://data.gov.rs" passHref legacyBehavior>
                 <a
                   target="_blank"

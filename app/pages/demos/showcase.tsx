@@ -3,10 +3,25 @@
  * Uses existing chart components and sample datasets to highlight capabilities.
  */
 
-import { Box, Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, Chip, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import { ColumnChart, LineChart, PieChart } from '@/components/demos/charts';
+const ColumnChart = dynamic(() => import('@/components/demos/charts/ColumnChart').then(mod => mod.ColumnChart), {
+  loading: () => <Skeleton variant="rectangular" width="100%" height={360} sx={{ borderRadius: 2 }} />,
+  ssr: false
+});
+
+const LineChart = dynamic(() => import('@/components/demos/charts/LineChart').then(mod => mod.LineChart), {
+  loading: () => <Skeleton variant="rectangular" width="100%" height={360} sx={{ borderRadius: 2 }} />,
+  ssr: false
+});
+
+const PieChart = dynamic(() => import('@/components/demos/charts/PieChart').then(mod => mod.PieChart), {
+  loading: () => <Skeleton variant="rectangular" width="100%" height={420} sx={{ borderRadius: 2 }} />,
+  ssr: false
+});
+
 import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   showcaseDigitalSkills,
