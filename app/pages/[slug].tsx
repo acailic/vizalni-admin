@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import { staticPages } from "@/static-pages";
+import { defaultLocale } from "@/locales/locales.json";
 
 /**
  * TODO: this page can be combined with index.tsx into [[...slug]].tsx,
@@ -27,8 +28,18 @@ export default function ContentPage({ staticPage }: ContentPageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const isGitHubPages = process.env.NEXT_PUBLIC_BASE_PATH !== undefined;
   const paths = Object.keys(staticPages)
     .filter((path) => !path.endsWith("/index"))
+    .filter((path) => {
+      if (!isGitHubPages) {
+        return true;
+      }
+      // For GitHub Pages (static export), we only generate pages for the default locale
+      // because i18n routing is disabled.
+      const [, locale] = path.split("/");
+      return locale === defaultLocale;
+    })
     .map((path) => {
       const [, locale, slug] = path.split("/");
       return {
@@ -47,7 +58,10 @@ export const getStaticProps: GetStaticProps<ContentPageProps> = async ({
   params,
   locale,
 }) => {
-  const path = `/${locale}/${params!.slug as string}`;
+  // In static export (GitHub Pages), locale is undefined because i18n is disabled.
+  // We fallback to defaultLocale.
+  const effectiveLocale = locale || defaultLocale;
+  const path = `/${effectiveLocale}/${params!.slug as string}`;
 
   // FIXME: this check should not be needed when fallback: false can be used
   const pageExists = !!staticPages[path];
