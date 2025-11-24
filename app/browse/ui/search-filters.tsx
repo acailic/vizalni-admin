@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/macro";
-import { Stack } from "@mui/material";
+import { Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
 import keyBy from "lodash/keyBy";
 import sortBy from "lodash/sortBy";
@@ -41,7 +41,7 @@ export const SearchFilters = ({
   termsets: DataCubeTermset[];
   disableNavLinks?: boolean;
 }) => {
-  const { filters } = useBrowseContext();
+  const { filters, setFilters } = useBrowseContext();
   const counts = useMemo(() => {
     const result: Record<string, number> = {};
 
@@ -225,16 +225,73 @@ export const SearchFilters = ({
       : i;
   });
 
+  const activeNavigations = navigations.filter((nav) => nav.element);
+
   return (
-    <div key={filters.length} role="search">
-      {/* Need to "catch" the Reorder items here, as otherwise there is an exiting
-          bug as they get picked by parent AnimatePresence. Probably related to
-          https://github.com/framer/motion/issues/1619. */}
-      <AnimatePresence>
-        <Flex sx={{ flexDirection: "column", rowGap: 8, width: "100%" }}>
-          {navigations.map((nav) => nav.element)}
+    <div key={filters.length} role="search" style={{ padding: "16px" }}>
+      <Flex sx={{ flexDirection: "column", rowGap: 2, width: "100%" }}>
+        {/* Filter Section Header */}
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mb: 2, flexWrap: "wrap", gap: 1 }}
+        >
+          <Typography variant="h6">
+            <Trans id="browse.filters">Filters</Trans>
+          </Typography>
+          {filters.length > 0 && (
+            <Flex alignItems="center" gap={1} sx={{ flexWrap: "wrap" }}>
+              <Chip
+                label={`${filters.length} active`}
+                size="small"
+                color="primary"
+              />
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => setFilters([])}
+              >
+                <Trans id="browse.clear-filters">Clear all</Trans>
+              </Button>
+            </Flex>
+          )}
         </Flex>
-      </AnimatePresence>
+
+        {/* Filter Summary */}
+        {filters.length > 0 && (
+          <Flex flexWrap="wrap" gap={1} sx={{ mb: 2 }}>
+            {filters.map((filter) => (
+              <Chip
+                key={filter.iri}
+                label={filter.label}
+                onDelete={() => {
+                  const newFilters = filters.filter(
+                    (f) => f.iri !== filter.iri
+                  );
+                  setFilters(newFilters);
+                }}
+                size="small"
+                variant="outlined"
+              />
+            ))}
+          </Flex>
+        )}
+
+        {/* Navigation Sections with Dividers */}
+        {/* Need to "catch" the Reorder items here, as otherwise there is an exiting
+            bug as they get picked by parent AnimatePresence. Probably related to
+            https://github.com/framer/motion/issues/1619. */}
+        <AnimatePresence>
+          <Flex sx={{ flexDirection: "column", rowGap: 4, width: "100%" }}>
+            {activeNavigations.map((nav, index) => (
+              <React.Fragment key={nav.__typename}>
+                {nav.element}
+                {index < activeNavigations.length - 1 && <Divider />}
+              </React.Fragment>
+            ))}
+          </Flex>
+        </AnimatePresence>
+      </Flex>
     </div>
   );
 };

@@ -7,7 +7,13 @@ import uniqBy from "lodash/uniqBy";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { ComponentProps, type MouseEvent, useCallback, useMemo } from "react";
+import {
+  ComponentProps,
+  type MouseEvent,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useDebounce } from "use-debounce";
 
 import { BrowseFilter, DataCubeAbout } from "@/browse/lib/filters";
@@ -116,6 +122,7 @@ const SelectDatasetStepInner = ({
     (windowRef ? windowRef.location.hostname.includes("github.io") : false);
   const useDataGovFallback =
     isStaticExport && GRAPHQL_ENDPOINT === "/api/graphql";
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const [debouncedQuery] = useDebounce(search, 500, { leading: true });
   const debouncedQueryString = debouncedQuery ?? "";
@@ -291,6 +298,15 @@ const SelectDatasetStepInner = ({
   });
   const [{ data: dataCubeMetadata }] = dataCubeMetadataQuery;
 
+  const handleScroll = useCallback(() => {
+    setIsScrolled(window.scrollY > 50);
+  }, []);
+
+  useMemo(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   if (state !== "SELECTING_DATASET") {
     return null;
   }
@@ -322,10 +338,7 @@ const SelectDatasetStepInner = ({
                   </Trans>
                 </Typography>
                 <SearchDatasetInput browseState={browseState} />
-                <SearchDatasetControls
-                  browseState={browseState}
-                  cubes={[]}
-                />
+                <SearchDatasetControls browseState={browseState} cubes={[]} />
                 <DataGovDatasetResults
                   results={dataGovSearch?.results ?? []}
                   fetching={dataGovSearch?.fetching ?? false}
@@ -377,22 +390,43 @@ const SelectDatasetStepInner = ({
 
                     [theme.breakpoints.down("md")]: {
                       flexWrap: "wrap",
+                      gap: 2,
                     },
                   })}
                 >
                   {odsIframe ? null : (
-                    <NextLink href={backLink} passHref legacyBehavior>
-                      <Button
-                        variant="outlined"
-                        size="sm"
-                        startIcon={<Icon name="arrowLeft" size={20} />}
-                        onClick={onClickBackLink}
-                      >
-                        <Trans id="dataset-preview.back-to-results">
-                          Back to the datasets
-                        </Trans>
-                      </Button>
-                    </NextLink>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <NextLink href={backLink} passHref legacyBehavior>
+                        <Button
+                          variant="outlined"
+                          size="sm"
+                          startIcon={<Icon name="arrowLeft" size={20} />}
+                          onClick={onClickBackLink}
+                          sx={{
+                            minHeight: 48,
+                            px: 3,
+                            borderRadius: 2,
+                            transition: "all 0.2s ease",
+                            "&:hover": {
+                              transform: "translateX(-2px)",
+                              boxShadow: 2,
+                            },
+                          }}
+                        >
+                          <Trans id="dataset-preview.back-to-results">
+                            Back to the datasets
+                          </Trans>
+                        </Button>
+                      </NextLink>
+                      {dataset && (
+                        <Typography variant="body2" color="text.secondary">
+                          <Trans id="browse.breadcrumb.datasets">
+                            Datasets
+                          </Trans>{" "}
+                          / {dataCubeMetadata?.dataCubeMetadata.title}
+                        </Typography>
+                      )}
+                    </Box>
                   )}
                   {onCreateChartFromDataset ? (
                     <Button
@@ -481,6 +515,33 @@ const SelectDatasetStepInner = ({
         >
           {odsIframe ? null : (
             <PanelBodyWrapper type="L" className={classes.panelLeft}>
+              {!dataset && (
+                <Box
+                  sx={{
+                    position: "sticky",
+                    top: 0,
+                    zIndex: 10,
+                    backgroundColor: "background.paper",
+                    boxShadow: isScrolled
+                      ? "0 2px 8px rgba(0,0,0,0.1)"
+                      : "none",
+                    transition: "box-shadow 0.3s ease",
+                    p: 3,
+                    borderBottom: "1px solid",
+                    borderColor: "divider",
+                  }}
+                >
+                  <Typography variant="h3" sx={{ mb: 2 }}>
+                    <Trans id="browse.filters.title">Filters</Trans>
+                  </Typography>
+                  {queryFilters.length > 0 && (
+                    <Typography variant="body2" color="primary.main">
+                      {queryFilters.length} active filter
+                      {queryFilters.length > 1 ? "s" : ""}
+                    </Typography>
+                  )}
+                </Box>
+              )}
               <AnimatePresence mode="wait">
                 {dataset ? (
                   <MotionBox key="metadata" {...navPresenceProps}>
@@ -588,6 +649,12 @@ const SelectDatasetStepInner = ({
                             key="filters"
                             className={classes.filters}
                             variant="h1"
+                            sx={{
+                              fontSize: { xs: "1.5rem", md: "2rem" },
+                              fontWeight: 700,
+                              lineHeight: 1.2,
+                              mb: 2,
+                            }}
                           >
                             {pageTitle}
                           </Typography>
@@ -632,12 +699,16 @@ const useStyles = makeStyles<
     marginTop: ({ odsIframe }) => (odsIframe ? 0 : theme.spacing(12)),
     backgroundColor: theme.palette.background.paper,
     transition: "margin-top 0.5s ease",
+    gap: theme.spacing(4),
+    px: { xs: 2, md: 4 },
+    py: 4,
   },
   panelLeft: {
     marginBottom: theme.spacing(12),
     boxShadow: "none",
     outline: "none",
     transition: "padding-top 0.5s ease",
+    padding: theme.spacing(3),
 
     [theme.breakpoints.up("md")]: {
       position: ({ datasetPresent }) => (datasetPresent ? "static" : "sticky"),
@@ -648,6 +719,10 @@ const useStyles = makeStyles<
       marginBottom: "unset",
       paddingBottom: ({ datasetPresent }) =>
         datasetPresent ? 0 : theme.spacing(16),
+      width: "320px",
+    },
+    [theme.breakpoints.down("md")]: {
+      display: ({ datasetPresent }) => (datasetPresent ? "none" : "block"),
     },
   },
   panelMiddle: {
@@ -655,9 +730,13 @@ const useStyles = makeStyles<
     gridColumnEnd: "right",
     backgroundColor: theme.palette.background.paper,
     transition: "padding-top 0.5s ease",
+    paddingTop: theme.spacing(6),
 
     [theme.breakpoints.up("md")]: {
       marginLeft: ({ odsIframe }) => (odsIframe ? 0 : theme.spacing(8)),
+    },
+    [theme.breakpoints.down("md")]: {
+      paddingTop: theme.spacing(4),
     },
   },
   filters: {

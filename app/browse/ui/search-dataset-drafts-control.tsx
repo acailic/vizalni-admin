@@ -1,24 +1,64 @@
 import { t } from "@lingui/macro";
-
-import { Checkbox } from "@/components/form";
+import {
+  Tooltip,
+  Switch,
+  FormControlLabel,
+  CircularProgress,
+  Box,
+} from "@mui/material";
+import { Drafts as DraftsIcon } from "@mui/icons-material";
 
 export const SearchDatasetDraftsControl = ({
   checked,
   onChange,
+  count,
+  loading = false,
 }: {
   checked: boolean;
   onChange: (value: boolean) => void;
+  count?: number;
+  loading?: boolean;
 }) => {
+  const label =
+    count !== undefined
+      ? t({
+          id: "dataset.includeDrafts",
+          message: "Include draft datasets",
+        }) + ` (${count})`
+      : t({
+          id: "dataset.includeDrafts",
+          message: "Include draft datasets",
+        });
+
   return (
-    <Checkbox
-      label={t({
-        id: "dataset.includeDrafts",
-        message: "Include draft datasets",
+    <Tooltip
+      title={t({
+        id: "dataset.draftsTooltip",
+        message: "Draft datasets are unpublished versions that are still being edited.",
       })}
-      name="dataset-include-drafts"
-      value="dataset-include-drafts"
-      checked={checked}
-      onChange={() => onChange(!checked)}
-    />
+    >
+      <Box display="flex" alignItems="center">
+        <DraftsIcon sx={{ mr: 1 }} />
+        {loading ? (
+          <CircularProgress size={24} />
+        ) : (
+          <FormControlLabel
+            control={
+              <Switch
+                checked={checked}
+                onChange={() => onChange(!checked)}
+                inputProps={{
+                  "aria-label": t({
+                    id: "dataset.includeDraftsAria",
+                    message: "Toggle to include draft datasets",
+                  }),
+                }}
+              />
+            }
+            label={label}
+          />
+        )}
+      </Box>
+    </Tooltip>
   );
 };

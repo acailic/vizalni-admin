@@ -73,9 +73,9 @@ export default function App({
   return (
     <>
       <Head>
-        <title key="title">Visualize Admin</title>
+        <title key="title">{pageTitleByLocale[locale]}</title>
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={titleByLocale[locale]} />
+        <meta property="og:title" content={pageTitleByLocale[locale]} />
         <meta property="og:description" content={descriptionByLocale[locale]} />
         <meta property="og:image" content={`${PUBLIC_URL}/og-image.png`} />
         <meta property="og:url" content={`${PUBLIC_URL}${asPath}`} />
@@ -116,10 +116,10 @@ export default function App({
   );
 }
 
-const titleByLocale = {
-  "sr-Latn": "Vizualizujte otvorene podatke Srbije",
-  "sr-Cyrl": "Визуализујте отворене податке Србије",
-  en: "Visualize Serbia's open data",
+const pageTitleByLocale = {
+  "sr-Latn": "Vizualni Admin | Vizualizacija otvorenih podataka Srbije",
+  "sr-Cyrl": "Vizualni Admin | Визуализација отворених података Србије",
+  en: "Vizualni Admin | Serbian Open Data Visualizations",
 };
 
 const descriptionByLocale = {

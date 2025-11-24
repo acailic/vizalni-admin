@@ -89,6 +89,7 @@ export const NavigationItem = ({
         <Link
           className={classes.root}
           variant="body2"
+          aria-label={`Filter by ${children}`}
           onClick={
             disableLink && !active
               ? (e) => {
@@ -98,8 +99,8 @@ export const NavigationItem = ({
               : undefined
           }
           sx={{
-            p: 2,
-            backgroundColor: highlighted ? "cobalt.50" : "transparent",
+            p: 2.5,
+            backgroundColor: highlighted ? "cobalt.100" : "transparent",
             color: active
               ? level === 1
                 ? "text.primary"
@@ -120,6 +121,7 @@ export const NavigationItem = ({
             >
               <ButtonBase
                 className={classes.removeFilterButton}
+                aria-label="Remove filter"
                 onClick={
                   disableLink
                     ? (e) => {
@@ -133,7 +135,9 @@ export const NavigationItem = ({
               </ButtonBase>
             </MaybeLink>
           ) : count !== undefined ? (
-            <NavigationChip backgroundColor={countBg}>{count}</NavigationChip>
+            <NavigationChip key={count} backgroundColor={countBg}>
+              {count}
+            </NavigationChip>
           ) : null}
         </Link>
       </MaybeLink>
@@ -148,12 +152,19 @@ const useStyles = makeStyles<Theme, { level: number }>((theme) => ({
     alignItems: "center",
     gap: theme.spacing(3),
     width: "100%",
-    padding: theme.spacing(2),
+    padding: theme.spacing(2.5),
     borderRadius: 2,
-    transition: "background-color 0.1s ease",
+    borderLeft: "2px solid transparent",
+    transition: "background-color 0.1s ease, border-left-color 0.1s ease",
 
     "&:hover": {
       backgroundColor: theme.palette.cobalt[50],
+      borderLeftColor: theme.palette.cobalt[200],
+    },
+
+    "&:focus": {
+      outline: `2px solid ${theme.palette.cobalt[200]}`,
+      outlineOffset: -2,
     },
   },
   removeFilterButton: ({ level }) => ({
@@ -161,17 +172,22 @@ const useStyles = makeStyles<Theme, { level: number }>((theme) => ({
     alignItems: "center",
     width: "auto",
     height: "auto",
-    minWidth: 16,
-    minHeight: 16,
+    minWidth: 20,
+    minHeight: 20,
     marginRight: 2,
-    padding: 0,
+    padding: 2,
     borderRadius: 2,
-    backgroundColor: level === 1 ? "cobalt.50" : "transparent",
-    color: level === 1 ? theme.palette.text.primary : "cobalt.50",
+    backgroundColor: theme.palette.grey[200],
+    color: theme.palette.text.primary,
     transition: "background-color 0.1s ease",
 
     "&:hover": {
-      backgroundColor: theme.palette.cobalt[100],
+      backgroundColor: theme.palette.grey[300],
+    },
+
+    "&:focus": {
+      outline: `2px solid ${theme.palette.cobalt[200]}`,
+      outlineOffset: -2,
     },
   }),
 }));
