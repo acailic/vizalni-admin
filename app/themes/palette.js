@@ -42,6 +42,7 @@ const green = {
 // Serbian blue as primary color
 export const PRIMARY_COLOR = blue[700];
 export const palette = {
+    mode: "dark",
     primary: {
         main: PRIMARY_COLOR,
         dark: blue[900],
@@ -53,10 +54,14 @@ export const palette = {
         contrastText: "#fff",
     },
     text: {
-        primary: colors.monochrome[800],
-        secondary: colors.monochrome[500],
+        primary: colors.monochrome[50],
+        secondary: colors.monochrome[300],
     },
-    divider: colors.cobalt[100],
+    background: {
+        default: "#0B1220",
+        paper: "#111827",
+    },
+    divider: colors.monochrome[700],
     error: {
         main: colors.red[800],
         light: colors.red[50],
