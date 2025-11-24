@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 
 import { dataGovRsClient, getBestVisualizationResource, isSupportedFormat, parseCSVLine } from '@/domain/data-gov-rs';
 import type { DatasetMetadata, Resource } from '@/domain/data-gov-rs/types';
+import type { DemoDatasetInfo } from '@/types/demos';
 
 interface UseDataGovRsOptions {
   /**
@@ -49,7 +50,7 @@ interface UseDataGovRsOptions {
   /**
    * Optional fallback dataset info and data when the API returns nothing.
    */
-  fallbackDatasetInfo?: Partial<DatasetMetadata>;
+  fallbackDatasetInfo?: Partial<DatasetMetadata> | DemoDatasetInfo;
   fallbackData?: any[];
   /**
    * Limit search to specific organizations.
@@ -119,19 +120,41 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const getFallbackDataset = (fallbackInfo: Partial<DatasetMetadata> | DemoDatasetInfo | undefined): DatasetMetadata => {
+    const organizationValue = (fallbackInfo as DemoDatasetInfo | undefined)?.organization;
+    const organization =
+      typeof organizationValue === 'string'
+        ? { id: 'demo-org', name: organizationValue, title: organizationValue }
+        : (fallbackInfo as Partial<DatasetMetadata> | undefined)?.organization ?? {
+            id: 'demo-org',
+            name: 'Demo data.gov.rs',
+            title: 'Demo data.gov.rs'
+          };
+
+    return {
+      id: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.id ?? 'demo-fallback',
+      title: fallbackInfo?.title ?? 'Demo fallback data',
+      description: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.description ?? '',
+      organization,
+      resources: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.resources ?? [],
+      tags: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.tags ?? [],
+      created_at: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.created_at ?? '',
+      updated_at: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.updated_at ?? '',
+      page: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.page,
+      frequency: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.frequency,
+      spatial: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.spatial,
+      temporal_start: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.temporal_start,
+      temporal_end: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.temporal_end,
+      license: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.license,
+      license_url: (fallbackInfo as Partial<DatasetMetadata> | undefined)?.license_url
+    };
+  };
+
   const applyFallback = (
-    fallbackInfo: Partial<DatasetMetadata> | undefined,
+    fallbackInfo: Partial<DatasetMetadata> | DemoDatasetInfo | undefined,
     fallback: any[]
   ) => {
-    setDataset(
-      (fallbackInfo as DatasetMetadata) || {
-        id: 'demo-fallback',
-        title: fallbackInfo?.title || 'Demo fallback data',
-        organization: {
-          title: (fallbackInfo as any)?.organization || 'Demo data.gov.rs'
-        }
-      } as unknown as DatasetMetadata
-    );
+    setDataset(getFallbackDataset(fallbackInfo));
     setResource(null);
     setData(fallback);
   };
