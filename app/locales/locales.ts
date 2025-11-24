@@ -20,7 +20,9 @@ import { defaultLocale, locales } from "@/locales/constants";
 
 import { messages as catalogEn } from "./en/messages";
 import { messages as catalogSrCyrl } from "./sr-Cyrl/messages";
+import { overrides as catalogSrCyrlOverrides } from "./sr-Cyrl/overrides";
 import { messages as catalogSrLatn } from "./sr-Latn/messages";
+import { overrides as catalogSrLatnOverrides } from "./sr-Latn/overrides";
 
 export type Locale = (typeof locales)[number];
 
@@ -32,9 +34,20 @@ i18n.loadLocaleData({
   "sr-Cyrl": { plurals: pluralsSr },
   en: { plurals: pluralsEn },
 });
+
+const catalogSrLatnWithOverrides = {
+  ...catalogSrLatn,
+  ...catalogSrLatnOverrides,
+};
+
+const catalogSrCyrlWithOverrides = {
+  ...catalogSrCyrl,
+  ...catalogSrCyrlOverrides,
+};
+
 i18n.load({
-  "sr-Latn": catalogSrLatn,
-  "sr-Cyrl": catalogSrCyrl,
+  "sr-Latn": catalogSrLatnWithOverrides,
+  "sr-Cyrl": catalogSrCyrlWithOverrides,
   en: catalogEn,
 });
 i18n.activate(defaultLocale);
