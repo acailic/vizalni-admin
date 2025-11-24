@@ -212,7 +212,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.hero"
-msgstr ""
+msgstr "Свеж пакет кључних показатеља економије, мобилности, енергетике и дигитализације."
 
 #: app/pages/demos/index.tsx
 msgid "demos.index.showcase.description"
@@ -220,11 +220,11 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.description"
-msgstr ""
+msgstr "Брзи преглед више типова графикона са репрезентативним скуповима података."
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.hero.body"
-msgstr ""
+msgstr "Кохерентан сет графикона који истиче замах, падове, микс извора и јаз у вештинама."
 
 #: app/components/footer.jsx
 #: app/components/footer.tsx
@@ -610,7 +610,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.cta"
-msgstr ""
+msgstr "Прегледај све демое"
 
 #: app/charts/map/wms-wmts-provider-info.jsx
 #: app/charts/map/wms-wmts-provider-info.tsx
@@ -1088,7 +1088,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.title"
-msgstr ""
+msgstr "Галерија демо визуализација"
 
 #: app/pages/demos/index.tsx
 msgid "demos.index.title"
@@ -1444,7 +1444,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.economy.ylabel"
-msgstr ""
+msgstr "Раст (%)"
 
 #: app/pages/demos/demographics.jsx
 #: app/pages/demos/demographics.tsx
@@ -2222,11 +2222,11 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.economy.xlabel"
-msgstr ""
+msgstr "Регион"
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.economy.title"
-msgstr ""
+msgstr "Регионални раст БДП-а"
 
 #: app/pages/demos/demographics.jsx
 #: app/pages/demos/demographics.tsx
@@ -3255,7 +3255,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.cta.body"
-msgstr ""
+msgstr "Посетите комплетну галерију за више категорија и актуелне податке."
 
 #: app/configurator/components/chart-controls/color-palette.jsx
 #: app/configurator/components/chart-controls/color-palette.tsx
@@ -3271,7 +3271,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.cta.title"
-msgstr ""
+msgstr "Желите још?"
 
 #: app/configurator/components/ui-helpers.js
 #: app/configurator/components/ui-helpers.ts
@@ -3313,7 +3313,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.economy.description"
-msgstr ""
+msgstr "Годишњи раст БДП-а по регионима."
 
 #: app/pages/demos/demographics.jsx
 #: app/pages/demos/demographics.tsx

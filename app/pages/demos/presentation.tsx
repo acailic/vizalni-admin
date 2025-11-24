@@ -302,6 +302,8 @@ export default function PresentationDemo() {
                   yLabel="%"
                   width={600}
                   height={360}
+                  showTooltip
+                  showValueLabels
                 />
               </Box>
             </Grid>
@@ -326,6 +328,7 @@ export default function PresentationDemo() {
                   width={600}
                   height={360}
                   colors={['#0ea5e9']}
+                  showTooltip
                 />
               </Box>
             </Grid>
@@ -356,6 +359,11 @@ export default function PresentationDemo() {
               width={900}
               height={380}
               color="#f97316"
+              multiSeries
+              seriesKeys={['Coal', 'Hydropower', 'SolarWind']}
+              showArea
+              showTooltip
+              showCrosshair
             />
           </Box>
         </Container>
