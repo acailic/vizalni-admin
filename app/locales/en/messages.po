@@ -926,6 +926,10 @@ msgstr "create one"
 msgid "browse.dataset.create-visualization-visualize"
 msgstr "Create a visualization"
 
+#: app/browse/ui/data-gov-dataset-results.tsx
+msgid "browse.dataset.open-data-gov"
+msgstr "View on data.gov.rs"
+
 #: app/browse/ui/select-dataset-step.tsx
 msgid "browse.dataset.find"
 msgstr "Find datasets from data.gov.rs"

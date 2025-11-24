@@ -926,6 +926,10 @@ msgstr ""
 msgid "browse.dataset.create-visualization-visualize"
 msgstr ""
 
+#: app/browse/ui/data-gov-dataset-results.tsx
+msgid "browse.dataset.open-data-gov"
+msgstr "Pogledaj na data.gov.rs"
+
 #: app/browse/ui/select-dataset-step.tsx
 msgid "browse.dataset.find"
 msgstr "Pronađite dataset sa data.gov.rs"
