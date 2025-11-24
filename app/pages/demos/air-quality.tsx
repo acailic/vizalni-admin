@@ -64,7 +64,9 @@ export default function AirQualityDemo() {
 
   // Fetch air quality data
   const { dataset, resource, data, loading, error, refetch } = useDataGovRs({
-    datasetId: '6616cc69e9cf23a1ec8096b5', // Emisije u vazduh (NRIZ) dataset with PM pollutants
+    searchQuery: ['kvalitet vazduha', 'pm10', 'pm2.5'],
+    preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
+    slugKeywords: ['vazduh', 'pm10', 'pm2.5', 'zagadjenje'],
     autoFetch: true
   });
 
@@ -158,7 +160,8 @@ export default function AirQualityDemo() {
           ? {
               title: dataset.title,
               organization: dataset.organization.title || dataset.organization.name,
-              updatedAt: dataset.updated_at
+              updatedAt: dataset.updated_at,
+              datasetUrl: dataset.page || `https://data.gov.rs/sr/datasets/${dataset.id}`
             }
           : undefined
       }
