@@ -15,7 +15,10 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Šokantni podaci o zagađenju vazduha sa WHO upozorenjima i zdravstvenim rizicima',
       en: 'Shocking air pollution data with WHO warnings and health risks'
     },
-    searchQuery: 'kvalitet vazduha',
+    searchQuery: ['kvalitet vazduha', 'pm10', 'pm2.5'],
+    preferredDatasetIds: ['6616cc69e9cf23a1ec8096b5'],
+    preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
+    slugKeywords: ['pm10', 'pm2.5', 'vazduh', 'zagađenje'],
     chartType: 'line',
     tags: ['zivotna-sredina', 'zdravlje', 'kritično'],
     icon: '🚨'
@@ -31,7 +34,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Interactive visualization of state budget and public finances'
     },
     // Use accented query to better match data.gov.rs dataset naming
-    searchQuery: 'budžet',
+    searchQuery: ['budžet', 'budzet', 'javne finansije'],
+    preferredTags: ['budzet', 'javne-finansije', 'finansije'],
+    slugKeywords: ['budzet', 'budžet', 'finansije'],
     chartType: 'column',
     tags: ['finansije', 'javne-finansije', 'budzet'],
     icon: '💰'
@@ -46,7 +51,10 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Praćenje kvaliteta vazduha i zagađenja u gradovima Srbije',
       en: 'Monitor air quality and pollution in Serbian cities'
     },
-    searchQuery: 'kvalitet vazduha',
+    searchQuery: ['kvalitet vazduha', 'pm10'],
+    preferredDatasetIds: ['6616cc69e9cf23a1ec8096b5'],
+    preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
+    slugKeywords: ['vazduh', 'pm10', 'pm2.5'],
     chartType: 'line',
     tags: ['zivotna-sredina', 'ekologija', 'vazduh'],
     icon: '🌍'
@@ -61,7 +69,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Alarmantno: Stanovništvo pada za 15% do 2050. godine, medijana starosti 43.5 godina, stopa rasta -0.4%',
       en: 'Alarming: Population declining 15% by 2050, median age 43.5 years, growth rate -0.4%'
     },
-    searchQuery: 'stanovnistvo',
+    searchQuery: ['stanovnistvo', 'stanovništvo', 'demografija'],
+    preferredTags: ['stanovnistvo', 'demografija'],
+    slugKeywords: ['popis', 'demografija', 'stanovništvo'],
     chartType: 'bar',
     tags: ['stanovnistvo', 'statistika', 'demografija', 'kritično'],
     icon: '⚠️'
@@ -76,7 +86,15 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Pregled broja učenika i studenata po nivoima obrazovanja - osnovno, srednje i visoko obrazovanje kroz godine',
       en: 'Overview of student enrollment by education level - elementary, secondary, and higher education over the years'
     },
-    searchQuery: 'obrazovanje učenici studenti',
+    searchQuery: ['obrazovanje učenici studenti', 'obrazovanje', 'učenici', 'studenti'],
+    preferredDatasetIds: [
+      '623112927de272da520ab63b', // osnovno obrazovanje
+      '62337fa87de272cc1c6b277b', // dualno učenici
+      '6233831c7de272b12cd37a11', // dualno studenti
+      '620441197de2723dc14b0514' // škole
+    ],
+    preferredTags: ['obrazovanje', 'ucenici', 'studenti', 'skole'],
+    slugKeywords: ['obrazovanje', 'učenici', 'studenti', 'škole'],
     chartType: 'column',
     tags: ['obrazovanje', 'skole', 'studenti', 'upis'],
     icon: '🎓'
@@ -91,7 +109,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Preventabilne smrti na putevima - 482 života izgubljeno 2024, 1.3 smrti DNEVNO, 98% nesreća preventabilno',
       en: 'Preventable road deaths - 482 lives lost in 2024, 1.3 deaths DAILY, 98% of accidents preventable'
     },
-    searchQuery: 'saobracaj',
+    searchQuery: ['saobraćaj', 'saobracaj', 'nezgode', 'saobraćajne nesreće'],
+    preferredTags: ['saobracaj', 'nezgode', 'saobraćaj'],
+    slugKeywords: ['saobraćaj', 'nezgode', 'saobracaj'],
     chartType: 'column',
     tags: ['saobracaj', 'bezbednost', 'nezgode', 'kritično'],
     icon: '🚨'
@@ -106,7 +126,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Alarmantni podaci o listama čekanja, odlivu lekara i kapacitetima bolnica - preko 50,000 pacijenata čeka na procedure',
       en: 'Alarming data on waiting lists, doctor exodus, and hospital capacity - over 50,000 patients waiting for procedures'
     },
-    searchQuery: 'zdravstvo',
+    searchQuery: ['zdravstvo', 'bolnice', 'liste čekanja'],
+    preferredTags: ['zdravstvo', 'bolnica', 'bolnice'],
+    slugKeywords: ['zdravstvo', 'bolnica', 'bolnice'],
     chartType: 'bar',
     tags: ['zdravstvo', 'bolnice', 'kritično', 'liste-čekanja'],
     icon: '🚨'
@@ -121,7 +143,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Zdravstveni podaci - bolnice, pacijenti, zdravstvene usluge',
       en: 'Healthcare data - hospitals, patients, medical services'
     },
-    searchQuery: 'zdravstvo',
+    searchQuery: ['zdravstvo', 'bolnice', 'zdravstvene usluge'],
+    preferredTags: ['zdravstvo', 'bolnica', 'bolnice'],
+    slugKeywords: ['zdravstvo', 'bolnica', 'bolnice'],
     chartType: 'bar',
     tags: ['zdravstvo', 'medicina', 'bolnice'],
     icon: '🏥'
@@ -136,7 +160,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Šokantni podaci o emigraciji mladih - 75,900 ljudi napustilo zemlju 2024, nezaposlenost mladih 25%, plate 75% niže od EU',
       en: 'Shocking emigration data - 75,900 people left in 2024, youth unemployment 25%, wages 75% lower than EU'
     },
-    searchQuery: 'zaposlenost',
+    searchQuery: ['zaposlenost', 'nezaposlenost', 'tržište rada'],
+    preferredTags: ['zaposlenost', 'nezaposlenost', 'trziste-rada'],
+    slugKeywords: ['zaposlenost', 'nezaposlenost', 'tržište rada'],
     chartType: 'line',
     tags: ['zaposlenost', 'emigracija', 'brain-drain', 'kritično'],
     icon: '🚨'
@@ -151,7 +177,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Alarmantno: 68.5% energije iz UGLJA, obnovljivi izvori samo 2%, termoelektrane stare 45+ godina, uvoz porastao za €465M',
       en: 'Alarming: 68.5% energy from COAL, renewables only 2%, plants 45+ years old, imports up €465M'
     },
-    searchQuery: 'energija',
+    searchQuery: ['energija', 'ugalj', 'struja'],
+    preferredTags: ['energija', 'ugalj', 'struja'],
+    slugKeywords: ['energija', 'ugalj', 'struja'],
     chartType: 'column',
     tags: ['energija', 'ugalj', 'zagađenje', 'kritično'],
     icon: '🚨'
@@ -166,7 +194,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Poljoprivredni podaci - proizvodnja, usevi, stočarstvo',
       en: 'Agricultural data - production, crops, livestock'
     },
-    searchQuery: 'poljoprivreda',
+    searchQuery: ['poljoprivreda', 'usevi'],
+    preferredTags: ['poljoprivreda', 'poljoprivredna-proizvodnja'],
+    slugKeywords: ['poljoprivreda', 'usevi'],
     chartType: 'bar',
     tags: ['poljoprivreda', 'prehrambena-industrija', 'ruralni-razvoj'],
     icon: '🌾'
@@ -181,7 +211,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Turističke statistike - dolasci, noćenja, turistička potrošnja',
       en: 'Tourism statistics - arrivals, overnight stays, tourism spending'
     },
-    searchQuery: 'turizam',
+    searchQuery: ['turizam', 'noćenja', 'nocenja', 'dolasci'],
+    preferredTags: ['turizam', 'turistički promet'],
+    slugKeywords: ['turizam', 'nocenja', 'dolasci'],
     chartType: 'line',
     tags: ['turizam', 'ugostiteljstvo', 'kultura'],
     icon: '✈️'
@@ -196,7 +228,9 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       sr: 'Podaci o kulturnim ustanovama, događajima i kulturnoj baštini',
       en: 'Data on cultural institutions, events, and cultural heritage'
     },
-    searchQuery: 'kultura',
+    searchQuery: ['kultura', 'kulturne institucije'],
+    preferredTags: ['kultura'],
+    slugKeywords: ['kultura', 'kulturno'],
     chartType: 'pie',
     tags: ['kultura', 'umetnost', 'muzej'],
     icon: '🎭'

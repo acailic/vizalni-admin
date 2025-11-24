@@ -39,6 +39,18 @@ export interface DemoConfig {
    * The hook will try them in order until it finds data.
    */
   searchQuery: string | string[];
+  /**
+   * Preferred dataset IDs to try first (strongest signal).
+   */
+  preferredDatasetIds?: string[];
+  /**
+   * Preferred tags to search for (data.gov.rs tag filter).
+   */
+  preferredTags?: string[];
+  /**
+   * Additional slug/keyword hints for matching dataset titles.
+   */
+  slugKeywords?: string[];
   chartType: DemoChartType;
   defaultDatasetId?: string;
   tags?: string[];

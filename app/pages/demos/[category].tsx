@@ -73,6 +73,9 @@ export default function DemoPage() {
       (config && DEMO_FALLBACKS[config.id]?.searchQueries) || config?.searchQuery,
     fallbackData: config ? DEMO_FALLBACKS[config.id]?.fallbackData : undefined,
     fallbackDatasetInfo,
+    preferredDatasetIds: config?.preferredDatasetIds,
+    preferredTags: config?.preferredTags,
+    slugKeywords: config?.slugKeywords,
     autoFetch: !!config && category !== 'air-quality'
   });
 

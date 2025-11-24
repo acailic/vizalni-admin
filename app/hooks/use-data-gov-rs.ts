@@ -20,6 +20,21 @@ interface UseDataGovRsOptions {
   searchQuery?: string | string[];
 
   /**
+   * Dataset IDs to try first, in order.
+   */
+  preferredDatasetIds?: string[];
+
+  /**
+   * Tags to search for (data.gov.rs tag filter).
+   */
+  preferredTags?: string[];
+
+  /**
+   * Keywords to match in slugs/titles (full-text search).
+   */
+  slugKeywords?: string[];
+
+  /**
    * Auto-fetch on mount
    * @default true
    */
@@ -85,6 +100,9 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
   const {
     datasetId,
     searchQuery,
+    preferredDatasetIds,
+    preferredTags,
+    slugKeywords,
     autoFetch = true,
     parseCSV = true,
     fallbackDatasetInfo,
@@ -97,6 +115,23 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const applyFallback = (
+    fallbackInfo: Partial<DatasetMetadata> | undefined,
+    fallback: any[]
+  ) => {
+    setDataset(
+      (fallbackInfo as DatasetMetadata) || {
+        id: 'demo-fallback',
+        title: fallbackInfo?.title || 'Demo fallback data',
+        organization: {
+          title: (fallbackInfo as any)?.organization || 'Demo data.gov.rs'
+        }
+      } as unknown as DatasetMetadata
+    );
+    setResource(null);
+    setData(fallback);
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -104,43 +139,101 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
 
       let fetchedDataset: DatasetMetadata;
 
-      if (datasetId) {
-        // Fetch by specific ID
-        fetchedDataset = await dataGovRsClient.getDataset(datasetId);
-      } else if (searchQuery) {
-        const queries = Array.isArray(searchQuery) ? searchQuery : [searchQuery];
+      const idsToTry = [
+        ...(datasetId ? [datasetId] : []),
+        ...(preferredDatasetIds ?? []),
+      ];
+
+      // Try explicit dataset IDs first
+      for (const id of idsToTry) {
+        try {
+          const ds = await dataGovRsClient.getDataset(id);
+          if (ds) {
+            fetchedDataset = ds;
+            setDataset(fetchedDataset);
+            const bestResource = getBestVisualizationResource(fetchedDataset);
+            if (bestResource) {
+              const resourceData = await loadResourceData(bestResource, parseCSV);
+              setResource(bestResource);
+              setData(resourceData);
+            } else if (fallbackData && fallbackData.length > 0) {
+              setResource(null);
+              setData(fallbackData);
+            } else {
+              throw new Error('No suitable resource found for visualization');
+            }
+            return;
+          }
+        } catch (idErr) {
+          // Continue to other strategies
+          console.warn('Dataset ID lookup failed', id, idErr);
+        }
+      }
+
+      if (searchQuery || preferredTags || slugKeywords) {
+        const queries = Array.isArray(searchQuery) ? searchQuery : searchQuery ? [searchQuery] : [];
+        const keywords = slugKeywords ?? [];
         let foundDataset: DatasetMetadata | null = null;
 
-        for (const q of queries) {
-          const results = await dataGovRsClient.searchDatasets({
-            q,
-            page_size: 1
-          });
+        // Try tag searches first
+        if (preferredTags && preferredTags.length > 0) {
+          for (const tag of preferredTags) {
+            const tagResults = await dataGovRsClient.searchDatasets({
+              tag,
+              page_size: 5
+            });
+            if (tagResults.data.length > 0) {
+              foundDataset = tagResults.data[0];
+              break;
+            }
+          }
+        }
 
-          if (results.data.length > 0) {
-            foundDataset = results.data[0];
-            break;
+        // Try explicit queries
+        if (!foundDataset && queries.length > 0) {
+          for (const q of queries) {
+            const results = await dataGovRsClient.searchDatasets({
+              q,
+              page_size: 5
+            });
+
+            if (results.data.length > 0) {
+              foundDataset = results.data[0];
+              break;
+            }
+          }
+        }
+
+        // Try keyword search if still not found
+        if (!foundDataset && keywords.length > 0) {
+          for (const kw of keywords) {
+            const results = await dataGovRsClient.searchDatasets({
+              q: kw,
+              page_size: 5
+            });
+
+            if (results.data.length > 0) {
+              foundDataset = results.data[0];
+              break;
+            }
           }
         }
 
         if (!foundDataset) {
           if (fallbackData && fallbackData.length > 0) {
-            setDataset(
-              (fallbackDatasetInfo as DatasetMetadata) || {
-                id: 'demo-fallback',
-                title: fallbackDatasetInfo?.title || 'Demo fallback data',
-                organization: {
-                  title: fallbackDatasetInfo?.organization || 'Demo data.gov.rs'
-                }
-              } as unknown as DatasetMetadata
-            );
-            setResource(null);
-            setData(fallbackData);
+            applyFallback(fallbackDatasetInfo, fallbackData);
             return;
           }
 
           throw new Error(
-            `No datasets found for queries: ${queries.map((q) => `"${q}"`).join(", ")}`
+            `No datasets found for queries/tags: ${[
+              ...queries,
+              ...(preferredTags ?? []),
+              ...keywords,
+            ]
+              .filter(Boolean)
+              .map((q) => `"${q}"`)
+              .join(", ")}`
           );
         }
 
@@ -164,36 +257,13 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
       }
 
       setResource(bestResource);
-
-      // Fetch resource data based on format
-      let resourceData: any;
-
-      if (bestResource.format.toUpperCase() === 'JSON') {
-        resourceData = await dataGovRsClient.getResourceJSON(bestResource);
-      } else if (bestResource.format.toUpperCase() === 'CSV' && parseCSV) {
-        const csvText = await dataGovRsClient.getResourceData(bestResource);
-        resourceData = parseCSVData(csvText);
-      } else {
-        // Return raw text for other formats
-        resourceData = await dataGovRsClient.getResourceData(bestResource);
-      }
-
+      const resourceData = await loadResourceData(bestResource, parseCSV);
       setData(resourceData);
 
     } catch (err) {
       const errorMessage = err instanceof Error ? err : new Error('Unknown error occurred');
       if (fallbackData && fallbackData.length > 0) {
-        setDataset(
-          (fallbackDatasetInfo as DatasetMetadata) || {
-            id: 'demo-fallback',
-            title: fallbackDatasetInfo?.title || 'Demo fallback data',
-            organization: {
-              title: fallbackDatasetInfo?.organization || 'Demo data.gov.rs'
-            }
-          } as unknown as DatasetMetadata
-        );
-        setResource(null);
-        setData(fallbackData);
+        applyFallback(fallbackDatasetInfo, fallbackData);
         setError(null);
         console.warn('useDataGovRs: using fallback demo data due to error:', errorMessage);
       } else {
@@ -225,6 +295,17 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
  * Production-ready CSV parser
  * Handles quoted fields, different line endings, and empty rows
  */
+async function loadResourceData(bestResource: Resource, parseCSV: boolean) {
+  if (bestResource.format.toUpperCase() === 'JSON') {
+    return dataGovRsClient.getResourceJSON(bestResource);
+  }
+  if (bestResource.format.toUpperCase() === 'CSV' && parseCSV) {
+    const csvText = await dataGovRsClient.getResourceData(bestResource);
+    return parseCSVData(csvText);
+  }
+  return dataGovRsClient.getResourceData(bestResource);
+}
+
 function parseCSVData(csv: string): any[] {
   // Normalize line endings to \n (handles \r\n, \r, and \n)
   const normalizedCsv = csv.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
