@@ -20,9 +20,7 @@ import { defaultLocale, locales } from "@/locales/constants";
 
 import { messages as catalogEn } from "./en/messages";
 import { messages as catalogSrCyrl } from "./sr-Cyrl/messages";
-import { overrides as catalogSrCyrlOverrides } from "./sr-Cyrl/overrides";
 import { messages as catalogSrLatn } from "./sr-Latn/messages";
-import { overrides as catalogSrLatnOverrides } from "./sr-Latn/overrides";
 
 export type Locale = (typeof locales)[number];
 
@@ -37,12 +35,88 @@ i18n.loadLocaleData({
 
 const catalogSrLatnWithOverrides = {
   ...catalogSrLatn,
-  ...catalogSrLatnOverrides,
+  "demos.showcase.title": "Galerija demo vizualizacija",
+  "demos.showcase.description":
+    "Brzi pregled više tipova grafikona sa reprezentativnim skupovima podataka.",
+  "demos.showcase.hero":
+    "Svež paket ključnih pokazatelja ekonomije, mobilnosti, energetike i digitalizacije.",
+  "demos.showcase.cta": "Pregledaj sve demoe",
+  "demos.showcase.economy.title": "Regionalni rast BDP-a",
+  "demos.showcase.economy.description": "Godišnji rast BDP-a po regionima.",
+  "demos.showcase.transport.title": "Momentum javnog prevoza",
+  "demos.showcase.transport.description":
+    "Milioni putovanja – pad 2020, zatim postepeni oporavak.",
+  "demos.showcase.energy.title": "Struktura energetskog miksa",
+  "demos.showcase.energy.description": "Udeo izvora u proizvodnji električne energije.",
+  "demos.showcase.digital.title": "Jaz u digitalnim veštinama",
+  "demos.showcase.digital.description":
+    "Udeo populacije sa barem osnovnim digitalnim veštinama.",
+  "demos.showcase.dataset.title": "Indikatori za prikaz",
+  "demos.showcase.dataset.organization": "Primer skupa podataka",
+  "demos.showcase.chip.economy": "Ekonomski puls",
+  "demos.showcase.chip.mobility": "Mobilnost",
+  "demos.showcase.chip.energy": "Energetika",
+  "demos.showcase.chip.digital": "Digitalno",
+  "demos.showcase.hero.stat1.label": "BDP YoY: +4,3%",
+  "demos.showcase.hero.stat1.hint": "Beograd prednjači",
+  "demos.showcase.hero.stat2.label": "Putovanja 2023: 171M",
+  "demos.showcase.hero.stat2.hint": "Stabilan oporavak",
+  "demos.showcase.hero.stat3.label": "Udeo uglja: 64%",
+  "demos.showcase.hero.stat3.hint": "Potrebna diverzifikacija",
+  "demos.showcase.hero.body":
+    "Koherentan set grafikona koji naglašava zamah, padove, miks izvora i jaz u veštinama.",
+  "demos.showcase.economy.xlabel": "Region",
+  "demos.showcase.economy.ylabel": "Rast (%)",
+  "demos.showcase.transport.xlabel": "Godina",
+  "demos.showcase.transport.ylabel": "Milioni putovanja",
+  "demos.showcase.digital.xlabel": "Segment",
+  "demos.showcase.digital.ylabel": "Udeo (%)",
+  "demos.showcase.cta.title": "Želite još?",
+  "demos.showcase.cta.body":
+    "Posetite kompletnu galeriju za više kategorija i aktuelne podatke.",
 };
 
 const catalogSrCyrlWithOverrides = {
   ...catalogSrCyrl,
-  ...catalogSrCyrlOverrides,
+  "demos.showcase.title": "Галерија демо визуализација",
+  "demos.showcase.description":
+    "Брзи преглед више типова графикона са репрезентативним скуповима података.",
+  "demos.showcase.hero":
+    "Свеж пакет кључних показатеља економије, мобилности, енергетике и дигитализације.",
+  "demos.showcase.cta": "Прегледај све демое",
+  "demos.showcase.economy.title": "Регионални раст БДП-а",
+  "demos.showcase.economy.description": "Годишњи раст БДП-а по регионима.",
+  "demos.showcase.transport.title": "Моментум јавног превоза",
+  "demos.showcase.transport.description":
+    "Милиони путовања – пад 2020, затим постепени опоравак.",
+  "demos.showcase.energy.title": "Структура енергетског микса",
+  "demos.showcase.energy.description": "Удео извора у производњи електричне енергије.",
+  "demos.showcase.digital.title": "Јаз у дигиталним вештинама",
+  "demos.showcase.digital.description":
+    "Удео популације са бар основним дигиталним вештинама.",
+  "demos.showcase.dataset.title": "Индикатори за приказ",
+  "demos.showcase.dataset.organization": "Пример скупа података",
+  "demos.showcase.chip.economy": "Економски пулс",
+  "demos.showcase.chip.mobility": "Мобилност",
+  "demos.showcase.chip.energy": "Енергетика",
+  "demos.showcase.chip.digital": "Дигитално",
+  "demos.showcase.hero.stat1.label": "БДП YoY: +4,3%",
+  "demos.showcase.hero.stat1.hint": "Београд предњачи",
+  "demos.showcase.hero.stat2.label": "Путовања 2023: 171М",
+  "demos.showcase.hero.stat2.hint": "Стабилан опоравак",
+  "demos.showcase.hero.stat3.label": "Удео угља: 64%",
+  "demos.showcase.hero.stat3.hint": "Потребна диверзификација",
+  "demos.showcase.hero.body":
+    "Кохерентан сет графикона који истиче замах, падове, микс извора и јаз у вештинама.",
+  "demos.showcase.economy.xlabel": "Регион",
+  "demos.showcase.economy.ylabel": "Раст (%)",
+  "demos.showcase.transport.xlabel": "Година",
+  "demos.showcase.transport.ylabel": "Милиони путовања",
+  "demos.showcase.digital.xlabel": "Сегмент",
+  "demos.showcase.digital.ylabel": "Удео (%)",
+  "demos.showcase.cta.title": "Желите још?",
+  "demos.showcase.cta.body":
+    "Посетите комплетну галерију за више категорија и актуелне податке.",
 };
 
 i18n.load({
