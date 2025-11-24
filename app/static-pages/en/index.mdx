@@ -11,34 +11,33 @@ import {
 export const contentId = "home";
 
 <Intro
-  title="Visualize Serbian Open Government Data 🇷🇸"
-  teaser="Create and embed visualizations from any dataset provided by the Serbian Open Data Portal (data.gov.rs)."
-  buttonLabel="Create a visualization"
+  title="Visualize Serbia's open data 🇷🇸"
+  teaser="Build and embed visualizations from any dataset on Serbia's Open Data Portal (data.gov.rs)."
+  buttonLabel="Start a visualization"
 />
 <Tutorial
-  headline="Visualize data in just a few steps…"
-  step1="Select a dataset"
-  step2="Edit the visualization"
-  step3="Share & embed"
+  headline="Visualize data in a few steps"
+  step1="Choose a dataset"
+  step2="Refine the visualization"
+  step3="Share or embed"
 />
 <Examples
-  headline="Make it your own…"
-  example1Headline="Create beautiful visualizations"
-  example1Description="Choose from a wide range of chart types and configure them according to your needs."
-  example2Headline="Use powerful customizations"
-  example2Description="With the help of custom filters and data segmentation, even complex issues can be visualized."
+  headline="Make it yours"
+  example1Headline="Design clear visualizations"
+  example1Description="Pick from chart types and configure them for your audience."
+  example2Headline="Go deeper with filters"
+  example2Description="Use filters and segmentation to highlight the insights that matter."
 />
 <Actions
   contribute={{
-    headline: "Would you like to visualize your own data?",
-    description:
-      "Find out how you can integrate your data into the Serbian Open Data Portal.",
-    buttonLabel: "Learn how",
+    headline: "Want to publish your own data?",
+    description: "See how to publish your datasets to Serbia's Open Data Portal.",
+    buttonLabel: "See how",
     buttonUrl: "https://data.gov.rs",
   }}
   newsletter={{
-    headline: "Subscribe to our Newsletter",
-    description: "Stay up to date and subscribe to our newsletter.",
+    headline: "Stay in the loop",
+    description: "Get product updates and tips in your inbox.",
     buttonLabel: "Subscribe",
     buttonUrl: createMailtoLink("en", {
       recipients: {
@@ -49,8 +48,8 @@ export const contentId = "home";
     }),
   }}
   bugReport={{
-    headline: "Found a bug?",
-    description: "Please report the bug, so can fix it as soon as possible",
+    headline: "Notice an issue?",
+    description: "Report it so we can fix it quickly.",
     buttonLabel: "Report a bug",
     buttonUrl: createMailtoLink("en", {
       recipients: {
@@ -62,10 +61,9 @@ export const contentId = "home";
     }),
   }}
   featureRequest={{
-    headline: "New feature request",
-    description:
-      "Submit your feature requests today and help shape the future of our platform!",
-    buttonLabel: "Submit",
+    headline: "Request a feature",
+    description: "Share ideas to help shape the platform.",
+    buttonLabel: "Submit request",
     buttonUrl: createMailtoLink("en", {
       recipients: {
         to: OWNER_ORGANIZATION_EMAIL,
