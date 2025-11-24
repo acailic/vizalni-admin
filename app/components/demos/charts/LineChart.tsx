@@ -5,7 +5,7 @@
  */
 
 import { Box, Paper, Typography } from "@mui/material";
-import { bisector, max, min } from "d3-array";
+import { max, min } from "d3-array";
 import { axisBottom, axisLeft } from "d3-axis";
 import { easeCubicOut } from "d3-ease";
 import { scaleLinear, scalePoint } from "d3-scale";
@@ -314,8 +314,6 @@ export const LineChart = memo(
         });
 
         // Add invisible overlay for mouse tracking
-        const bisect = bisector((d: any) => String(d[xKey])).center;
-
         g.append("rect")
           .attr("class", "overlay")
           .attr("width", innerWidth)
