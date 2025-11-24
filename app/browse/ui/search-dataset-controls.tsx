@@ -55,9 +55,7 @@ export const SearchDatasetControls = ({
     <Flex sx={{ justifyContent: "space-between", alignItems: "center", mb: 2 }}>
       <SearchDatasetResultsCount cubes={cubes} />
       <Flex sx={{ alignItems: "center", gap: 5 }}>
-        <Icon
-          name="search"
-          size={20}
+        <span
           role="button"
           tabIndex={0}
           aria-label="Pretraži obrazovanje"
@@ -68,11 +66,14 @@ export const SearchDatasetControls = ({
               prefillEducation();
             }
           }}
-          sx={{
+          style={{
+            display: "inline-flex",
             cursor: "pointer",
-            color: isSearching ? "primary.main" : "monochrome.700",
+            color: isSearching ? "var(--mui-palette-primary-main)" : "var(--mui-palette-monochrome-700)",
           }}
-        />
+        >
+          <Icon name="search" size={20} />
+        </span>
         <SearchDatasetDraftsControl
           checked={includeDrafts}
           onChange={onToggleIncludeDrafts}

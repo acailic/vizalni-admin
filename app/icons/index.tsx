@@ -1,3 +1,4 @@
+import { SxProps, Theme } from "@mui/material";
 import { ComponentProps } from "react";
 
 import { ChartType } from "@/config-types";
@@ -15,8 +16,9 @@ export const Icon = ({
   size?: number | string;
   color?: string;
   name: IconName;
+  sx?: SxProps<Theme>;
 } & ComponentProps<"svg">) => {
-  const { style, ...otherProps } = props;
+  const { style, sx, ...otherProps } = props;
   const IconComponent = Icons[name];
 
   if (!IconComponent) {
@@ -30,6 +32,8 @@ export const Icon = ({
       height={size}
       color={color}
       style={{ minWidth: size, minHeight: size, ...style }}
+      // Allow consumers to pass MUI sx; it's ignored by raw svg but keeps typings safe
+      {...(sx ? { sx } : {})}
       {...otherProps}
     />
   );
