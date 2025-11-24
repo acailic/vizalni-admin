@@ -1108,11 +1108,11 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.chip.digital"
-msgstr ""
+msgstr "Дигитално"
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.digital.title"
-msgstr ""
+msgstr "Јаз у дигиталним вештинама"
 
 #: app/configurator/components/chart-options-selector/color-component-field.jsx
 #: app/configurator/components/chart-options-selector/color-component-field.tsx
@@ -1201,7 +1201,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.chip.economy"
-msgstr ""
+msgstr "Економски пулс"
 
 #: app/components/chart-shared.jsx
 #: app/components/chart-shared.tsx
@@ -1274,11 +1274,11 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.chip.energy"
-msgstr ""
+msgstr "Енергетика"
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.energy.title"
-msgstr ""
+msgstr "Структура енергетског микса"
 
 #: app/components/rename-dialog.jsx
 #: app/components/rename-dialog.tsx
@@ -1799,7 +1799,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.chip.mobility"
-msgstr ""
+msgstr "Мобилност"
 
 #: app/configurator/components/ui-helpers.js
 #: app/configurator/components/ui-helpers.ts
@@ -2384,7 +2384,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.digital.xlabel"
-msgstr ""
+msgstr "Сегмент"
 
 #: app/configurator/components/field-i18n.js
 #: app/configurator/components/field-i18n.ts
@@ -2565,7 +2565,7 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.digital.ylabel"
-msgstr ""
+msgstr "Удео (%)"
 
 #: app/components/social-media-share.jsx
 #: app/components/social-media-share.tsx
@@ -2574,11 +2574,11 @@ msgstr ""
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.energy.description"
-msgstr ""
+msgstr "Удео извора у производњи електричне енергије."
 
 #: app/pages/demos/showcase.tsx
 msgid "demos.showcase.digital.description"
-msgstr ""
+msgstr "Удео популације са бар основним дигиталним вештинама."
 
 #: app/components/publish-actions.jsx
 #: app/components/publish-actions.tsx
