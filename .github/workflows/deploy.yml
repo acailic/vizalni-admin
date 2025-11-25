@@ -17,6 +17,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      STORYBOOK_DISABLE_TELEMETRY: "1"
+      SENTRY_UPLOAD: "false"
+      YARN_IGNORE_PATH: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,13 +41,13 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build with Next.js
-        run: yarn deploy:gh-pages
+        run: yarn build:static
 
       - name: Create .nojekyll file
         run: touch app/out/.nojekyll
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./app/out
 

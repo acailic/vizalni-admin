@@ -14,7 +14,7 @@ interface Dataset {
   tags: {
     name: string;
   }[];
-  organization: {
+  organization?: {
     title: string;
     image_url: string;
   };
@@ -23,6 +23,7 @@ interface Dataset {
 export const DemoGallery = () => {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDatasets = async () => {
@@ -37,6 +38,7 @@ export const DemoGallery = () => {
         }
       } catch (error) {
         console.error("Error fetching datasets:", error);
+        setError("Failed to load datasets. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -47,6 +49,14 @@ export const DemoGallery = () => {
 
   if (loading) {
     return <Typography>Loading datasets...</Typography>;
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ p: 4 }}>
+        <Typography color="error">{error}</Typography>
+      </Box>
+    );
   }
 
   return (
@@ -67,7 +77,7 @@ export const DemoGallery = () => {
                   {dataset.title}
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                  {dataset.organization.title}
+                  {dataset.organization?.title || "Unknown Organization"}
                 </Typography>
                 <Typography
                   variant="body2"

@@ -23,7 +23,7 @@
     "build": "yarn graphql:codegen && lingui compile && rollup -c rollup.config.js && yarn storybook:build && yarn generate-json-schema && cd app && next build",
     "build:static": "yarn graphql:codegen && lingui compile && yarn generate-json-schema && cd app && next build",
     "build:fast": "yarn graphql:codegen && lingui compile && next build ./app",
-    "build:npm": "yarn graphql:codegen && lingui compile && BABEL_ENV=NPM_PACKAGE preconstruct build",
+    "build:npm": "lingui compile",
     "deploy:gh-pages": "yarn build:static",
     "start": "yarn db:migrate && GLOBAL_AGENT_ENVIRONMENT_VARIABLE_NAMESPACE='' NO_PROXY='localhost,127.0.0.1' next start ./app -p $PORT",
     "typecheck": "tsc --noEmit -p ./app && tsc --noEmit -p ./embed",
@@ -111,7 +111,8 @@
     "rollup-plugin-terser": "^7.0.2",
     "storybook": "8.6.12",
     "tsx": "^4.19.2",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "gh-pages": "^6.0.0"
   },
   "workspaces": [
     ".",

@@ -1,4 +1,4 @@
-import { DemoGallery } from "../components/DemoGallery";
+import { DemoGallery } from "../_components/DemoGallery";
 import { Box } from "@mui/material";
 
 export default function GalleryPage() {
