@@ -1,13 +1,17 @@
 {
-  "name": "@interactivethings/visualize-app",
-  "version": "3.4.9",
+  "name": "@acailic/vizualni-admin",
+  "version": "0.1.0-beta.1",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/interactivethings-visualize-app.cjs.js",
-  "module": "dist/interactivethings-visualize-app.esm.js",
+  "main": "dist/acailic-vizualni-admin.cjs.js",
+  "module": "dist/acailic-vizualni-admin.esm.js",
+  "types": "dist/acailic-vizualni-admin.cjs.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "locales",
+    "README.md"
   ],
   "scripts": {
     "build": "yarn workspace @visualize-admin/visualization-tool run build"
@@ -175,7 +179,10 @@
   "preconstruct": {
     "entrypoints": [
       "./index.ts"
-    ]
+    ],
+    "___experimentalFlags_WILL_CHANGE_IN_PATCH": {
+      "importsConditions": true
+    }
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.19.4",

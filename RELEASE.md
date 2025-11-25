@@ -1,24 +1,33 @@
 # Release Guide (library publish)
 
-This follows the upstream `visualization-tool` release approach to publish the `@interactivethings/visualize-app` package from the `app` workspace.
+This repository is configured to publish the `@acailic/vizualni-admin` package from the `app` workspace to npm.
 
 ## Prerequisites
-- npm login with publish rights (`npm whoami`)
-- Clean working tree and correct version bump in `app/package.json` (mirror in root if you keep them in sync)
-- Optional sanity checks: `yarn typecheck`, `yarn test`
+- npm account with publish rights to `@acailic` scope.
+- `NPM_TOKEN` secret added to GitHub repository settings (for automated releases).
 
-## Build & publish
-1. Build npm artifacts (runs GraphQL codegen, Lingui compile, preconstruct/rollup):
-   ```sh
-   yarn build:npm
-   ```
-2. Publish the `app` workspace (wraps build+npm publish):
-   ```sh
-   yarn release:npm
-   # internally: yarn build:npm && yarn publish app
-   ```
+## Release Process
+
+### Automated Release (Recommended)
+1.  Update the version in `app/package.json`.
+2.  Commit and push the change.
+3.  Create a new git tag matching the version (e.g., `v3.4.10`).
+    ```sh
+    git tag v3.4.10
+    git push origin v3.4.10
+    ```
+4.  The GitHub Action `release.yml` will automatically build and publish the package to npm.
+
+### Manual Release
+1.  Build npm artifacts:
+    ```sh
+    yarn build:npm
+    ```
+2.  Publish the `app` workspace:
+    ```sh
+    yarn release:npm
+    ```
 
 ## Notes
-- The published outputs are `app/dist/interactivethings-visualize-app.{cjs,esm}.js` and are listed under `files` in `app/package.json`.
-- Peer deps stay minimal (`react`, `react-dom`, `next`); all other runtime deps remain in `dependencies`.
-- Tagging/branching: follow your usual git flow; `postversion` pushes tags after `npm version` if you use it.
+- The published outputs are in the `app/dist` folder (e.g., `acailic-vizualni-admin.cjs.js`, `acailic-vizualni-admin.esm.js`).
+- Ensure you have logged in with `npm login` before manual publishing.
