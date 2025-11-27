@@ -8,7 +8,14 @@
  * - Preset color palettes
  */
 
-import React from 'react';
+import {
+  ArrowBack,
+  ArrowForward,
+  LightMode,
+  DarkMode,
+  Palette,
+  CheckCircle,
+} from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -22,14 +29,7 @@ import {
   Grid,
   Paper,
 } from '@mui/material';
-import {
-  ArrowBack,
-  ArrowForward,
-  LightMode,
-  DarkMode,
-  Palette,
-  CheckCircle,
-} from '@mui/icons-material';
+import React from 'react';
 
 interface ThemeCustomizationProps {
   theme: {

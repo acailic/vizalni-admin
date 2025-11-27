@@ -9,7 +9,20 @@
  * - Show next steps
  */
 
-import React, { useState } from 'react';
+import {
+  ArrowBack,
+  Computer,
+  Cloud,
+  Settings,
+  CheckCircle,
+  ExpandMore,
+  Download,
+  Language as LanguageIcon,
+  Category,
+  DataObject,
+  Palette,
+  Rocket,
+} from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -30,20 +43,7 @@ import {
   ListItemText,
   Divider,
 } from '@mui/material';
-import {
-  ArrowBack,
-  Computer,
-  Cloud,
-  Settings,
-  CheckCircle,
-  ExpandMore,
-  Download,
-  Language as LanguageIcon,
-  Category,
-  DataObject,
-  Palette,
-  Rocket,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface DeploymentOptionsProps {
   deployment: {

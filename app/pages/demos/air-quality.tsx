@@ -9,7 +9,9 @@ import { Alert, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/mat
 import { useMemo } from 'react';
 
 import { DemoEmpty, DemoError, DemoLayout, DemoLoading } from '@/components/demos/demo-layout';
+import { InsightsPanel } from '@/components/insights/InsightsPanel';
 import { useDataGovRs } from '@/hooks/use-data-gov-rs';
+import { useDatasetInsights } from '@/hooks/use-dataset-insights';
 import { DEMO_FALLBACKS } from '@/lib/demos/fallbacks';
 
 // WHO Air Quality Guidelines (μg/m³)
@@ -200,6 +202,13 @@ export default function AirQualityDemo() {
     ? 'Istraživanje nivoa zagađenja vazduha koji direktno utiču na zdravlje građana Srbije'
     : 'Investigation of air pollution levels directly affecting the health of Serbian citizens';
 
+  const { insights } = useDatasetInsights({
+    rows: analysis?.readings,
+    datasetName: dataset?.title,
+    locale,
+    maxInsights: 5
+  });
+
   return (
     <DemoLayout
       title={title}
@@ -235,6 +244,13 @@ export default function AirQualityDemo() {
               Ovo predstavlja ozbiljan rizik po zdravlje, posebno za decu, starije osobe i osobe sa respiratornim problemima.
             </Alert>
           )}
+
+          {/* AI Insights */}
+          <InsightsPanel
+            insights={insights}
+            locale={locale as 'sr' | 'en'}
+            title={locale === 'sr' ? 'AI uvidi iz podataka' : 'AI Insights'}
+          />
 
           {/* Key Statistics Cards */}
           <Grid container spacing={3} sx={{ mb: 4 }}>

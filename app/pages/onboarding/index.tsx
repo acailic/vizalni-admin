@@ -10,15 +10,16 @@
  * 6. Deployment Options
  */
 
-import React, { useState, useEffect } from 'react';
 import { Container, Box, Paper } from '@mui/material';
-import { StepperWizard } from '@/components/onboarding/StepperWizard';
-import { WelcomeStep } from '@/components/onboarding/WelcomeStep';
-import { LanguageSelection } from '@/components/onboarding/LanguageSelection';
+import React, { useEffect, useState } from 'react';
+
 import { CategorySelection } from '@/components/onboarding/CategorySelection';
 import { DatasetBrowser } from '@/components/onboarding/DatasetBrowser';
-import { ThemeCustomization } from '@/components/onboarding/ThemeCustomization';
 import { DeploymentOptions } from '@/components/onboarding/DeploymentOptions';
+import { LanguageSelection } from '@/components/onboarding/LanguageSelection';
+import { StepperWizard } from '@/components/onboarding/StepperWizard';
+import { ThemeCustomization } from '@/components/onboarding/ThemeCustomization';
+import { WelcomeStep } from '@/components/onboarding/WelcomeStep';
 
 export interface OnboardingData {
   language: 'sr' | 'en';

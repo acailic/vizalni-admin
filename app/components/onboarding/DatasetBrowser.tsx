@@ -8,7 +8,14 @@
  * - Search and filter capabilities
  */
 
-import React, { useState } from 'react';
+import {
+  ArrowBack,
+  ArrowForward,
+  ExpandMore,
+  Search,
+  DataObject,
+  CheckCircle,
+} from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -26,14 +33,7 @@ import {
   InputAdornment,
   Alert,
 } from '@mui/material';
-import {
-  ArrowBack,
-  ArrowForward,
-  ExpandMore,
-  Search,
-  DataObject,
-  CheckCircle,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface DatasetBrowserProps {
   categories: string[];

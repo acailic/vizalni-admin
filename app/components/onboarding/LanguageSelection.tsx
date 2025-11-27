@@ -7,7 +7,7 @@
  * - Navigation controls
  */
 
-import React from 'react';
+import { ArrowBack, ArrowForward, CheckCircle } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -17,7 +17,7 @@ import {
   Button,
   Stack,
 } from '@mui/material';
-import { ArrowBack, ArrowForward, CheckCircle } from '@mui/icons-material';
+import React from 'react';
 
 interface LanguageSelectionProps {
   selected: 'sr' | 'en';

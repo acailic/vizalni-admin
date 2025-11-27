@@ -7,17 +7,6 @@
  * - Visual category cards with icons
  */
 
-import React from 'react';
-import {
-  Box,
-  Typography,
-  Card,
-  CardActionArea,
-  CardContent,
-  Button,
-  Stack,
-  Chip,
-} from '@mui/material';
 import {
   ArrowBack,
   ArrowForward,
@@ -34,6 +23,17 @@ import {
   Gavel,
   Public,
 } from '@mui/icons-material';
+import {
+  Box,
+  Typography,
+  Card,
+  CardActionArea,
+  CardContent,
+  Button,
+  Stack,
+  Chip,
+} from '@mui/material';
+import React from 'react';
 
 interface CategorySelectionProps {
   selected: string[];

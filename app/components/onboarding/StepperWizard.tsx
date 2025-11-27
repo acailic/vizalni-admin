@@ -7,8 +7,8 @@
  * - Mobile responsive
  */
 
-import React from 'react';
 import { Stepper, Step, StepLabel, Box } from '@mui/material';
+import React from 'react';
 
 interface StepperWizardProps {
   steps: string[];

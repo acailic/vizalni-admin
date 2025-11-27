@@ -7,9 +7,9 @@
  * - Call to action to begin
  */
 
-import React from 'react';
-import { Box, Typography, Button, Card, CardContent } from '@mui/material';
 import { ArrowForward, Palette, DataObject, Cloud } from '@mui/icons-material';
+import { Box, Typography, Button, Card, CardContent } from '@mui/material';
+import React from 'react';
 
 interface WelcomeStepProps {
   onNext: () => void;

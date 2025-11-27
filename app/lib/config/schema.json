@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vizualni-admin/config.schema.json",
+  "title": "Vizualni Admin Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project",
+    "categories",
+    "datasets",
+    "visualization",
+    "features",
+    "deployment"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "language", "theme"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Project display name"
+        },
+        "language": {
+          "type": "string",
+          "enum": ["sr", "en"],
+          "description": "Primary UI language"
+        },
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark", "custom"],
+          "description": "Base theme selection"
+        }
+      }
+    },
+    "categories": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "featured"],
+      "properties": {
+        "enabled": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Category slugs enabled in the UI"
+        },
+        "featured": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Featured category slugs to highlight"
+        }
+      }
+    },
+    "datasets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["autoDiscovery", "manualIds"],
+      "properties": {
+        "autoDiscovery": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic dataset discovery"
+        },
+        "manualIds": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "default": {},
+          "description": "Manually curated dataset IDs keyed by category"
+        }
+      }
+    },
+    "visualization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defaultChartType", "colorPalette", "customColors"],
+      "properties": {
+        "defaultChartType": {
+          "type": "string",
+          "enum": ["bar", "line", "area", "pie", "map", "table"],
+          "description": "Preferred default chart type"
+        },
+        "colorPalette": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Named palette to use (matches app palettes)"
+        },
+        "customColors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^#(?:[0-9a-fA-F]{3}){1,2}$"
+          },
+          "default": [],
+          "description": "Hex overrides applied when theme is custom"
+        }
+      }
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["embedding", "export", "sharing", "tutorials"],
+      "properties": {
+        "embedding": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow embedding visualizations"
+        },
+        "export": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable export features (images/CSV)"
+        },
+        "sharing": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable sharing links"
+        },
+        "tutorials": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show tutorial prompts"
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basePath", "customDomain", "target"],
+      "properties": {
+        "basePath": {
+          "type": "string",
+          "default": "/",
+          "description": "Base path for hosting (e.g., /vizualni-admin)"
+        },
+        "customDomain": {
+          "type": "string",
+          "default": "",
+          "description": "Custom domain if configured"
+        },
+        "target": {
+          "type": "string",
+          "enum": ["local", "github-pages", "custom"],
+          "default": "local",
+          "description": "Deployment target"
+        }
+      }
+    }
+  }
+}
