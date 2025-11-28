@@ -5,8 +5,6 @@
  * with automatic promotion and eviction.
  */
 
-import { getMemoryManager } from '../data/memory-manager';
-
 export interface CacheEntry<T> {
   key: string;
   data: T;
@@ -63,8 +61,6 @@ export class MultiLevelCache<T = any> {
     totalMisses: 0,
     hitRate: 0,
   };
-
-  private memoryManager = getMemoryManager();
 
   constructor(config: CacheConfig = {}) {
     this.config = {

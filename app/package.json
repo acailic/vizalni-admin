@@ -8,13 +8,22 @@
   "main": "dist/acailic-vizualni-admin.cjs.js",
   "module": "dist/acailic-vizualni-admin.esm.js",
   "types": "dist/acailic-vizualni-admin.cjs.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/acailic-vizualni-admin.cjs.d.ts",
+      "import": "./dist/acailic-vizualni-admin.esm.js",
+      "require": "./dist/acailic-vizualni-admin.cjs.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
   "files": [
     "dist",
     "locales",
     "README.md"
   ],
   "scripts": {
-    "build": "yarn workspace @visualize-admin/visualization-tool run build"
+    "build": "preconstruct build"
   },
   "dependencies": {
     "@apollo/client": "^3.3.20",
