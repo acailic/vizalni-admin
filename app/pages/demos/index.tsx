@@ -175,6 +175,41 @@ export default function DemosIndex() {
           border: "1px solid",
           borderColor: "divider",
           background:
+            "linear-gradient(120deg, rgba(15,23,42,0.08), rgba(14,165,233,0.08))",
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: { xs: "flex-start", md: "center" },
+          gap: 2,
+        }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }}>
+            Pitch-ready walkthrough
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            A new /demos/pitch page with curated charts, embeds, and npm quickstarts designed for live presentations.
+          </Typography>
+        </Box>
+        <Link href="/demos/pitch" passHref legacyBehavior>
+          <Button
+            component="a"
+            variant="outlined"
+            color="primary"
+            sx={{ textTransform: "none", fontWeight: 700, px: 2.5 }}
+          >
+            Open pitch demo
+          </Button>
+        </Link>
+      </Box>
+
+      <Box
+        sx={{
+          mb: 5,
+          p: 3,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+          background:
             "linear-gradient(115deg, rgba(14,165,233,0.08), rgba(37,99,235,0.06))",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },

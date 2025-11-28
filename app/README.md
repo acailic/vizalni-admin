@@ -23,56 +23,117 @@ yarn add @acailic/vizualni-admin
 
 ## What's Included
 
-This beta release provides the following standalone utilities:
+This beta release provides:
 
-### Locale Utilities
-- `defaultLocale` - Default application locale
-- `locales` - Array of supported locales
-- `parseLocaleString()` - Parse locale strings
+- Locale utilities: `defaultLocale`, `locales`, `parseLocaleString`
+- TypeScript types for chart/configuration models
+- I18n support via `I18nProvider` re-export
+- Demo-ready chart components (Line/Column/Pie) used on GitHub Pages
+- Embed-ready endpoints (see below)
 
-### TypeScript Types
-- Complete configuration types for chart configs
-- Type-safe interfaces for data visualization
+## Quick usage
 
-### I18n Support
-- Re-exported `I18nProvider` from `@lingui/react`
+### Render a chart
 
-## Usage
+```tsx
+import { LineChart } from '@acailic/vizualni-admin';
 
-### Basic Example
+const data = [
+  { label: '2019', value: 72 },
+  { label: '2020', value: 54 },
+  { label: '2021', value: 63 },
+  { label: '2022', value: 81 },
+];
 
-```typescript
+export function Example() {
+  return (
+    <LineChart
+      data={data}
+      xKey="label"
+      yKey="value"
+      title="Employment recovery"
+      width={720}
+      height={360}
+      showTooltip
+      showCrosshair
+    />
+  );
+}
+```
+
+Column and pie variations:
+
+```tsx
+import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
+
+// Column
+<ColumnChart
+  data={[
+    { year: '2019', jobs: 180 },
+    { year: '2020', jobs: 140 },
+  ]}
+  xKey="year"
+  yKey="jobs"
+  title="Jobs created per year"
+  color="#0ea5e9"
+  showTooltip
+  showCrosshair
+/>
+
+// Pie
+<PieChart
+  data={[
+    { label: 'Solar', value: 18 },
+    { label: 'Wind', value: 22 },
+  ]}
+  labelKey="label"
+  valueKey="value"
+  title="Electricity mix"
+  showLegend
+/>
+```
+
+### Embed a chart (iframe)
+
+Use the hosted demo endpoint on GitHub Pages and pass theme/lang:
+
+```html
+<iframe
+  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=en"
+  style="width: 100%; height: 520px; border: 0;"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+></iframe>
+```
+
+Generate a custom snippet at `/embed` (GitHub Pages build) to tweak width/height/theme/lang.
+
+### Build embed URLs in code
+
+```ts
+import { buildEmbedUrl } from '@acailic/vizualni-admin/lib/embed-url';
+
+const url = buildEmbedUrl('https://acailic.github.io/vizualni-admin/embed/demo', {
+  theme: 'dark',
+  lang: 'sr',
+});
+// -> https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
+```
+
+### Locale utilities
+
+```ts
 import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-admin';
 
-// Get default locale
 console.log(defaultLocale); // 'sr-Latn'
-
-// Get all supported locales
-console.log(locales); // ['sr-Latn', 'sr-Cyrl', 'en']
-
-// Parse a locale string
-const userLocale = parseLocaleString('sr-Cyrl');
-console.log(userLocale); // 'sr-Cyrl'
-
-// Parse with fallback to default
-const unknownLocale = parseLocaleString('de');
-console.log(unknownLocale); // 'sr-Latn' (falls back to default)
+console.log(locales);       // ['sr-Latn', 'sr-Cyrl', 'en']
+console.log(parseLocaleString('sr-Cyrl')); // 'sr-Cyrl'
+console.log(parseLocaleString('de'));      // falls back to default
 ```
 
-### TypeScript Support
+### With React and Lingui
 
-The package includes full TypeScript declarations:
-
-```typescript
-import type { Locale } from '@acailic/vizualni-admin';
-
-// Locale is a union type: "sr-Latn" | "sr-Cyrl" | "en"
-const myLocale: Locale = 'sr-Latn';
-```
-
-### With React
-
-```typescript
+```tsx
 import { I18nProvider } from '@acailic/vizualni-admin';
 import { i18n } from '@lingui/core';
 
@@ -87,15 +148,12 @@ function App() {
 
 ## What's NOT Included (Yet)
 
-This is a **minimal beta release** focusing on core utilities. The following features are planned for future releases:
+This is a **beta**. Future releases will continue to harden:
 
-- Configurator components
-- Chart components
+- Configurator UI
 - Full Next.js application components
 - CLI tools
 - Additional utilities
-
-These components will be refactored for standalone usage in upcoming releases.
 
 ## Supported Locales
 
