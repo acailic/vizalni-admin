@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Employment Crisis Visualization
  * Alarming data about youth unemployment, brain drain, and wage gaps
@@ -7,9 +6,9 @@
 import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/material';
 
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import { LineChart } from '@/components/demos/charts/LineChart';
 import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
-import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   brainDrainData,
   employmentStats,
@@ -30,20 +29,8 @@ export default function EmploymentDemo() {
     ? 'Alarmantni podaci o nezaposlenosti mladih, odlivu obrazovanih kadrova i razlici u platama'
     : 'Alarming data on youth unemployment, brain drain, and wage gaps';
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={{
-        title: locale === 'sr'
-          ? 'Statistika tržišta rada Republike Srbije'
-          : 'Labor Market Statistics of the Republic of Serbia',
-        organization: locale === 'sr'
-          ? 'Republički zavod za statistiku i Nacionalna služba za zapošljavanje'
-          : 'Statistical Office and National Employment Service',
-        updatedAt: '2024'
-      }}
-    >
+  const dashboardContent = (
+    <Box>
       <LiveDatasetPanel demoId="employment" title={locale === 'sr' ? 'Živi podaci (tržište rada)' : 'Live data (employment)'} />
       <Box>
         {/* Critical Warning Banner */}
@@ -391,7 +378,29 @@ export default function EmploymentDemo() {
           </Alert>
         </Paper>
       </Box>
-    </DemoLayout>
+    </Box>
+  );
+
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId="employment-demo"
+      chartComponent={dashboardContent}
+      fallbackData={unemploymentTrends}
+      insightsConfig={{
+        datasetId: 'employment-demo',
+        sampleData: unemploymentTrends,
+        valueColumn: 'youthUnemploymentRate',
+        timeColumn: 'year'
+      }}
+      columns={[
+        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
+        { key: 'youthUnemploymentRate', header: locale === 'sr' ? 'Nezaposlenost mladih (%)' : 'Youth Unemployment (%)', width: 180 },
+        { key: 'generalUnemploymentRate', header: locale === 'sr' ? 'Opšta nezaposlenost (%)' : 'General Unemployment (%)', width: 180 },
+        { key: 'longTermUnemploymentRate', header: locale === 'sr' ? 'Dugoročna nezaposlenost (%)' : 'Long-term Unemployment (%)', width: 200 },
+      ]}
+    />
   );
 }
 
@@ -403,4 +412,3 @@ export async function getStaticProps() {
     props: {}
   };
 }
-// @ts-nocheck

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Container, Typography, Alert, Button, Tabs, Tab, Paper, Stack, useTheme, useMediaQuery } from '@mui/material';
-import { Trans } from '@lingui/macro';
+import { Box, Container, Typography, Alert, Button, Tabs, Tab, Paper, Stack, useTheme, useMediaQuery, TextField, InputAdornment } from '@mui/material';
+import { Trans, defineMessage } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { useProgressiveData } from '../../hooks/use-progressive-data';
 import { useDatasetInsights, UseDatasetInsightsOptions } from '../../hooks/use-dataset-insights';
 import { VirtualizedTable } from '../VirtualizedTable';
@@ -9,6 +10,7 @@ import { InsightsPanel } from '../insights/InsightsPanel';
 import DownloadIcon from '@mui/icons-material/Download';
 import ShareIcon from '@mui/icons-material/Share';
 import TableChartIcon from '@mui/icons-material/TableChart';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface DemoPageTemplateProps {
   title: React.ReactNode;
@@ -34,25 +36,39 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
   insightsConfig
 }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [filterText, setFilterText] = useState('');
+  const { i18n } = useLingui();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const resolvedLoader = useCallback(async (chunk: number, size: number) => {
     if (dataLoader) {
+      // Note: dataLoader filtering is not supported in this simplified implementation
+      // It would require passing filterText to dataLoader
       return dataLoader(chunk, size);
     }
 
     if (fallbackData.length > 0) {
+      let filteredData = fallbackData;
+      if (filterText) {
+        const lowerFilter = filterText.toLowerCase();
+        filteredData = fallbackData.filter(row =>
+          Object.values(row).some(val =>
+            String(val).toLowerCase().includes(lowerFilter)
+          )
+        );
+      }
+
       const start = chunk * size;
       const end = start + size;
       return {
-        data: fallbackData.slice(start, end),
-        total: fallbackData.length
+        data: filteredData.slice(start, end),
+        total: filteredData.length
       };
     }
 
     return { data: [], total: 0 };
-  }, [dataLoader, fallbackData]);
+  }, [dataLoader, fallbackData, filterText]);
 
   // Data loading with progressive loader
   const {
@@ -65,8 +81,8 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
     reset,
   } = useProgressiveData(resolvedLoader, { chunkSize });
 
-  // Reset data loader when source changes
-  const loaderKey = useMemo(() => `${fallbackData?.length || 0}-${!!dataLoader}`, [fallbackData?.length, dataLoader]);
+  // Reset data loader when source or filter changes
+  const loaderKey = useMemo(() => `${fallbackData?.length || 0}-${!!dataLoader}-${filterText}`, [fallbackData?.length, dataLoader, filterText]);
   useEffect(() => {
     reset();
   }, [reset, loaderKey]);
@@ -140,6 +156,22 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
         {/* Data Explorer Tab */}
         {activeTab === 1 && (
           <Paper variant="outlined" sx={{ p: 0, overflow: 'hidden', height: 600, display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', gap: 2 }}>
+               <TextField
+                size="small"
+                placeholder={i18n._(defineMessage({ message: "Search data..." }))}
+                value={filterText}
+                onChange={(e) => setFilterText(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ width: 300 }}
+              />
+            </Box>
             {dataLoading && data.length === 0 ? (
               <Box sx={{ p: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <ProgressIndicator progress={progress} message={<Trans>Loading dataset...</Trans>} />

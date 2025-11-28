@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Healthcare Crisis Visualization
  * Alarming data about waiting lists, capacity issues, and healthcare worker exodus
@@ -7,9 +6,9 @@
 import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Chip, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import { LineChart } from '@/components/demos/charts/LineChart';
 import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
-import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   healthcareStats,
   healthcareWorkerExodus,
@@ -35,20 +34,8 @@ export default function HealthcareDemo() {
     item.averageWaitDays > max.averageWaitDays ? item : max
   );
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={{
-        title: locale === 'sr'
-          ? 'Statistika zdravstvenog sistema Republike Srbije'
-          : 'Healthcare System Statistics of the Republic of Serbia',
-        organization: locale === 'sr'
-          ? 'Republički zavod za statistiku i Ministarstvo zdravlja'
-          : 'Statistical Office and Ministry of Health',
-        updatedAt: '2024'
-      }}
-    >
+  const dashboardContent = (
+    <Box>
       <LiveDatasetPanel demoId="healthcare" title={locale === 'sr' ? 'Živi podaci (zdravstvo)' : 'Live data (healthcare)'} />
       <Box>
         {/* Critical Warning Banner */}
@@ -382,7 +369,29 @@ export default function HealthcareDemo() {
           </Alert>
         </Paper>
       </Box>
-    </DemoLayout>
+    </Box>
+  );
+
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId="healthcare-demo"
+      chartComponent={dashboardContent}
+      fallbackData={healthcareWorkerExodus}
+      insightsConfig={{
+        datasetId: 'healthcare-demo',
+        sampleData: healthcareWorkerExodus,
+        valueColumn: 'totalLeft',
+        timeColumn: 'year'
+      }}
+      columns={[
+        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
+        { key: 'totalLeft', header: locale === 'sr' ? 'Ukupno otišlo' : 'Total Left', width: 150 },
+        { key: 'doctors', header: locale === 'sr' ? 'Lekari' : 'Doctors', width: 150 },
+        { key: 'nurses', header: locale === 'sr' ? 'Sestre' : 'Nurses', width: 150 },
+      ]}
+    />
   );
 }
 
@@ -394,4 +403,3 @@ export async function getStaticProps() {
     props: {}
   };
 }
-// @ts-nocheck

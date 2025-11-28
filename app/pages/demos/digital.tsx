@@ -6,11 +6,11 @@
 import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Chip, Grid, Paper, Typography } from '@mui/material';
 
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import { BarChart } from '@/components/demos/charts/BarChart';
 import { ColumnChart } from '@/components/demos/charts/ColumnChart';
 import { LineChart } from '@/components/demos/charts/LineChart';
 import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
-import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   digitalDivide,
   digitalSkillsTrends,
@@ -46,20 +46,8 @@ export default function DigitalDemo() {
     ? 'Analiza digitalne transformacije kroz rast internet pristupa, digitalnih veština, e-trgovine, e-uprave i IT industrije'
     : 'Analysis of digital transformation through growth of internet access, digital skills, e-commerce, e-government, and IT industry';
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={{
-        title: locale === 'sr'
-          ? 'Statistika digitalne ekonomije Republike Srbije'
-          : 'Digital Economy Statistics of the Republic of Serbia',
-        organization: locale === 'sr'
-          ? 'Republički zavod za statistiku, RATEL'
-          : 'Statistical Office of the Republic of Serbia, RATEL',
-        updatedAt: '2024'
-      }}
-    >
+  const dashboardContent = (
+    <Box>
       <LiveDatasetPanel demoId="digital" title={locale === 'sr' ? 'Živi podaci (digitalizacija)' : 'Live data (digital)'} />
       <Box>
         {/* Digital Success Story Alert */}
@@ -558,6 +546,38 @@ export default function DigitalDemo() {
           </Grid>
         </Paper>
       </Box>
-    </DemoLayout>
+    </Box>
   );
+
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId="digital-demo"
+      chartComponent={dashboardContent}
+      fallbackData={internetAdoption}
+      insightsConfig={{
+        datasetId: 'digital-demo',
+        sampleData: internetAdoption,
+        valueColumn: 'individuals',
+        timeColumn: 'year'
+      }}
+      columns={[
+        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
+        { key: 'individuals', header: locale === 'sr' ? 'Pojedinci (%)' : 'Individuals (%)', width: 150 },
+        { key: 'households', header: locale === 'sr' ? 'Domaćinstva (%)' : 'Households (%)', width: 150 },
+        { key: 'mobile', header: locale === 'sr' ? 'Mobilni (%)' : 'Mobile (%)', width: 150 },
+        { key: 'broadband', header: locale === 'sr' ? 'Širokopojasni (%)' : 'Broadband (%)', width: 150 },
+      ]}
+    />
+  );
+}
+
+/**
+ * Static generation for GitHub Pages
+ */
+export async function getStaticProps() {
+  return {
+    props: {}
+  };
 }

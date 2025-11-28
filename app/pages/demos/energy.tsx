@@ -477,7 +477,6 @@ export default function EnergyDemo() {
           </Alert>
         </Paper>
       </Box>
-    </Box>
   );
 
   return (

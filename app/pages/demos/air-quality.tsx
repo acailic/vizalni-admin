@@ -8,10 +8,8 @@ import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
-import { DemoEmpty, DemoError, DemoLayout, DemoLoading } from '@/components/demos/demo-layout';
-import { InsightsPanel } from '@/components/insights/InsightsPanel';
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import { useDataGovRs } from '@/hooks/use-data-gov-rs';
-import { useDatasetInsights } from '@/hooks/use-dataset-insights';
 import { DEMO_FALLBACKS } from '@/lib/demos/fallbacks';
 import { getValidatedDatasetIds } from '@/lib/demos/validated-datasets';
 
@@ -226,311 +224,292 @@ export default function AirQualityDemo() {
     };
   }, [sampleRows]);
 
-  const {
-    insights,
-    loading: insightsLoading,
-    error: insightsError,
-    refresh: refreshInsights,
-  } = useDatasetInsights({
-    datasetId: dataset?.id || 'air-quality-demo',
-    sampleData: sampleRows,
-    valueColumn: insightColumns.valueColumn,
-    timeColumn: insightColumns.timeColumn,
-  });
+  const dashboardContent = useMemo(() => {
+    if (loading) return null; // DemoPageTemplate handles loading if we pass no data, but here we want to show dashboard content only when analysis is ready or error
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={
-        dataset
-          ? {
-              title: dataset.title,
-              organization: dataset.organization.title || dataset.organization.name,
-              updatedAt: dataset.updated_at,
-              datasetUrl: dataset.page || (dataset.id?.startsWith('demo-') ? undefined : `https://data.gov.rs/sr/datasets/${dataset.id}`)
-            }
-          : undefined
-      }
-    >
-      {/* Loading State */}
-      {loading && <DemoLoading message="Učitavanje podataka o zagađenju vazduha..." />}
+    if (error) return <Alert severity="error">{error.message}</Alert>;
 
-      {/* Error State */}
-      {error && <DemoError error={error} onRetry={refetch} />}
+    if (!analysis) return <Alert severity="info">No data available for analysis.</Alert>;
 
-      {/* Main Content */}
-      {!loading && !error && analysis && (
-        <Box>
-          {/* Critical Warning Banner */}
-          {analysis.avgPM25 && analysis.avgPM25 > WHO_LIMITS.PM25.daily && (
-            <Alert
-              severity="error"
-              sx={{ mb: 4, fontSize: '1.1rem', fontWeight: 500 }}
-            >
-              <strong>⚠️ ZDRAVSTVENO UPOZORENJE:</strong> Prosečan nivo PM2.5 čestica je{' '}
-              <strong>{analysis.pm25Exceedance}% iznad</strong> sigurne granice Svetske zdravstvene organizacije (WHO).
-              Ovo predstavlja ozbiljan rizik po zdravlje, posebno za decu, starije osobe i osobe sa respiratornim problemima.
-            </Alert>
-          )}
+    return (
+      <Box>
+        {/* Critical Warning Banner */}
+        {analysis.avgPM25 && analysis.avgPM25 > WHO_LIMITS.PM25.daily && (
+          <Alert
+            severity="error"
+            sx={{ mb: 4, fontSize: '1.1rem', fontWeight: 500 }}
+          >
+            <strong>⚠️ ZDRAVSTVENO UPOZORENJE:</strong> Prosečan nivo PM2.5 čestica je{' '}
+            <strong>{analysis.pm25Exceedance}% iznad</strong> sigurne granice Svetske zdravstvene organizacije (WHO).
+            Ovo predstavlja ozbiljan rizik po zdravlje, posebno za decu, starije osobe i osobe sa respiratornim problemima.
+          </Alert>
+        )}
 
-          {/* AI Insights */}
-          <InsightsPanel
-            insights={insights}
-            locale={locale as 'sr' | 'en'}
-            loading={insightsLoading}
-            error={insightsError}
-            onRefresh={refreshInsights}
-          />
-
-          {/* Key Statistics Cards */}
-          <Grid container spacing={3} sx={{ mb: 4 }}>
-            {/* PM2.5 Average */}
-            {analysis.avgPM25 !== null && (
-              <Grid item xs={12} md={6} lg={3}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    borderLeft: 4,
-                    borderColor: analysis.avgPM25 > WHO_LIMITS.PM25.daily ? 'error.main' : 'warning.main'
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="caption" color="text.secondary">
-                      Prosečan PM2.5
-                    </Typography>
-                    <Typography variant="h3" sx={{ my: 1, fontWeight: 700 }}>
-                      {analysis.avgPM25.toFixed(1)}
-                      <Typography component="span" variant="h6" color="text.secondary">
-                        {' μg/m³'}
-                      </Typography>
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      {analysis.avgPM25 > WHO_LIMITS.PM25.daily ? (
-                        <>
-                          <span>🔴</span>
-                          <Typography variant="body2" color="error.main">
-                            {analysis.pm25Exceedance}% iznad WHO granice
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <span>✅</span>
-                          <Typography variant="body2" color="success.main">
-                            U granicama normale
-                          </Typography>
-                        </>
-                      )}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
-
-            {/* PM10 Average */}
-            {analysis.avgPM10 !== null && (
-              <Grid item xs={12} md={6} lg={3}>
-                <Card
-                  sx={{
-                    height: '100%',
-                    borderLeft: 4,
-                    borderColor: analysis.avgPM10 > WHO_LIMITS.PM10.daily ? 'error.main' : 'warning.main'
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="caption" color="text.secondary">
-                      Prosečan PM10
-                    </Typography>
-                    <Typography variant="h3" sx={{ my: 1, fontWeight: 700 }}>
-                      {analysis.avgPM10.toFixed(1)}
-                      <Typography component="span" variant="h6" color="text.secondary">
-                        {' μg/m³'}
-                      </Typography>
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      {analysis.avgPM10 > WHO_LIMITS.PM10.daily ? (
-                        <>
-                          <span>⚠️</span>
-                          <Typography variant="body2" color="warning.main">
-                            {analysis.pm10Exceedance}% iznad WHO granice
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <span>✅</span>
-                          <Typography variant="body2" color="success.main">
-                            U granicama normale
-                          </Typography>
-                        </>
-                      )}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )}
-
-            {/* Days Above Limit */}
+        {/* Key Statistics Cards */}
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          {/* PM2.5 Average */}
+          {analysis.avgPM25 !== null && (
             <Grid item xs={12} md={6} lg={3}>
-              <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.main' }}>
+              <Card
+                sx={{
+                  height: '100%',
+                  borderLeft: 4,
+                  borderColor: analysis.avgPM25 > WHO_LIMITS.PM25.daily ? 'error.main' : 'warning.main'
+                }}
+              >
                 <CardContent>
                   <Typography variant="caption" color="text.secondary">
-                    Dana iznad granice
+                    Prosečan PM2.5
                   </Typography>
                   <Typography variant="h3" sx={{ my: 1, fontWeight: 700 }}>
-                    {analysis.daysAboveLimitPM25}
+                    {analysis.avgPM25.toFixed(1)}
                     <Typography component="span" variant="h6" color="text.secondary">
-                      {' / ' + analysis.totalDays}
+                      {' μg/m³'}
                     </Typography>
                   </Typography>
-                  <Typography variant="body2" color="error.main">
-                    {((analysis.daysAboveLimitPM25 / analysis.totalDays) * 100).toFixed(0)}% dana sa opasnim nivoom
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {analysis.avgPM25 > WHO_LIMITS.PM25.daily ? (
+                      <>
+                        <span>🔴</span>
+                        <Typography variant="body2" color="error.main">
+                          {analysis.pm25Exceedance}% iznad WHO granice
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <span>✅</span>
+                        <Typography variant="body2" color="success.main">
+                          U granicama normale
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* PM10 Average */}
+          {analysis.avgPM10 !== null && (
+            <Grid item xs={12} md={6} lg={3}>
+              <Card
+                sx={{
+                  height: '100%',
+                  borderLeft: 4,
+                  borderColor: analysis.avgPM10 > WHO_LIMITS.PM10.daily ? 'error.main' : 'warning.main'
+                }}
+              >
+                <CardContent>
+                  <Typography variant="caption" color="text.secondary">
+                    Prosečan PM10
+                  </Typography>
+                  <Typography variant="h3" sx={{ my: 1, fontWeight: 700 }}>
+                    {analysis.avgPM10.toFixed(1)}
+                    <Typography component="span" variant="h6" color="text.secondary">
+                      {' μg/m³'}
+                    </Typography>
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {analysis.avgPM10 > WHO_LIMITS.PM10.daily ? (
+                      <>
+                        <span>⚠️</span>
+                        <Typography variant="body2" color="warning.main">
+                          {analysis.pm10Exceedance}% iznad WHO granice
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <span>✅</span>
+                        <Typography variant="body2" color="success.main">
+                          U granicama normale
+                        </Typography>
+                      </>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          )}
+
+          {/* Days Above Limit */}
+          <Grid item xs={12} md={6} lg={3}>
+            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.main' }}>
+              <CardContent>
+                <Typography variant="caption" color="text.secondary">
+                  Dana iznad granice
+                </Typography>
+                <Typography variant="h3" sx={{ my: 1, fontWeight: 700 }}>
+                  {analysis.daysAboveLimitPM25}
+                  <Typography component="span" variant="h6" color="text.secondary">
+                    {' / ' + analysis.totalDays}
+                  </Typography>
+                </Typography>
+                <Typography variant="body2" color="error.main">
+                  {((analysis.daysAboveLimitPM25 / analysis.totalDays) * 100).toFixed(0)}% dana sa opasnim nivoom
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/* Max Reading */}
+          {analysis.maxPM25 !== null && (
+            <Grid item xs={12} md={6} lg={3}>
+              <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.dark' }}>
+                <CardContent>
+                  <Typography variant="caption" color="text.secondary">
+                    Maksimalan PM2.5
+                  </Typography>
+                  <Typography variant="h3" sx={{ my: 1, fontWeight: 700, color: 'error.main' }}>
+                    {analysis.maxPM25.toFixed(1)}
+                  </Typography>
+                  <Typography variant="body2" color="error.dark">
+                    {((analysis.maxPM25 / WHO_LIMITS.PM25.daily) * 100).toFixed(0)}x WHO granica
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
+          )}
+        </Grid>
 
-            {/* Max Reading */}
-            {analysis.maxPM25 !== null && (
-              <Grid item xs={12} md={6} lg={3}>
-                <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.dark' }}>
-                  <CardContent>
-                    <Typography variant="caption" color="text.secondary">
-                      Maksimalan PM2.5
-                    </Typography>
-                    <Typography variant="h3" sx={{ my: 1, fontWeight: 700, color: 'error.main' }}>
-                      {analysis.maxPM25.toFixed(1)}
-                    </Typography>
-                    <Typography variant="body2" color="error.dark">
-                      {((analysis.maxPM25 / WHO_LIMITS.PM25.daily) * 100).toFixed(0)}x WHO granica
-                    </Typography>
-                  </CardContent>
-                </Card>
+        {/* Timeline Chart */}
+        {analysis.pm25Key && analysis.readings.length > 0 && (
+          <Paper sx={{ p: 4, mb: 4 }}>
+            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+              📈 Vremenska serija zagađenja PM2.5
+            </Typography>
+
+            <Box sx={{ position: 'relative' }}>
+              <PollutionTimelineChart
+                data={analysis.readings}
+                pollutantKey={analysis.pm25Key}
+                limit={WHO_LIMITS.PM25.daily}
+                limitLabel="WHO granica (15 μg/m³)"
+              />
+            </Box>
+
+            <Alert severity="info" sx={{ mt: 3 }}>
+              <strong>Šta je PM2.5?</strong> Fine čestice prečnika manjeg od 2.5 mikrona koje prodiru duboko
+              u pluća i krvotok. Prema WHO, dugotrajno izlaganje PM2.5 česticama uzrokuje bolesti srca,
+              moždani udar, rak pluća i hronične respiratorne bolesti.
+            </Alert>
+          </Paper>
+        )}
+
+        {/* Comparison with WHO Guidelines */}
+        <Paper sx={{ p: 4, mb: 4 }}>
+          <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+            ⚖️ Poređenje sa WHO graničnim vrednostima
+          </Typography>
+
+          <Grid container spacing={3}>
+            {analysis.avgPM25 && (
+              <Grid item xs={12} md={6}>
+                <WHOComparisonBar
+                  pollutant="PM2.5"
+                  value={analysis.avgPM25}
+                  limit={WHO_LIMITS.PM25.daily}
+                  unit="μg/m³"
+                  description="Najopasnije čestice za zdravlje"
+                />
+              </Grid>
+            )}
+            {analysis.avgPM10 && (
+              <Grid item xs={12} md={6}>
+                <WHOComparisonBar
+                  pollutant="PM10"
+                  value={analysis.avgPM10}
+                  limit={WHO_LIMITS.PM10.daily}
+                  unit="μg/m³"
+                  description="Udisljive čestice prašine"
+                />
               </Grid>
             )}
           </Grid>
+        </Paper>
 
-          {/* Timeline Chart */}
-          {analysis.pm25Key && analysis.readings.length > 0 && (
-            <Paper sx={{ p: 4, mb: 4 }}>
-              <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-                📈 Vremenska serija zagađenja PM2.5
+        {/* Health Impact Warning */}
+        <Paper sx={{ p: 4, mb: 4, backgroundColor: 'error.lighter' }}>
+          <Typography variant="h5" sx={{ mb: 3, fontWeight: 600, color: 'error.dark' }}>
+            ⚠️ Zdravstveni uticaj zagađenog vazduha
+          </Typography>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body1" paragraph>
+                <strong>Kratkoročni efekti:</strong>
               </Typography>
-
-              <Box sx={{ position: 'relative' }}>
-                <PollutionTimelineChart
-                  data={analysis.readings}
-                  pollutantKey={analysis.pm25Key}
-                  limit={WHO_LIMITS.PM25.daily}
-                  limitLabel="WHO granica (15 μg/m³)"
-                />
-              </Box>
-
-              <Alert severity="info" sx={{ mt: 3 }}>
-                <strong>Šta je PM2.5?</strong> Fine čestice prečnika manjeg od 2.5 mikrona koje prodiru duboko
-                u pluća i krvotok. Prema WHO, dugotrajno izlaganje PM2.5 česticama uzrokuje bolesti srca,
-                moždani udar, rak pluća i hronične respiratorne bolesti.
-              </Alert>
-            </Paper>
-          )}
-
-          {/* Comparison with WHO Guidelines */}
-          <Paper sx={{ p: 4, mb: 4 }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-              ⚖️ Poređenje sa WHO graničnim vrednostima
-            </Typography>
-
-            <Grid container spacing={3}>
-              {analysis.avgPM25 && (
-                <Grid item xs={12} md={6}>
-                  <WHOComparisonBar
-                    pollutant="PM2.5"
-                    value={analysis.avgPM25}
-                    limit={WHO_LIMITS.PM25.daily}
-                    unit="μg/m³"
-                    description="Najopasnije čestice za zdravlje"
-                  />
-                </Grid>
-              )}
-              {analysis.avgPM10 && (
-                <Grid item xs={12} md={6}>
-                  <WHOComparisonBar
-                    pollutant="PM10"
-                    value={analysis.avgPM10}
-                    limit={WHO_LIMITS.PM10.daily}
-                    unit="μg/m³"
-                    description="Udisljive čestice prašine"
-                  />
-                </Grid>
-              )}
+              <ul style={{ marginTop: 0 }}>
+                <li>Iritacija očiju, nosa i grla</li>
+                <li>Pogoršanje astme i alergija</li>
+                <li>Otežano disanje</li>
+                <li>Povećan rizik od srčanih problema</li>
+              </ul>
             </Grid>
-          </Paper>
-
-          {/* Health Impact Warning */}
-          <Paper sx={{ p: 4, mb: 4, backgroundColor: 'error.lighter' }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600, color: 'error.dark' }}>
-              ⚠️ Zdravstveni uticaj zagađenog vazduha
-            </Typography>
-
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Typography variant="body1" paragraph>
-                  <strong>Kratkoročni efekti:</strong>
-                </Typography>
-                <ul style={{ marginTop: 0 }}>
-                  <li>Iritacija očiju, nosa i grla</li>
-                  <li>Pogoršanje astme i alergija</li>
-                  <li>Otežano disanje</li>
-                  <li>Povećan rizik od srčanih problema</li>
-                </ul>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="body1" paragraph>
-                  <strong>Dugoročni efekti:</strong>
-                </Typography>
-                <ul style={{ marginTop: 0 }}>
-                  <li>Hronične bolesti pluća (COPD)</li>
-                  <li>Rak pluća</li>
-                  <li>Bolesti srca i krvnih sudova</li>
-                  <li>Smanjenje očekivanog životnog veka</li>
-                </ul>
-              </Grid>
-            </Grid>
-
-            <Alert severity="warning" sx={{ mt: 3 }}>
-              <strong>Posebno ranjive grupe:</strong> Deca, starije osobe, trudnice, i osobe sa
-              respiratornim i kardiovaskularnim oboljenjima su pod najvećim rizikom.
-            </Alert>
-          </Paper>
-
-          {/* Dataset Information */}
-          {dataset && (
-            <Paper sx={{ p: 3, backgroundColor: 'grey.50' }}>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                📊 O podacima
+            <Grid item xs={12} md={6}>
+              <Typography variant="body1" paragraph>
+                <strong>Dugoročni efekti:</strong>
               </Typography>
+              <ul style={{ marginTop: 0 }}>
+                <li>Hronične bolesti pluća (COPD)</li>
+                <li>Rak pluća</li>
+                <li>Bolesti srca i krvnih sudova</li>
+                <li>Smanjenje očekivanog životnog veka</li>
+              </ul>
+            </Grid>
+          </Grid>
+
+          <Alert severity="warning" sx={{ mt: 3 }}>
+            <strong>Posebno ranjive grupe:</strong> Deca, starije osobe, trudnice, i osobe sa
+            respiratornim i kardiovaskularnim oboljenjima su pod najvećim rizikom.
+          </Alert>
+        </Paper>
+
+        {/* Dataset Information */}
+        {dataset && (
+          <Paper sx={{ p: 3, backgroundColor: 'grey.50' }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              📊 O podacima
+            </Typography>
+            <Typography variant="body2" paragraph>
+              <strong>Dataset:</strong> {dataset.title}
+            </Typography>
+            {dataset.description && (
               <Typography variant="body2" paragraph>
-                <strong>Dataset:</strong> {dataset.title}
+                <strong>Opis:</strong> {dataset.description}
               </Typography>
-              {dataset.description && (
-                <Typography variant="body2" paragraph>
-                  <strong>Opis:</strong> {dataset.description}
-                </Typography>
-              )}
-              <Typography variant="body2">
-                <strong>Izvor:</strong> {dataset.organization.title || dataset.organization.name} |
-                <strong> Format:</strong> {resource?.format || 'N/A'} |
-                <strong> Ažurirano:</strong> {new Date(dataset.updated_at).toLocaleDateString('sr-RS')}
-              </Typography>
-            </Paper>
-          )}
-        </Box>
-      )}
+            )}
+            <Typography variant="body2">
+              <strong>Izvor:</strong> {dataset.organization.title || dataset.organization.name} |
+              <strong> Format:</strong> {resource?.format || 'N/A'} |
+              <strong> Ažurirano:</strong> {new Date(dataset.updated_at).toLocaleDateString('sr-RS')}
+            </Typography>
+          </Paper>
+        )}
+      </Box>
+    );
+  }, [analysis, dataset, error, loading, resource]);
 
-      {/* Empty State */}
-      {!loading && !error && !analysis && (
-        <DemoEmpty message="Podaci o kvalitetu vazduha nisu dostupni. Molimo pokušajte kasnije." />
-      )}
-    </DemoLayout>
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId={dataset?.id || 'air-quality-demo'}
+      chartComponent={dashboardContent}
+      fallbackData={sampleRows}
+      insightsConfig={{
+        datasetId: dataset?.id || 'air-quality-demo',
+        sampleData: sampleRows,
+        valueColumn: insightColumns.valueColumn,
+        timeColumn: insightColumns.timeColumn,
+      }}
+      columns={[
+        { key: 'date', header: locale === 'sr' ? 'Datum' : 'Date', width: 120 },
+        { key: 'time', header: locale === 'sr' ? 'Vreme' : 'Time', width: 100 },
+        { key: 'pm25', header: 'PM2.5 (μg/m³)', width: 120 },
+        { key: 'pm10', header: 'PM10 (μg/m³)', width: 120 },
+        { key: 'station', header: locale === 'sr' ? 'Stanica' : 'Station', width: 200 },
+      ]}
+    />
   );
 }
 
