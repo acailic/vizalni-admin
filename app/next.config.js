@@ -261,6 +261,10 @@ module.exports = withSentryConfig(
     project: process.env.SENTRY_PROJECT || "dummy-project",
     // Disable telemetry to suppress additional warnings
     disableLogger: true,
+    // Keep builds passing even if Sentry CLI fails (e.g., network timeouts)
+    errorHandler(error) {
+      console.warn("Sentry upload failed; continuing build.", error?.message || error);
+    },
   },
   {
     // Suppress CLI output and warnings
