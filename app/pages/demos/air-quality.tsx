@@ -204,11 +204,38 @@ export default function AirQualityDemo() {
     ? 'Istraživanje nivoa zagađenja vazduha koji direktno utiču na zdravlje građana Srbije'
     : 'Investigation of air pollution levels directly affecting the health of Serbian citizens';
 
-  const { insights } = useDatasetInsights({
-    rows: analysis?.readings,
-    datasetName: dataset?.title,
-    locale,
-    maxInsights: 5
+  const sampleRows = useMemo(() => {
+    if (analysis?.readings?.length) return analysis.readings;
+    if (Array.isArray(data)) return data;
+    return DEMO_FALLBACKS['air-quality']?.fallbackData ?? [];
+  }, [analysis?.readings, data]);
+
+  const insightColumns = useMemo(() => {
+    const firstRow = sampleRows.find(row => row && typeof row === 'object');
+    if (!firstRow) {
+      return { valueColumn: undefined, timeColumn: undefined };
+    }
+
+    const keys = Object.keys(firstRow);
+    const findKey = (candidates: string[]) =>
+      keys.find(k => candidates.some(c => k.toLowerCase().includes(c)));
+
+    return {
+      valueColumn: findKey(['pm2.5', 'pm25', 'pm_25', 'pm10', 'aqi', 'kolicina', 'quantity', 'value']),
+      timeColumn: findKey(['date', 'datum', 'time', 'vreme']),
+    };
+  }, [sampleRows]);
+
+  const {
+    insights,
+    loading: insightsLoading,
+    error: insightsError,
+    refresh: refreshInsights,
+  } = useDatasetInsights({
+    datasetId: dataset?.id || 'air-quality-demo',
+    sampleData: sampleRows,
+    valueColumn: insightColumns.valueColumn,
+    timeColumn: insightColumns.timeColumn,
   });
 
   return (
@@ -251,7 +278,9 @@ export default function AirQualityDemo() {
           <InsightsPanel
             insights={insights}
             locale={locale as 'sr' | 'en'}
-            title={locale === 'sr' ? 'AI uvidi iz podataka' : 'AI Insights'}
+            loading={insightsLoading}
+            error={insightsError}
+            onRefresh={refreshInsights}
           />
 
           {/* Key Statistics Cards */}

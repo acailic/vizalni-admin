@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Container, Typography, Alert, Button, Tabs, Tab, Paper, Stack, useTheme, useMediaQuery } from '@mui/material';
 import { Trans } from '@lingui/macro';
 import { useProgressiveData } from '../../hooks/use-progressive-data';
-import { useDatasetInsights } from '../../hooks/use-dataset-insights';
+import { useDatasetInsights, UseDatasetInsightsOptions } from '../../hooks/use-dataset-insights';
 import { VirtualizedTable } from '../VirtualizedTable';
 import { ProgressIndicator } from '../ProgressIndicator';
 import { InsightsPanel } from '../insights/InsightsPanel';
@@ -17,6 +17,9 @@ interface DemoPageTemplateProps {
   columns: any[];
   chartComponent?: React.ReactNode;
   fallbackData?: any[];
+  dataLoader?: (chunkIndex: number, chunkSize: number) => Promise<{ data: any[]; total: number }>;
+  chunkSize?: number;
+  insightsConfig?: UseDatasetInsightsOptions;
 }
 
 export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
@@ -25,11 +28,31 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
   datasetId,
   columns,
   chartComponent,
-  fallbackData = []
+  fallbackData = [],
+  dataLoader,
+  chunkSize = 100,
+  insightsConfig
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const resolvedLoader = useCallback(async (chunk: number, size: number) => {
+    if (dataLoader) {
+      return dataLoader(chunk, size);
+    }
+
+    if (fallbackData.length > 0) {
+      const start = chunk * size;
+      const end = start + size;
+      return {
+        data: fallbackData.slice(start, end),
+        total: fallbackData.length
+      };
+    }
+
+    return { data: [], total: 0 };
+  }, [dataLoader, fallbackData]);
 
   // Data loading with progressive loader
   const {
@@ -38,26 +61,15 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
     progress,
     hasMore,
     loadNext,
-    error: dataError
-  } = useProgressiveData(
-    async (chunk, size) => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 800));
+    error: dataError,
+    reset,
+  } = useProgressiveData(resolvedLoader, { chunkSize });
 
-      // If we have fallback data, use it
-      if (fallbackData.length > 0) {
-        const start = chunk * size;
-        const end = start + size;
-        return {
-          data: fallbackData.slice(start, end),
-          total: fallbackData.length
-        };
-      }
-
-      return { data: [], total: 0 };
-    },
-    { chunkSize: 100 }
-  );
+  // Reset data loader when source changes
+  const loaderKey = useMemo(() => `${fallbackData?.length || 0}-${!!dataLoader}`, [fallbackData?.length, dataLoader]);
+  useEffect(() => {
+    reset();
+  }, [reset, loaderKey]);
 
   // AI Insights
   const {
@@ -65,7 +77,7 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
     loading: insightsLoading,
     error: insightsError,
     refresh: refreshInsights
-  } = useDatasetInsights(datasetId);
+  } = useDatasetInsights(datasetId, insightsConfig);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
@@ -150,7 +162,7 @@ export const DemoPageTemplate: React.FC<DemoPageTemplateProps> = ({
                 />
                 <Box sx={{ p: 1, borderTop: 1, borderColor: 'divider', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="caption" color="text.secondary">
-                    <Trans>{data.length} rows loaded</Trans>
+                    {data.length} rows loaded
                   </Typography>
                   {hasMore && (
                     <Button size="small" onClick={() => loadNext()} disabled={dataLoading}>

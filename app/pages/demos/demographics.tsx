@@ -418,6 +418,12 @@ export default function DemographicsDemo() {
       datasetId="demographics-demo"
       chartComponent={dashboardContent}
       fallbackData={populationTrends}
+      insightsConfig={{
+        datasetId: 'demographics-demo',
+        sampleData: populationTrends,
+        valueColumn: 'total',
+        timeColumn: 'year',
+      }}
       columns={[
         { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
         { key: 'total', header: locale === 'sr' ? 'Ukupno (mil)' : 'Total (mil)', width: 150 },

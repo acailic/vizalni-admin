@@ -11,7 +11,7 @@ import { BarChart } from '@/components/demos/charts/BarChart';
 import { LineChart } from '@/components/demos/charts/LineChart';
 import { PieChart } from '@/components/demos/charts/PieChart';
 import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
-import { DemoLayout } from '@/components/demos/demo-layout';
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import {
   energyImports,
   energyInfrastructure,
@@ -42,81 +42,68 @@ export default function EnergyDemo() {
     { label: locale === 'sr' ? 'Ostalo' : 'Other', value: currentEnergyMix.other, category: locale === 'sr' ? 'Ostalo' : 'Other' }
   ];
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={{
-        title: locale === 'sr'
-          ? 'Statistika energetskog sektora Republike Srbije'
-          : 'Energy Sector Statistics of the Republic of Serbia',
-        organization: locale === 'sr'
-          ? 'Ministarstvo rudarstva i energetike'
-          : 'Ministry of Mining and Energy',
-        updatedAt: '2024'
-      }}
-    >
+  const dashboardContent = (
+    <Box>
       <LiveDatasetPanel demoId="energy" title={locale === 'sr' ? 'Živi podaci (energija)' : 'Live data (energy)'} />
-      <Box>
-        {/* Critical Warning Banner */}
-        <Alert
-          severity="error"
-          sx={{ mb: 4, fontSize: '1.1rem', fontWeight: 500 }}
-        >
-          {locale === 'sr' ? (
-            <>
-              <strong>⚠️ ENERGETSKA NESIGURNOST:</strong> Srbija zavisi <strong>{energyStats.coalDependency2024.toFixed(1)}%</strong> od UGLJA
-              za proizvodnju električne energije. Obnovljivi izvori (samo sunce/vetar) čine
-              svega <strong>{energyStats.solarWindOnly2024}%</strong>. Prosečna starost termoelektrana je <strong>{energyStats.averagePlantAge} godina</strong>,
-              efikasnost samo <strong>{energyStats.averagePlantEfficiency}%</strong>. Troškovi uvoza energije su porasli za
-              <strong> €{energyStats.importCostIncrease2015to2024}M</strong> od 2015. godine.
-            </>
-          ) : (
-            <>
-              <strong>⚠️ ENERGY INSECURITY:</strong> Serbia depends <strong>{energyStats.coalDependency2024.toFixed(1)}%</strong> on COAL
-              for electricity production. Renewable sources (solar/wind only) are just <strong>{energyStats.solarWindOnly2024}%</strong>.
-              Average coal plant age is <strong>{energyStats.averagePlantAge} years</strong>, efficiency only <strong>{energyStats.averagePlantEfficiency}%</strong>.
-              Energy import costs increased by <strong>€{energyStats.importCostIncrease2015to2024}M</strong> since 2015.
-            </>
-          )}
-        </Alert>
+      {/* Critical Warning Banner */}
+      <Alert
+        severity="error"
+        sx={{ mb: 4, fontSize: '1.1rem', fontWeight: 500 }}
+      >
+        {locale === 'sr' ? (
+          <>
+            <strong>⚠️ ENERGETSKA NESIGURNOST:</strong> Srbija zavisi <strong>{energyStats.coalDependency2024.toFixed(1)}%</strong> od UGLJA
+            za proizvodnju električne energije. Obnovljivi izvori (samo sunce/vetar) čine
+            svega <strong>{energyStats.solarWindOnly2024}%</strong>. Prosečna starost termoelektrana je <strong>{energyStats.averagePlantAge} godina</strong>,
+            efikasnost samo <strong>{energyStats.averagePlantEfficiency}%</strong>. Troškovi uvoza energije su porasli za
+            <strong> €{energyStats.importCostIncrease2015to2024}M</strong> od 2015. godine.
+          </>
+        ) : (
+          <>
+            <strong>⚠️ ENERGY INSECURITY:</strong> Serbia depends <strong>{energyStats.coalDependency2024.toFixed(1)}%</strong> on COAL
+            for electricity production. Renewable sources (solar/wind only) are just <strong>{energyStats.solarWindOnly2024}%</strong>.
+            Average coal plant age is <strong>{energyStats.averagePlantAge} years</strong>, efficiency only <strong>{energyStats.averagePlantEfficiency}%</strong>.
+            Energy import costs increased by <strong>€{energyStats.importCostIncrease2015to2024}M</strong> since 2015.
+          </>
+        )}
+      </Alert>
 
-        {/* Key Statistics Cards */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.main' }}>
-              <CardContent>
-                <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Zavisnost od uglja' : 'Coal dependency'}
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 700, my: 1, color: 'error.main' }}>
-                  {energyStats.coalDependency2024.toFixed(1)}%
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr' ? 'proizvodnje el. energije' : 'of electricity production'}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+      {/* Key Statistics Cards */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.main' }}>
+            <CardContent>
+              <Typography variant="caption" color="text.secondary">
+                {locale === 'sr' ? 'Zavisnost od uglja' : 'Coal dependency'}
+              </Typography>
+              <Typography variant="h4" sx={{ fontWeight: 700, my: 1, color: 'error.main' }}>
+                {energyStats.coalDependency2024.toFixed(1)}%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {locale === 'sr' ? 'proizvodnje el. energije' : 'of electricity production'}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-          <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'warning.main' }}>
-              <CardContent>
-                <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Obnovljivi izvori (S/V)' : 'Renewables (S/W)'}
-                </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
-                  {energyStats.solarWindOnly2024}%
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr'
-                    ? `EU prosek: ${energyStats.euRenewableAverage}%`
-                    : `EU average: ${energyStats.euRenewableAverage}%`
-                  }
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'warning.main' }}>
+            <CardContent>
+              <Typography variant="caption" color="text.secondary">
+                {locale === 'sr' ? 'Obnovljivi izvori (S/V)' : 'Renewables (S/W)'}
+              </Typography>
+              <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
+                {energyStats.solarWindOnly2024}%
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {locale === 'sr'
+                  ? `EU prosek: ${energyStats.euRenewableAverage}%`
+                  : `EU average: ${energyStats.euRenewableAverage}%`
+                }
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
             <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.dark' }}>
@@ -490,7 +477,32 @@ export default function EnergyDemo() {
           </Alert>
         </Paper>
       </Box>
-    </DemoLayout>
+    </Box>
+  );
+
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId="energy-demo"
+      chartComponent={dashboardContent}
+      fallbackData={energyProduction}
+      insightsConfig={{
+        datasetId: 'energy-demo',
+        sampleData: energyProduction,
+        valueColumn: 'totalProductionGWh',
+        timeColumn: 'year'
+      }}
+      columns={[
+        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
+        { key: 'totalProductionGWh', header: locale === 'sr' ? 'Proizvodnja (GWh)' : 'Production (GWh)', width: 180 },
+        { key: 'coal', header: locale === 'sr' ? 'Ugalj (%)' : 'Coal (%)', width: 120 },
+        { key: 'hydropower', header: locale === 'sr' ? 'Hidro (%)' : 'Hydro (%)', width: 120 },
+        { key: 'naturalGas', header: locale === 'sr' ? 'Gas (%)' : 'Gas (%)', width: 120 },
+        { key: 'solarWind', header: locale === 'sr' ? 'Sunce/Vetar (%)' : 'Solar/Wind (%)', width: 150 },
+        { key: 'other', header: locale === 'sr' ? 'Ostalo (%)' : 'Other (%)', width: 120 },
+      ]}
+    />
   );
 }
 

@@ -10,7 +10,7 @@ import { Alert, Box, Card, CardContent, Chip, Grid, LinearProgress, Paper, Typog
 import { BarChart } from '@/components/demos/charts/BarChart';
 import { LineChart } from '@/components/demos/charts/LineChart';
 import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
-import { DemoLayout } from '@/components/demos/demo-layout';
+import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
 import {
   accidentCauses,
   comparativeData,
@@ -31,20 +31,8 @@ export default function TransportDemo() {
     ? 'Alarmantni podaci o saobraćajnim nezgodama, preventabilnim smrtima i lošoj infrastrukturi'
     : 'Alarming data on traffic accidents, preventable deaths, and poor infrastructure';
 
-  return (
-    <DemoLayout
-      title={title}
-      description={description}
-      datasetInfo={{
-        title: locale === 'sr'
-          ? 'Statistika saobraćajne bezbednosti Republike Srbije'
-          : 'Traffic Safety Statistics of the Republic of Serbia',
-        organization: locale === 'sr'
-          ? 'Agencija za bezbednost saobraćaja'
-          : 'Road Traffic Safety Agency',
-        updatedAt: '2024'
-      }}
-    >
+  const dashboardContent = (
+    <Box>
       <LiveDatasetPanel demoId="transport" title={locale === 'sr' ? 'Živi podaci (saobraćaj)' : 'Live data (transport)'} />
       <Box>
         {/* Critical Warning Banner */}
@@ -467,7 +455,33 @@ export default function TransportDemo() {
           </Alert>
         </Paper>
       </Box>
-    </DemoLayout>
+    </Box>
+  );
+
+  return (
+    <DemoPageTemplate
+      title={title}
+      description={description}
+      datasetId="transport-demo"
+      chartComponent={dashboardContent}
+      fallbackData={trafficFatalities}
+      insightsConfig={{
+        datasetId: 'transport-demo',
+        sampleData: trafficFatalities,
+        valueColumn: 'totalFatalities',
+        timeColumn: 'year'
+      }}
+      columns={[
+        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
+        { key: 'totalFatalities', header: locale === 'sr' ? 'Poginuli' : 'Fatalities', width: 140 },
+        { key: 'fatalitiesPer100kPopulation', header: locale === 'sr' ? 'Na 100k' : 'Per 100k', width: 140 },
+        { key: 'seriousInjuries', header: locale === 'sr' ? 'Teške povrede' : 'Serious injuries', width: 160 },
+        { key: 'totalAccidents', header: locale === 'sr' ? 'Nezgode' : 'Accidents', width: 140 },
+        { key: 'pedestrianFatalities', header: locale === 'sr' ? 'Pešaci' : 'Pedestrians', width: 140 },
+        { key: 'motorcyclistFatalities', header: locale === 'sr' ? 'Motociklisti' : 'Motorcyclists', width: 160 },
+        { key: 'youngDriverFatalities', header: locale === 'sr' ? 'Mladi vozači' : 'Young drivers', width: 160 },
+      ]}
+    />
   );
 }
 

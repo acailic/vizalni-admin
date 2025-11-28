@@ -442,6 +442,12 @@ export default function EconomyDemo() {
       datasetId="economy-demo"
       chartComponent={dashboardContent}
       fallbackData={economicIndicators}
+      insightsConfig={{
+        datasetId: 'economy-demo',
+        sampleData: economicIndicators,
+        valueColumn: 'gdpGrowth',
+        timeColumn: 'year',
+      }}
       columns={[
         { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
         { key: 'gdpGrowth', header: locale === 'sr' ? 'Rast BDP (%)' : 'GDP Growth (%)', width: 150 },
