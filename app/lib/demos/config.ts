@@ -72,6 +72,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Age structure, projections through 2050, median age, and population growth rate.'
     },
     searchQuery: ['stanovnistvo', 'stanovništvo', 'demografija'],
+    preferredDatasetIds: getValidatedDatasetIds('demographics'),
     preferredTags: ['stanovnistvo', 'demografija'],
     slugKeywords: ['popis', 'demografija', 'stanovništvo'],
     chartType: 'bar',
@@ -196,6 +197,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Production, crops, and livestock with yield and export indicators.'
     },
     searchQuery: ['poljoprivreda', 'usevi'],
+    preferredDatasetIds: getValidatedDatasetIds('agriculture'),
     preferredTags: ['poljoprivreda', 'poljoprivredna-proizvodnja'],
     slugKeywords: ['poljoprivreda', 'usevi'],
     chartType: 'bar',
@@ -213,6 +215,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Tourist arrivals, overnight stays, revenues, and seasonal patterns.'
     },
     searchQuery: ['turizam', 'noćenja', 'nocenja', 'dolasci'],
+    preferredDatasetIds: getValidatedDatasetIds('tourism'),
     preferredTags: ['turizam', 'turistički promet'],
     slugKeywords: ['turizam', 'nocenja', 'dolasci'],
     chartType: 'line',
@@ -230,6 +233,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Cultural institutions, events, and heritage with a focus on access and attendance.'
     },
     searchQuery: ['kultura', 'kulturne institucije'],
+    preferredDatasetIds: getValidatedDatasetIds('culture'),
     preferredTags: ['kultura'],
     slugKeywords: ['kultura', 'kulturno'],
     chartType: 'pie',
@@ -247,6 +251,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Roads, water supply, sewage, and other public systems that shape quality of life.'
     },
     searchQuery: 'infrastruktura',
+    preferredDatasetIds: getValidatedDatasetIds('infrastructure'),
     chartType: 'column',
     tags: ['infrastruktura', 'javni-radovi', 'gradnja'],
     icon: '🏗️'
@@ -262,6 +267,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'GDP, inflation, employment, foreign trade, and investment over time.'
     },
     searchQuery: 'ekonomija bdp',
+    preferredDatasetIds: getValidatedDatasetIds('economy'),
     chartType: 'line',
     tags: ['ekonomija', 'bdp', 'finansije', 'investicije', 'transformacija'],
     icon: '💰'
@@ -277,6 +283,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Temperature rise, extreme weather events, pollution, and the shift to renewable energy.'
     },
     searchQuery: 'klima temperatura zivotna sredina',
+    preferredDatasetIds: getValidatedDatasetIds('climate'),
     chartType: 'line',
     tags: ['Klima', 'Životna sredina', 'Energija'],
     icon: '🌍'
@@ -292,6 +299,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'IT sector growth, internet access, e-commerce, and digital skills as indicators of digital progress.'
     },
     searchQuery: 'digitalizacija internet tehnologija',
+    preferredDatasetIds: getValidatedDatasetIds('digital'),
     chartType: 'line',
     tags: ['digitalizacija', 'internet', 'IT', 'tehnologija', 'uspeh'],
     icon: '💻'
