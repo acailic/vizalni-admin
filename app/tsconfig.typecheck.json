@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "bin/**/*",
+    "domain/data-gov-rs/**/*",
+    "lib/config/**/*",
+    "components/demos/**/*",
+    "types/**/*"
+  ],
+  "exclude": [
+    "**/__tests__/**",
+    "dist",
+    ".next",
+    "node_modules"
+  ]
+}

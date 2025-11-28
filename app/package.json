@@ -80,7 +80,8 @@
     "build:preconstruct": "preconstruct build",
     "test:coverage": "vitest run --coverage",
     "analyze": "next build --analyze",
-    "benchmark": "node benchmarks/chart-rendering.bench.ts && node benchmarks/data-loading.bench.ts"
+    "benchmark": "node benchmarks/chart-rendering.bench.ts && node benchmarks/data-loading.bench.ts",
+    "typecheck:focused": "tsc --noEmit -p tsconfig.typecheck.json"
   },
   "dependencies": {
     "d3-format": "^3.1.0",
