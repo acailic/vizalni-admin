@@ -1,258 +1,229 @@
-# Vizualni Admin - Serbian Open Data Visualization Tool 🇷🇸
+# @acailic/vizualni-admin
 
-A visualization tool for Serbian open data from
-[data.gov.rs](https://data.gov.rs). 🇷🇸
+> Alat za vizualizaciju otvorenih podataka Srbije – Beta izdanje
 
-**🌐 Live Demo**:
-[https://acailic.github.io/vizualni-admin/](https://acailic.github.io/vizualni-admin/)
+[![npm version](https://img.shields.io/npm/v/@acailic/vizualni-admin.svg)](https://www.npmjs.com/package/@acailic/vizualni-admin)
+[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/acailic/vizualni-admin/blob/main/LICENSE)
 
-## About
+## O paketu (srpski)
 
-This project is a fork/adaptation of other visualization tool, customized to
-work with Serbian open data from the
-[Portal otvorenih podataka](https://data.gov.rs).
+`@acailic/vizualni-admin` je **beta** paket zasnovan na projektu [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool). Namenjen je brzim vizualizacijama zvaničnih otvorenih podataka Republike Srbije, uz podršku za latinično i ćirilično pismo.
 
-The tool allows users to:
+## Instalacija
 
-- Browse and visualize datasets from data.gov.rs
-- Create interactive charts and visualizations
-- Embed visualizations in websites and applications
-- Export data in various formats
-
-## Data Source
-
-This tool is configured to work with the Serbian Open Data Portal:
-
-- **Portal**: https://data.gov.rs
-- **API**: https://data.gov.rs/api/1/
-- **API Documentation**: https://data.gov.rs/apidoc/
-
-The portal provides access to datasets from Serbian public institutions in
-machine-readable formats.
-
-## Technology Stack
-
-- **Framework**: Next.js 14
-- **Language**: TypeScript
-- **Database**: PostgreSQL
-- **Styling**: Material-UI, styled-components
-- **Charts**: D3.js, Vega
-- **Data Fetching**: GraphQL, REST API
-
-## Development Environment
-
-### Prerequisites
-
-- Node.js (v18 or later)
-- Yarn package manager
-- Docker and Docker Compose (for PostgreSQL)
-- PostgreSQL database
-
-### Setting up the development environment
-
-1. Make sure Docker is running
-2. Start the PostgreSQL database:
-
-   ```sh
-   docker-compose up
-   ```
-
-3. Install dependencies and set up the project:
-   ```sh
-   yarn setup:dev
-   ```
-
-### Running the development server
-
-Once the application is set up, start the development server:
-
-```sh
-yarn dev
+```bash
+npm install @acailic/vizualni-admin
+# ili
+yarn add @acailic/vizualni-admin
 ```
 
-For SSL (required for authentication):
+## Šta je uključeno
 
-```sh
-yarn dev:ssl
+- Lokalizacija: `defaultLocale`, `locales`, `parseLocaleString`
+- TypeScript tipovi za grafikon/konfiguracije
+- I18n podrška (`I18nProvider`)
+- Komponente za grafikone spremne za demo (Line/Column/Pie) koje koristimo na GitHub Pages
+- Spremno za ugradnju (embed) – vidi primere ispod
+
+## Brzi primeri
+
+### Linijski grafikon
+
+```tsx
+import { LineChart } from '@acailic/vizualni-admin';
+
+const data = [
+  { label: '2019', value: 72 },
+  { label: '2020', value: 54 },
+  { label: '2021', value: 63 },
+  { label: '2022', value: 81 },
+];
+
+export function Primer() {
+  return (
+    <LineChart
+      data={data}
+      xKey="label"
+      yKey="value"
+      title="Oporavak zaposlenosti"
+      width={720}
+      height={360}
+      showTooltip
+      showCrosshair
+    />
+  );
+}
 ```
 
-The application will be available at:
+### Stubičasti i pie grafikon
 
-- HTTP: http://localhost:3000
-- HTTPS: https://localhost:3000
+```tsx
+import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
 
-### Demo gallery & showcase
+// Stubičasti
+<ColumnChart
+  data={[
+    { year: '2019', jobs: 180 },
+    { year: '2020', jobs: 140 },
+  ]}
+  xKey="year"
+  yKey="jobs"
+  title="Nove pozicije po godinama"
+  color="#0ea5e9"
+  showTooltip
+  showCrosshair
+/>
 
-- Open the curated demo showcase: http://localhost:3000/demos/showcase
-- Browse the full demo gallery: http://localhost:3000/demos
-- To view with a base path (GitHub Pages build):
-  `NEXT_PUBLIC_BASE_PATH=/vizualni-admin yarn build:static` then open
-  `/vizualni-admin/demos/showcase` from the generated `out` dir.
-
-### Tutorials & Learning Resources
-
-Vizualni Admin now includes a comprehensive tutorial and documentation system
-designed to help users learn how to effectively create, customize, and share
-data visualizations. This multi-layered system features user-facing tutorials,
-step-by-step guides, interactive examples, and detailed documentation to support
-users at all skill levels.
-
-- **Tutorials Index**: Explore organized tutorials by category at
-  [https://acailic.github.io/vizualni-admin/tutorials](https://acailic.github.io/vizualni-admin/tutorials)
-- **Documentation Site**: Access developer and user guides at
-  [https://acailic.github.io/vizualni-admin/docs](https://acailic.github.io/vizualni-admin/docs)
-- **Embedding Guide**: Learn how to embed visualizations in websites at
-  [https://acailic.github.io/vizualni-admin/docs/embedding-guide](https://acailic.github.io/vizualni-admin/docs/embedding-guide)
-- **API Guide**: Understand using the data.gov.rs API at
-  [https://acailic.github.io/vizualni-admin/docs/data-gov-rs-guide](https://acailic.github.io/vizualni-admin/docs/data-gov-rs-guide)
-- **Demo Visualizations Guide**: Comprehensive guide to demo visualizations at
-  [docs/DEMOS_GUIDE.md](docs/DEMOS_GUIDE.md)
-- **GitHub Pages Deployment**: Guide for deploying to GitHub Pages at
-  [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md)
-- **Performance Optimization**: Performance tips and metrics at
-  [docs/PERFORMANCE.md](docs/PERFORMANCE.md)
-
-All tutorials and guides are available in both Serbian and English to
-accommodate our bilingual user base. Users can learn essential skills such as
-creating their first visualization, understanding different chart types,
-embedding content in external sites, integrating with data.gov.rs datasets, and
-applying advanced customization techniques.
-
-**Note**: Documentation has been recently consolidated for improved organization
-and maintainability.
-
-### Building for production
-
-```sh
-yarn build
+// Pie
+<PieChart
+  data={[
+    { label: 'Solar', value: 18 },
+    { label: 'Wind', value: 22 },
+  ]}
+  labelKey="label"
+  valueKey="value"
+  title="Mix proizvodnje"
+  showLegend
+/>
 ```
 
-### GitHub Pages Deployment
+### Ugradnja (iframe)
 
-The project is configured for automatic deployment to GitHub Pages. See
-[docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md) for details.
+Koristi javni demo na GitHub Pages i prosledi temu/jezik:
 
-**Live demo**:
-[https://acailic.github.io/vizualni-admin/](https://acailic.github.io/vizualni-admin/)
-
-To build for GitHub Pages locally:
-
-```sh
-NEXT_PUBLIC_BASE_PATH=/vizualni-admin yarn build:static
+```html
+<iframe
+  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=sr"
+  style="width: 100%; height: 520px; border: 0;"
+  loading="lazy"
+  referrerpolicy="no-referrer"
+></iframe>
 ```
 
-**Note**: If the static build fails with an invariant error, ensure all dynamic
-routes use `fallback: false` in `getStaticPaths`. See
-`docs/STATIC_EXPORT_TROUBLESHOOTING.md` for detailed troubleshooting steps.
+Generator koda za ugradnju nalazi se na `/embed` (u okviru GitHub Pages build-a) – izaberi širinu/visinu/temu/jezik i kopiraj snippet.
 
-CI runs `yarn lint --max-warnings=0` using the repo’s ESLint config (no global
-install) before the GitHub Pages build. Sourcemap uploads to Sentry are
-optional: CI forces `SENTRY_UPLOAD=false`, and you can enable real uploads
-locally by providing `SENTRY_AUTH_TOKEN` (plus `SENTRY_UPLOAD=true` if you want
-to override the default guard).
+### Generisanje URL-a za embed u kodu
 
-### Running tests
+```ts
+import { buildEmbedUrl } from '@acailic/vizualni-admin/lib/embed-url';
 
-```sh
-yarn test           # Run unit tests
-yarn e2e           # Run end-to-end tests
+const url = buildEmbedUrl('https://acailic.github.io/vizualni-admin/embed/demo', {
+  theme: 'dark',
+  lang: 'sr',
+});
+// https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
 ```
 
-## Presentation mode
+### Lokalizacija
 
-- Start dev server: `yarn dev` then open
-  `http://localhost:3000/demos/presentation`
-- Slide-style sections: hero, agenda, highlights, data stories, CTA with chip
-  navigation
-- Use existing sample data (digital, economy, energy) for the interactive charts
-- For static export/GitHub Pages:
-  `NEXT_PUBLIC_BASE_PATH=/vizualni-admin yarn build:static`
+```ts
+import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-admin';
 
-## Configuration
-
-Configuration is done through environment variables. Copy `.env.example` to
-`.env.local` and adjust the settings:
-
-```sh
-cp .env.example .env.local
+console.log(defaultLocale); // 'sr-Latn'
+console.log(locales);       // ['sr-Latn', 'sr-Cyrl', 'en']
+console.log(parseLocaleString('sr-Cyrl')); // 'sr-Cyrl'
+console.log(parseLocaleString('de'));      // vraća podrazumevani
 ```
 
-Key configuration options:
+### React + Lingui
 
-- Database connection (PostgreSQL)
-- API endpoints for data.gov.rs
-- Authentication settings
-- Internationalization settings (Serbian/English)
+```tsx
+import { I18nProvider } from '@acailic/vizualni-admin';
+import { i18n } from '@lingui/core';
 
-## Troubleshooting
-
-For build issues, especially with static export, see
-[docs/STATIC_EXPORT_TROUBLESHOOTING.md](docs/STATIC_EXPORT_TROUBLESHOOTING.md).
-
-## Features
-
-### Data Visualization
-
-- Multiple chart types (line, bar, area, pie, map, etc.)
-- Interactive filtering and exploration
-- Responsive design for all devices
-- Export to PNG, SVG, and data formats
-
-### Data Integration
-
-- Integration with data.gov.rs REST API
-- Support for various data formats (CSV, JSON, XML)
-- Real-time data updates
-- Data caching and optimization
-
-### Internationalization
-
-- Serbian (sr) and English (en) language support
-- Cyrillic and Latin script support
-- Locale-specific number and date formatting
-
-## Project Structure
-
-```
-├── app/                # Next.js application code
-│   ├── pages/         # Next.js pages and routes
-│   ├── components/    # React components
-│   ├── charts/        # Chart components and configurations
-│   ├── domain/        # Domain logic and data models
-│   ├── graphql/       # GraphQL queries and mutations
-│   └── locales/       # Translation files
-├── embed/             # Embeddable chart widget
-├── docs/              # Documentation
-├── e2e/               # End-to-end tests
-├── scripts/           # Build and utility scripts
-└── .storybook/        # Storybook configuration
+function App() {
+  return (
+    <I18nProvider i18n={i18n}>
+      {/* Vaš sadržaj */}
+    </I18nProvider>
+  );
+}
 ```
 
-## License
+## Šta još nije uključeno
 
-This project is licensed under the BSD-3-Clause License - see the
-[LICENSE](LICENSE) file for details.
+Ovo je beta. Planiramo da ojačamo:
 
-## Original Project
+- Konfigurator UI
+- Komponente za celu Next.js aplikaciju
+- CLI alate
+- Dodatne util funkcije
 
-This project is based on similar projects like
-[visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool)
-created by the Swiss Federal Office for the Environment (FOEN).
+---
+
+## English summary
+
+This is a **beta** of `@acailic/vizualni-admin` for Serbian open data visualizations (Latin/Cyrillic). Includes locale utilities, types, Lingui I18n provider, demo chart components (Line/Column/Pie), and embed-ready endpoints.
+
+Install: `npm install @acailic/vizualni-admin` or `yarn add @acailic/vizualni-admin`.
+
+Quick starts mirror the Serbian examples above. Use the hosted embed demo (`/embed/demo?theme=light&lang=en`) and the `/embed` generator to craft iframe snippets. `buildEmbedUrl` helps construct embed URLs in code. Locale helpers: `defaultLocale`, `locales`, `parseLocaleString`. React usage: wrap with `I18nProvider`.
+
+Planned next: configurator UI, full Next.js components, CLI, and more utilities.
+
+## Supported Locales
+
+The package supports three locales:
+
+- **sr-Latn** (Serbian Latin) - Default
+- **sr-Cyrl** (Serbian Cyrillic)
+- **en** (English)
+
+## Requirements
+
+### Node Version
+
+- Node.js 18 or newer
+
+### Peer Dependencies
+
+```json
+{
+  "@lingui/core": "^4.0.0",
+  "@lingui/react": "^4.0.0",
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0"
+}
+```
+
+### Runtime Dependencies (bundled)
+
+Installed automatically:
+
+- `d3-format`
+- `d3-time-format`
+- `make-plural`
+- `fp-ts`
+- `io-ts`
+
+## Module Formats
+
+The package is published in multiple formats for maximum compatibility:
+
+- **CommonJS** (`dist/index.js`) - For Node.js
+- **ES Modules** (`dist/index.mjs`) - For modern bundlers
+- **TypeScript** (`dist/index.d.ts`) - Type declarations
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please see the main repository for contribution guidelines.
 
-## Support
+## Related Projects
 
-For issues and questions:
+- [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool) - Original upstream project
+- [data.gov.rs](https://data.gov.rs) - Serbian Open Data Portal
 
-- GitHub Issues:
-  [Create an issue](https://github.com/acailic/vizualni-admin/issues)
-- Data Portal Support: [data.gov.rs](https://data.gov.rs)
+## License
 
-## Acknowledgments
+BSD-3-Clause - See [LICENSE](https://github.com/acailic/vizualni-admin/blob/main/LICENSE) for details.
 
-- Original project by [visualize-admin](https://github.com/visualize-admin)
-- Serbian Open Data Portal team
-- All contributors to the open data ecosystem
+## Links
+
+- **npm Package**: https://www.npmjs.com/package/@acailic/vizualni-admin
+- **GitHub Repository**: https://github.com/acailic/vizualni-admin
+- **Issues**: https://github.com/acailic/vizualni-admin/issues
+- **Live Demo**: https://acailic.github.io/vizualni-admin/
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/acailic/vizualni-admin/blob/main/CHANGELOG.md) for release history.
