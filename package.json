@@ -54,7 +54,21 @@
     "chromatic": "npx chromatic --build-script-name storybook:build -o app/public/storybook",
     "compare-screenshots": "npx tsx scripts/compare-screenshots.ts",
     "generate-json-schema": "tsx -r dotenv/config app/scripts/generate-json-schema.ts",
-    "wms-wmts-providers:scrape": "curl https://raw.githubusercontent.com/geoadmin/web-mapviewer/refs/heads/develop/packages/mapviewer/src/modules/menu/components/advancedTools/ImportCatalogue/external-providers.json | prettier --parser json > ./app/charts/map/wms-wmts-providers.json"
+    "wms-wmts-providers:scrape": "curl https://raw.githubusercontent.com/geoadmin/web-mapviewer/refs/heads/develop/packages/mapviewer/src/modules/menu/components/advancedTools/ImportCatalogue/external-providers.json | prettier --parser json > ./app/charts/map/wms-wmts-providers.json",
+    "test:coverage": "cd ./app && vitest run --coverage",
+    "analyze": "cd ./app && npx bundle-analyzer",
+    "benchmark": "cd ./app && vitest run benchmarks",
+    "audit": "yarn audit",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",
@@ -135,5 +149,9 @@
   "bugs": {
     "url": "https://github.com/acailic/vizualni-admin/issues"
   },
-  "homepage": "https://github.com/acailic/vizualni-admin#readme"
+  "homepage": "https://github.com/acailic/vizualni-admin#readme",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/acailic"
+  }
 }

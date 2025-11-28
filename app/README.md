@@ -107,23 +107,25 @@ The package supports three locales:
 
 ## Requirements
 
+### Node Version
+
+- Node.js 18 or newer
+
 ### Peer Dependencies
 
 ```json
 {
-  "@babel/runtime": "^7.8.4",
-  "next": "^13.0.0",
+  "@lingui/core": "^4.0.0",
+  "@lingui/react": "^4.0.0",
   "react": "^18.2.0",
   "react-dom": "^18.2.0"
 }
 ```
 
-### External Dependencies
+### Runtime Dependencies (bundled)
 
-The following are marked as external and should be installed separately if needed:
+Installed automatically:
 
-- `@lingui/react`
-- `@lingui/core`
 - `d3-format`
 - `d3-time-format`
 - `make-plural`

@@ -28,11 +28,16 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   const displayCode = showExpand && !expanded ? code.split('\n').slice(0, maxLines).join('\n') + '\n...' : code;
 
   const handleCopy = async () => {
+    if (typeof navigator === 'undefined' || !navigator.clipboard) {
+      return;
+    }
+
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
+      // Swallow clipboard failures to avoid breaking SSR/SSG
       console.error('Failed to copy: ', err);
     }
   };
@@ -80,7 +85,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
           }}
         />
         <Box>
-          <IconButton size="small" onClick={handleCopy} sx={{ color: '#666' }}>
+          <IconButton size="small" onClick={handleCopy} sx={{ color: '#666' }} disabled={typeof navigator === 'undefined'}>
             <ContentCopyIcon fontSize="small" />
           </IconButton>
           {copied && (
