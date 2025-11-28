@@ -1,13 +1,26 @@
 # Changelog
 
-All notable changes to the Vizualni Admin project will be documented in this file.
+All notable changes to the Vizualni Admin project will be documented in this
+file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres to
+[Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.1] - 2025-11-28
+
+### Removed
+
+- Removed duplicate configuration files
+- Removed deprecated component files
+- Removed build artifacts
+- Consolidated documentation
+- Removed temporary planning documents
 
 ## [1.0.0] - 2025-11-18
 
 ### Added
+
 - Initial fork from visualize-admin/visualization-tool
 - Serbian language support
 - Integration with data.gov.rs API
@@ -18,12 +31,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added configuration for data.gov.rs endpoints
 
 ### Changed
+
 - Updated project name to vizualni-admin
 - Updated repository URLs to acailic/vizualni-admin
 - Adapted branding for Serbian context
 - Modified configuration to work with data.gov.rs instead of Swiss data sources
 
 ### Notes
+
 - Based on visualize-admin/visualization-tool v6.2.0
 - Maintained BSD-3-Clause license from original project
 - Full credit to original authors at Federal Office for the Environment FOEN

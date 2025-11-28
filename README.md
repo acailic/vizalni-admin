@@ -105,12 +105,21 @@ users at all skill levels.
   [https://acailic.github.io/vizualni-admin/docs/embedding-guide](https://acailic.github.io/vizualni-admin/docs/embedding-guide)
 - **API Guide**: Understand using the data.gov.rs API at
   [https://acailic.github.io/vizualni-admin/docs/data-gov-rs-guide](https://acailic.github.io/vizualni-admin/docs/data-gov-rs-guide)
+- **Demo Visualizations Guide**: Comprehensive guide to demo visualizations at
+  [docs/DEMOS_GUIDE.md](docs/DEMOS_GUIDE.md)
+- **GitHub Pages Deployment**: Guide for deploying to GitHub Pages at
+  [docs/GITHUB_PAGES.md](docs/GITHUB_PAGES.md)
+- **Performance Optimization**: Performance tips and metrics at
+  [docs/PERFORMANCE.md](docs/PERFORMANCE.md)
 
 All tutorials and guides are available in both Serbian and English to
 accommodate our bilingual user base. Users can learn essential skills such as
 creating their first visualization, understanding different chart types,
 embedding content in external sites, integrating with data.gov.rs datasets, and
 applying advanced customization techniques.
+
+**Note**: Documentation has been recently consolidated for improved organization
+and maintainability.
 
 ### Building for production
 

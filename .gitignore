@@ -2,7 +2,7 @@ node_modules
 .next
 .DS_Store
 *.log
-*.tsbuildinfo
+.tsbuildinfo*
 
 /app/locales/_build
 /app/locales/**/*.js
