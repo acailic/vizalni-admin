@@ -1,39 +1,33 @@
 # @acailic/vizualni-admin
 
-> Serbian Open Data Visualization Tool - Beta Release
+> Alat za vizualizaciju otvorenih podataka Srbije – Beta izdanje
 
 [![npm version](https://img.shields.io/npm/v/@acailic/vizualni-admin.svg)](https://www.npmjs.com/package/@acailic/vizualni-admin)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/acailic/vizualni-admin/blob/main/LICENSE)
 
-## About
+## O paketu (srpski)
 
-This is a **beta release** of the `@acailic/vizualni-admin` package, based on the [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool). The package provides utilities and types for working with Serbian open data visualizations, with support for both Cyrillic and Latin scripts.
+`@acailic/vizualni-admin` je **beta** paket zasnovan na projektu [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool). Namenjen je brzim vizualizacijama zvaničnih otvorenih podataka Republike Srbije, uz podršku za latinično i ćirilično pismo.
 
-## Installation
+## Instalacija
 
 ```bash
 npm install @acailic/vizualni-admin
-```
-
-Or using yarn:
-
-```bash
+# ili
 yarn add @acailic/vizualni-admin
 ```
 
-## What's Included
+## Šta je uključeno
 
-This beta release provides:
+- Lokalizacija: `defaultLocale`, `locales`, `parseLocaleString`
+- TypeScript tipovi za grafikon/konfiguracije
+- I18n podrška (`I18nProvider`)
+- Komponente za grafikone spremne za demo (Line/Column/Pie) koje koristimo na GitHub Pages
+- Spremno za ugradnju (embed) – vidi primere ispod
 
-- Locale utilities: `defaultLocale`, `locales`, `parseLocaleString`
-- TypeScript types for chart/configuration models
-- I18n support via `I18nProvider` re-export
-- Demo-ready chart components (Line/Column/Pie) used on GitHub Pages
-- Embed-ready endpoints (see below)
+## Brzi primeri
 
-## Quick usage
-
-### Render a chart
+### Linijski grafikon
 
 ```tsx
 import { LineChart } from '@acailic/vizualni-admin';
@@ -45,13 +39,13 @@ const data = [
   { label: '2022', value: 81 },
 ];
 
-export function Example() {
+export function Primer() {
   return (
     <LineChart
       data={data}
       xKey="label"
       yKey="value"
-      title="Employment recovery"
+      title="Oporavak zaposlenosti"
       width={720}
       height={360}
       showTooltip
@@ -61,12 +55,12 @@ export function Example() {
 }
 ```
 
-Column and pie variations:
+### Stubičasti i pie grafikon
 
 ```tsx
 import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
 
-// Column
+// Stubičasti
 <ColumnChart
   data={[
     { year: '2019', jobs: 180 },
@@ -74,7 +68,7 @@ import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
   ]}
   xKey="year"
   yKey="jobs"
-  title="Jobs created per year"
+  title="Nove pozicije po godinama"
   color="#0ea5e9"
   showTooltip
   showCrosshair
@@ -88,27 +82,27 @@ import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
   ]}
   labelKey="label"
   valueKey="value"
-  title="Electricity mix"
+  title="Mix proizvodnje"
   showLegend
 />
 ```
 
-### Embed a chart (iframe)
+### Ugradnja (iframe)
 
-Use the hosted demo endpoint on GitHub Pages and pass theme/lang:
+Koristi javni demo na GitHub Pages i prosledi temu/jezik:
 
 ```html
 <iframe
-  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=en"
+  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=sr"
   style="width: 100%; height: 520px; border: 0;"
   loading="lazy"
   referrerpolicy="no-referrer"
 ></iframe>
 ```
 
-Generate a custom snippet at `/embed` (GitHub Pages build) to tweak width/height/theme/lang.
+Generator koda za ugradnju nalazi se na `/embed` (u okviru GitHub Pages build-a) – izaberi širinu/visinu/temu/jezik i kopiraj snippet.
 
-### Build embed URLs in code
+### Generisanje URL-a za embed u kodu
 
 ```ts
 import { buildEmbedUrl } from '@acailic/vizualni-admin/lib/embed-url';
@@ -117,10 +111,10 @@ const url = buildEmbedUrl('https://acailic.github.io/vizualni-admin/embed/demo',
   theme: 'dark',
   lang: 'sr',
 });
-// -> https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
+// https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
 ```
 
-### Locale utilities
+### Lokalizacija
 
 ```ts
 import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-admin';
@@ -128,10 +122,10 @@ import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-adm
 console.log(defaultLocale); // 'sr-Latn'
 console.log(locales);       // ['sr-Latn', 'sr-Cyrl', 'en']
 console.log(parseLocaleString('sr-Cyrl')); // 'sr-Cyrl'
-console.log(parseLocaleString('de'));      // falls back to default
+console.log(parseLocaleString('de'));      // vraća podrazumevani
 ```
 
-### With React and Lingui
+### React + Lingui
 
 ```tsx
 import { I18nProvider } from '@acailic/vizualni-admin';
@@ -140,20 +134,32 @@ import { i18n } from '@lingui/core';
 function App() {
   return (
     <I18nProvider i18n={i18n}>
-      {/* Your app content */}
+      {/* Vaš sadržaj */}
     </I18nProvider>
   );
 }
 ```
 
-## What's NOT Included (Yet)
+## Šta još nije uključeno
 
-This is a **beta**. Future releases will continue to harden:
+Ovo je beta. Planiramo da ojačamo:
 
-- Configurator UI
-- Full Next.js application components
-- CLI tools
-- Additional utilities
+- Konfigurator UI
+- Komponente za celu Next.js aplikaciju
+- CLI alate
+- Dodatne util funkcije
+
+---
+
+## English summary
+
+This is a **beta** of `@acailic/vizualni-admin` for Serbian open data visualizations (Latin/Cyrillic). Includes locale utilities, types, Lingui I18n provider, demo chart components (Line/Column/Pie), and embed-ready endpoints.
+
+Install: `npm install @acailic/vizualni-admin` or `yarn add @acailic/vizualni-admin`.
+
+Quick starts mirror the Serbian examples above. Use the hosted embed demo (`/embed/demo?theme=light&lang=en`) and the `/embed` generator to craft iframe snippets. `buildEmbedUrl` helps construct embed URLs in code. Locale helpers: `defaultLocale`, `locales`, `parseLocaleString`. React usage: wrap with `I18nProvider`.
+
+Planned next: configurator UI, full Next.js components, CLI, and more utilities.
 
 ## Supported Locales
 
