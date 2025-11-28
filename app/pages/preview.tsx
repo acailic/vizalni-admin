@@ -3,7 +3,8 @@ import { ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
 import create, { useStore } from "zustand";
 
-import { ChartPublished } from "@/components/chart-published";
+import dynamic from "next/dynamic";
+
 import {
   ConfiguratorStatePublished,
   decodeConfiguratorState,
@@ -16,6 +17,13 @@ import * as federalTheme from "@/themes/theme";
 import { migrateConfiguratorState } from "@/utils/chart-config/versioning";
 import { hashStringToObject } from "@/utils/hash-utils";
 import { maybeWindow } from "@/utils/maybe-window";
+
+const ChartPublished = dynamic(
+  () => import("@/components/chart-published").then((mod) => mod.ChartPublished),
+  {
+    ssr: false,
+  }
+);
 
 const isValidMessage = (e: MessageEvent) => {
   return e.data && !e.data.type;

@@ -2,9 +2,19 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
+import dynamic from "next/dynamic";
+
 import { AppLayout } from "@/components/layout";
-import { Configurator, ConfiguratorStateProvider } from "@/configurator";
+import { ConfiguratorStateProvider } from "@/configurator";
 import { AddNewDatasetPanel } from "@/configurator/components/add-new-dataset-panel";
+
+const Configurator = dynamic(
+  () => import("@/configurator/components/configurator").then((m) => m.Configurator),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 const ChartConfiguratorPage: NextPage = () => {
   const router = useRouter();

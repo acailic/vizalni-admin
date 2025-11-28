@@ -4,7 +4,8 @@ import ErrorPage from "next/error";
 import Head from "next/head";
 import Script from "next/script";
 
-import { ChartPublished } from "@/components/chart-published";
+import dynamic from "next/dynamic";
+
 import { useEmbedQueryParams } from "@/components/embed-params";
 import {
   ConfiguratorStateProvider,
@@ -12,6 +13,13 @@ import {
 } from "@/configurator";
 
 import { Config as PrismaConfig } from "../../db/prisma-types";
+
+const ChartPublished = dynamic(
+  () => import("@/components/chart-published").then((mod) => mod.ChartPublished),
+  {
+    loading: () => null,
+  }
+);
 
 type PageProps =
   | {

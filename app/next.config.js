@@ -51,12 +51,10 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const enableSentryUpload =
   Boolean(process.env.SENTRY_AUTH_TOKEN) &&
   process.env.SENTRY_UPLOAD !== "false";
-const imageConfig = isGitHubPages
-  ? { unoptimized: true }
-  : {
-      formats: ["image/avif", "image/webp"],
-      minimumCacheTTL: 60,
-    };
+const imageConfig = {
+  formats: ["image/avif", "image/webp"],
+  minimumCacheTTL: 60,
+};
 
 const nextConfig = withPreconstruct(
   withBundleAnalyzer(

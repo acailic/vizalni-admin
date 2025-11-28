@@ -174,7 +174,7 @@ export const TableColumnOptions = ({
 
   // Active field is always a component id, like in filters
   const allComponents = [...dimensions, ...measures];
-  const component = allComponents.find((d) => d.id === activeField);
+  const component = allComponents.find((d: any) => d.id === activeField);
 
   if (!component) {
     return <HintError smaller>No component {activeField}</HintError>;
@@ -263,7 +263,7 @@ export const TableColumnOptions = ({
                 message: "Column Style",
               })}
               options={columnStyleOptions}
-              getValue={(type) => {
+              getValue={(type: any) => {
                 switch (type) {
                   case "text":
                     return {
@@ -305,7 +305,7 @@ export const TableColumnOptions = ({
                     return undefined;
                 }
               }}
-              getKey={(d) => d.type}
+              getKey={(d: any) => d.type}
               field={activeField}
               path="columnStyle"
             />

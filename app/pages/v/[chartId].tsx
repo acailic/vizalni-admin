@@ -16,7 +16,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { ChartPublished } from "@/components/chart-published";
+import dynamic from "next/dynamic";
+
 import { useEmbedQueryParams } from "@/components/embed-params";
 import { HintWarning, PublishSuccess } from "@/components/hint";
 import { ContentLayout } from "@/components/layout";
@@ -29,6 +30,26 @@ import { useLocale } from "@/locales/use-locale";
 import { useDataSourceStore } from "@/stores/data-source";
 
 import { Config as PrismaConfig, PUBLISHED_STATE } from "../../db/prisma-types";
+
+const ChartPublished = dynamic(
+  () => import("@/components/chart-published").then((mod) => mod.ChartPublished),
+  {
+    loading: () => (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: 320,
+        }}
+      >
+        <Typography variant="body2" color="monochrome.700">
+          <Trans id="chart.loading">Loading chart…</Trans>
+        </Typography>
+      </Box>
+    ),
+  }
+);
 
 type PageProps =
   | {

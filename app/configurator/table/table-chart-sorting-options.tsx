@@ -8,7 +8,6 @@ import { t, Trans } from "@lingui/macro";
 import {
   Box,
   Button,
-  SelectChangeEvent,
   Theme,
   Typography,
 } from "@mui/material";
@@ -94,7 +93,7 @@ const TableSortingOptionItem = ({
   const [, dispatch] = useConfiguratorState();
   const classes = useStyles();
   const component = [...dimensions, ...measures].find(
-    ({ id }) => id === componentId
+    ({ id }: any) => id === componentId
   );
 
   const onRemove = useEvent(() => {
@@ -192,7 +191,7 @@ const AddTableSortingOption = ({
     (e: any) => {
       const { value } = e.target;
       const component = [...dimensions, ...measures].find(
-        ({ id }) => id === value
+        ({ id }: any) => id === value
       );
 
       if (component) {
@@ -227,24 +226,24 @@ const AddTableSortingOption = ({
       disabled: true,
     },
     ...columns
-      .flatMap((c) => {
+      .flatMap((c: any) => {
         if (
           chartConfig.sorting.some(
-            ({ componentId }) => componentId === c.componentId
+            ({ componentId }: any) => componentId === c.componentId
           )
         ) {
           return [];
         }
 
         const component = [...dimensions, ...measures].find(
-          ({ id }) => id === c.componentId
+          ({ id }: any) => id === c.componentId
         );
 
         return component
           ? [{ value: component.id, label: component.label }]
           : [];
       })
-      .sort((a, b) => ascending(a.label, b.label)),
+      .sort((a: any, b: any) => ascending(a.label, b.label)),
   ];
 
   return (
@@ -279,10 +278,10 @@ const ChangeTableSortingOption = ({
   const [, dispatch] = useConfiguratorState();
 
   const onChange = useCallback(
-    (e: SelectChangeEvent<unknown>) => {
+    (e: any) => {
       const { value } = e.target;
       const component = [...dimensions, ...measures].find(
-        ({ id }) => id === value
+        ({ id }: any) => id === value
       );
 
       if (component) {
@@ -310,9 +309,9 @@ const ChangeTableSortingOption = ({
 
   const columns = useOrderedTableColumns(chartConfig.fields);
   const { componentId } = chartConfig.sorting[index];
-  const options = columns.flatMap((c) => {
+  const options = columns.flatMap((c: any) => {
     const component = [...dimensions, ...measures].find(
-      ({ id }) => id === c.componentId
+      ({ id }: any) => id === c.componentId
     );
 
     return component ? [{ value: component.id, label: component.label }] : [];
@@ -346,7 +345,7 @@ export const TableSortingOptions = ({
   const classes = useStyles();
 
   const onDragEnd = useCallback<OnDragEndResponder>(
-    ({ source, destination }) => {
+    ({ source, destination }: any) => {
       if (!destination || chartConfig.chartType !== "table") {
         return;
       }
@@ -381,29 +380,28 @@ export const TableSortingOptions = ({
           <Trans id="controls.section.tableSorting">Table Sorting</Trans>
         </SectionTitle>
         <Droppable droppableId="table-sorting" type="table-sorting">
-          {({ innerRef, placeholder }) => {
+          {({ innerRef, placeholder }: any) => {
             return (
               <div>
                 <Box ref={innerRef}>
-                  {sorting.map((option, i) => {
+                  {sorting.map((option: any, i: number) => {
                     return (
                       <Draggable
                         key={option.componentId}
                         draggableId={option.componentId}
                         index={i}
                       >
-                        {(
-                          { innerRef, draggableProps, dragHandleProps },
-                          { isDragging }
-                        ) => {
+                        {(provided: any, snapshot: any) => {
+                          const { innerRef: providedRef, draggableProps, dragHandleProps } =
+                            provided;
                           return (
                             <Box
-                              ref={innerRef}
+                              ref={providedRef}
                               {...draggableProps}
                               className={classes.sortingItemBox}
                               sx={{
                                 position: "relative",
-                                boxShadow: isDragging ? "tooltip" : undefined,
+                                boxShadow: snapshot.isDragging ? "tooltip" : undefined,
                               }}
                               style={{
                                 ...draggableProps.style,
@@ -414,23 +412,23 @@ export const TableSortingOptions = ({
                                 index={i}
                                 dimensions={dimensions}
                                 measures={measures}
-                                chartConfig={chartConfig}
-                                sideControls={
-                                  <Box
-                                    sx={{
-                                      color: isDragging
-                                        ? "secondary.main"
-                                        : "secondary.light",
+                                    chartConfig={chartConfig}
+                                    sideControls={
+                                      <Box
+                                        sx={{
+                                          color: snapshot.isDragging
+                                            ? "secondary.main"
+                                            : "secondary.light",
 
-                                      "&:hover": {
-                                        color: "secondary.main",
-                                      },
-                                    }}
-                                    {...dragHandleProps}
-                                  >
-                                    <Icon name="dragndrop" />
-                                  </Box>
-                                }
+                                          "&:hover": {
+                                            color: "secondary.main",
+                                          },
+                                        }}
+                                        {...dragHandleProps}
+                                      >
+                                        <Icon name="dragndrop" />
+                                      </Box>
+                                    }
                               />
                             </Box>
                           );

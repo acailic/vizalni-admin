@@ -103,7 +103,7 @@ export const getTimeIntervalFormattedSelectOptions = ({
   formatDateValue: (date: Date) => string;
   interval: CountableTimeInterval;
 }) => {
-  return [...interval.range(fromDate, toDate), toDate].map((d) => {
+  return [...interval.range(fromDate, toDate), toDate].map((d: any) => {
     return {
       value: formatDateValue(d),
       label: formatDateValue(d),
@@ -121,7 +121,7 @@ const getErrorMeasure = (
   },
   valueIri: string
 ) => {
-  return [...dimensions, ...measures].find((m) => {
+  return [...dimensions, ...measures].find((m: any) => {
     return m.related?.some((r: any) => r.type === type && r.id === valueIri);
   });
 };
@@ -294,18 +294,18 @@ export const mapValueIrisToColor = ({
   const paletteValues = customPalette?.colors || getPalette({ paletteId });
 
   const colors = dimensionValues.map(
-    (d, i) =>
+    (d: any, i: number) =>
       (paletteId === "dimension" && d.color) ||
       oldColorMapping?.[`${d.value}`] ||
       paletteValues[i % paletteValues.length]
   );
 
   const colorScale = scaleOrdinal<string, string>()
-    .domain(dimensionValues.map((d) => `${d.value}`))
+    .domain(dimensionValues.map((d: any) => `${d.value}`))
     .range(random ? [...colors].sort(randomComparator) : colors);
 
   const colorMapping = {} as { [k: string]: string };
-  dimensionValues.forEach((d) => {
+  dimensionValues.forEach((d: any) => {
     colorMapping[`${d.value}`] = colorScale(`${d.value}`);
   });
 
@@ -313,7 +313,9 @@ export const mapValueIrisToColor = ({
 };
 
 export const getOrderedTableColumns = (fields: TableFields): TableColumn[] => {
-  return Object.values(fields).sort((a, b) => ascending(a.index, b.index));
+  return Object.values(fields).sort((a: any, b: any) =>
+    ascending((a as any).index, (b as any).index)
+  );
 };
 
 export const useOrderedTableColumns = (fields: TableFields): TableColumn[] => {
@@ -338,7 +340,7 @@ export const canUseAbbreviations = (d?: Component): boolean => {
       return false;
   }
 
-  return !!d.values.find((d) => d.alternateName);
+  return !!(d.values as any[]).find((value: any) => value.alternateName);
 };
 
 /**
@@ -353,7 +355,7 @@ export const getComponentLabel = (
 ) => {
   if (isJoinByComponent(component)) {
     const original =
-      cubeIri && component.originalIds.find((i) => i.cubeIri === cubeIri);
+      cubeIri && component.originalIds.find((i: any) => i.cubeIri === cubeIri);
 
     if (original) {
       return original.label;
@@ -390,7 +392,7 @@ export const getComponentLabel = (
 export const getComponentDescription = (dim: Component, cubeIri?: string) => {
   if (isJoinByComponent(dim)) {
     const original =
-      cubeIri && dim.originalIds.find((i) => i.cubeIri === cubeIri);
+      cubeIri && dim.originalIds.find((i: any) => i.cubeIri === cubeIri);
 
     if (original) {
       return original.description;
@@ -422,7 +424,7 @@ export const extractDataPickerOptionsFromDimension = ({
     const dimensionType = dimension.__typename;
     const options = match(dimensionType)
       .with("TemporalDimension", () => {
-        return values.map((d) => {
+        return values.map((d: any) => {
           const stringifiedValue = `${d.value}`;
           return {
             label: stringifiedValue,
@@ -431,7 +433,7 @@ export const extractDataPickerOptionsFromDimension = ({
         });
       })
       .with("TemporalEntityDimension", () => {
-        return values.map((d) => {
+        return values.map((d: any) => {
           return {
             label: `${d.label}`,
             value: `${getTemporalEntityValue(d)}`,
@@ -453,7 +455,7 @@ export const extractDataPickerOptionsFromDimension = ({
             },
             ...options,
           ],
-      optionValues: options.map((d) => d.value),
+      optionValues: options.map((d: any) => d.value),
       label,
     };
   } else {
