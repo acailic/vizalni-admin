@@ -83,7 +83,7 @@
     "benchmark": "node benchmarks/chart-rendering.bench.ts && node benchmarks/data-loading.bench.ts"
   },
   "dependencies": {
-    "d3-format": "^3.2.4",
+    "d3-format": "^3.1.0",
     "d3-time-format": "^4.0.3",
     "fp-ts": "^2.8.2",
     "io-ts": "^2.2.21",
