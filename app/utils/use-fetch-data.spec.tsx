@@ -15,7 +15,8 @@ describe("useFetchData", () => {
         })
       );
 
-      expect(result.current.status).toBe("idle");
+      // First render kicks off fetching immediately
+      expect(result.current.status).toBe("fetching");
 
       await waitFor(() => {
         expect(result.current.status).toBe("success");

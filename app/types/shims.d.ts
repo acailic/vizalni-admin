@@ -255,6 +255,8 @@ declare module "@/charts/chart-config-ui-options" {
 }
 
 declare module "@/graphql/query-hooks" {
+  export type RelatedDimensionType = any;
+  export type TimeUnit = any;
   export const RelatedDimensionType: any;
   export const TimeUnit: any;
 }
@@ -267,7 +269,6 @@ declare module "@mui/material" {
   export const Box: any;
   export const Button: any;
   export const Typography: any;
-  export const SelectChangeEvent: any;
   export type SelectChangeEvent = any;
   export type BoxProps = any;
   export type SxProps = any;
