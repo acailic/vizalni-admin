@@ -1,5 +1,5 @@
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import InsertChartOutlinedIcon from "@mui/icons-material/InsertChartOutlined";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import {
   Avatar,
   Card,

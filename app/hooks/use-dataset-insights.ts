@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import type { Insight } from '@/lib/insights/types';
 import { generateInsights } from '@/lib/insights/generators';
+import type { Insight } from '@/lib/insights/types';
 
 interface UseDatasetInsightsOptions {
   rows: Record<string, any>[] | null | undefined;

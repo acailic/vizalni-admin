@@ -1,0 +1,82 @@
+{
+  "air-quality": [
+    "67f504aa5fb6d8df933f95f5",
+    "67f4ffae5e5fc32b0b9b8e3d",
+    "67dd72f221ac02f315ebc186",
+    "67dd7182aa171e6173e8f683",
+    "67dd6f8f21ac02f315ebc184"
+  ],
+  "environment": [
+    "67f504aa5fb6d8df933f95f5",
+    "67f4ffae5e5fc32b0b9b8e3d",
+    "67dd72f221ac02f315ebc186",
+    "67dd7182aa171e6173e8f683",
+    "67dd6f8f21ac02f315ebc184"
+  ],
+  "education": [
+    "6791f3ab2c9dd531825e6428",
+    "67909fd82327943868724d30",
+    "664e02e064ae5cf0d72f30b1",
+    "661697a7092830bdba58b2d3",
+    "64772ac9d50a192049b725a6"
+  ],
+  "budget": [
+    "6786b5060f713ebbf94e0569",
+    "65fab2dde3d0d82dfa543184",
+    "65f8449781e7af5be7aad33b",
+    "65f4030203a7b7831a19fad9",
+    "65bb4bb49bb1b76f0bb9ea67"
+  ],
+  "transport": [
+    "6864049200afd681db3f0c14",
+    "6275514e7de272f44d056ed5",
+    "6275501a7de272bfdf881057",
+    "62754eb37de2728c048205ed",
+    "62754b9d7de2728c048205ec"
+  ],
+  "healthcare": [
+    "682c7192000a12ae5f0aa2ce",
+    "6275514e7de272f44d056ed5",
+    "6275501a7de272bfdf881057",
+    "62754eb37de2728c048205ed",
+    "62754b9d7de2728c048205ec"
+  ],
+  "employment": [
+    "6786b5120f713ebbf94e056a",
+    "6786b5030f713ebbf94e0568"
+  ],
+  "energy": [
+    "679225fba16256d1aa8d108a",
+    "679225e50883af584e9f2ab7"
+  ],
+  "demographics": [
+    "6797c127ee97e62f7cf8158a",
+    "664e02e064ae5cf0d72f3099"
+  ],
+  "economy": [
+    "6786b4e70f713ebbf94e0567",
+    "6786b4dc0f713ebbf94e0566"
+  ],
+  "digital": [
+    "6786b4cf0f713ebbf94e0565"
+  ],
+  "health": [
+    "67e92e240412220a9d2690b8"
+  ],
+  "agriculture": [
+    "6792314ca16256d1aa8d108c"
+  ],
+  "tourism": [
+    "6786b4f00f713ebbf94e0567"
+  ],
+  "culture": [
+    "6786b4bf0f713ebbf94e0564"
+  ],
+  "infrastructure": [
+    "6792308aa16256d1aa8d108b"
+  ],
+  "climate": [
+    "679230eca16256d1aa8d108c"
+  ],
+  "presentation": []
+}

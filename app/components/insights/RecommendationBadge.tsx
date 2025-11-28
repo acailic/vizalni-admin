@@ -1,5 +1,5 @@
-import { Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/CheckCircleOutline';
+import { Chip } from '@mui/material';
 
 interface Props {
   text?: string;

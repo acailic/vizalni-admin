@@ -1,6 +1,7 @@
 import { Grid, Typography, Box } from '@mui/material';
 
 import type { Insight } from '@/lib/insights/types';
+
 import { InsightCard } from './InsightCard';
 
 interface Props {

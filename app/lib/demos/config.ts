@@ -4,6 +4,8 @@
 
 import type { DemoConfig } from '@/types/demos';
 
+import { getValidatedDatasetIds } from './validated-datasets';
+
 export const DEMO_CONFIGS: Record<string, DemoConfig> = {
   'air-quality': {
     id: 'air-quality',
@@ -16,7 +18,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'PM concentrations and other pollutants compared with World Health Organization guidelines.'
     },
     searchQuery: ['kvalitet vazduha', 'pm10', 'vazduh'],
-    preferredDatasetIds: ['692076d3d79dfb1930d75b90'],
+    preferredDatasetIds: getValidatedDatasetIds('air-quality'),
     preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
     slugKeywords: ['pm10', 'pm25', 'vazduh', 'zagadjenje'],
     chartType: 'line',
@@ -34,6 +36,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Revenues, expenditures, and public spending broken down by category.'
     },
     searchQuery: ['budzet', 'javne finansije', 'finansije'],
+    preferredDatasetIds: getValidatedDatasetIds('budget'),
     preferredTags: ['budzet', 'javne-finansije', 'finansije'],
     slugKeywords: ['budzet', 'finansije', 'prihodi'],
     chartType: 'column',
@@ -51,7 +54,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Monitor air, water, and soil quality across Serbian cities.'
     },
     searchQuery: ['kvalitet vazduha', 'pm10'],
-    preferredDatasetIds: ['692076d3d79dfb1930d75b90'],
+    preferredDatasetIds: getValidatedDatasetIds('environment'),
     preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
     slugKeywords: ['vazduh', 'pm10', 'pm2.5'],
     chartType: 'line',
@@ -86,12 +89,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Enrollment over time by education level: primary, secondary, and higher education.'
     },
     searchQuery: ['obrazovanje učenici studenti', 'obrazovanje', 'učenici', 'studenti'],
-    preferredDatasetIds: [
-      '623112927de272da520ab63b', // osnovno obrazovanje
-      '62337fa87de272cc1c6b277b', // dualno učenici
-      '6233831c7de272b12cd37a11', // dualno studenti
-      '620441197de2723dc14b0514' // škole
-    ],
+    preferredDatasetIds: getValidatedDatasetIds('education'),
     preferredTags: ['obrazovanje', 'ucenici', 'studenti', 'skole'],
     slugKeywords: ['obrazovanje', 'učenici', 'studenti', 'škole'],
     chartType: 'column',
@@ -109,6 +107,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Traffic incidents, injuries, and fatalities with a focus on prevention and road safety.'
     },
     searchQuery: ['saobraćaj', 'saobracaj', 'nezgode', 'saobraćajne nesreće'],
+    preferredDatasetIds: getValidatedDatasetIds('transport'),
     preferredTags: ['saobracaj', 'nezgode', 'saobraćaj'],
     slugKeywords: ['saobraćaj', 'nezgode', 'saobracaj'],
     chartType: 'column',
@@ -126,6 +125,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Waiting lists, hospital capacity, medical workforce, and service availability.'
     },
     searchQuery: ['zdravstvo', 'bolnice', 'liste čekanja'],
+    preferredDatasetIds: getValidatedDatasetIds('healthcare'),
     preferredTags: ['zdravstvo', 'bolnica', 'bolnice'],
     slugKeywords: ['zdravstvo', 'bolnica', 'bolnice'],
     chartType: 'bar',
@@ -160,6 +160,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Employment and unemployment rates, population movement, and wage trends.'
     },
     searchQuery: ['zaposlenost', 'nezaposlenost', 'tržište rada'],
+    preferredDatasetIds: getValidatedDatasetIds('employment'),
     preferredTags: ['zaposlenost', 'nezaposlenost', 'trziste-rada'],
     slugKeywords: ['zaposlenost', 'nezaposlenost', 'tržište rada'],
     chartType: 'line',
@@ -177,6 +178,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
       en: 'Electricity generation sources, coal dependency, imports/exports, and renewable energy trends.'
     },
     searchQuery: ['energija', 'ugalj', 'struja'],
+    preferredDatasetIds: getValidatedDatasetIds('energy'),
     preferredTags: ['energija', 'ugalj', 'struja'],
     slugKeywords: ['energija', 'ugalj', 'struja'],
     chartType: 'column',

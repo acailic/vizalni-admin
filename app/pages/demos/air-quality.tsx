@@ -13,6 +13,7 @@ import { InsightsPanel } from '@/components/insights/InsightsPanel';
 import { useDataGovRs } from '@/hooks/use-data-gov-rs';
 import { useDatasetInsights } from '@/hooks/use-dataset-insights';
 import { DEMO_FALLBACKS } from '@/lib/demos/fallbacks';
+import { getValidatedDatasetIds } from '@/lib/demos/validated-datasets';
 
 // WHO Air Quality Guidelines (μg/m³)
 const WHO_LIMITS = {
@@ -68,6 +69,7 @@ export default function AirQualityDemo() {
   // Fetch air quality data
   const { dataset, resource, data, loading, error, refetch } = useDataGovRs({
     searchQuery: ['kvalitet vazduha', 'pm10', 'pm2.5'],
+    preferredDatasetIds: getValidatedDatasetIds('air-quality'),
     preferredTags: ['kvalitet-vazdukha', 'zivotna-sredina', 'vazduh'],
     slugKeywords: ['vazduh', 'pm10', 'pm2.5', 'zagadjenje'],
     fallbackData: DEMO_FALLBACKS['air-quality']?.fallbackData,

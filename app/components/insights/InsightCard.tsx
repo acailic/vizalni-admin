@@ -1,8 +1,9 @@
 import { Card, CardContent, Stack, Typography } from '@mui/material';
 
 import type { Insight } from '@/lib/insights/types';
-import { SeverityIndicator } from './SeverityIndicator';
+
 import { RecommendationBadge } from './RecommendationBadge';
+import { SeverityIndicator } from './SeverityIndicator';
 
 interface Props {
   insight: Insight;
