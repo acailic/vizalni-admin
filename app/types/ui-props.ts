@@ -27,7 +27,7 @@ export type WithClassName = {
  */
 export type WithSx = {
   /** Material-UI sx prop for inline styles */
-  sx?: SxProps<Theme>;
+  sx?: SxProps;
 };
 
 /**

@@ -139,19 +139,19 @@ async function deployToCustom(config: any, buildDir: string) {
       type: 'input',
       name: 'host',
       message: 'Server host (e.g., example.com):',
-      validate: (input) => input.length > 0,
+      validate: (input: string) => input.length > 0,
     },
     {
       type: 'input',
       name: 'user',
       message: 'SSH username:',
-      validate: (input) => input.length > 0,
+      validate: (input: string) => input.length > 0,
     },
     {
       type: 'input',
       name: 'remotePath',
       message: 'Remote path (e.g., /var/www/html):',
-      validate: (input) => input.length > 0,
+      validate: (input: string) => input.length > 0,
     },
   ]);
 

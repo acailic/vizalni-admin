@@ -1,64 +1,58 @@
-import { Command } from 'commander';
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import { validateConfig } from '../../lib/config/validator';
 
-const validateCommand = new Command('validate');
+export async function runValidate(file: string) {
+  if (!fs.existsSync(file)) {
+    console.error(chalk.red(`File not found: ${file}`));
+    process.exit(1);
+  }
 
-validateCommand
-  .description('Validate configuration file against JSON schema and check for common issues')
-  .argument('<file>', 'Path to config file (JSON or TS)')
-  .action(async (file: string) => {
-    if (!fs.existsSync(file)) {
-      console.error(chalk.red(`File not found: ${file}`));
-      process.exit(1);
-    }
-
-    let config: unknown;
-    try {
-      if (file.endsWith('.ts')) {
-        require('ts-node/register');
-        config = require(path.resolve(file)).default;
-      } else if (file.endsWith('.json')) {
-        config = JSON.parse(fs.readFileSync(file, 'utf8'));
-      } else {
-        console.error(chalk.red('Unsupported file type. Use .json or .ts'));
-        process.exit(1);
-      }
-    } catch (e) {
-      console.error(chalk.red(`Error loading config: ${(e as Error).message}`));
-      process.exit(1);
-    }
-
-    const result = validateConfig(config);
-    if (result.valid) {
-      console.log(chalk.green('✓ Configuration is valid!'));
-
-      // Additional checks for common issues
-      const issues = checkCommonIssues(result.data);
-      if (issues.length > 0) {
-        console.log(chalk.yellow('Warnings:'));
-        issues.forEach(issue => console.log(`  - ${issue}`));
-      }
+  let config: unknown;
+  try {
+    if (file.endsWith('.ts')) {
+      require('ts-node/register');
+      config = require(path.resolve(file)).default;
+    } else if (file.endsWith('.json')) {
+      config = JSON.parse(fs.readFileSync(file, 'utf8'));
     } else {
-      console.error(chalk.red('✗ Configuration has validation errors:'));
-      result.errors.forEach(error => {
-        console.error(`  ${chalk.red('✗')} ${error.path}: ${error.message}`);
-        // Provide helpful suggestions based on error type
-        if (error.keyword === 'required') {
-          console.error(`    Suggestion: Add the missing required field '${error.path.split('.').pop()}' to your configuration.`);
-        } else if (error.keyword === 'enum') {
-          console.error(`    Suggestion: Use one of the allowed values for this field.`);
-        } else if (error.keyword === 'type') {
-          console.error(`    Suggestion: Ensure the value is of the correct type (e.g., string, number, boolean).`);
-        } else if (error.keyword === 'pattern') {
-          console.error(`    Suggestion: Check the format requirements (e.g., hex colors should be #fff or #ffffff).`);
-        }
-      });
+      console.error(chalk.red('Unsupported file type. Use .json or .ts'));
       process.exit(1);
     }
-  });
+  } catch (e) {
+    console.error(chalk.red(`Error loading config: ${(e as Error).message}`));
+    process.exit(1);
+  }
+
+  const result = validateConfig(config);
+  if (result.valid) {
+    console.log(chalk.green('✓ Configuration is valid!'));
+
+    // Additional checks for common issues
+    const issues = checkCommonIssues(result.data);
+    if (issues.length > 0) {
+      console.log(chalk.yellow('Warnings:'));
+      issues.forEach(issue => console.log(`  - ${issue}`));
+    }
+  } else {
+    console.error(chalk.red('✗ Configuration has validation errors:'));
+    result.errors.forEach(error => {
+      console.error(`  ${chalk.red('✗')} ${error.path}: ${error.message}`);
+      // Provide helpful suggestions based on error type
+      if (error.keyword === 'required') {
+        console.error(`    Suggestion: Add the missing required field '${error.path.split('.').pop()}' to your configuration.`);
+      } else if (error.keyword === 'enum') {
+        console.error(`    Suggestion: Use one of the allowed values for this field.`);
+      } else if (error.keyword === 'type') {
+        console.error(`    Suggestion: Ensure the value is of the correct type (e.g., string, number, boolean).`);
+      } else if (error.keyword === 'pattern') {
+        console.error(`    Suggestion: Check the format requirements (e.g., hex colors should be #fff or #ffffff).`);
+      }
+    });
+    process.exit(1);
+  }
+}
 
 function checkCommonIssues(config: any): string[] {
   const issues: string[] = [];
@@ -101,5 +95,4 @@ function isValidUrl(string: string): boolean {
   }
 }
 
-export default validateCommand;
-export { validateCommand };
+export default runValidate;

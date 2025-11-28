@@ -148,14 +148,13 @@ export const TableColumnOptions = ({
 }) => {
   const chartConfig = getChartConfig(state);
   const { activeField: _activeField } = chartConfig;
-  const activeField = _activeField as EncodingFieldType | undefined;
+  type TableActiveField = EncodingFieldType | "table-sorting";
+  const activeField = _activeField as TableActiveField | undefined;
 
   if (!activeField || chartConfig.chartType !== "table") {
     return null;
   }
 
-  // FIXME: table encoding should be added to UI encodings
-  // @ts-ignore
   if (activeField === "table-sorting") {
     return (
       <TableSortingOptions

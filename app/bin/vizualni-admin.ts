@@ -4,7 +4,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import { initCommand } from './commands/init';
 import { discoverCommand, DiscoverOptions } from './commands/discover';
-import validateCommand from './commands/validate';
+import runValidate from './commands/validate';
 import { buildCommand } from './commands/build';
 import { deployCommand } from './commands/deploy';
 
@@ -57,7 +57,7 @@ program
   .argument('<file>', 'Configuration file to validate')
   .action(async (file: string) => {
     try {
-      await validateCommand(file);
+      await runValidate(file);
     } catch (error) {
       console.error(chalk.red('Validation failed:'), getErrorMessage(error));
       process.exit(1);
@@ -103,4 +103,4 @@ process.on('unhandledRejection', (reason, promise) => {
   process.exit(1);
 });
 
-program.parse();
+program.parse(process.argv);

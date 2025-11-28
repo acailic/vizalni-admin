@@ -1,24 +1,30 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "bin/*",
+        "domain/data-gov-rs/*",
+        "lib/config/*",
+        "types/*"
+      ]
+    },
+    "types": ["node"]
   },
   "include": [
     "bin/**/*",
     "domain/data-gov-rs/**/*",
     "lib/config/**/*",
     "types/**/*"
-  ],
-  "exclude": [
-    "**/__tests__/**",
-    "dist",
-    ".next",
-    "node_modules"
   ]
 }

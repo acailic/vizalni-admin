@@ -13,6 +13,9 @@ declare module "gzip-size" {
 }
 
 declare module "@mui/material" {
+  export type BoxProps = any;
+  export type SxProps = any;
+  export type Theme = any;
   const content: any;
   export = content;
 }
@@ -69,4 +72,10 @@ declare module "@mui/material/Typography" {
 
 declare module "use-debounce" {
   export function useDebounce<T>(value: T, delay?: number): [T];
+}
+
+declare module "@/charts/shared/chart-props" {
+  export type ChartWithFiltersProps = any;
+  export type VisualizationProps = any;
+  export type ChartProps<T = any> = any;
 }
