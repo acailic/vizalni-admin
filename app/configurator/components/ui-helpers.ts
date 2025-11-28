@@ -64,7 +64,7 @@ export const timeUnitToFormatter: Record<TimeUnit, (date: Date) => string> = {
   Second: timeFormat("%Y-%m-%dT%H:%M:%S"),
 };
 
-export const mkNumber = (x: $IntentionalAny): number => +x;
+export const mkNumber = (x: any): number => +x;
 
 export const getTimeIntervalWithProps = (
   from: string,
@@ -81,7 +81,7 @@ export const getTimeIntervalWithProps = (
   if (!fromDate || !toDate) {
     throw Error(`Error parsing dates ${from}, ${to}`);
   }
-  const interval = getTimeInterval(timeUnit);
+  const interval = getTimeInterval(timeUnit as any);
 
   return {
     fromDate,
