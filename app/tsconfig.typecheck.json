@@ -13,14 +13,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "bin/*",
-        "domain/data-gov-rs/*",
-        "lib/config/*",
-        "configurator/table/*",
-        "configurator/components/*",
-        "types/*"
-      ],
+      "@/*": ["*"],
       "ts-pattern": ["types/ts-pattern"]
     },
     "types": ["node"]
@@ -33,6 +26,9 @@
     "configurator/table/table-chart-sorting-options.tsx",
     "configurator/table/table-config-state.ts",
     "configurator/components/ui-helpers.ts",
+    "charts/**/*",
+    "components/**/*",
+    "stores/**/*",
     "types/**/*"
   ]
 }
