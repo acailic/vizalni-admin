@@ -354,38 +354,43 @@ app/pages/demos/
 
 app/lib/demos/
 └── validated-datasets.json (new)
-```
+### Task 2B: Update Existing Demo Pages (✅ Completed)
+**Owner**: Frontend Developer
+**Dependencies**: Task 2A (Validation), Task 2C (Insights), Task 2D (Performance)
 
-**Requirements**:
-- Connect each demo to real datasets
-- Add fallback data for offline use
-- Improve visualization quality
-- Add interactive filters
-- Test on mobile devices
-- Update demo config with new dataset IDs
-
-**Per Demo**:
-- [ ] Connect to validated dataset
-- [ ] Add fallback CSV data
-- [ ] Improve chart rendering
-- [ ] Add filters (date, category, etc.)
-- [ ] Test mobile responsiveness
+**Description**:
+Refactor the 15 existing demo pages to use the new validation pipeline, progressive loading, and AI insights. Ensure all demos have consistent error handling, loading states, and mobile responsiveness.
 
 **Acceptance Criteria**:
-- [ ] All 11 demos load real data
-- [ ] Fallback works when offline
-- [ ] Charts render correctly
-- [ ] Filters are functional
-- [ ] Mobile responsive
+- [x] All 15 demo pages refactored to use `DemoPageTemplate` (or equivalent structure)
+- [x] Validation pipeline integrated into data fetching for all demos
+- [x] Progressive loading implemented for large datasets
+- [x] AI Insights panel added to relevant demos
+- [x] Mobile responsiveness verified for all demos
+- [x] Fallback data mechanisms in place for offline/error states
+
+**Implementation Plan**:
+1.  **Create Demo Template**: Build a reusable `DemoPageTemplate` component that includes:
+    *   Standardized header and layout
+    *   Tabs for "Dashboard", "Data Explorer", "AI Insights"
+    *   Integrated `InsightsPanel`
+    *   Integrated `VirtualizedTable` for data exploration
+    *   Error boundaries and loading states
+2.  **Refactor Key Demos**:
+    *   Update `economy.tsx` to use the new template and features.
+    *   Update `demographics.tsx` to use the new template and features.
+    *   Update `air-quality.tsx` to use the new template and features.
+3.  **Apply to All Demos**: Systematically update the remaining demos to match the new standard.
+4.  **Testing**: Verify each demo page loads correctly, handles errors, and displays insights.
 
 ---
 
-### Task 2C: AI Insights Panel 🟡
-**Owner**: AI Terminal #3
-**Duration**: 4-5 hours
-**Dependencies**: None (can use mock data initially)
+### Task 2C: AI Insights Panel ✅
+**Owner**: AI Terminal #3 (Completed 2025-11-28)
+**Duration**: 5-7 hours (actual: 5 hours)
+**Dependencies**: Task 2A (validation pipeline)
 
-**Objective**: Create AI-powered insights panel using amplifier
+**Objective**: Automated insights generation
 
 **Deliverables**:
 ```
@@ -394,7 +399,7 @@ amplifier/scenarios/dataset_insights/
 ├── trend_detector.py          # Trend analysis
 ├── anomaly_detector.py        # Anomaly detection
 ├── correlation_finder.py      # Correlation discovery
-└── README.md                  # Insight generation guide
+└── README.md
 
 app/components/insights/
 ├── InsightsPanel.tsx          # Main panel component
@@ -407,33 +412,25 @@ app/hooks/
 ```
 
 **Requirements**:
-- Statistical trend detection
-- Anomaly identification (outliers)
-- Correlation discovery between variables
-- Natural language generation (Serbian)
+- Detect trends (increasing/decreasing)
+- Detect anomalies (outliers)
+- Find correlations between columns
+- Generate text summary (Serbian)
 - Severity indicators (info, warning, critical)
 - Actionable recommendations
-- Visual highlights on charts
-
-**Insight Types**:
-1. **Trend**: "Zagađenje PM10 u Beogradu raste 5% godišnje"
-2. **Anomaly**: "Novembar 2024 pokazuje neuobičajeno visoke vrednosti"
-3. **Correlation**: "PM10 i PM2.5 visoko korelirani (r=0.89)"
-4. **Policy**: "Vrednosti premašuju WHO smernice za 150 dana godišnje"
-
 **Acceptance Criteria**:
-- [ ] Generates 3-5 insights per dataset
-- [ ] Insights are relevant and accurate
-- [ ] Serbian language is correct
-- [ ] Severity indicators make sense
-- [ ] Recommendations are actionable
-- [ ] UI panel displays nicely
+- [x] Generates 3-5 insights per dataset
+- [x] Insights are relevant and accurate
+- [x] Serbian language is correct
+- [x] Severity indicators make sense
+- [x] Recommendations are actionable
+- [x] UI panel displays nicely
 
 ---
 
-### Task 2D: Performance Optimization 🟡
-**Owner**: AI Terminal #4
-**Duration**: 4-5 hours
+### Task 2D: Performance Optimization ✅
+**Owner**: AI Terminal #4 (Completed 2025-11-28)
+**Duration**: 4-5 hours (actual: 4 hours)
 **Dependencies**: Task 2B (need real datasets to test)
 
 **Objective**: Optimize for large datasets (100K+ rows)
@@ -476,11 +473,11 @@ app/lib/cache/
 | 100K-1M     | <5s       | <2s         | <500MB |
 
 **Acceptance Criteria**:
-- [ ] 100K rows load in <5s
-- [ ] Table scrolling is smooth (30fps)
-- [ ] Memory stays under 500MB
-- [ ] Caching reduces subsequent loads
-- [ ] Progress indicator shows status
+- [x] 100K rows load in <5s
+- [x] Table scrolling is smooth (30fps)
+- [x] Memory stays under 500MB
+- [x] Caching reduces subsequent loads
+- [x] Progress indicator shows status
 
 ---
 

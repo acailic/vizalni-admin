@@ -9,6 +9,7 @@ import { Alert, Box, Card, CardContent, Chip, Grid, LinearProgress, Paper, Typog
 
 import { BarChart } from '@/components/demos/charts/BarChart';
 import { LineChart } from '@/components/demos/charts/LineChart';
+import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
 import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   accidentCauses,
@@ -44,6 +45,7 @@ export default function TransportDemo() {
         updatedAt: '2024'
       }}
     >
+      <LiveDatasetPanel demoId="transport" title={locale === 'sr' ? 'Živi podaci (saobraćaj)' : 'Live data (transport)'} />
       <Box>
         {/* Critical Warning Banner */}
         <Alert

@@ -1,30 +1,160 @@
-import { Grid, Typography, Box } from '@mui/material';
+import React, { useState, useMemo } from 'react';
+import {
+  Box,
+  Typography,
+  Paper,
+  Stack,
+  Chip,
+  CircularProgress,
+  Alert,
+  Button
+} from '@mui/material';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { InsightCard, Insight } from './InsightCard';
+import { Severity } from './SeverityIndicator';
+import { Trans } from '@lingui/macro';
 
-import type { Insight } from '@/lib/insights/types';
-
-import { InsightCard } from './InsightCard';
-
-interface Props {
+interface InsightsPanelProps {
   insights: Insight[];
-  title?: string;
-  locale?: 'sr' | 'en';
+  loading?: boolean;
+  error?: Error | null;
+  onRefresh?: () => void;
+  locale?: 'en' | 'sr';
 }
 
-export function InsightsPanel({ insights, title, locale = 'sr' }: Props) {
-  if (!insights.length) return null;
+export const InsightsPanel: React.FC<InsightsPanelProps> = ({
+  insights,
+  loading = false,
+  error = null,
+  onRefresh,
+  locale = 'sr'
+}) => {
+  const [filter, setFilter] = useState<Severity | 'all'>('all');
+
+  const filteredInsights = useMemo(() => {
+    if (filter === 'all') return insights;
+    return insights.filter(i => i.severity === filter);
+  }, [insights, filter]);
+
+  const counts = useMemo(() => {
+    return {
+      all: insights.length,
+      info: insights.filter(i => i.severity === 'info').length,
+      warning: insights.filter(i => i.severity === 'warning').length,
+      critical: insights.filter(i => i.severity === 'critical').length,
+    };
+  }, [insights]);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert severity="error" action={
+        onRefresh && <Button color="inherit" size="small" onClick={onRefresh}>Retry</Button>
+      }>
+        {error.message}
+      </Alert>
+    );
+  }
+
+  if (insights.length === 0) {
+    return (
+      <Paper variant="outlined" sx={{ p: 4, textAlign: 'center' }}>
+        <AutoAwesomeIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2, opacity: 0.5 }} />
+        <Typography variant="h6" color="text.secondary">
+          <Trans>No insights found</Trans>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          <Trans>Try adding more data to generate insights.</Trans>
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
-    <Box sx={{ mb: 4 }}>
-      <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
-        {title || 'AI uvidi'}
-      </Typography>
-      <Grid container spacing={2}>
-        {insights.map((insight) => (
-          <Grid item xs={12} sm={6} md={4} key={insight.id}>
-            <InsightCard insight={insight} locale={locale} />
-          </Grid>
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <AutoAwesomeIcon color="primary" />
+          <Typography variant="h6">
+            <Trans>AI Insights</Trans>
+          </Typography>
+          <Chip
+            label={insights.length}
+            size="small"
+            color="primary"
+            variant="outlined"
+            sx={{ ml: 1 }}
+          />
+        </Box>
+
+        {onRefresh && (
+          <Button
+            startIcon={<RefreshIcon />}
+            size="small"
+            onClick={onRefresh}
+          >
+            <Trans>Refresh</Trans>
+          </Button>
+        )}
+      </Box>
+
+      {/* Filters */}
+      <Stack direction="row" spacing={1} sx={{ mb: 3, overflowX: 'auto', pb: 1 }}>
+        <Chip
+          icon={<FilterListIcon />}
+          label={<Trans>All</Trans>}
+          onClick={() => setFilter('all')}
+          variant={filter === 'all' ? 'filled' : 'outlined'}
+          color={filter === 'all' ? 'primary' : 'default'}
+        />
+        {counts.critical > 0 && (
+          <Chip
+            label={<Trans>Critical</Trans>}
+            onClick={() => setFilter('critical')}
+            variant={filter === 'critical' ? 'filled' : 'outlined'}
+            color="error"
+            size="small"
+          />
+        )}
+        {counts.warning > 0 && (
+          <Chip
+            label={<Trans>Warnings</Trans>}
+            onClick={() => setFilter('warning')}
+            variant={filter === 'warning' ? 'filled' : 'outlined'}
+            color="warning"
+            size="small"
+          />
+        )}
+        {counts.info > 0 && (
+          <Chip
+            label={<Trans>Info</Trans>}
+            onClick={() => setFilter('info')}
+            variant={filter === 'info' ? 'filled' : 'outlined'}
+            color="info"
+            size="small"
+          />
+        )}
+      </Stack>
+
+      {/* Insights List */}
+      <Stack spacing={0}>
+        {filteredInsights.map((insight, index) => (
+          <InsightCard
+            key={index}
+            insight={insight}
+            locale={locale}
+          />
         ))}
-      </Grid>
+      </Stack>
     </Box>
   );
-}
+};

@@ -10,7 +10,7 @@ export interface ProgressIndicatorProps {
   /** Current progress (0-100) */
   progress: number;
   /** Status message */
-  message?: string;
+  message?: React.ReactNode;
   /** Show percentage */
   showPercentage?: boolean;
   /** Show as indeterminate (spinning) */

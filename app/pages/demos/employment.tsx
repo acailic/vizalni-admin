@@ -8,6 +8,7 @@ import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Grid, Paper, Typography } from '@mui/material';
 
 import { LineChart } from '@/components/demos/charts/LineChart';
+import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
 import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   brainDrainData,
@@ -43,6 +44,7 @@ export default function EmploymentDemo() {
         updatedAt: '2024'
       }}
     >
+      <LiveDatasetPanel demoId="employment" title={locale === 'sr' ? 'Živi podaci (tržište rada)' : 'Live data (employment)'} />
       <Box>
         {/* Critical Warning Banner */}
         <Alert

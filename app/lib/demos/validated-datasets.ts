@@ -42,10 +42,22 @@ export const VALIDATED_DATASETS: Record<string, string[]> = {
     "62754b9d7de2728c048205ec"
   ],
   employment: [],
-  energy: [],
+  energy: [
+    "61c585477de27293f237a72f",
+    "61c57f347de27279fd7d9413",
+    "61c57eaf7de27279fd7d9412",
+    "61c573f97de27279fd7d9410",
+    "61c5734f7de27279fd7d940f"
+  ],
   demographics: [],
-  economy: [],
-  digital: [],
+  economy: [
+    "607fd56a7de272771a0d3799",
+    "607fd5687de272771a0d3797"
+  ],
+  digital: [
+    "661697a7092830bdba58b2d3",
+    "5c052d08cbe3c856351ffcc4"
+  ],
   health: [],
   agriculture: [],
   tourism: [],

@@ -8,6 +8,7 @@ import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Chip, Grid, LinearProgress, Paper, Typography } from '@mui/material';
 
 import { LineChart } from '@/components/demos/charts/LineChart';
+import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
 import { DemoLayout } from '@/components/demos/demo-layout';
 import {
   healthcareStats,
@@ -48,6 +49,7 @@ export default function HealthcareDemo() {
         updatedAt: '2024'
       }}
     >
+      <LiveDatasetPanel demoId="healthcare" title={locale === 'sr' ? 'Živi podaci (zdravstvo)' : 'Live data (healthcare)'} />
       <Box>
         {/* Critical Warning Banner */}
         <Alert
