@@ -20,7 +20,8 @@
         "configurator/table/*",
         "configurator/components/*",
         "types/*"
-      ]
+      ],
+      "ts-pattern": ["types/ts-pattern"]
     },
     "types": ["node"]
   },
