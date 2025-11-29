@@ -3,6 +3,7 @@
  * Temperature trends, extreme weather events, and environmental data
  */
 
+import { GetStaticProps } from 'next';
 import { useLingui } from '@lingui/react';
 import { Alert, Box, Card, CardContent, Chip, Grid, Paper, Typography } from '@mui/material';
 
@@ -19,7 +20,12 @@ import {
   temperatureTrends
 } from '@/data/serbia-climate';
 
-export default function ClimateDemo() {
+interface ClimateDemoProps {
+  // Props for ISR can be added here when we have dynamic data
+  lastUpdated?: string;
+}
+
+export default function ClimateDemo({ lastUpdated }: ClimateDemoProps) {
   const { i18n } = useLingui();
   const locale = i18n.locale?.startsWith('sr') ? 'sr' : 'en';
 
@@ -509,3 +515,26 @@ export default function ClimateDemo() {
     />
   );
 }
+
+export const getStaticProps: GetStaticProps<ClimateDemoProps> = async () => {
+  // Generate static props for climate demo with ISR
+  // Climate data could be updated periodically, so we use ISR
+  try {
+    // In a real implementation, you might fetch the latest climate data
+    // For now, we'll return a timestamp to demonstrate ISR capability
+    const lastUpdated = new Date().toISOString();
+
+    return {
+      props: {
+        lastUpdated,
+      },
+      revalidate: 60, // Revalidate every 60 seconds for near real-time updates
+    };
+  } catch (error) {
+    console.error('Failed to generate climate demo props:', error);
+    return {
+      props: {},
+      revalidate: 300, // Retry every 5 minutes on error
+    };
+  }
+};

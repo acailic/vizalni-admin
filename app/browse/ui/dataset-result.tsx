@@ -1,5 +1,9 @@
 import { Trans } from "@lingui/macro";
-import { Box, CardProps, Stack, Theme, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import { CardProps } from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import { Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { differenceInDays } from "date-fns";

@@ -494,7 +494,10 @@ export default function DemosIndex() {
 }
 
 export async function getStaticProps() {
+  // Pre-build the demo index page for instant loading
+  // Demo configs are static at build time, but we may want to refresh occasionally
   return {
     props: {},
+    revalidate: 1800, // Revalidate every 30 minutes for potential demo updates
   };
 }

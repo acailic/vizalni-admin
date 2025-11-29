@@ -16,6 +16,7 @@ import sortBy from "lodash/sortBy";
 import uniqBy from "lodash/uniqBy";
 import { useCallback, useMemo, useState } from "react";
 import createStore from "zustand";
+import NextImage from "next/image";
 
 import { RemoteLayer } from "@/charts/map/types";
 import { RemoteWMSLayer } from "@/charts/map/wms-utils";
@@ -141,9 +142,23 @@ const LegendButton = ({
           >
             <SvgIcClose />
           </IconButton>
-          {showLegend && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={layer?.legendUrl} style={{ maxWidth: "100%" }} alt="" />
+          {showLegend && layer?.legendUrl && (
+            <Box sx={{ position: "relative", width: "100%", maxWidth: 300 }}>
+              <NextImage
+                src={layer.legendUrl}
+                alt={`Legend for ${layer.title || 'map layer'}`}
+                fill
+                style={{
+                  objectFit: 'contain',
+                  maxWidth: "100%",
+                }}
+                sizes="(max-width: 768px) 100vw, 300px"
+                unoptimized={true} // Required for external WMS/WMTS legend images
+                onError={(e) => {
+                  console.warn('Failed to load legend image:', layer.legendUrl);
+                }}
+              />
+            </Box>
           )}
         </Box>
       </Popover>

@@ -96,7 +96,7 @@ export const getParamsFromFilters = (filters: BrowseFilter[]) => {
         break;
       default:
         const _exhaustiveCheck: never = filter;
-        return _exhaustiveCheck;
+        throw new Error(`Unknown filter type: ${filter}`);
     }
 
     i++;
@@ -118,7 +118,7 @@ export const encodeFilter = ({ __typename, iri }: BrowseFilter) => {
         return "termset";
       default:
         const _exhaustiveCheck: never = __typename;
-        return _exhaustiveCheck;
+        throw new Error(`Unknown type: ${__typename}`);
     }
   })();
 

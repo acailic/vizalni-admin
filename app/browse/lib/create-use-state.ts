@@ -8,6 +8,9 @@ import {
 import { BrowseParams } from "@/browse/lib/params";
 import { useUrlSyncState } from "@/browse/lib/use-url-sync-state";
 import { SearchCubeResultOrder } from "@/graphql/query-hooks";
+
+// Re-export for compatibility
+export { SearchCubeResultOrder };
 import { useEvent } from "@/utils/use-event";
 
 /**
@@ -42,16 +45,16 @@ export const createUseBrowseState = ({
     const filters = getFiltersFromParams(browseParams);
 
     const setSearch = useEvent((v: string) =>
-      setParams((prev) => ({ ...prev, search: v }))
+      setParams((prev: BrowseParams) => ({ ...prev, search: v }))
     );
     const setIncludeDrafts = useEvent((v: boolean) =>
-      setParams((prev) => ({ ...prev, includeDrafts: v }))
+      setParams((prev: BrowseParams) => ({ ...prev, includeDrafts: v }))
     );
     const setOrder = useEvent((v: SearchCubeResultOrder) =>
-      setParams((prev) => ({ ...prev, order: v }))
+      setParams((prev: BrowseParams) => ({ ...prev, order: v }))
     );
     const setDataset = useEvent((v: string) =>
-      setParams((prev) => ({ ...prev, dataset: v }))
+      setParams((prev: BrowseParams) => ({ ...prev, dataset: v }))
     );
 
     return useMemo(() => {
@@ -63,14 +66,14 @@ export const createUseBrowseState = ({
         includeDrafts: !!includeDrafts,
         setIncludeDrafts,
         onReset: () => {
-          setParams((prev) => ({
+          setParams((prev: BrowseParams) => ({
             ...prev,
             search: "",
             order: previousOrder === Score ? CreatedDesc : previousOrder,
           }));
         },
         onSubmitSearch: (newSearch: string) => {
-          setParams((prev) => ({
+          setParams((prev: BrowseParams) => ({
             ...prev,
             search: newSearch,
             order: newSearch === "" ? CreatedDesc : previousOrder,
@@ -88,7 +91,7 @@ export const createUseBrowseState = ({
         setDataset,
         filters,
         setFilters: (filters: BrowseFilter[]) => {
-          setParams((prev) => ({
+          setParams((prev: BrowseParams) => ({
             ...prev,
             ...getParamsFromFilters(filters),
           }));

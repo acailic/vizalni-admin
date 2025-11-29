@@ -157,6 +157,18 @@ export class DataGovRsClient {
   }
 
   /**
+   * Search organizations (alias for listOrganizations for test compatibility)
+   */
+  async searchOrganizations(
+    params: SearchParams = {}
+  ): Promise<PaginatedResponse<Organization>> {
+    return this.listOrganizations(
+      params.page || 1,
+      params.page_size || this.config.defaultPageSize
+    );
+  }
+
+  /**
    * Get a specific organization by ID
    */
   async getOrganization(id: string): Promise<Organization> {

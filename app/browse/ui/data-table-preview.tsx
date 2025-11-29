@@ -1,11 +1,9 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from "@mui/material";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import { ascending, descending } from "d3-array";
 import { useCallback, useMemo, useRef, useState } from "react";
 
@@ -48,7 +46,7 @@ export const DataTablePreview = ({
     }
 
     const compare = sortDirection === "asc" ? ascending : descending;
-    const valuesByLabel = uniqueMapBy(sortBy.values, (d) => d.label);
+    const valuesByLabel = uniqueMapBy(sortBy.values, (d: any) => d.label);
     const convert =
       isNumericalMeasure(sortBy) || sortBy.isNumerical
         ? (v: string) => +v

@@ -29,10 +29,10 @@ const makeUpgradeConfiguratorState =
     return {
       ...state,
       chartConfigs: await Promise.all(
-        state.chartConfigs.map(async (chartConfig) => ({
+        state.chartConfigs.map(async (chartConfig: any) => ({
           ...chartConfig,
           cubes: await Promise.all(
-            chartConfig.cubes.map(async (cube) => ({
+            chartConfig.cubes.map(async (cube: any) => ({
               ...cube,
               iri: await cubeIriUpdateFn(cube.iri, options),
             }))

@@ -8,6 +8,8 @@ import { ScatterplotState } from "@/charts/scatterplot/scatterplot-state";
 import { useChartState } from "@/charts/shared/chart-state";
 import { renderContainer } from "@/charts/shared/rendering-utils";
 import { useTransitionStore } from "@/stores/transition";
+import { ScatterplotCanvas } from "./scatterplot-canvas";
+import { useOptimizedRendering } from "@/charts/shared/optimized-chart-wrapper";
 
 export const Scatterplot = () => {
   const {
@@ -21,12 +23,29 @@ export const Scatterplot = () => {
     colors,
     getRenderingKey,
   } = useChartState() as ScatterplotState;
+
+  // Check if we should use canvas rendering
+  const { shouldUseCanvas, lodLevel } = useOptimizedRendering('scatterplot', chartData.length);
+
+  // For large datasets, use canvas rendering
+  if (shouldUseCanvas) {
+    return <ScatterplotCanvas />;
+  }
+
+  // Original SVG rendering for smaller datasets
   const { margins } = bounds;
   const ref = useRef<SVGGElement>(null);
   const enableTransition = useTransitionStore((state) => state.enable);
   const transitionDuration = useTransitionStore((state) => state.duration);
+
   const renderData = useMemo(() => {
-    return chartData.map((d) => {
+    // Apply level-of-detail optimization for SVG rendering
+    let step = 1;
+    if (lodLevel === 'medium') step = 2;
+    if (lodLevel === 'low') step = 4;
+    if (lodLevel === 'pixel') step = 8;
+
+    return chartData.filter((_, index) => index % step === 0).map((d) => {
       const segment = getSegment(d);
 
       return {
@@ -45,6 +64,7 @@ export const Scatterplot = () => {
     yScale,
     getY,
     colors,
+    lodLevel,
   ]);
 
   useEffect(() => {

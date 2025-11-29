@@ -1,5 +1,8 @@
 import { Trans } from "@lingui/macro";
-import { Box, Paper, Theme, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import { Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import Head from "next/head";
 import { ComponentProps, useEffect } from "react";

@@ -47,8 +47,8 @@ export interface PaginatedResponse<T> {
   page: number;
   page_size: number;
   total: number;
-  next_page: string | null;
-  previous_page: string | null;
+  next_page?: number;
+  previous_page?: number;
 }
 
 export interface SearchParams {

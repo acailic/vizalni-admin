@@ -3,177 +3,195 @@ import { ScaleType } from "@/graphql/query-hooks";
 import { getCachedComponents } from "@/urql-cache";
 
 export const getCachedComponentsMock = {
-  electricityPricePerCantonDimensions: {
+  serbianRegionsAndDistricts: {
     dimensions: [
       {
         __typename: "GeoShapesDimension",
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        cubeIri: "https://data.gov.rs/dataset/administrative-division",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/administrative-division",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/canton",
+            "https://data.gov.rs/dataset/dimension/district",
         }),
-        label: "Kanton",
+        label: "Okrug",
         scaleType: "Nominal" as ScaleType,
         isNumerical: false,
         isKeyDimension: true,
         values: [
           {
-            value: "https://ld.admin.ch/canton/1",
-            label: "Zürich",
+            value: "https://data.gov.rs/district/1",
+            label: "Severnobački okrug",
             identifier: 1,
-            alternateName: "ZH",
+            alternateName: "RS01",
           },
           {
-            value: "https://ld.admin.ch/canton/10",
-            label: "Freiburg",
-            identifier: 10,
-            alternateName: "FR",
-          },
-          {
-            value: "https://ld.admin.ch/canton/11",
-            label: "Solothurn",
-            identifier: 11,
-            alternateName: "SO",
-          },
-          {
-            value: "https://ld.admin.ch/canton/12",
-            label: "Basel-Stadt",
-            identifier: 12,
-            alternateName: "BS",
-          },
-          {
-            value: "https://ld.admin.ch/canton/13",
-            label: "Basel-Landschaft",
-            identifier: 13,
-            alternateName: "BL",
-          },
-          {
-            value: "https://ld.admin.ch/canton/14",
-            label: "Schaffhausen",
-            identifier: 14,
-            alternateName: "SH",
-          },
-          {
-            value: "https://ld.admin.ch/canton/15",
-            label: "Appenzell Ausserrhoden",
-            identifier: 15,
-            alternateName: "AR",
-          },
-          {
-            value: "https://ld.admin.ch/canton/16",
-            label: "Appenzell Innerrhoden",
-            identifier: 16,
-            alternateName: "AI",
-          },
-          {
-            value: "https://ld.admin.ch/canton/17",
-            label: "St. Gallen",
-            identifier: 17,
-            alternateName: "SG",
-          },
-          {
-            value: "https://ld.admin.ch/canton/18",
-            label: "Graubünden",
-            identifier: 18,
-            alternateName: "GR",
-          },
-          {
-            value: "https://ld.admin.ch/canton/19",
-            label: "Aargau",
-            identifier: 19,
-            alternateName: "AG",
-          },
-          {
-            value: "https://ld.admin.ch/canton/2",
-            label: "Bern",
+            value: "https://data.gov.rs/district/2",
+            label: "Srednjebanatski okrug",
             identifier: 2,
-            alternateName: "BE",
+            alternateName: "RS02",
           },
           {
-            value: "https://ld.admin.ch/canton/20",
-            label: "Thurgau",
-            identifier: 20,
-            alternateName: "TG",
-          },
-          {
-            value: "https://ld.admin.ch/canton/21",
-            label: "Tessin",
-            identifier: 21,
-            alternateName: "TI",
-          },
-          {
-            value: "https://ld.admin.ch/canton/22",
-            label: "Waadt",
-            identifier: 22,
-            alternateName: "VD",
-          },
-          {
-            value: "https://ld.admin.ch/canton/23",
-            label: "Wallis",
-            identifier: 23,
-            alternateName: "VS",
-          },
-          {
-            value: "https://ld.admin.ch/canton/24",
-            label: "Neuenburg",
-            identifier: 24,
-            alternateName: "NE",
-          },
-          {
-            value: "https://ld.admin.ch/canton/25",
-            label: "Genf",
-            identifier: 25,
-            alternateName: "GE",
-          },
-          {
-            value: "https://ld.admin.ch/canton/26",
-            label: "Jura",
-            identifier: 26,
-            alternateName: "JU",
-          },
-          {
-            value: "https://ld.admin.ch/canton/3",
-            label: "Luzern",
+            value: "https://data.gov.rs/district/3",
+            label: "Južnobanatski okrug",
             identifier: 3,
-            alternateName: "LU",
+            alternateName: "RS03",
           },
           {
-            value: "https://ld.admin.ch/canton/4",
-            label: "Uri",
+            value: "https://data.gov.rs/district/4",
+            label: "Zapadnobački okrug",
             identifier: 4,
-            alternateName: "UR",
+            alternateName: "RS04",
           },
           {
-            value: "https://ld.admin.ch/canton/5",
-            label: "Schwyz",
+            value: "https://data.gov.rs/district/5",
+            label: "Južnobački okrug",
             identifier: 5,
-            alternateName: "SZ",
+            alternateName: "RS05",
           },
           {
-            value: "https://ld.admin.ch/canton/6",
-            label: "Obwalden",
+            value: "https://data.gov.rs/district/6",
+            label: "Sremski okrug",
             identifier: 6,
-            alternateName: "OW",
+            alternateName: "RS06",
           },
           {
-            value: "https://ld.admin.ch/canton/7",
-            label: "Nidwalden",
+            value: "https://data.gov.rs/district/7",
+            label: "Mačvanski okrug",
             identifier: 7,
-            alternateName: "NW",
+            alternateName: "RS07",
           },
           {
-            value: "https://ld.admin.ch/canton/8",
-            label: "Glarus",
+            value: "https://data.gov.rs/district/8",
+            label: "Kolubarski okrug",
             identifier: 8,
-            alternateName: "GL",
+            alternateName: "RS08",
           },
           {
-            value: "https://ld.admin.ch/canton/9",
-            label: "Zug",
+            value: "https://data.gov.rs/district/9",
+            label: "Podunavski okrug",
             identifier: 9,
-            alternateName: "ZG",
+            alternateName: "RS09",
+          },
+          {
+            value: "https://data.gov.rs/district/10",
+            label: "Braničevski okrug",
+            identifier: 10,
+            alternateName: "RS10",
+          },
+          {
+            value: "https://data.gov.rs/district/11",
+            label: "Šumadijski okrug",
+            identifier: 11,
+            alternateName: "RS11",
+          },
+          {
+            value: "https://data.gov.rs/district/12",
+            label: "Rasiinski okrug",
+            identifier: 12,
+            alternateName: "RS12",
+          },
+          {
+            value: "https://data.gov.rs/district/13",
+            label: "Nišavski okrug",
+            identifier: 13,
+            alternateName: "RS13",
+          },
+          {
+            value: "https://data.gov.rs/district/14",
+            label: "Toplički okrug",
+            identifier: 14,
+            alternateName: "RS14",
+          },
+          {
+            value: "https://data.gov.rs/district/15",
+            label: "Pirotski okrug",
+            identifier: 15,
+            alternateName: "RS15",
+          },
+          {
+            value: "https://data.gov.rs/district/16",
+            label: "Jablanički okrug",
+            identifier: 16,
+            alternateName: "RS16",
+          },
+          {
+            value: "https://data.gov.rs/district/17",
+            label: "Pčinjski okrug",
+            identifier: 17,
+            alternateName: "RS17",
+          },
+          {
+            value: "https://data.gov.rs/district/18",
+            label: "Borski okrug",
+            identifier: 18,
+            alternateName: "RS18",
+          },
+          {
+            value: "https://data.gov.rs/district/19",
+            label: "Zaječarski okrug",
+            identifier: 19,
+            alternateName: "RS19",
+          },
+          {
+            value: "https://data.gov.rs/district/20",
+            label: "Zlatiborski okrug",
+            identifier: 20,
+            alternateName: "RS20",
+          },
+          {
+            value: "https://data.gov.rs/district/21",
+            label: "Moravički okrug",
+            identifier: 21,
+            alternateName: "RS21",
+          },
+          {
+            value: "https://data.gov.rs/district/22",
+            label: "Raški okrug",
+            identifier: 22,
+            alternateName: "RS22",
+          },
+          {
+            value: "https://data.gov.rs/district/23",
+            label: "Raski okrug",
+            identifier: 23,
+            alternateName: "RS23",
+          },
+          {
+            value: "https://data.gov.rs/district/24",
+            label: "Pećki okrug",
+            identifier: 24,
+            alternateName: "RS24",
+          },
+          {
+            value: "https://data.gov.rs/district/25",
+            label: "Prizrenski okrug",
+            identifier: 25,
+            alternateName: "RS25",
+          },
+          {
+            value: "https://data.gov.rs/district/26",
+            label: "Kosovski okrug",
+            identifier: 26,
+            alternateName: "RS26",
+          },
+          {
+            value: "https://data.gov.rs/district/27",
+            label: "Kosovskomitrovački okrug",
+            identifier: 27,
+            alternateName: "RS27",
+          },
+          {
+            value: "https://data.gov.rs/district/28",
+            label: "Kosovskopomoravski okrug",
+            identifier: 28,
+            alternateName: "RS28",
+          },
+          {
+            value: "https://data.gov.rs/district/29",
+            label: "Grad Beograd",
+            identifier: 29,
+            alternateName: "RSBG",
           },
         ],
         relatedLimitValues: [],
@@ -182,120 +200,67 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NominalDimension",
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        cubeIri: "https://data.gov.rs/dataset/energy-consumption",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-consumption",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/category",
+            "https://data.gov.rs/dataset/dimension/consumption-category",
         }),
-        label: "Verbrauchsprofile typischer Haushalte",
+        label: "Kategorije potrošnje",
         scaleType: "Nominal" as ScaleType,
         isNumerical: false,
         isKeyDimension: true,
         values: [
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C1",
-            label: "C1",
-            description:
-              "8'000 kWh/Jahr: Kleinstbetrieb' max. beanspruchte Leistung: 8 kW",
+            value: "https://data.gov.rs/energy/category/domestic-low",
+            label: "Domaćinstvo - Niska potrošnja",
+            description: "Do 2.000 kWh/godišnje: Stan sa minimalnom potrošnjom",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C2",
-            label: "C2",
-            description:
-              "30'000 kWh/Jahr: Kleinbetrieb' max. beanspruchte Leistung: 15 kW",
+            value: "https://data.gov.rs/energy/category/domestic-medium",
+            label: "Domaćinstvo - Srednja potrošnja",
+            description: "2.001-4.000 kWh/godišnje: Standardni stan",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C3",
-            label: "C3",
-            description:
-              "150'000 kWh/Jahr: Mittlerer Betrieb' max. beanspruchte Leistung: 50 kW",
+            value: "https://data.gov.rs/energy/category/domestic-high",
+            label: "Domaćinstvo - Visoka potrošnja",
+            description: "4.001-6.000 kWh/godišnje: Veći stan ili kuća",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C4",
-            label: "C4",
-            description:
-              "500'000 kWh/Jahr: Grosser Betrieb ' max. beanspruchte Leistung: 150 kW' Niederspannung",
+            value: "https://data.gov.rs/energy/category/domestic-very-high",
+            label: "Domaćinstvo - Vrlo visoka potrošnja",
+            description: "Preko 6.000 kWh/godišnje: Kuća sa grejanjem na struju",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C5",
-            label: "C5",
-            description:
-              "500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 150 kW' Mittelspannung' eigene Transformatorenstation",
+            value: "https://data.gov.rs/energy/category/business-small",
+            label: "Poslovni - Mali",
+            description: "Do 15.000 kWh/godišnje: Malo preduzeće ili ordžanije",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C6",
-            label: "C6",
-            description:
-              "1'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 400 kW' Mittelspannung' eigene Transformatorenstation",
+            value: "https://data.gov.rs/energy/category/business-medium",
+            label: "Poslovni - Srednji",
+            description: "15.001-50.000 kWh/godišnje: Srednje preduzeće",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/C7",
-            label: "C7",
-            description:
-              "7'500'000 kWh/Jahr: Grosser Betrieb' max. beanspruchte Leistung: 1'630 kW' Mittelspannung' eigene Transformatorenstation",
+            value: "https://data.gov.rs/energy/category/business-large",
+            label: "Poslovni - Veliki",
+            description: "50.001-200.000 kWh/godišnje: Veliko preduzeće",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H1",
-            label: "H1",
-            description: "1'600 kWh/Jahr: 2-Zimmerwohnung mit Elektroherd",
+            value: "https://data.gov.rs/energy/category/industrial",
+            label: "Industrijski",
+            description: "Preko 200.000 kWh/godišnje: Industrijska potrošnja",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H2",
-            label: "H2",
-            description: "2'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd",
+            value: "https://data.gov.rs/energy/category/agricultural",
+            label: "Poljoprivredni",
+            description: "Specijalizovana poljoprivredna potrošnja",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H3",
-            label: "H3",
-            description:
-              "4'500 kWh/Jahr: 4-Zimmerwohnung mit Elektroherd und Elektroboiler",
-          },
-          {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H4",
-            label: "H4",
-            description:
-              "4'500 kWh/Jahr: 5-Zimmerwohnung mit Elektroherd und Tumbler (ohne Elektroboiler)",
-          },
-          {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H5",
-            label: "H5",
-            description:
-              "7'500 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler und Tumbler",
-          },
-          {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H6",
-            label: "H6",
-            description:
-              "25'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler und mit elektrischer Widerstandsheizung",
-          },
-          {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H7",
-            label: "H7",
-            description:
-              "13'000 kWh/Jahr: 5-Zimmer-Einfamilienhaus mit Elektroherd' Elektroboiler' Tumbler' Wärmepumpe 5 kW zur Beheizung",
-          },
-          {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/category/H8",
-            label: "H8",
-            description:
-              "7'500 kWh/Jahr: Grosse' hoch elektrifizierte Eigentumswohnung",
+            value: "https://data.gov.rs/energy/category/public",
+            label: "Javni sektor",
+            description: "Škole, bolnice, opštinske zgrade",
           },
         ],
         relatedLimitValues: [],
@@ -304,27 +269,29 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NominalDimension",
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/product",
+            "https://data.gov.rs/dataset/dimension/tariff-type",
         }),
-        label: "Produkt",
+        label: "Tip tarife",
         scaleType: "Nominal" as ScaleType,
         isNumerical: false,
         isKeyDimension: true,
         values: [
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/product/cheapest",
-            label: "Günstigstes Produkt",
+            value: "https://data.gov.rs/energy/tariff/standard",
+            label: "Standardna tarifa",
           },
           {
-            value:
-              "https://energy.ld.admin.ch/elcom/electricityprice/product/standard",
-            label: "Standardprodukt",
+            value: "https://data.gov.rs/energy/tariff/night",
+            label: "Noćna tarifa (NT)",
+          },
+          {
+            value: "https://data.gov.rs/energy/tariff/peak",
+            label: "Viša tarifa (VT)",
           },
         ],
         relatedLimitValues: [],
@@ -335,24 +302,23 @@ export const getCachedComponentsMock = {
     measures: [
       {
         __typename: "NumericalMeasure",
-        isCurrency: false,
-        isDecimal: false,
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        isCurrency: true,
+        isDecimal: true,
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/total",
+            "https://data.gov.rs/dataset/dimension/total-cost",
         }),
-        label: "Total exkl. MWST",
-        description:
-          "Total electricity costs in rappen per kWH. Includes all variable costs, but not fix costs",
+        label: "Ukupna cena po kWh",
+        description: "Ukupni troškovi struje po kilovat-satu. Uključuje sve varijabilne troškove",
         scaleType: "Ratio" as ScaleType,
         isNumerical: false,
         isKeyDimension: false,
         values: [
-          { value: 6.9948115, label: "6.9948115" },
-          { value: 41.933666, label: "41.933666" },
+          { value: 8.5, label: "8.5" },
+          { value: 15.2, label: "15.2" },
         ],
         relatedLimitValues: [],
         related: [],
@@ -360,22 +326,22 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NumericalMeasure",
-        isCurrency: false,
-        isDecimal: false,
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        isCurrency: true,
+        isDecimal: true,
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/gridusage",
+            "https://data.gov.rs/dataset/dimension/distribution-cost",
         }),
-        label: "Netznutzung",
+        label: "Cena distribucije",
         scaleType: "Ratio" as ScaleType,
         isNumerical: false,
         isKeyDimension: false,
         values: [
-          { value: 2.0865285, label: "2.0865285" },
-          { value: 21.119532, label: "21.119532" },
+          { value: 3.2, label: "3.2" },
+          { value: 6.8, label: "6.8" },
         ],
         relatedLimitValues: [],
         related: [],
@@ -383,22 +349,22 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NumericalMeasure",
-        isCurrency: false,
-        isDecimal: false,
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        isCurrency: true,
+        isDecimal: true,
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/energy",
+            "https://data.gov.rs/dataset/dimension/energy-cost",
         }),
-        label: "Energielieferungkosten",
+        label: "Cena energije",
         scaleType: "Ratio" as ScaleType,
         isNumerical: false,
         isKeyDimension: false,
         values: [
-          { value: 1.11324, label: "1.11324" },
-          { value: 23.652, label: "23.652" },
+          { value: 4.5, label: "4.5" },
+          { value: 12.1, label: "12.1" },
         ],
         relatedLimitValues: [],
         related: [],
@@ -406,22 +372,22 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NumericalMeasure",
-        isCurrency: false,
-        isDecimal: false,
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        isCurrency: true,
+        isDecimal: true,
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/charge",
+            "https://data.gov.rs/dataset/dimension/fees",
         }),
-        label: "Abgaben an das Gemeinwesen",
+        label: "Naknade i doprinosi",
         scaleType: "Ratio" as ScaleType,
         isNumerical: false,
         isKeyDimension: false,
         values: [
-          { value: 0, label: "0" },
-          { value: 7.584526, label: "7.584526" },
+          { value: 0.8, label: "0.8" },
+          { value: 3.5, label: "3.5" },
         ],
         relatedLimitValues: [],
         related: [],
@@ -429,22 +395,22 @@ export const getCachedComponentsMock = {
       },
       {
         __typename: "NumericalMeasure",
-        isCurrency: false,
-        isDecimal: false,
-        cubeIri: "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+        isCurrency: true,
+        isDecimal: true,
+        cubeIri: "https://data.gov.rs/dataset/energy-tariffs",
         id: stringifyComponentId({
           unversionedCubeIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice-canton",
+            "https://data.gov.rs/dataset/energy-tariffs",
           unversionedComponentIri:
-            "https://energy.ld.admin.ch/elcom/electricityprice/dimension/aidfee",
+            "https://data.gov.rs/dataset/dimension/renewable-fee",
         }),
-        label: "Förderabgaben (KEV)",
+        label: "Naknada za podsticaj proizvodnje iz OBIE",
         scaleType: "Ratio" as ScaleType,
         isNumerical: false,
         isKeyDimension: false,
         values: [
           { value: 0.45, label: "0.45" },
-          { value: 2.3, label: "2.3" },
+          { value: 1.2, label: "1.2" },
         ],
         relatedLimitValues: [],
         related: [],

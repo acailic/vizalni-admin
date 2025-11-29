@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/macro";
-import { Link } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { ReactElement, useMemo, useState } from "react";
@@ -33,15 +33,13 @@ const CannotFindCubeContent = () => {
   return (
     <>
       <Trans id="flashes.couldnt-load-cube.title">Could not load cube</Trans>
-      <Link
-        href={`https://cube-validator.lindas.admin.ch/validate/${encodeURIComponent(errorOptions.endpointUrl)}/${encodeURIComponent(errorOptions.iri)}?profile=https:%2F%2Fcube.link%2Fref%2Fmain%2Fshape%2Fprofile-visualize`}
-        sx={{ display: "flex", alignItems: "center", gap: 1 }}
-      >
-        <Trans id="flashes.couldnt-load-cube.view-cube-checker">
-          View in Cube Validator
-        </Trans>{" "}
-        <Icon name="arrowRight" size={16} />
-      </Link>
+      <Box sx={{ mt: 1 }}>
+        <Typography variant="body2" color="textSecondary">
+          <Trans id="flashes.couldnt-load-cube.message">
+            Please check the data source URL and cube configuration. For data.gov.rs datasets, ensure the endpoint is accessible and properly formatted.
+          </Trans>
+        </Typography>
+      </Box>
     </>
   );
 };

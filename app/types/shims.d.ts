@@ -12,64 +12,6 @@ declare module "gzip-size" {
   export default gzipSize;
 }
 
-declare module "@mui/material" {
-  export type BoxProps = any;
-  export type SxProps = any;
-  export type Theme = any;
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/styles" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/icons-material" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/lab" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/lab/themeAugmentation" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/styles" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/styles/createTypography" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/styles/shadows" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/Button" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/InputBase" {
-  const content: any;
-  export = content;
-}
-
-declare module "@mui/material/Typography" {
-  const content: any;
-  export = content;
-}
-
 declare module "use-debounce" {
   export function useDebounce<T>(value: T, delay?: number): [T];
 }
@@ -87,23 +29,6 @@ declare module "@braintree/sanitize-url" {
 
 declare module "ts-pattern" {
   export const match: any;
-}
-
-declare module "@hello-pangea/dnd" {
-  export const DragDropContext: any;
-  export const Droppable: any;
-  export const Draggable: any;
-  export type OnDragEndResponder = any;
-  export type DraggableLocation = any;
-  export type DraggableProvided = any;
-  export type DraggableStateSnapshot = any;
-  export type DroppableProvided = any;
-  export type DroppableStateSnapshot = any;
-}
-
-declare module "immer" {
-  const produce: any;
-  export default produce;
 }
 
 declare module "@uiw/react-color" {
@@ -266,23 +191,8 @@ declare module "@/intervals" {
 }
 
 declare module "@mui/material" {
-  export const Box: any;
-  export const Button: any;
-  export const Typography: any;
-  export type SelectChangeEvent = any;
-  export type BoxProps = any;
-  export type SxProps = any;
-  export type Theme = any;
   const content: any;
   export = content;
-}
-
-declare module "@mui/styles" {
-  export const makeStyles: any;
-}
-
-declare module "@mui/material/styles" {
-  export const createTheme: any;
 }
 
 declare type $IntentionalAny = any;

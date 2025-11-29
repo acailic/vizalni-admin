@@ -1,4 +1,11 @@
-import { Box, Typography, Grid, Card, CardContent, CardActions, Button, Chip } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 
 // internal imports
 import { staticGalleryDatasets, GalleryDataset } from "@/data/static-gallery-data";
@@ -21,7 +28,7 @@ export const DemoGallery = ({ datasets = staticGalleryDatasets }: { datasets?: G
 
       <Grid container spacing={3}>
         {datasets.map((dataset) => (
-          <Grid item xs={12} md={6} lg={4} key={dataset.id}>
+          <Grid size={{ xs: 12, md: 6, lg: 4 }} key={dataset.id}>
             <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="div" gutterBottom>

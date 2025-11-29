@@ -46,7 +46,7 @@ test('bundle size check', () => {
   }
 
   // Check individual chunks (assume <100KB each)
-  for (const [file, size] of Object.entries(chunkSizes)) {
+  for (const [, size] of Object.entries(chunkSizes)) {
     expect(size).toBeLessThan(100 * 1024); // 100KB per chunk gzipped
   }
 

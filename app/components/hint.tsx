@@ -1,16 +1,14 @@
 import { Trans } from "@lingui/macro";
-import {
-  Alert,
-  AlertProps,
-  AlertTitle,
-  alpha,
-  Box,
-  BoxProps,
-  keyframes,
-  Theme,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import Alert from "@mui/material/Alert";
+import { AlertProps } from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import { BoxProps } from "@mui/material/Box";
+import { keyframes } from "@mui/material/styles";
+import { Theme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
 import { ReactNode, useEffect, useState } from "react";
 

@@ -1141,5 +1141,6 @@ export const getStaticProps: GetStaticProps<ContentPageProps> = async ({
     props: {
       staticPage: path,
     },
+    revalidate: 3600, // Revalidate every hour for potential content updates
   };
 };

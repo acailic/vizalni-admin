@@ -9,7 +9,7 @@ describe("Color Picker Swatches", () => {
     actions,
   }) => {
     await page.goto(
-      "/en/create/new?cube=https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/10&dataSource=Prod"
+      "/en/create/new?cube=https://data.gov.rs/dataset/renewable-energy-solar/10&dataSource=Prod"
     );
     await selectors.chart.loaded();
     await actions.editor.selectActiveField("Segmentation");
@@ -17,7 +17,7 @@ describe("Color Picker Swatches", () => {
     await (
       await selectors.panels.drawer().within().getByLabelText("None")
     ).click();
-    await actions.mui.selectOption("Kanton");
+    await actions.mui.selectOption("Okrug");
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await sleep(1_000);
@@ -49,7 +49,7 @@ describe("Color Picker Swatches", () => {
     actions,
   }) => {
     await page.goto(
-      "/en/create/new?cube=https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/10&dataSource=Prod"
+      "/en/create/new?cube=https://data.gov.rs/dataset/renewable-energy-solar/10&dataSource=Prod"
     );
     await selectors.chart.loaded();
     await actions.editor.selectActiveField("Vertical Axis");

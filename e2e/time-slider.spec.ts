@@ -31,7 +31,7 @@ const CONFIGURATOR_STATE = {
   state: "CONFIGURING_CHART",
   dataSource: {
     type: "sparql",
-    url: "https://lindas-cached.cluster.ldbar.ch/query",
+    url: "https://data.gov.rs/api/sparql",
   },
   layout: {
     type: "tab",
@@ -53,9 +53,9 @@ const CONFIGURATOR_STATE = {
       },
       cubes: [
         {
-          iri: "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/10",
+          iri: "https://data.gov.rs/dataset/renewable-energy-solar/10",
           filters: {
-            "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Jahr":
+            "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Godina":
               { type: "range", from: "2014", to: "2023" },
           },
         },
@@ -67,7 +67,7 @@ const CONFIGURATOR_STATE = {
         timeRange: {
           active: false,
           componentId:
-            "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Jahr",
+            "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Godina",
           presets: { type: "range", from: "2014", to: "2023" },
         },
         dataFilters: { active: false, componentIds: [] },
@@ -77,11 +77,11 @@ const CONFIGURATOR_STATE = {
       fields: {
         areaLayer: {
           componentId:
-            "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Kanton",
+            "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Okrug",
           color: {
             type: "numerical",
             componentId:
-              "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/AnzahlAnlagen",
+              "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/BrojObjekata",
             paletteId: "oranges",
             scaleType: "continuous",
             interpolationType: "linear",
@@ -90,7 +90,7 @@ const CONFIGURATOR_STATE = {
         },
         animation: {
           componentId:
-            "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Jahr",
+            "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Godina",
           showPlayButton: true,
           duration: 30,
           type: "continuous",
@@ -104,10 +104,10 @@ const CONFIGURATOR_STATE = {
     timeRange: { active: false, timeUnit: "", presets: { from: "", to: "" } },
     dataFilters: {
       componentIds: [
-        "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Jahr",
+        "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Godina",
       ],
       filters: {
-        "https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://energy.ld.admin.ch/sfoe/bfe_ogd84_einmalverguetung_fuer_photovoltaikanlagen/Jahr":
+        "https://data.gov.rs/dataset/renewable-energy-solar(VISUALIZE.ADMIN_COMPONENT_ID_SEPARATOR)https://data.gov.rs/dataset/renewable-energy-solar/Godina":
           { type: "single", value: "2014" },
       },
     },

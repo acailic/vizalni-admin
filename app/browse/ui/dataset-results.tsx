@@ -1,13 +1,11 @@
 import { Trans } from "@lingui/macro";
 import { SearchOff as SearchOffIcon } from "@mui/icons-material";
-import {
-  Box,
-  Typography,
-  Skeleton,
-  Divider,
-  Fade,
-  Button,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Skeleton from "@mui/material/Skeleton";
+import Divider from "@mui/material/Divider";
+import Fade from "@mui/material/Fade";
+import Button from "@mui/material/Button";
 import { ComponentProps } from "react";
 import { CombinedError } from "urql";
 

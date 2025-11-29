@@ -3,7 +3,7 @@ import rdf from "rdf-ext";
 import DatasetExt from "rdf-ext/lib/Dataset";
 import DefaultGraphExt from "rdf-ext/lib/DefaultGraph";
 import { NamedNode, Term } from "rdf-js";
-import { createClient, defaultExchanges } from "urql";
+import { createClient, cacheExchange, fetchExchange } from "@urql/core";
 import { vi } from "vitest";
 
 import { GRAPHQL_ENDPOINT } from "@/domain/env";
@@ -23,7 +23,7 @@ vi.mock("@/graphql/client", () => {
   return {
     client: createClient({
       url: GRAPHQL_ENDPOINT,
-      exchanges: [...defaultExchanges],
+      exchanges: [cacheExchange, fetchExchange],
     }),
   };
 });

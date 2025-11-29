@@ -1036,10 +1036,11 @@ export const components: Components = {
         html {
           margin: 0;
           padding: 0;
-          font-family: "NotoSans";
+          font-family: "NotoSans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           -webkit-overflow-scrolling: touch;
           -ms-overflow-style: -ms-autohiding-scrollbar;
           scrollbar-gutter: stable;
+          font-display: swap;
         }
 
         * {
@@ -1049,53 +1050,74 @@ export const components: Components = {
         fieldset {
           border: none;
         }
-  
-        @font-face {
-          font-family: "NotoSans";
+
+        /* Fallback to system fonts while NotoSans loads */
+        body {
+          font-family: "NotoSans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
           font-display: swap;
-          font-style: normal;
-          font-weight: 300;
-          src: url("/static/fonts/NotoSans-Light.woff2") format("woff2");
         }
-        
-        @font-face {
-          font-family: "NotoSans";
-          font-display: swap;
-          font-style: italic;
-          font-weight: 300;
-          src: url("/static/fonts/NotoSans-LightItalic.woff2") format("woff2");
-        }
-  
+
+        /* Critical font faces only - others loaded on demand */
         @font-face {
           font-family: "NotoSans";
           font-display: swap;
           font-style: normal;
           font-weight: 400;
-          src: url("/static/fonts/NotoSans-Regular.woff2") format("woff2");
+          src: local("NotoSans Regular"), local("NotoSans-Regular"), url("/static/fonts/NotoSans-Regular.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
-        
-        @font-face {
-          font-family: "NotoSans";
-          font-display: swap;
-          font-style: italic;
-          font-weight: 400;
-          src: url("/static/fonts/NotoSans-Italic.woff2") format("woff2");
-        }
-  
+
         @font-face {
           font-family: "NotoSans";
           font-display: swap;
           font-style: normal;
           font-weight: 700;
-          src: url("/static/fonts/NotoSans-Bold.woff2") format("woff2");
+          src: local("NotoSans Bold"), local("NotoSans-Bold"), url("/static/fonts/NotoSans-Bold.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
         }
-  
+
+        /* Lazy-loaded font faces */
         @font-face {
           font-family: "NotoSans";
-          font-display: swap;
+          font-display: fallback;
+          font-style: italic;
+          font-weight: 400;
+          src: local("NotoSans Italic"), local("NotoSans-Italic"), url("/static/fonts/NotoSans-Italic.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+
+        @font-face {
+          font-family: "NotoSans";
+          font-display: fallback;
           font-style: italic;
           font-weight: 700;
-          src: url("/static/fonts/NotoSans-BoldItalic.woff2") format("woff2");
+          src: local("NotoSans Bold Italic"), local("NotoSans-BoldItalic"), url("/static/fonts/NotoSans-BoldItalic.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+
+        @font-face {
+          font-family: "NotoSans";
+          font-display: fallback;
+          font-style: normal;
+          font-weight: 300;
+          src: local("NotoSans Light"), local("NotoSans-Light"), url("/static/fonts/NotoSans-Light.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+
+        @font-face {
+          font-family: "NotoSans";
+          font-display: fallback;
+          font-style: italic;
+          font-weight: 300;
+          src: local("NotoSans Light Italic"), local("NotoSans-LightItalic"), url("/static/fonts/NotoSans-LightItalic.woff2") format("woff2");
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+        }
+
+        /* Optimize font loading performance */
+        body {
+          text-rendering: optimizeLegibility;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
         `,
   },

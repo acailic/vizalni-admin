@@ -1,5 +1,5 @@
 import { ResizeObserver } from "@juggle/resize-observer";
-import { useEventCallback } from "@mui/material";
+import { useEventCallback } from "@mui/material/utils";
 import isEqual from "lodash/isEqual";
 import throttle from "lodash/throttle";
 import { useEffect, useRef, useState } from "react";

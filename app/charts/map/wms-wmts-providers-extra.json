@@ -1,93 +1,58 @@
 {
-  "https://geodienste.ch/db/av_situationsplan/deu": {
+  "https://geoportal.gov.rs/ows": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Berzirkgrenzen", "Situationsplan", "Landeskarte"],
-    "note": ""
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Administrativne granice", "Topografska karta", "Satelitski snimak"],
+    "note": "Nacionalni geoportal Republike Srbije"
   },
-  "https://geodienste.ch/db/av_situationsplan/fra": {
+  "https://geoserver.stat.gov.rs/geoserver/ows": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Disponibilite"],
-    "note": ""
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Popis stanovništva", "Statističke oblasti", "Demografski podaci"],
+    "note": "Statistički zavod Republike Srbije"
   },
-  "https://geodienste.ch/db/av/ita": {
-    "canListLayers": true,
-    "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": ""
-  },
-  "https://geodienste.ch/db/elektrische_anlagen_ueber_36kv/deu": {
+  "https://geoserver.rgz.gov.rs/geoserver/ows": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Leitung", "Station (punkt)"],
-    "note": "Station (fläsche) and Mast do not work and cannot be displayed on map.geo.admin.ch"
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Katastarske parcele", "Zgrade", "Zemljišta"],
+    "note": "Republički geodetski zavod"
   },
-  "https://geodienste.ch/db/fixpunkte/deu": {
+  "https://satellitedata.gov.rs/geoserver/wms": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Lage und höhenfixpunkte LFP2 / HFP2"],
-    "note": ""
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Satelitski snimci", "NDVI", "Infracrveni snimci"],
+    "note": "Nacionalna platforma za satelitske podatke"
   },
-  "https://geoserver.swissdatacube.org/geoserver/gwc/service/wmts?REQUEST=GetCapabilities": {
+  "https://map.rgz.gov.rs/geoserver/ows": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": "Layers load and some work (Snow Cover 1995 - 2005, Bale_<year>, Switzerland Admin Level 1 & 2, & more...)"
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Digitalni model terena", "Ortofoto snimci"],
+    "note": "Geodetski zavod portal za karte"
+  },
+  "https://wms.eea.europa.eu/wms": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Corine Land Cover", "Natura 2000", "Air Quality"],
+    "note": "European Environment Agency - Regional data for Serbia"
   },
   "https://osmlab.github.io/wmts-osm/WMTSCapabilities.xml": {
     "canListLayers": true,
     "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
+    "canDisplayOnMapGeoAdmin": false,
     "workingLayers": [],
-    "note": "Display on map.geo.admin.ch seems buggy"
+    "note": "OpenStreetMap base layer"
   },
-  "https://geodienste.ch/db/waldreservate/deu": {
+  "https://ows.terrestris.de/osm/service": {
     "canListLayers": true,
     "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Waldreservate", "Verfügbarkeit: Kantone"],
-    "note": "Verfügbarkeit: Beschriftungen does not work"
-  },
-  "https://geodienste.ch/db/kantonale_ausnahmetransportrouten/deu": {
-    "canListLayers": true,
-    "canDisplayLayers": true,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": ["Routen"],
-    "note": ""
-  },
-  "https://p20.cosmos-project.ch/sd20alps_map/wmts?request=getcapabilities": {
-    "canListLayers": false,
-    "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": "403 Forbidden due to Referer restriction (must be map.geo.admin.ch)"
-  },
-  "https://services.geo.sg.ch/wss/service/SG00002_WMS/guest?": {
-    "canListLayers": false,
-    "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": "CORS Missing allow origin"
-  },
-  "https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml": {
-    "canListLayers": false,
-    "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": "CORS Missing allow origin. Projection system is EPSG:3857 so it should be possible to display it once we solve the CORS issue."
-  },
-  "https://www.ogd.stadt-zuerich.ch/mapproxy/wmts/1.0.0/WMTSCapabilities.xml": {
-    "canListLayers": true,
-    "canDisplayLayers": false,
-    "canDisplayOnMapGeoAdmin": true,
-    "workingLayers": [],
-    "note": "Loading layers works but no displayable layers since projection is EPSG:2056"
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["osm:osm"],
+    "note": "OpenStreetMap WMS service"
   }
 }

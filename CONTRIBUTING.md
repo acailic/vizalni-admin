@@ -1,23 +1,75 @@
 # Contributing to Vizualni Admin
 
-Thank you for your interest in contributing to Vizualni Admin! This document
-provides guidelines and instructions for contributing to the project. We welcome
-contributions from developers of all skill levels and backgrounds, including
-those from Serbia and internationally.
+Thank you for your interest in contributing to Vizualni Admin! This document provides guidelines for contributing to the Serbian open data visualization project. We welcome contributions from developers of all skill levels and backgrounds, especially those familiar with Serbian open data and localization.
 
-## Getting Started
+## 🚀 Quick Start
 
-1. Fork the repository on GitHub.
-2. Clone your fork:
-   `git clone https://github.com/YOUR_USERNAME/vizualni-admin.git`
-3. Create a new branch for your changes:
-   `git checkout -b feature/your-feature-name` (use `fix/` for bug fixes,
-   `docs/` for documentation).
-4. Make your changes following the guidelines below.
-5. Test your changes thoroughly.
-6. Commit your changes using conventional commit messages (see below).
-7. Push to your fork: `git push origin feature/your-feature-name`
-8. Open a Pull Request (PR) against the main branch.
+1. **Fork and Clone**
+   ```bash
+   git clone https://github.com/your-username/vizualni-admin.git
+   cd vizualni-admin
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   yarn install
+   ```
+
+3. **Start Development**
+   ```bash
+   yarn dev
+   ```
+
+## 📋 Development Workflow
+
+### 1. Create a Branch
+```bash
+git checkout -b feature/your-feature-name
+```
+
+### 2. Make Changes
+- Follow the existing code style
+- Write tests for new features
+- Update documentation
+
+### 3. Commit Changes
+- Use conventional commit messages
+- Follow our commit message format
+
+### 4. Push and Create PR
+```bash
+git push origin feature/your-feature-name
+```
+
+## 📝 Commit Message Guidelines
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+### Format:
+```
+type(scope): description
+
+[optional body]
+
+[optional footer]
+```
+
+### Types:
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+### Examples:
+```
+feat(serbian): Add Serbian localization support
+fix(map): resolve district boundary rendering issue
+docs(api): update API documentation for Serbian endpoints
+refactor(config): simplify configuration structure
+```
 
 ## Development Setup
 

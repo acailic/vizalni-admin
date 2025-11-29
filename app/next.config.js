@@ -52,8 +52,47 @@ const enableSentryUpload =
   Boolean(process.env.SENTRY_AUTH_TOKEN) &&
   process.env.SENTRY_UPLOAD !== "false";
 const imageConfig = {
+  // Enable modern image formats
   formats: ["image/avif", "image/webp"],
-  minimumCacheTTL: 60,
+
+  // Cache optimized images for longer
+  minimumCacheTTL: 31536000, // 1 year for static images
+
+  // Device sizes for responsive images
+  deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+
+  // Image sizes for srcset generation
+  imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
+
+  // Quality settings
+  quality: 75,
+
+  // Enable image optimization
+  unoptimized: false,
+
+  // Allow external domains for images (WMS/WMTS services)
+  domains: [
+    'localhost',
+    '127.0.0.1',
+  ],
+
+  // Allow any image source for WMS/WMTS services
+  remotePatterns: [
+    {
+      protocol: 'http',
+      hostname: '**',
+      pathname: '/**',
+    },
+    {
+      protocol: 'https',
+      hostname: '**',
+      pathname: '/**',
+    },
+  ],
+
+  // Allow any image source (needed for dynamic map services)
+  dangerouslyAllowSVG: true,
+  contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 };
 
 const nextConfig = withPreconstruct(
@@ -75,6 +114,7 @@ const nextConfig = withPreconstruct(
         headers: async () => {
           const headers = [];
 
+          // Security headers
           headers.push({
             source: "/:path*",
             headers: [
@@ -84,7 +124,7 @@ const nextConfig = withPreconstruct(
               },
               {
                 key: "X-Frame-Options",
-                value: "SAMEORIGIN",
+                value: "DENY",
               },
               {
                 key: "X-XSS-Protection",
@@ -97,6 +137,101 @@ const nextConfig = withPreconstruct(
               {
                 key: "Permissions-Policy",
                 value: "camera=(), microphone=(), geolocation=()",
+              
+              },
+              // A+ security headers
+              {
+                key: "Strict-Transport-Security",
+                value: "max-age=31536000; includeSubDomains; preload",
+              },
+              {
+                key: "Cross-Origin-Embedder-Policy",
+                value: "require-corp",
+              },
+              {
+                key: "Cross-Origin-Opener-Policy",
+                value: "same-origin",
+              },
+              {
+                key: "Cross-Origin-Resource-Policy",
+                value: "same-origin",
+              },
+              {
+                key: "X-Permitted-Cross-Domain-Policies",
+                value: "none",
+              },
+              {
+                key: "X-Download-Options",
+                value: "noopen"},
+            ],
+          });
+
+          // Static assets caching - aggressive caching for versioned assets
+          headers.push({
+            source: "/_next/static/(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=31536000, immutable",
+              },
+            ],
+          });
+
+          // Static files in public folder
+          headers.push({
+            source: "/(static|images|icons|fonts)/(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=31536000, immutable",
+              },
+            ],
+          });
+
+          // API routes - moderate caching for GET requests
+          headers.push({
+            source: "/api/(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=300, stale-while-revalidate=600",
+              },
+              {
+                key: "Vary",
+                value: "Accept-Encoding",
+              },
+            ],
+          });
+
+          // Pages - shorter cache for dynamic content
+          headers.push({
+            source: "/(.*)(?!_next|api|static|images|icons|fonts)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=3600, stale-while-revalidate=7200",
+              },
+            ],
+          });
+
+          // Image optimization caching
+          headers.push({
+            source: "/_next/image(.*)",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=31536000, immutable",
+              },
+            ],
+          });
+
+          // JSON files and data
+          headers.push({
+            source: "/(.*).json",
+            headers: [
+              {
+                key: "Cache-Control",
+                value: "public, max-age=1800, stale-while-revalidate=3600",
               },
             ],
           });
@@ -174,9 +309,20 @@ const nextConfig = withPreconstruct(
           "framer-motion",
           "@emotion/react",
           "@emotion/styled",
+          "@hello-pangea/dnd",
+          "@dnd-kit/core",
+          "@dnd-kit/utilities",
         ],
         // Enable parallel compilation
         cpus: require("os").cpus().length - 1 || 1,
+        // Enable webpack 5 optimizations
+        optimizeCss: true,
+        // Enable Turbopack for faster development builds (when ready)
+        // turbo: {
+        //   rules: {
+        //     '*.svg': ['@svgr/webpack'],
+        //   },
+        // },
       },
 
       // Modularize imports for better tree-shaking
@@ -222,8 +368,38 @@ const nextConfig = withPreconstruct(
             ...config.optimization.splitChunks,
             chunks: "all",
             minSize: 20000,
-            maxInitialRequests: 25,
+            maxSize: 244000,
+            maxInitialRequests: 30,
             maxAsyncRequests: 50,
+            cacheGroups: {
+              vendor: {
+                test: /[\\/]node_modules[\\/]/,
+                name(module) {
+                  const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                  return `npm.${packageName.replace('@', '')}`;
+                },
+                priority: 10,
+                chunks: "all",
+              },
+              charts: {
+                test: /[\\/]charts[\\/]/,
+                name: "charts",
+                priority: 20,
+                chunks: "all",
+              },
+              mui: {
+                test: /[\\/]node_modules[\\/]@mui[\\/]/,
+                name: "mui",
+                priority: 30,
+                chunks: "all",
+              },
+              d3: {
+                test: /[\\/]node_modules[\\/]d3-[\\/]/,
+                name: "d3",
+                priority: 25,
+                chunks: "all",
+              },
+            },
           };
           config.optimization.runtimeChunk = "single";
         }

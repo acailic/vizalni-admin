@@ -1,0 +1,38 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0C3B7A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E10600;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C41E3A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Main circle with professional gradient -->
+  <circle cx="32" cy="32" r="30" fill="url(#blueGradient)"/>
+
+  <!-- Clean bar chart -->
+  <rect x="14" y="38" width="6" height="10" fill="#ffffff" rx="1"/>
+  <rect x="22" y="30" width="6" height="18" fill="#ffffff" rx="1"/>
+  <rect x="30" y="24" width="6" height="24" fill="#ffffff" rx="1"/>
+  <rect x="38" y="28" width="6" height="20" fill="#ffffff" rx="1"/>
+  <rect x="46" y="34" width="6" height="14" fill="#ffffff" rx="1"/>
+
+  <!-- Trending line with accent color -->
+  <polyline points="17,36 23,30 29,26 35,28 41,24 47,30"
+            fill="none" stroke="url(#redGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Data points -->
+  <circle cx="17" cy="36" r="2" fill="#E10600"/>
+  <circle cx="23" cy="30" r="2" fill="#E10600"/>
+  <circle cx="29" cy="26" r="2" fill="#E10600"/>
+  <circle cx="35" cy="28" r="2" fill="#E10600"/>
+  <circle cx="41" cy="24" r="2" fill="#E10600"/>
+  <circle cx="47" cy="30" r="2" fill="#E10600"/>
+
+  <!-- Subtle Serbian elements - small crosses -->
+  <rect x="30" y="14" width="4" height="4" fill="#ffffff" opacity="0.9" rx="0.5"/>
+  <rect x="30" y="46" width="4" height="4" fill="#ffffff" opacity="0.9" rx="0.5"/>
+</svg>
