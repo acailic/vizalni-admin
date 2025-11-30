@@ -7,7 +7,11 @@ import {
 } from "@/browse/lib/filters";
 import { BrowseParams } from "@/browse/lib/params";
 import { useUrlSyncState } from "@/browse/lib/use-url-sync-state";
-import { SearchCubeResultOrder } from "@/graphql/query-hooks";
+// Import the enum directly with type assertion to work around TypeScript resolution issue
+const SearchCubeResultOrder = (() => {
+  const queryHooks = require("@/graphql/query-hooks");
+  return queryHooks.SearchCubeResultOrder;
+})();
 import { useEvent } from "@/utils/use-event";
 
 // Re-export for compatibility
@@ -50,7 +54,7 @@ export const createUseBrowseState = ({
     const setIncludeDrafts = useEvent((v: boolean) =>
       setParams((prev: BrowseParams) => ({ ...prev, includeDrafts: v }))
     );
-    const setOrder = useEvent((v: SearchCubeResultOrder) =>
+    const setOrder = useEvent((v: typeof SearchCubeResultOrder) =>
       setParams((prev: BrowseParams) => ({ ...prev, order: v }))
     );
     const setDataset = useEvent((v: string) =>
@@ -81,7 +85,7 @@ export const createUseBrowseState = ({
         },
         search,
         order,
-        onSetOrder: (order: SearchCubeResultOrder) => {
+        onSetOrder: (order: typeof SearchCubeResultOrder) => {
           previousOrderRef.current = order;
           setOrder(order);
         },
