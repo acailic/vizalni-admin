@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
+const withMDX = require("@next/mdx")();
+
 const nextConfig = {
-  // Minimal configuration for testing
   reactStrictMode: true,
   swcMinify: true,
+  pageExtensions: ["js", "ts", "tsx", "mdx"],
   experimental: {
     // Disable any experimental features that might cause issues
   },
@@ -15,4 +17,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withMDX(nextConfig);
