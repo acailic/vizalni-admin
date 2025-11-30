@@ -43,8 +43,8 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/acailic-vizualni-admin.cjs.js",
+  "module": "dist/acailic-vizualni-admin.esm.js",
   "types": "dist/index.d.ts",
   "typesVersions": {
     "*": {
@@ -52,14 +52,6 @@
         "dist/index.d.ts"
       ]
     }
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
   },
   "sideEffects": true,
   "files": [
