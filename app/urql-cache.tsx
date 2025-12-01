@@ -1,4 +1,4 @@
-import { DataSource } from "@/config-types/config-types";
+import { DataSource } from "@/config-types";
 import { DataCubeComponents } from "@/domain/data";
 import { truthy } from "@/domain/types";
 import { client } from "@/graphql/client";

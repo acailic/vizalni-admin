@@ -1308,6 +1308,7 @@ const DataSource = t.type({
   type: t.union([t.literal("sql"), t.literal("sparql")]),
   url: t.string,
 });
+export { DataSource };
 export type DataSource = t.TypeOf<typeof DataSource>;
 
 const ResizeHandle = t.keyof({

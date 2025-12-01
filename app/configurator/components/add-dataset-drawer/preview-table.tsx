@@ -23,7 +23,7 @@ import { useEffect, useMemo, useState } from "react";
 import { FirstTenRowsCaption } from "@/browse/ui/first-ten-rows-caption";
 import { Error as ErrorHint, Loading } from "@/components/hint";
 import { Tag } from "@/components/tag";
-import { ChartConfig, DataSource } from "@/config-types/config-types";
+import { ChartConfig, DataSource } from "@/config-types";
 import { SearchOptions } from "@/configurator/components/add-dataset-drawer/types";
 import { useStyles } from "@/configurator/components/add-dataset-drawer/use-styles";
 import {

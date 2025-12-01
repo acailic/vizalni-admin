@@ -1,4 +1,4 @@
-import { DataSource } from "@/config-types/config-types";
+import { DataSource } from "@/config-types";
 import { dataSourceToSparqlEditorUrl } from "@/domain/data-source";
 
 export const getSparqlEditorUrl = ({
