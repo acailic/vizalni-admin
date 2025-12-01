@@ -121,6 +121,7 @@ export const getParamsFromFilters = (filters: BrowseFilter[]) => {
         params[iriAttr] = filter.iri;
         break;
       default:
+        // @ts-ignore - exhaustive check
         const _exhaustiveCheck: never = filter;
         throw new Error(`Unknown filter type: ${filter}`);
     }
@@ -143,6 +144,7 @@ export const encodeFilter = ({ __typename, iri }: BrowseFilter) => {
       case "DataCubeTermset":
         return "termset";
       default:
+        // @ts-ignore - exhaustive check
         const _exhaustiveCheck: never = __typename;
         throw new Error(`Unknown type: ${__typename}`);
     }
