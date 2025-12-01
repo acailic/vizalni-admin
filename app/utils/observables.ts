@@ -1,7 +1,7 @@
 import { ascending, bisect } from "d3-array";
 import { scaleLinear } from "d3-scale";
 
-import { AnimationType } from "@/config-types";
+import { AnimationType } from "@/config-types/config-types";
 
 export abstract class Observable {
   private observers: Function[];

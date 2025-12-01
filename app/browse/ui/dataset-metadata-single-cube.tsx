@@ -1,5 +1,5 @@
 import { DatasetMetadata } from "@/components/dataset-metadata";
-import { DataSource } from "@/config-types";
+import { DataSource } from "@/config-types/config-types";
 import { useDataCubeMetadataQuery } from "@/graphql/query-hooks";
 import { useLocale } from "@/locales/use-locale";
 

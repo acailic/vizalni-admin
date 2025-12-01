@@ -14,7 +14,7 @@ import { useFootnotesStyles } from "@/components/chart-footnotes";
 import { DataDownloadMenu } from "@/components/data-download";
 import { Flex } from "@/components/flex";
 import { HintError, Loading, LoadingDataError } from "@/components/hint";
-import { DataSource } from "@/config-types";
+import { DataSource } from "@/config-types/config-types";
 import {
   DataCubeMetadataQuery,
   useDataCubePreviewQuery,

@@ -1,5 +1,5 @@
 import { EmbedQueryParams } from "@/components/embed-params";
-import { ChartConfig, DataSource, DashboardFiltersConfig } from "@/config-types";
+import { ChartConfig, DataSource, DashboardFiltersConfig } from "@/config-types/config-types";
 import { Dimension, Measure, Observation } from "@/domain/data";
 import { DataCubeObservationFilter } from "@/graphql/query-hooks";
 

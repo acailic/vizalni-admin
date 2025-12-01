@@ -1,7 +1,7 @@
 import ParsingClient from "sparql-http-client/ParsingClient";
 import { Client } from "urql";
 
-import { ConfiguratorState, DataSource } from "@/config-types";
+import { ConfiguratorState, DataSource } from "@/config-types/config-types";
 import { hasChartConfigs } from "@/configurator";
 import { getMaybeCachedSparqlUrl } from "@/graphql/caching-utils";
 import {

@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 
-import { DataSource, Filters, SingleFilters } from "@/config-types";
+import { DataSource, Filters, SingleFilters } from "@/config-types/config-types";
 import { PossibleFiltersQueryVariables } from "@/graphql/query-hooks";
 import { orderedIsEqual } from "@/utils/ordered-is-equal";
 

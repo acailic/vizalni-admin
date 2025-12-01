@@ -24,7 +24,7 @@ import {
 import { useClient } from "urql";
 
 import { ArrowMenuBottomTop } from "@/components/arrow-menu";
-import { DataSource, SortingField } from "@/config-types";
+import { DataSource, SortingField } from "@/config-types/config-types";
 import {
   Component,
   DataCubeComponents,

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { DataSource } from "@/config-types";
+import { DataSource } from "@/config-types/config-types";
 
 import { getSparqlEditorUrl } from "./sparql-utils";
 
