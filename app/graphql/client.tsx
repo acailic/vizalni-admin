@@ -2,11 +2,11 @@ import { GRAPHQL_ENDPOINT } from "@/domain/env";
 import { flag } from "@/flags/flag";
 // @ts-ignore - dynamic package import based on NODE_ENV
 import { devtoolsExchanges } from "@/graphql/devtools";
-import { createClient, cacheExchange, fetchExchange } from "@/graphql/urql-compat";
+import { createClient, defaultExchanges } from "@/graphql/urql-compat";
 
 export const client = createClient({
   url: GRAPHQL_ENDPOINT,
-  exchanges: [...devtoolsExchanges, cacheExchange, fetchExchange],
+  exchanges: [...devtoolsExchanges, ...defaultExchanges],
   fetchOptions: {
     headers: getHeaders(),
   },
