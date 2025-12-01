@@ -1,5 +1,5 @@
 declare module "@/graphql/urql-compat" {
-  import { Client, Exchange, ExchangeIO } from "urql";
+  import { Exchange } from "urql";
 
   export const cacheExchange: Exchange;
   export const fetchExchange: Exchange;
