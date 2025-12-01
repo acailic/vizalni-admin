@@ -1,5 +1,5 @@
 import { DatasetMetadata } from "@/components/dataset-metadata";
-import { useDataCubeMetadataQuery } from "@/graphql/query-hooks";
+import * as QueryHooks from "@/graphql/query-hooks";
 import { useLocale } from "@/locales/use-locale";
 
 // Temporary type definition to work around import issue
@@ -16,7 +16,7 @@ export const DatasetMetadataSingleCube = ({
   datasetIri: string;
 }) => {
   const locale = useLocale();
-  const [data] = useDataCubeMetadataQuery({
+  const [data] = QueryHooks.useDataCubeMetadataQuery({
     variables: {
       cubeFilter: { iri: datasetIri },
       locale: locale,
