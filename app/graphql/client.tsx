@@ -1,6 +1,7 @@
+import { createClient, cacheExchange, fetchExchange } from "urql";
+
 import { GRAPHQL_ENDPOINT } from "@/domain/env";
 import { flag } from "@/flags/flag";
-import { createClient, cacheExchange, fetchExchange } from "urql";
 
 // Conditional import based on NODE_ENV to avoid webpack alias issues
 let devtoolsExchanges = [];
