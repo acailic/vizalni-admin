@@ -1,11 +1,13 @@
 import { DatasetMetadata } from "@/components/dataset-metadata";
-import { useDataCubeMetadataQuery } from "@/graphql/query-hooks";
 import { useLocale } from "@/locales/use-locale";
 
 type DataSource = {
   type: "sql" | "sparql";
   url: string;
 };
+
+// Use CommonJS require to avoid TS resolution issues with generated query hooks
+const useDataCubeMetadataQuery: any = require("@/graphql/query-hooks").useDataCubeMetadataQuery;
 
 export const DatasetMetadataSingleCube = ({
   dataSource,
