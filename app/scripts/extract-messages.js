@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { globSync } = require('glob');
+const { glob } = require('glob');
 
 console.log('🔍 Extracting messages for Lingui...');
 
@@ -20,7 +20,7 @@ let filesWithLingui = [];
 
 try {
   for (const pattern of patterns) {
-    const files = globSync(pattern, {
+    const files = glob.sync(pattern, {
       ignore: ['**/*.d.ts', '**/*.test.*', '**/*.spec.*', '**/node_modules/**']
     });
 

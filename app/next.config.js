@@ -12,7 +12,9 @@ const nextConfig = {
     // Enable optimized imports
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],
     // Enable transpilation of packages that need Babel processing
-    transpilePackages: ['@lingui/core', '@lingui/react', '@lingui/macro'],
+    transpilePackages: ['@lingui/core', '@lingui/react'],
+    // Ensure proper handling of ES modules
+    esmExternals: 'loose',
   },
   // Enable TypeScript checking but allow build to proceed (will fix incrementally)
   typescript: {
@@ -28,6 +30,38 @@ const nextConfig = {
   },
   // Disable webpack optimizations that might cause issues
   webpack: (config, { isServer, dev, webpack, defaultLoaders }) => {
+    // Process files containing Lingui macros with Babel instead of SWC
+    config.module.rules.push({
+      test: /\.(js|jsx|ts|tsx)$/,
+      include: [
+        path.resolve(__dirname, 'login'),
+        path.resolve(__dirname, 'browse'),
+        path.resolve(__dirname, 'components'),
+        path.resolve(__dirname, 'configurator'),
+        path.resolve(__dirname, 'charts'),
+        path.resolve(__dirname, 'src')
+      ],
+      // Only process files that actually contain Lingui imports
+      use: {
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: ['next/babel'],
+          plugins: ['macros'],
+          // Only apply to files that contain Lingui imports
+          override: (config, { source }) => {
+            if (!source.includes('@lingui/macro') &&
+                !source.includes('from "@lingui/macro"') &&
+                !source.includes('import { Trans') &&
+                !source.includes('import { t')) {
+              return false; // Skip Babel processing for files without Lingui
+            }
+            return config;
+          }
+        }
+      }
+    });
+
     if (!isServer) {
       // Add fallbacks for Node.js built-ins that might be needed by client-side code
       config.resolve.fallback = {
