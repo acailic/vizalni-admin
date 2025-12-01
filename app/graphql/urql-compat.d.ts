@@ -7,5 +7,5 @@ declare module "@/graphql/urql-compat" {
   export const errorExchange: Exchange;
   export const ssrExchange: (params?: { initialState?: any; isClient?: boolean; }) => Exchange;
   export const defaultExchanges: Exchange[];
-  export const createClient: (options: any) => Client;
+  export const createClient: typeof import("urql").createClient;
 }
