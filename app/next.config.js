@@ -30,6 +30,7 @@ const nextConfig = {
       '@/graphql/devtools': dev
         ? require.resolve('./graphql/devtools.dev')
         : require.resolve('./graphql/devtools.prod'),
+      urql: require.resolve('./graphql/urql-compat'),
     };
 
     // Add GraphQL loader for .graphql files
