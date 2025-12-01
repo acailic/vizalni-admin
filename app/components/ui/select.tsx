@@ -8,7 +8,9 @@ import {
   OutlinedInput,
   Chip,
   Box,
+  InputAdornment,
 } from "@mui/material";
+import { KeyboardArrowDown } from "@mui/icons-material";
 import React, { useId } from "react";
 
 export interface SelectOption {
@@ -93,5 +95,68 @@ export const Select: React.FC<SelectProps> = ({
       </MuiSelect>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
+  );
+};
+
+// shadcn/ui style components for compatibility
+export const SelectTrigger = ({
+  children,
+  className,
+  ...props
+}: {
+  children: React.ReactNode;
+  className?: string;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <OutlinedInput
+      className={className}
+      endAdornment={
+        <InputAdornment position="end">
+          <KeyboardArrowDown />
+        </InputAdornment>
+      }
+      {...props}
+    >
+      {children}
+    </OutlinedInput>
+  );
+};
+
+export const SelectValue = ({
+  placeholder,
+  children,
+  ...props
+}: {
+  placeholder?: string;
+  children?: React.ReactNode;
+} & React.HTMLAttributes<HTMLSpanElement>) => {
+  return (
+    <span {...props}>
+      {children || placeholder}
+    </span>
+  );
+};
+
+export const SelectContent = ({
+  children,
+  ...props
+}: {
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLDivElement>) => {
+  return <div {...props}>{children}</div>;
+};
+
+export const SelectItem = ({
+  value,
+  children,
+  ...props
+}: {
+  value: string;
+  children: React.ReactNode;
+} & React.HTMLAttributes<HTMLLIElement>) => {
+  return (
+    <MenuItem value={value} {...props}>
+      {children}
+    </MenuItem>
   );
 };

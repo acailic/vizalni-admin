@@ -100,3 +100,6 @@ export const Center = ({ children }: { children?: ReactNode }) => (
     {children}
   </Flex>
 );
+
+// Export Layout as an alias for ContentLayout for backward compatibility
+export const Layout = ContentLayout;

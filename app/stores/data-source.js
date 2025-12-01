@@ -1,5 +1,5 @@
 import Router from "next/router";
-import create from "zustand";
+import { create } from "zustand";
 
 import { DEFAULT_DATA_SOURCE, parseSourceByLabel, sourceToLabel, } from "@/domain/data-source";
 import { maybeWindow } from "@/utils/maybe-window";

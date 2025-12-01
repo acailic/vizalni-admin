@@ -12,7 +12,6 @@ import {
   HintSpecimen,
   HtmlSpecimen,
   ImageSpecimen,
-  Markdown,
   Page,
   TableSpecimen,
   TypeSpecimen,
@@ -135,9 +134,8 @@ const mkHeading = (level: number) => {
       const slugger = new Slugger();
       return slugger.slug(props.children);
     }, [props.children]);
-    return (
-      <Markdown.Heading level={level} text={[props.children]} slug={slug} />
-    );
+    const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
+    return <HeadingTag id={slug}>{props.children}</HeadingTag>;
   };
   Component.displayName = `Heading${level}`;
   return Component;
@@ -151,19 +149,19 @@ const mdxComponents = {
   h4: mkHeading(4),
   h5: mkHeading(5),
   h6: mkHeading(6),
-  p: Markdown.Paragraph,
-  ul: Markdown.UnorderedList,
-  ol: Markdown.OrderedList,
-  li: Markdown.ListItem,
-  blockquote: Markdown.BlockQuote,
-  em: Markdown.Em,
-  strong: Markdown.Strong,
-  del: Markdown.Del,
-  img: Markdown.Image,
-  code: Markdown.CodeSpan,
-  hr: Markdown.Hr,
-  a: ({ href, ...props }: $IntentionalAny) => (
-    <Markdown.Link to={href} {...props} />
+  p: ({ children }: $IntentionalAny) => <p>{children}</p>,
+  ul: ({ children }: $IntentionalAny) => <ul>{children}</ul>,
+  ol: ({ children }: $IntentionalAny) => <ol>{children}</ol>,
+  li: ({ children }: $IntentionalAny) => <li>{children}</li>,
+  blockquote: ({ children }: $IntentionalAny) => <blockquote>{children}</blockquote>,
+  em: ({ children }: $IntentionalAny) => <em>{children}</em>,
+  strong: ({ children }: $IntentionalAny) => <strong>{children}</strong>,
+  del: ({ children }: $IntentionalAny) => <del>{children}</del>,
+  img: ({ src, alt, ...props }: $IntentionalAny) => <img src={src} alt={alt} {...props} />,
+  code: ({ children }: $IntentionalAny) => <code>{children}</code>,
+  hr: () => <hr />,
+  a: ({ href, children, ...props }: $IntentionalAny) => (
+    <a href={href} {...props}>{children}</a>
   ),
   ImageSpecimen,
   AudioSpecimen,

@@ -2,8 +2,8 @@ import { Trans } from "@lingui/macro";
 import MUITreeItem, {
   TreeItemContentClassKey,
   TreeItemProps,
-  useTreeItem,
 } from "@mui/lab/TreeItem";
+import { useTreeItem } from "@mui/x-tree-view";
 import TreeView, { TreeViewProps } from "@mui/lab/TreeView";
 import {
   Box,

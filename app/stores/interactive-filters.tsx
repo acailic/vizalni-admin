@@ -7,7 +7,7 @@ import {
   useMemo,
   useRef,
 } from "react";
-import create, { StateCreator, StoreApi, UseBoundStore } from "zustand";
+import { create, StateCreator, StoreApi, UseBoundStore } from "zustand";
 
 import { getChartSpec } from "@/charts/chart-config-ui-options";
 import {

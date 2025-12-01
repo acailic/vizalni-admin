@@ -1,4 +1,4 @@
-import { Alert as MuiAlert, AlertProps as MuiAlertProps } from "@mui/material";
+import { Alert as MuiAlert, AlertProps as MuiAlertProps, AlertTitle as MuiAlertTitle } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 
@@ -47,4 +47,10 @@ export const Alert: React.FC<AlertProps> = ({
       {children}
     </StyledAlert>
   );
+};
+
+// Re-export MUI components
+export const AlertTitle = MuiAlertTitle;
+export const AlertDescription = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+  return <div {...props}>{children}</div>;
 };

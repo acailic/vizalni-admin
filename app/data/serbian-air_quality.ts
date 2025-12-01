@@ -46,6 +46,11 @@ export const serbianAir_QualityData: Air_QualityDataset[] = [
 export default serbianAir_QualityData;
 
 /**
+ * Export with the expected name for compatibility
+ */
+export const serbianAirQualityData = serbianAir_QualityData;
+
+/**
  * Get datasets by organization
  */
 export const getDatasetsByOrganization = (org: string): Air_QualityDataset[] => {

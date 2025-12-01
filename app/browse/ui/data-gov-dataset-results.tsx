@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { Loading, LoadingDataError } from "@/components/hint";
+import { Loading, LoadingDataError } from "@/components";
 import { DatasetMetadata } from "@/domain/data-gov-rs";
 
 export const DataGovDatasetResults = ({

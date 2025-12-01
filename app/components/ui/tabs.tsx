@@ -1,11 +1,13 @@
 import {
-  TabContext as MuiTabContext,
-  TabList as MuiTabList,
-  TabPanel as MuiTabPanel,
   Tab as MuiTab,
   TabProps as MuiTabProps,
   Box,
 } from "@mui/material";
+import {
+  TabContext as MuiTabContext,
+  TabList as MuiTabList,
+  TabPanel as MuiTabPanel,
+} from "@mui/lab";
 import React from "react";
 
 export interface TabsProps {

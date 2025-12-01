@@ -8,7 +8,7 @@ import { ascending, descending } from "d3-array";
 import { useCallback, useMemo, useRef, useState } from "react";
 
 import { ComponentLabel } from "@/components/chart-data-table-preview/ui/component-label";
-import { Loading } from "@/components/hint";
+import { Loading } from "@/components";
 import {
   Component,
   Dimension,

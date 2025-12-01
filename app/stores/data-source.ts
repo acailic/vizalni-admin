@@ -1,5 +1,5 @@
 import Router, { SingletonRouter } from "next/router";
-import create, { StateCreator, StoreApi } from "zustand";
+import { create, StateCreator, StoreApi } from "zustand";
 
 import { DataSource } from "@/configurator";
 import {

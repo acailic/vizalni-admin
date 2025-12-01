@@ -1,4 +1,11 @@
-import { getCLS, getFID, getFCP, getLCP, getTTFB, Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB, Metric } from 'web-vitals';
+
+// Type declaration for gtag (Google Analytics)
+declare global {
+  interface Window {
+    gtag?: (command: string, action: string, options?: Record<string, any>) => void;
+  }
+}
 
 interface PerformanceMetric extends Metric {
   timestamp: number;
@@ -11,7 +18,7 @@ interface PerformanceMetric extends Metric {
 
 interface PerformanceThresholds {
   LCP: { good: 2500, needsImprovement: 4000 }; // Largest Contentful Paint
-  FID: { good: 100, needsImprovement: 300 };   // First Input Delay
+  INP: { good: 200, needsImprovement: 500 };   // Interaction to Next Paint (replaces FID)
   CLS: { good: 0.1, needsImprovement: 0.25 };   // Cumulative Layout Shift
   FCP: { good: 1800, needsImprovement: 3000 };  // First Contentful Paint
   TTFB: { good: 800, needsImprovement: 1800 };  // Time to First Byte
@@ -21,7 +28,7 @@ class PerformanceMonitor {
   private metrics: PerformanceMetric[] = [];
   private thresholds: PerformanceThresholds = {
     LCP: { good: 2500, needsImprovement: 4000 },
-    FID: { good: 100, needsImprovement: 300 },
+    INP: { good: 200, needsImprovement: 500 },
     CLS: { good: 0.1, needsImprovement: 0.25 },
     FCP: { good: 1800, needsImprovement: 3000 },
     TTFB: { good: 800, needsImprovement: 1800 },
@@ -36,7 +43,7 @@ class PerformanceMonitor {
   private initializeMonitoring(): void {
     // Monitor all Core Web Vitals
     this.observeLCP();
-    this.observeFID();
+    this.observeINP();
     this.observeCLS();
     this.observeFCP();
     this.observeTTFB();
@@ -48,23 +55,23 @@ class PerformanceMonitor {
   }
 
   private observeLCP(): void {
-    getLCP((metric) => this.handleMetric('LCP', metric));
+    onLCP((metric) => this.handleMetric('LCP', metric));
   }
 
-  private observeFID(): void {
-    getFID((metric) => this.handleMetric('FID', metric));
+  private observeINP(): void {
+    onINP((metric) => this.handleMetric('INP', metric));
   }
 
   private observeCLS(): void {
-    getCLS((metric) => this.handleMetric('CLS', metric));
+    onCLS((metric) => this.handleMetric('CLS', metric));
   }
 
   private observeFCP(): void {
-    getFCP((metric) => this.handleMetric('FCP', metric));
+    onFCP((metric) => this.handleMetric('FCP', metric));
   }
 
   private observeTTFB(): void {
-    getTTFB((metric) => this.handleMetric('TTFB', metric));
+    onTTFB((metric) => this.handleMetric('TTFB', metric));
   }
 
   private handleMetric(name: string, metric: Metric): void {
@@ -90,8 +97,8 @@ class PerformanceMonitor {
     return connection?.effectiveType;
   }
 
-  private evaluatePerformance(name: keyof PerformanceThresholds, metric: PerformanceMetric): void {
-    const threshold = this.thresholds[name];
+  private evaluatePerformance(name: string, metric: PerformanceMetric): void {
+    const threshold = this.thresholds[name as keyof PerformanceThresholds];
     let rating: 'good' | 'needs-improvement' | 'poor';
 
     if (metric.value <= threshold.good) {
@@ -122,8 +129,8 @@ class PerformanceMonitor {
     // Send to analytics service (Google Analytics, Sentry, etc.)
     if (this.isProduction) {
       // Example: Send to Google Analytics 4
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'core_web_vitals', {
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('event', 'core_web_vitals', {
           event_category: 'Performance',
           event_label: name.toLowerCase(),
           value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
@@ -173,8 +180,8 @@ class PerformanceMonitor {
     }
   }
 
-  private getRating(name: keyof PerformanceThresholds, value: number): 'good' | 'needs-improvement' | 'poor' {
-    const threshold = this.thresholds[name];
+  private getRating(name: string, value: number): 'good' | 'needs-improvement' | 'poor' {
+    const threshold = this.thresholds[name as keyof PerformanceThresholds];
     if (value <= threshold.good) return 'good';
     if (value <= threshold.needsImprovement) return 'needs-improvement';
     return 'poor';
@@ -220,7 +227,7 @@ class PerformanceMonitor {
           if (domContentLoaded > 1000) {
             console.warn('Slow DOM content loading detected:', {
               duration: domContentLoaded,
-              domInteractive: nav.domInteractive - nav.navigationStart,
+              domInteractive: nav.domInteractive - nav.fetchStart,
             });
           }
         }
@@ -273,7 +280,7 @@ class PerformanceMonitor {
 
   public getPerformanceScore(): number {
     const latest = this.getLatestMetrics();
-    const metrics = ['LCP', 'FID', 'CLS', 'FCP', 'TTFB'] as const;
+    const metrics = ['LCP', 'INP', 'CLS', 'FCP', 'TTFB'] as const;
     let totalScore = 0;
     let count = 0;
 

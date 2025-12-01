@@ -7,7 +7,7 @@ import {
   ExpandMore as ExpandMoreIcon,
   Speed as SpeedIcon,
   Timer as TimerIcon,
-  Eye as EyeIcon,
+  Visibility as EyeIcon,
   TrendingUp as TrendingUpIcon,
 } from '@mui/icons-material';
 import {
@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
-import { PerformanceThresholds, usePerformanceMonitor } from '@/lib/performance-monitor';
+import { PERFORMANCE_THRESHOLDS, usePerformanceMonitor } from '@/lib/performance-monitor';
 
 interface MetricDisplay {
   label: string;
@@ -72,36 +72,36 @@ export const PerformanceAnalytics = () => {
       label: 'Largest Contentful Paint',
       value: metrics.lcp,
       unit: 'ms',
-      target: PerformanceThresholds.lcp,
+      target: PERFORMANCE_THRESHOLDS.lcp,
       good: (v, t) => v <= t,
-      color: getMetricColor(metrics.lcp, PerformanceThresholds.lcp),
+      color: getMetricColor(metrics.lcp, PERFORMANCE_THRESHOLDS.lcp),
       icon: <TimerIcon />,
     },
     {
       label: 'First Input Delay',
       value: metrics.fid,
       unit: 'ms',
-      target: PerformanceThresholds.fid,
+      target: PERFORMANCE_THRESHOLDS.fid,
       good: (v, t) => v <= t,
-      color: getMetricColor(metrics.fid, PerformanceThresholds.fid),
+      color: getMetricColor(metrics.fid, PERFORMANCE_THRESHOLDS.fid),
       icon: <SpeedIcon />,
     },
     {
       label: 'Cumulative Layout Shift',
       value: metrics.cls,
       unit: '',
-      target: PerformanceThresholds.cls,
+      target: PERFORMANCE_THRESHOLDS.cls,
       good: (v, t) => v <= t,
-      color: getMetricColor(metrics.cls, PerformanceThresholds.cls),
+      color: getMetricColor(metrics.cls, PERFORMANCE_THRESHOLDS.cls),
       icon: <EyeIcon />,
     },
     {
       label: 'First Contentful Paint',
       value: metrics.fcp,
       unit: 'ms',
-      target: PerformanceThresholds.fcp,
+      target: PERFORMANCE_THRESHOLDS.fcp,
       good: (v, t) => v <= t,
-      color: getMetricColor(metrics.fcp, PerformanceThresholds.fcp),
+      color: getMetricColor(metrics.fcp, PERFORMANCE_THRESHOLDS.fcp),
       icon: <TrendingUpIcon />,
     },
   ];
