@@ -1,4 +1,4 @@
-import { createClient, cacheExchange, fetchExchange } from "urql";
+import { createClient, cacheExchange, fetchExchange } from "@/graphql/urql-compat";
 
 import { GRAPHQL_ENDPOINT } from "@/domain/env";
 import { flag } from "@/flags/flag";

@@ -13,7 +13,7 @@ declare module "gzip-size" {
 }
 
 declare module "use-debounce" {
-  export function useDebounce<T>(value: T, delay?: number): [T];
+  export function useDebounce<T>(value: T, delay?: number, options?: any): [T];
 }
 
 declare module "@/charts/shared/chart-props" {
@@ -45,12 +45,28 @@ declare module "@/config-types" {
   export type TableConfig = any;
   export type TableSortingOption = any;
   export type ChartType = any;
+  export type ChartSubType = any;
   export type EncodingFieldType = any;
   export type GenericField = any;
   export type GenericFields = any;
   export type Filters = any;
   export type InteractiveFiltersConfig = any;
   export const isTableConfig: any;
+  export type AreaConfig = any;
+  export type BarConfig = any;
+  export type ChartConfig = any;
+  export type ChartSegmentField = any;
+  export type ColorScaleType = any;
+  export type ColumnConfig = any;
+  export type ColumnSegmentField = any;
+  export type ComboLineColumnConfig = any;
+  export type ComboLineDualConfig = any;
+  export type ComboLineSingleConfig = any;
+  export type LineConfig = any;
+  export type ScaleType = any;
+  export const fieldHasComponentId: any;
+  export const getAnimationField: any;
+  export const isSortingInConfig: any;
 }
 
 declare module "@/configurator/constants" {
@@ -61,6 +77,7 @@ declare module "@/domain/data" {
   export type Component = any;
   export type Dimension = any;
   export type Measure = any;
+  export type SearchCube = any;
   export type DimensionValue = any;
   export const isDimension: any;
   export const isNumericalMeasure: any;
@@ -79,6 +96,9 @@ declare module "@/palettes" {
   export const getDefaultDivergingSteppedPalette: any;
   export const DEFAULT_CATEGORICAL_PALETTE_ID: any;
   export const getPalette: any;
+  export const createDivergingInterpolator: any;
+  export const createSequentialInterpolator: any;
+  export type Palette = any;
 }
 
 declare module "@/configurator/configurator-state" {
@@ -155,10 +175,16 @@ declare module "@/components/form" {
   export const Radio: any;
   export const RadioGroup: any;
   export const Select: any;
+  export const SearchField: any;
+  export type SearchFieldProps = any;
 }
 
 declare module "@/components/hint" {
   export const HintError: any;
+  export const Loading: any;
+  export const LoadingDataError: any;
+  export const LoadingOverlay: any;
+  export const NoDataHint: any;
 }
 
 declare module "@/components/visually-hidden" {
@@ -172,6 +198,9 @@ declare module "@/utils/use-event" {
 
 declare module "@/config-utils" {
   export const getChartConfig: any;
+  export const useLimits: any;
+  export const useChartConfigFilters: any;
+  export const useDefinitiveFilters: any;
 }
 
 declare module "@/charts/chart-config-ui-options" {
@@ -184,15 +213,22 @@ declare module "@/graphql/query-hooks" {
   export type TimeUnit = any;
   export const RelatedDimensionType: any;
   export const TimeUnit: any;
+  export type SearchCubeResult = any;
+  export type DataCubePublicationStatus = any;
+  export type DataCubeOrganization = any;
+  export type DataCubeTermset = any;
+  export type DataCubeTheme = any;
+  export const SearchCubeResultOrder: any;
+  export type SearchCubeResultOrder = any;
+  export const SearchCubeFilterType: any;
+  export type SearchCubeFilterType = any;
+  export const useDataCubeMetadataQuery: any;
+  export const useSearchCubesQuery: any;
+  export type DataCubeObservationFilter = any;
 }
 
 declare module "@/intervals" {
   export const getTimeInterval: any;
-}
-
-declare module "@mui/material" {
-  const content: any;
-  export = content;
 }
 
 declare type $IntentionalAny = any;

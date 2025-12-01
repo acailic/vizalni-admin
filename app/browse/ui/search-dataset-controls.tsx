@@ -11,11 +11,18 @@ import { BrowseState } from "@/browse/model/context";
 // import { SearchDatasetDraftsControl } from "@/browse/ui/search-dataset-drafts-control"; // Removed, using Switch instead
 import { SearchDatasetResultsCount } from "@/browse/ui/search-dataset-results-count";
 import { SearchDatasetSortControl } from "@/browse/ui/search-dataset-sort-control";
+import { PartialSearchCube } from "@/browse/ui/dataset-result";
 import { Flex } from "@/components/flex";
-import { SearchCubeResult, SearchCubeResultOrder } from "@/graphql/query-hooks";
+import { SearchCubeResultOrder } from "@/graphql/resolver-types";
 import { Icon } from "@/icons";
 import { sleep } from "@/utils/sleep";
 import { useEvent } from "@/utils/use-event";
+
+type SearchCubeResult = {
+  cube: PartialSearchCube;
+  highlightedTitle?: string | null;
+  highlightedDescription?: string | null;
+};
 
 export const SearchDatasetControls = ({
   browseState: {

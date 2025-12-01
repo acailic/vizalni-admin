@@ -9,15 +9,16 @@ import { BrowseFilter } from "@/browse/lib/filters";
 import { NavigationItem } from "@/browse/ui/navigation-item";
 import { NavigationSectionTitle } from "@/browse/ui/navigation-section-title";
 import { useDisclosure } from "@/components/use-disclosure";
-import {
-  DataCubeOrganization,
-  DataCubeTermset,
-  DataCubeTheme,
-} from "@/graphql/query-hooks";
 import { Icon } from "@/icons";
 
+type NavigationEntry = {
+  __typename: "DataCubeTheme" | "DataCubeOrganization" | "DataCubeTermset";
+  iri: string;
+  label?: string | null;
+};
+
 const getIconName = (
-  item: DataCubeTheme | DataCubeOrganization | DataCubeTermset
+  item: NavigationEntry
 ): string | undefined => {
   if ("__typename" in item) {
     switch (item.__typename) {
@@ -45,9 +46,9 @@ export const NavigationSection = ({
   disableLinks,
 }: {
   label: ReactNode;
-  items: (DataCubeTheme | DataCubeOrganization | DataCubeTermset)[];
+  items: NavigationEntry[];
   backgroundColor: string;
-  currentFilter?: DataCubeTheme | DataCubeOrganization | DataCubeTermset;
+  currentFilter?: NavigationEntry;
   filters: BrowseFilter[];
   counts: Record<string, number>;
   extra?: ReactNode;
@@ -102,7 +103,7 @@ export const NavigationSection = ({
                 <NavigationItem
                   active={currentFilter?.iri === item.iri}
                   filters={filters}
-                  next={item}
+                  next={item as any}
                   count={counts[item.iri]}
                   disableLink={disableLinks}
                   countBg="white"

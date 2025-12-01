@@ -59,3 +59,8 @@ export const LazyEconomyDemo = createLazyDemoComponent('demos/economy');
 export const LazyDemographicsDemo = createLazyDemoComponent('demos/demographics');
 export const LazyHealthcareDemo = createLazyDemoComponent('demos/healthcare');
 export const LazyEmploymentDemo = createLazyDemoComponent('demos/employment');
+
+// Next.js expects a default export for page files, even if the file is only used as a helper.
+export default function LazyDemoWrapperPlaceholder() {
+  return null;
+}

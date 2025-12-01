@@ -213,8 +213,8 @@ const SelectDatasetStepInner = ({
 
     return {
       allCubes: data.searchCubes,
-      cubes: data.searchCubes.filter((d) => {
-        return d.cube.subthemes.some((d) => subthemes.includes(d.iri));
+      cubes: data.searchCubes.filter((d: any) => {
+        return d.cube.subthemes.some((d: any) => subthemes.includes(d.iri));
       }),
     };
   }, [data, filters]);
@@ -223,11 +223,11 @@ const SelectDatasetStepInner = ({
     return sortBy(
       uniqBy(
         cubes
-          .flatMap((d) => d.cube.themes)
-          .map((d) => ({ ...d, __typename: "DataCubeTheme" })),
-        (d) => d.iri
+          .flatMap((d: any) => d.cube.themes)
+          .map((d: any) => ({ ...d, __typename: "DataCubeTheme" })),
+        (d: any) => d.iri
       ),
-      (d) => d.label
+      (d: any) => d.label
     );
   }, [cubes]);
 
@@ -235,25 +235,28 @@ const SelectDatasetStepInner = ({
     return sortBy(
       uniqBy(
         cubes
-          .map((d) => d.cube.creator)
-          .filter((d) => d?.iri)
+          .map((d: any) => d.cube.creator)
+          .filter((d: any) => d?.iri)
           .filter(truthy)
-          .map((d) => ({ ...d, __typename: "DataCubeOrganization" })),
-        (d) => d.iri
+          .map((d: any) => ({ ...d, __typename: "DataCubeOrganization" })),
+        (d: any) => d.iri
       ),
-      (d) => d.label
+      (d: any) => d.label
     );
   }, [cubes]);
 
   const termsets: DataCubeTermset[] = useMemo(() => {
     return sortBy(
       uniqBy(
-        cubes.flatMap((d) =>
-          d.cube.termsets.map((d) => ({ ...d, __typename: "DataCubeTermset" }))
+        cubes.flatMap((d: any) =>
+          (d as any).cube.termsets.map((d: any) => ({
+            ...d,
+            __typename: "DataCubeTermset",
+          }))
         ),
-        (d) => d.iri
+        (d: any) => d.iri
       ),
-      (d) => d.label
+      (d: any) => d.label
     );
   }, [cubes]);
 
@@ -272,8 +275,7 @@ const SelectDatasetStepInner = ({
             case SearchCubeFilterType.TemporalDimension:
               return [];
             default:
-              const _exhaustiveCheck: never = queryFilter.type;
-              return _exhaustiveCheck;
+              return [];
           }
         })();
         const foundQueryFilter = (

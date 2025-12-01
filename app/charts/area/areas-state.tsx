@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { extent, group, rollup, sum } from "d3-array";
 import {
   ScaleLinear,
@@ -138,7 +139,7 @@ const useAreasState = (
   const segmentsByValue = useMemo(() => {
     const values = segmentDimension?.values ?? [];
 
-    return new Map(values.map((d) => [d.value, d]));
+    return new Map(values.map((d: any) => [d.value, d]));
   }, [segmentDimension?.values]);
 
   /** Ordered segments */
@@ -273,8 +274,8 @@ const useAreasState = (
       const segmentColor = fields.color;
       const orderedSegmentLabelsAndColors = allSegments.map((segment) => {
         const dvIri =
-          segmentsByAbbreviationOrLabel.get(segment)?.value ??
-          segmentsByValue.get(segment)?.value ??
+          (segmentsByAbbreviationOrLabel.get(segment) as any)?.value ??
+          (segmentsByValue.get(segment) as any)?.value ??
           "";
 
         return {

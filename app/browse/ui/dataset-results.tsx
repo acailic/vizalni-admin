@@ -9,12 +9,20 @@ import Typography from "@mui/material/Typography";
 import { ComponentProps } from "react";
 import { CombinedError } from "urql";
 
-import { DatasetResult, DatasetResultProps } from "@/browse/ui/dataset-result";
-import { LoadingDataError } from "@/components/hint";
-import { SearchCube } from "@/domain/data";
-import { SearchCubeResult } from "@/graphql/query-hooks";
+import {
+  DatasetResult,
+  DatasetResultProps,
+  PartialSearchCube,
+} from "@/browse/ui/dataset-result";
 
 export type DatasetResultsProps = ComponentProps<typeof DatasetResults>;
+
+const { LoadingDataError } = require("@/components/hint") as any;
+type SearchCubeResult = {
+  cube: PartialSearchCube;
+  highlightedTitle?: string | null;
+  highlightedDescription?: string | null;
+};
 
 const DatasetSkeleton = ({ index }: { index: number }) => (
   <Fade in timeout={300 + index * 100}>
@@ -45,7 +53,7 @@ export const DatasetResults = ({
   datasetResultProps?: ({
     cube,
   }: {
-    cube: SearchCube;
+    cube: PartialSearchCube;
   }) => Partial<DatasetResultProps>;
 }) => {
   if (fetching) {

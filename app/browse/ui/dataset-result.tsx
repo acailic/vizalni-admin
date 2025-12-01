@@ -18,9 +18,26 @@ import { Flex } from "@/components/flex";
 import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { MotionCard, smoothPresenceProps } from "@/components/presence";
 import { Tag } from "@/components/tag";
-import { PartialSearchCube } from "@/domain/data";
-import { DataCubePublicationStatus } from "@/graphql/query-hooks";
 import { useEvent } from "@/utils/use-event";
+import { DataCubePublicationStatus } from "@/graphql/resolver-types";
+
+// Minimal shape used in this component; avoids module resolution issues with generated types
+export type PartialSearchCube = {
+  iri: string;
+  publicationStatus?: DataCubePublicationStatus | null;
+  title?: string | null;
+  description?: string | null;
+  themes?: { iri?: string | null; label?: string | null }[] | null;
+  datePublished?: string | null;
+  creator?: { iri?: string | null; label?: string | null } | null;
+  dimensions?:
+    | {
+        id?: string | number | null;
+        label?: string | null;
+        termsets?: { iri?: string | null; label?: string | null }[];
+      }[]
+    | null;
+};
 
 export type DatasetResultProps = ComponentProps<typeof DatasetResult>;
 
@@ -198,15 +215,21 @@ export const DatasetResult = ({
             </Typography>
             <Flex sx={{ flexWrap: "wrap", gap: 1 }}>
               {creator?.label ? (
-                <NextLink
-                  key={creator.iri}
-                  href={`/browse/organization/${encodeURIComponent(creator.iri)}`}
-                  passHref
-                  legacyBehavior
-                  scroll={false}
-                >
+                creator.iri ? (
+                  <NextLink
+                    key={creator.iri}
+                    href={`/browse/organization/${encodeURIComponent(
+                      creator.iri
+                    )}`}
+                    passHref
+                    legacyBehavior
+                    scroll={false}
+                  >
+                    <Tag type="organization">{creator.label}</Tag>
+                  </NextLink>
+                ) : (
                   <Tag type="organization">{creator.label}</Tag>
-                </NextLink>
+                )
               ) : null}
               {showDimensions &&
                 dimensions?.length !== undefined &&
@@ -215,44 +238,43 @@ export const DatasetResult = ({
                     {sortBy(
                       dimensions.slice(0, 2),
                       (dimension) => dimension.label
-                    ).map(
-                      // Limit to 2
-                      (dimension) => {
-                        return (
-                          <MaybeTooltip
-                            key={dimension.id}
-                            title={
-                              dimension.termsets.length > 0 ? (
-                                <>
-                                  <Typography variant="caption">
-                                    <Trans id="dataset-result.dimension-joined-by">
-                                      Contains values of
-                                    </Trans>
-                                    <Stack flexDirection="row" gap={1} mt={1}>
-                                      {dimension.termsets.map((termset) => {
-                                        return (
-                                          <Tag
-                                            key={termset.iri}
-                                            type="termset"
-                                            style={{ flexShrink: 0 }}
-                                          >
-                                            {termset.label}
-                                          </Tag>
-                                        );
-                                      })}
-                                    </Stack>
-                                  </Typography>
-                                </>
-                              ) : null
-                            }
-                          >
-                            <Tag style={{ cursor: "default" }} type="dimension">
-                              {dimension.label}
-                            </Tag>
-                          </MaybeTooltip>
-                        );
-                      }
-                    )}
+                    ).map((dimension) => {
+                      const termsets = dimension.termsets ?? [];
+
+                      return (
+                        <MaybeTooltip
+                          key={dimension.id ?? dimension.label ?? "dimension"}
+                          title={
+                            termsets.length > 0 ? (
+                              <>
+                                <Typography variant="caption">
+                                  <Trans id="dataset-result.dimension-joined-by">
+                                    Contains values of
+                                  </Trans>
+                                  <Stack flexDirection="row" gap={1} mt={1}>
+                                    {termsets.map((termset, idx) => {
+                                      return (
+                                        <Tag
+                                          key={termset.iri ?? termset.label ?? idx}
+                                          type="termset"
+                                          style={{ flexShrink: 0 }}
+                                        >
+                                          {termset.label}
+                                        </Tag>
+                                      );
+                                    })}
+                                  </Stack>
+                                </Typography>
+                              </>
+                            ) : null
+                          }
+                        >
+                          <Tag style={{ cursor: "default" }} type="dimension">
+                            {dimension.label}
+                          </Tag>
+                        </MaybeTooltip>
+                      );
+                    })}
                     {dimensions.length > 2 && (
                       <Tag type="dimension" sx={{ cursor: "pointer" }}>
                         <Trans id="dataset.tags.show-more">

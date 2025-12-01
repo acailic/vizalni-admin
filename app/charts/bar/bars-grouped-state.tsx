@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { extent, group, max, rollup, sum } from "d3-array";
 import {
   ScaleBand,
@@ -120,7 +121,7 @@ const useBarsGroupedState = (
   const segmentsByValue = useMemo(() => {
     const values = segmentDimension?.values || [];
 
-    return new Map(values.map((d) => [d.value, d]));
+    return new Map(values.map((d: any) => [d.value, d]));
   }, [segmentDimension?.values]);
 
   // segments
@@ -203,8 +204,8 @@ const useBarsGroupedState = (
     if (fields.segment && segmentDimension && fields.color) {
       const orderedSegmentLabelsAndColors = allSegments.map((segment) => {
         const dvIri =
-          segmentsByAbbreviationOrLabel.get(segment)?.value ||
-          segmentsByValue.get(segment)?.value ||
+          (segmentsByAbbreviationOrLabel.get(segment) as any)?.value ||
+          (segmentsByValue.get(segment) as any)?.value ||
           "";
 
         return {

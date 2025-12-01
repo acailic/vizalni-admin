@@ -33,7 +33,7 @@ export const SubthemeFilters = ({
           flexWrap: "wrap", // Ensures wrapping on smaller screens
         }}
       >
-        {subthemes.map((d) => {
+        {subthemes.map((d: any) => {
           const count = counts[d.iri];
 
           if (!count) {

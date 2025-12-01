@@ -39,6 +39,7 @@ export const SelectDatasetBanner = ({
   return (
     <AnimatePresence>
       {show ? (
+        /* @ts-ignore - Framer Motion typing conflicts with MUI Box props */
         <MotionBox key="banner" ref={ref} {...bannerPresenceProps}>
           <section className={classes.outerWrapper} role="banner">
             <ContentWrapper className={classes.innerWrapper}>
