@@ -1,14 +1,40 @@
 import { BrowseParams } from "@/browse/lib/params";
-import {
-  DataCubeOrganization,
-  DataCubeTermset,
-  DataCubeTheme,
-  SearchCubeFilterType,
-} from "@/graphql/query-hooks";
+// import {
+//   // TODO: Fix TypeScript export issue with these types from @/graphql/query-hooks
+//   SearchCubeFilterType,
+// } from "@/graphql/query-hooks";
+
+// Temporary enum definition until GraphQL export issue is fixed
+enum SearchCubeFilterType {
+  TemporalDimension = 'TemporalDimension',
+  DataCubeTheme = 'DataCubeTheme',
+  DataCubeOrganization = 'DataCubeOrganization',
+  DataCubeAbout = 'DataCubeAbout',
+  DataCubeTermset = 'DataCubeTermset'
+}
 
 export type DataCubeAbout = {
   __typename: "DataCubeAbout";
   iri: string;
+};
+
+// Temporary type definitions until GraphQL export issue is fixed
+type DataCubeOrganization = {
+  __typename: 'DataCubeOrganization';
+  iri: string;
+  label?: string | null;
+};
+
+type DataCubeTermset = {
+  __typename: 'DataCubeTermset';
+  iri: string;
+  label?: string | null;
+};
+
+type DataCubeTheme = {
+  __typename: 'DataCubeTheme';
+  iri: string;
+  label?: string | null;
 };
 
 export type BrowseFilter =
