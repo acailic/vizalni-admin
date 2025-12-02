@@ -1015,7 +1015,8 @@ const MapConfigRuntime = t.intersection([
   ),
 ]);
 export const MapConfig = MapConfigRuntime;
-export type MapConfigType = t.TypeOf<typeof MapConfigRuntime>;
+export type MapConfig = t.TypeOf<typeof MapConfigRuntime>;
+export type MapConfigType = MapConfig;
 
 const ComboLineSingleFields = t.type({
   x: GenericField,
