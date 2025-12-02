@@ -1,5 +1,4 @@
 import mapValues from "lodash/mapValues";
-
 import type { AnySourceData, StyleSpecification } from "maplibre-gl";
 
 type MapboxStyle = StyleSpecification;
