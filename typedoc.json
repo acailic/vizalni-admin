@@ -1,0 +1,52 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "app/index.ts",
+    "app/config-types.ts",
+    "app/types/index.ts",
+    "app/types/ui-props.ts",
+    "app/statistics/formatters.ts",
+    "app/statistics/utils.ts",
+    "app/locales/locales.ts",
+    "app/formatters.ts",
+    "app/config-utils.ts"
+  ],
+  "out": "docs/api",
+  "theme": "default",
+  "readme": "README.md",
+  "name": "Vizualni Admin API Documentation",
+  "includeVersion": true,
+  "excludeExternals": true,
+  "excludeNotDocumented": false,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "disableSources": false,
+  "sourceLinkTemplate": "https://github.com/acailic/vizualni-admin/blob/{gitRevision}/{path}#L{line}",
+  "gitRevision": "main",
+  "tsconfig": "tsconfig.json",
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Core API",
+    "Configuration Types",
+    "UI Types",
+    "Locale Utilities",
+    "Formatters",
+    "Utilities",
+    "*"
+  ],
+  "sort": ["source-order"],
+  "kindSortOrder": [
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Variable",
+    "Function",
+    "Enum",
+    "Namespace"
+  ],
+  "categorizeByGroup": true,
+  "commentStyle": "jsdoc",
+  "searchInComments": true,
+  "preserveLinkText": true,
+  "hideGenerator": true
+}

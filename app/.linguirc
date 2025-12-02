@@ -1,0 +1,27 @@
+{
+  "locales": ["en", "sr-Latn", "sr-Cyrl"],
+  "sourceLocale": "en",
+  "catalogPath": "locales/{locale}/messages",
+  "catalogs": [
+    {
+      "path": "locales/{locale}/messages",
+      "include": [
+        "src/**/*.{ts,tsx}",
+        "components/**/*.{ts,tsx}",
+        "login/**/*.{ts,tsx}",
+        "browse/**/*.{ts,tsx}",
+        "configurator/**/*.{ts,tsx}",
+        "charts/**/*.{ts,tsx}"
+      ],
+      "exclude": [
+        "**/*.d.ts",
+        "**/*.test.{ts,tsx}",
+        "**/*.spec.{ts,tsx}",
+        "node_modules/**"
+      ]
+    }
+  ],
+  "format": "po",
+  "orderBy": "messageId",
+  "pseudoLocale": "pseudo"
+}

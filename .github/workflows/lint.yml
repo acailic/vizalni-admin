@@ -1,0 +1,65 @@
+name: Lint
+
+on:
+  pull_request:
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  lint-changed:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --cwd app install --frozen-lockfile
+
+      - name: Get changed files
+        id: changed
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            app/**/*.ts
+            app/**/*.tsx
+            app/**/*.js
+            app/**/*.jsx
+
+      - name: Lint changed files
+        if: steps.changed.outputs.any_changed == 'true'
+        run: |
+          yarn --cwd app eslint --max-warnings=0 ${{ steps.changed.outputs.all_changed_files }}
+
+      - name: Skip lint (no relevant changes)
+        if: steps.changed.outputs.any_changed != 'true'
+        run: echo "No app JS/TS changes detected; skipping lint."
+
+  lint-full:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: app/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --cwd app install --frozen-lockfile
+
+      - name: Lint full codebase
+        run: yarn --cwd app eslint --max-warnings=0 app

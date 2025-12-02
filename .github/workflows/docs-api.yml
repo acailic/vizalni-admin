@@ -1,0 +1,63 @@
+name: Generate API Documentation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'app/**/*.ts'
+      - 'app/**/*.tsx'
+      - 'typedoc.json'
+      - 'package.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/**/*.ts'
+      - 'app/**/*.tsx'
+      - 'typedoc.json'
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Generate TypeDoc API Documentation
+        run: yarn docs:api
+
+      - name: Integrate TypeDoc with VitePress
+        run: yarn docs:api:integrate
+
+      - name: Build VitePress Documentation
+        run: yarn docs:build
+
+      - name: Upload API Documentation Artifacts
+        uses: actions/upload-artifact@v5
+        with:
+          name: api-documentation
+          path: |
+            docs/.vitepress/dist
+            docs/public/api
+          retention-days: 30
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/.vitepress/dist
+          cname: vizualni-admin.com

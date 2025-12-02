@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-11-30T19:39:09.148762",
+  "validation_report": {
+    "total_datasets": 8,
+    "valid_datasets": 8,
+    "invalid_datasets": 0,
+    "categories": {
+      "budget": {
+        "valid": 2,
+        "invalid": 0
+      },
+      "air_quality": {
+        "valid": 2,
+        "invalid": 0
+      },
+      "demographics": {
+        "valid": 2,
+        "invalid": 0
+      },
+      "energy": {
+        "valid": 2,
+        "invalid": 0
+      }
+    },
+    "issues": []
+  }
+}

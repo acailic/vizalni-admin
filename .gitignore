@@ -1,0 +1,236 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds (large & regeneratable)
+.next/
+app/out/
+app/dist/
+packages/**/dist/
+storybook-static/
+app/storybook-static/
+.vercel/
+.now/
+app/.next/
+.vitepress/
+
+# Package archives (published packages that can be downloaded)
+acailic-vizualni-admin-*.tgz
+*.tgz
+
+# Environment variables
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# Cache and temporary files
+.cache/
+.vite/
+.turbo/
+.eslintcache
+*.log
+*.log.*
+yarn-error.log
+npm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+.cache/
+.parcel-cache/
+
+# Runtime data
+*.pid
+*.seed
+*.pid.lock
+.lock-wscript
+
+# Coverage directory used by tools like istanbul
+coverage/
+app/coverage/
+*.lcov
+.nyc_output/
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Temporary folders
+tmp/
+temp/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# VitePress build artifacts
+.vitepress/cache/
+.vitepress/dist/
+.vitepress/.temp/
+
+# AI/Agent working directories and cache
+.ai_working/
+.amplifier/
+.agent/
+.claude/session/
+.claude/settings.local.json
+
+# Development tool build outputs
+.next/
+.app/storybook-static/
+.storybook-static/
+
+# Build artifacts and reports
+*.build.js
+performance-report.json
+bundle-reports/
+
+# Test artifacts
+test-results/
+*.lcov
+.nyc_output/
+coverage/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Localization build artifacts
+/app/locales/_build/
+/app/locales/**/*.js
+/app/locales/**/*.mjs
+/app/locales/*/**/*.ts
+/app/public/dist/**/*.js
+
+# Documentation and reports (large files that can be regenerated)
+DOCUMENTATION_ASSESSMENT.md
+CODE_REVIEW_REPORT.md
+BUNDLE_OPTIMIZATION_REPORT.md
+CACHING_MONITORING_IMPLEMENTATION.md
+DOCS_COMPLETE.md
+DOCUMENTATION_CHECKLIST.md
+DOCUMENTATION_AUTOMATION_GUIDE.md
+IMPLEMENTATION_PLAN.md
+NAVIGATION_UPDATE.md
+PERFORMANCE_OPTIMIZATION_IMPLEMENTATION.md
+VITEPRESS_DOCUMENTATION.md
+TOP_0.1_PERCENT_ROADMAP.md
+
+# Test artifacts (HAR archives and other test outputs)
+screenshots/
+e2e-screenshots/
+playwright-report/
+test-results/
+__diff_output__
+e2e/har/*.zip
+app/coverage/.tmp/
+
+# Security and certificates
+certificates/
+*.pem
+*.key
+*.crt
+
+# Database and storage
+*.db
+*.sqlite
+*.sqlite3
+
+# Agent and AI tool cache
+.mgrep/mgrep/logs/
+.mgrep/mgrep/cache/
+.agent/
+.claude/session/
+
+# LLM and AI working directories
+ai_working/
+amplifier/
+
+# Monitoring and analytics
+*.pid
+*.trace
+
+# Local development
+.local/
+
+# Backup files and temporary development artifacts
+*.backup
+*.bak
+*.old
+./app/server/security.ts.backup
+./app/next.config.js.backup
+package.json.backup
+
+# Development planning and temporary documents
+PARALLEL_TASKS.md
+NAVIGATION_UPDATE.md
+performance-report.json
+
+# Large development artifacts that can be regenerated
+*_REPORT.md
+*_IMPLEMENTATION.md
+*_CHECKLIST.md
+*_ASSESSMENT.md
+
+# Development artifacts directory (all temporary development files)
+.development/
+
+# Package manager lock files (keep main lock, ignore others)
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
+.vscode/

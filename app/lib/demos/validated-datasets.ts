@@ -1,0 +1,72 @@
+export const VALIDATED_DATASETS: Record<string, string[]> = {
+  "air-quality": [
+    "67f504aa5fb6d8df933f95f5",
+    "67f4ffae5e5fc32b0b9b8e3d",
+    "67dd72f221ac02f315ebc186",
+    "67dd7182aa171e6173e8f683",
+    "67dd6f8f21ac02f315ebc184"
+  ],
+  environment: [
+    "67f504aa5fb6d8df933f95f5",
+    "67f4ffae5e5fc32b0b9b8e3d",
+    "67dd72f221ac02f315ebc186",
+    "67dd7182aa171e6173e8f683",
+    "67dd6f8f21ac02f315ebc184"
+  ],
+  education: [
+    "6791f3ab2c9dd531825e6428",
+    "67909fd82327943868724d30",
+    "664e02e064ae5cf0d72f30b1",
+    "661697a7092830bdba58b2d3",
+    "64772ac9d50a192049b725a6"
+  ],
+  budget: [
+    "6786b5060f713ebbf94e0569",
+    "65fab2dde3d0d82dfa543184",
+    "65f8449781e7af5be7aad33b",
+    "65f4030203a7b7831a19fad9",
+    "65bb4bb49bb1b76f0bb9ea67"
+  ],
+  transport: [
+    "6864049200afd681db3f0c14",
+    "6275514e7de272f44d056ed5",
+    "6275501a7de272bfdf881057",
+    "62754eb37de2728c048205ed",
+    "62754b9d7de2728c048205ec"
+  ],
+  healthcare: [
+    "682c7192000a12ae5f0aa2ce",
+    "6275514e7de272f44d056ed5",
+    "6275501a7de272bfdf881057",
+    "62754eb37de2728c048205ed",
+    "62754b9d7de2728c048205ec"
+  ],
+  employment: [],
+  energy: [
+    "61c585477de27293f237a72f",
+    "61c57f347de27279fd7d9413",
+    "61c57eaf7de27279fd7d9412",
+    "61c573f97de27279fd7d9410",
+    "61c5734f7de27279fd7d940f"
+  ],
+  demographics: [],
+  economy: [
+    "607fd56a7de272771a0d3799",
+    "607fd5687de272771a0d3797"
+  ],
+  digital: [
+    "661697a7092830bdba58b2d3",
+    "5c052d08cbe3c856351ffcc4"
+  ],
+  health: [],
+  agriculture: [],
+  tourism: [],
+  culture: [],
+  infrastructure: [],
+  climate: [],
+  presentation: []
+};
+
+export function getValidatedDatasetIds(demoId: string): string[] {
+  return VALIDATED_DATASETS[demoId] ?? [];
+}

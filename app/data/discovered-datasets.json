@@ -1,0 +1,119 @@
+[
+  {
+    "id": "budget-republic-serbia-2024",
+    "title": "Budžet Republike Srbije 2024",
+    "organization": "Ministarstvo finansija",
+    "tags": [
+      "budžet",
+      "finansije",
+      "rashodi",
+      "prihodi"
+    ],
+    "format": "CSV",
+    "url": "https://data.gov.rs/datasets/budget-republic-serbia-2024",
+    "description": "Godišnji budžet Republike Srbije sa detaljnom podelom rashoda i prihoda",
+    "category": "budget"
+  },
+  {
+    "id": "municipal-budgets-2024",
+    "title": "Budžeti opština 2024",
+    "organization": "Uprava za trezor",
+    "tags": [
+      "budžet",
+      "opštine",
+      "finansije",
+      "lokalna samouprava"
+    ],
+    "format": "JSON",
+    "url": "https://data.gov.rs/datasets/municipal-budgets-2024",
+    "description": "Budžeti svih opština u Srbiji za 2024. godinu",
+    "category": "budget"
+  },
+  {
+    "id": "air-quality-stations-2024",
+    "title": "Stanice za merenje kvaliteta vazduha 2024",
+    "organization": "Agencija za zaštitu životne sredine",
+    "tags": [
+      "kvalitet vazduha",
+      "PM10",
+      "PM2.5",
+      "zagađenje"
+    ],
+    "format": "JSON",
+    "url": "https://data.gov.rs/datasets/air-quality-stations-2024",
+    "description": "Lokacije i podaci sa stanica za merenje kvaliteta vazduha",
+    "category": "air_quality"
+  },
+  {
+    "id": "pm10-daily-belgrade-2024",
+    "title": "Dnevne vrednosti PM10 Beograd 2024",
+    "organization": "Sekretarijat za zaštitu životne sredine",
+    "tags": [
+      "PM10",
+      "kvalitet vazduha",
+      "Beograd",
+      "zagađenje"
+    ],
+    "format": "CSV",
+    "url": "https://data.gov.rs/datasets/pm10-daily-belgrade-2024",
+    "description": "Dnevne vrednosti čestica PM10 za teritoriju grada Beograda",
+    "category": "air_quality"
+  },
+  {
+    "id": "population-census-2022",
+    "title": "Popis stanovništva 2022",
+    "organization": "Republički zavod za statistiku",
+    "tags": [
+      "popis",
+      "stanovništvo",
+      "demografija"
+    ],
+    "format": "CSV",
+    "url": "https://data.gov.rs/datasets/population-census-2022",
+    "description": "Rezultati popisa stanovništva, domaćinstava i stanova 2022. godine",
+    "category": "demographics"
+  },
+  {
+    "id": "population-projection-2050",
+    "title": "Projekcija stanovništva do 2050",
+    "organization": "Republički zavod za statistiku",
+    "tags": [
+      "projekcija",
+      "stanovništvo",
+      "demografija"
+    ],
+    "format": "JSON",
+    "url": "https://data.gov.rs/datasets/population-projection-2050",
+    "description": "Demografske projekcije stanovništva Republike Srbije do 2050. godine",
+    "category": "demographics"
+  },
+  {
+    "id": "energy-production-2024",
+    "title": "Proizvodnja energije 2024",
+    "organization": "Ministarstvo rudarstva i energetike",
+    "tags": [
+      "energija",
+      "proizvodnja",
+      "elektrane"
+    ],
+    "format": "CSV",
+    "url": "https://data.gov.rs/datasets/energy-production-2024",
+    "description": "Mesečna proizvodnja električne energije po tipovima elektrana",
+    "category": "energy"
+  },
+  {
+    "id": "renewable-energy-2024",
+    "title": "Obnovljivi izvori energije 2024",
+    "organization": "Agencija za energetiku",
+    "tags": [
+      "obnovljiva energija",
+      "vetar",
+      "sunce",
+      "voda"
+    ],
+    "format": "JSON",
+    "url": "https://data.gov.rs/datasets/renewable-energy-2024",
+    "description": "Instalirani kapaciteti i proizvodnja iz obnovljivih izvora energije",
+    "category": "energy"
+  }
+]

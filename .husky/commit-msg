@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+
+// Read the commit message from the file passed as argument
+const commitMsgFile = process.argv[2];
+if (!commitMsgFile) {
+  console.error('Error: No commit message file provided.');
+  process.exit(1);
+}
+
+const commitMsg = fs.readFileSync(commitMsgFile, 'utf8').trim();
+
+// Define the conventional commit pattern
+const conventionalCommitPattern = /^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .+/;
+
+// Validate the format
+if (!conventionalCommitPattern.test(commitMsg)) {
+  console.error('❌ Invalid commit message format.');
+  console.error('');
+  console.error('Commit messages must follow the conventional commits format:');
+  console.error('  type(scope): description');
+  console.error('');
+  console.error('Valid types: feat, fix, docs, style, refactor, test, chore');
+  console.error('Scope is optional and should be in parentheses.');
+  console.error('');
+  console.error('Examples:');
+  console.error('  feat: add new chart component');
+  console.error('  fix(ui): resolve button alignment issue');
+  console.error('  docs: update API reference');
+  console.error('');
+  console.error('Please amend your commit message and try again.');
+  process.exit(1);
+}
+
+// Check message length
+const minLength = 10;
+const maxLength = 100;
+
+if (commitMsg.length < minLength) {
+  console.error(`❌ Commit message is too short (${commitMsg.length} characters).`);
+  console.error(`Minimum length is ${minLength} characters. Please provide a more descriptive message.`);
+  process.exit(1);
+}
+
+if (commitMsg.length > maxLength) {
+  console.error(`❌ Commit message is too long (${commitMsg.length} characters).`);
+  console.error(`Maximum length is ${maxLength} characters. Please shorten your message.`);
+  process.exit(1);
+}
+
+// If all checks pass
+console.log('✅ Commit message is valid.');
+process.exit(0);

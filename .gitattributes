@@ -1,0 +1,51 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Explicitly declare text files
+*.md text
+*.json text
+*.jsonc text
+*.json5 text
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.yml text
+*.yaml text
+*.xml text
+*.svg text
+*.html text
+*.css text
+*.scss text
+*.less text
+*.sql text
+*.sh text
+*.py text
+*.pyi text
+*.cfg text
+*.ini text
+*.toml text
+*.lock text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.tgz binary
+
+# Large files - use Git LFS if needed
+*.mp4 binary
+*.avi binary
+*.mov binary
+*.wmv binary
+*.flv binary
+
+# Configuration files (keep as text for readability)
+.* text
+!.gitignore

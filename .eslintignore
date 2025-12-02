@@ -1,0 +1,10 @@
+/rollup.config.js
+# Generated files
+/app/public/dist/*
+app/public/storybook/**
+/app/graphql/resolver-types.ts
+/app/graphql/query-hooks.ts
+/app/dist/*
+/app/out/*
+/app/node_modules/*
+.next/*

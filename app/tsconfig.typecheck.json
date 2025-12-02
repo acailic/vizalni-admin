@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"],
+      "ts-pattern": ["types/ts-pattern"]
+    },
+    "types": ["node"]
+  },
+  "include": [
+    "bin/**/*",
+    "domain/data-gov-rs/**/*",
+    "lib/config/**/*",
+    "configurator/table/table-chart-options.tsx",
+    "configurator/table/table-chart-sorting-options.tsx",
+    "configurator/table/table-config-state.ts",
+    "configurator/components/ui-helpers.ts",
+    "charts/**/*",
+    "components/**/*",
+    "stores/**/*",
+    "types/**/*"
+  ]
+}
