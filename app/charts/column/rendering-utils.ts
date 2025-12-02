@@ -1,7 +1,7 @@
-import color from "@uiw/react-color";
 import { select, Selection } from "d3-selection";
 import { Series } from "d3-shape";
 import { useCallback } from "react";
+import { getContrastingColor } from "@uiw/react-color";
 
 import { StackedColumnsState } from "@/charts/column/columns-stacked-state";
 import { hasSegmentAnnotation } from "@/charts/shared/annotation-utils";
@@ -18,9 +18,6 @@ import {
 import { getChartConfig, useDefinitiveFilters } from "@/config-utils";
 import { useConfiguratorState } from "@/configurator/configurator-state";
 import { Observation } from "@/domain/data";
-
-// getContrastingColor exists in the package but may not be in the TypeScript definitions
-const { getContrastingColor } = color;
 
 export type RenderColumnDatum = {
   key: string;

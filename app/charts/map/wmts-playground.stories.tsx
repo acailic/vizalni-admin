@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import maplibreglRaw from "maplibre-gl";
 import { useMemo } from "react";
-import Map from "react-map-gl";
+import Map from "react-map-gl/maplibre";
 
 import { CustomAttribution } from "@/charts/map/custom-attribution";
 import { useMapStyle } from "@/charts/map/get-base-layer-style";

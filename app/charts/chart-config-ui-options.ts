@@ -24,6 +24,11 @@ import {
   getStackedYScale,
 } from "@/charts/shared/stacked-helpers";
 import {
+  fieldHasComponentId,
+  getAnimationField,
+  isSortingInConfig,
+} from "@/config-types";
+import type {
   AreaConfig,
   BarConfig,
   ChartConfig,
@@ -36,11 +41,9 @@ import {
   ComboLineColumnConfig,
   ComboLineDualConfig,
   ComboLineSingleConfig,
-  fieldHasComponentId,
   GenericField,
-  getAnimationField,
-  isSortingInConfig,
   LineConfig,
+  MapColorField,
   MapConfig,
   PaletteType,
   PieConfig,
@@ -48,7 +51,6 @@ import {
   SortingOrder,
   SortingType,
   TableConfig,
-  MapColorField,
 } from "@/config-types";
 import { makeMultiFilter } from "@/config-utils";
 import { getFieldLabel } from "@/configurator/components/field-i18n";

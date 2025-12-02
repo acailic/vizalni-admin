@@ -3,7 +3,7 @@ import { MapboxOverlay, MapboxOverlayProps } from "@deck.gl/mapbox";
 import { extent } from "d3-array";
 import { geoBounds } from "d3-geo";
 import { useEffect, useMemo, useState } from "react";
-import { useControl, ViewState } from "react-map-gl";
+import { useControl, ViewState } from "react-map-gl/maplibre";
 import { feature } from "topojson-client";
 
 import { BBox, Filters } from "@/config-types";
