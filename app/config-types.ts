@@ -1283,7 +1283,7 @@ export const isAnimationInConfig = (
 ): chartConfig is
   | ColumnConfig
   | BarConfig
-  | MapConfig
+  | MapConfigType
   | PieConfig
   | ScatterPlotConfig => {
   return ["column", "bar", "map", "pie", "scatterplot"].includes(
@@ -1301,7 +1301,7 @@ export const getAnimationField = (
 
 export const isColorFieldInConfig = (
   chartConfig: ChartConfig
-): chartConfig is MapConfig => {
+): chartConfig is MapConfigType => {
   return isMapConfig(chartConfig);
 };
 
