@@ -6,11 +6,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   pageExtensions: ["js", "ts", "tsx", "mdx"],
+  transpilePackages: ['@lingui/core', '@lingui/react'],
   experimental: {
     optimizePackageImports: ['@mui/material', '@mui/icons-material'],
     esmExternals: 'loose',
   },
-  transpilePackages: ['@lingui/core', '@lingui/react'],
   // Enable TypeScript checking but allow build to proceed (will fix incrementally)
   typescript: {
     ignoreBuildErrors: true, // Temporary: allow build while we fix types
@@ -43,6 +43,18 @@ const nextConfig = {
           plugins: ['macros']
         };
       }
+    }
+
+    // Optimize babel-loader performance by excluding large packages
+    const babelLoaderRule = config.module.rules.find(
+      rule => rule.use && rule.use.loader && rule.use.loader.includes('babel-loader')
+    );
+
+    if (babelLoaderRule) {
+      babelLoaderRule.exclude = [
+        /node_modules\/(@mui\/material|@mui\/icons-material)/,
+        ...babelLoaderRule.exclude
+      ];
     }
 
     if (!isServer) {
