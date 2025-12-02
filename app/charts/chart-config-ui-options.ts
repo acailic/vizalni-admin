@@ -36,7 +36,6 @@ import {
   ComboLineColumnConfig,
   ComboLineDualConfig,
   ComboLineSingleConfig,
-  ComponentType,
   fieldHasComponentId,
   GenericField,
   getAnimationField,
@@ -69,6 +68,9 @@ import {
   SEGMENT_ENABLED_COMPONENTS,
 } from "@/domain/data";
 import { getDefaultCategoricalPaletteId, getPalette } from "@/palettes";
+
+// Define ComponentType locally to avoid import issues
+type ComponentType = Component["__typename"];
 
 /**
  * This module controls chart controls displayed in the UI.

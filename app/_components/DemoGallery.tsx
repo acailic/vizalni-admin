@@ -28,7 +28,7 @@ export const DemoGallery = ({ datasets = staticGalleryDatasets }: { datasets?: G
 
       <Grid container spacing={3}>
         {datasets.map((dataset) => (
-          <Grid size={{ xs: 12, md: 6, lg: 4 }} key={dataset.id}>
+          <Grid item xs={12} md={6} lg={4} key={dataset.id}>
             <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="div" gutterBottom>

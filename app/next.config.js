@@ -41,6 +41,10 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "mapbox-gl": "maplibre-gl",
+      '@/graphql/devtools': require('path').resolve(
+        __dirname,
+        dev ? './graphql/devtools.dev' : './graphql/devtools.prod'
+      ),
     };
 
     // Basic fallbacks for browser
