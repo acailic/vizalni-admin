@@ -33,6 +33,14 @@ module.exports = withMDX({
     defaultLocale,
   },
   transpilePackages: ["@mui/lab", "@mui/material"],
+  modularizeImports: {
+    "@mui/icons-material": {
+      transform: "@mui/icons-material/{{member}}",
+    },
+    "@mui/material": {
+      transform: "@mui/material/{{member}}",
+    },
+  },
   webpack(config, { dev, isServer }) {
     // Add conditional resolution for .dev.ts and .prod.ts files
     config.resolve.extensions = Array.from(
@@ -88,9 +96,13 @@ module.exports = withMDX({
   typescript: {
     ignoreBuildErrors: true,
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
+  },
   experimental: {
     esmExternals: false,
-    optimizeCss: false,
+    optimizeCss: true,
   },
   logging: {
     level: "error",
