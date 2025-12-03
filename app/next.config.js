@@ -28,19 +28,16 @@ module.exports = withMDX({
   swcMinify: true,
   productionBrowserSourceMaps: false,
   pageExtensions: ["js", "ts", "tsx", "mdx"],
-  i18n: {
-    locales,
-    defaultLocale,
-  },
+  // i18n disabled for static export compatibility
+  // i18n: {
+  //   locales,
+  //   defaultLocale,
+  // },
   transpilePackages: ["@mui/lab", "@mui/material"],
-  modularizeImports: {
-    "@mui/icons-material": {
-      transform: "@mui/icons-material/{{member}}",
-    },
-    "@mui/material": {
-      transform: "@mui/material/{{member}}",
-    },
-  },
+  // Static export configuration for reliable builds
+  output: 'export',
+  trailingSlash: true,
+  distDir: 'out',
   webpack(config, { dev, isServer }) {
     // Add conditional resolution for .dev.ts and .prod.ts files
     config.resolve.extensions = Array.from(
@@ -96,12 +93,9 @@ module.exports = withMDX({
   typescript: {
     ignoreBuildErrors: true,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-    reactRemoveProperties: process.env.NODE_ENV === 'production',
-  },
+  // Use SWC compiler for better static export support
+  swcMinify: true,
   experimental: {
-    esmExternals: false,
     optimizeCss: true,
   },
   logging: {
