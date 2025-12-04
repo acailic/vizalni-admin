@@ -234,3 +234,4 @@ performance-report.json
 # package-lock.json
 # pnpm-lock.yaml
 .vscode/
+.playwright-mcp/page-2025-12-04T11-15-17-064Z.png
