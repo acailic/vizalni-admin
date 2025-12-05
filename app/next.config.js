@@ -8,6 +8,7 @@ const withMDX = require("@next/mdx")({
     providerImportSource: "@mdx-js/react",
   },
 });
+const path = require("path");
 const pkg = require("./package.json");
 const { defaultLocale, locales } = require("./locales/locales.json");
 
@@ -65,6 +66,7 @@ module.exports = withMDX({
       "@mui/material/useAutocomplete": require.resolve(
         "@mui/material/node/useAutocomplete/index.js"
       ),
+      urql$: path.resolve(__dirname, "graphql/urql-compat.ts"),
     };
 
     config.module.rules.push({
