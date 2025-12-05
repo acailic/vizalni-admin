@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import * as fs from 'fs';
-import { DatasetSearchResponse, DatasetSearchRequest, APIError } from '../../../types/datasets';
+
 import { pythonRunner } from '../../../lib/python-runner';
+import { DatasetSearchResponse, DatasetSearchRequest, APIError } from '../../../types/datasets';
 
 // Default pagination settings
 const DEFAULT_PAGE = 1;

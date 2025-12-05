@@ -1,10 +1,10 @@
+import { Container, Typography } from "@mui/material";
 import { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 
 import { SelectDatasetStep } from "@/browse/ui/select-dataset-step";
 import { AppLayout } from "@/components/layout";
 import { ConfiguratorStateProvider } from "@/configurator/configurator-state";
-import { Container, Typography } from "@mui/material";
 
 interface BrowsePageProps {
   hideHeader?: boolean;

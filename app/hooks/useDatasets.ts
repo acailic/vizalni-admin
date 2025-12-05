@@ -3,8 +3,9 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { Dataset, DatasetSearchRequest, DatasetSearchResponse } from '../types/datasets';
+
 import { datasetService } from '../lib/dataset-service';
+import { Dataset, DatasetSearchRequest, DatasetSearchResponse } from '../types/datasets';
 
 interface UseDatasetsOptions extends DatasetSearchRequest {
   immediate?: boolean;
