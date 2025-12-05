@@ -65,7 +65,6 @@ module.exports = withMDX({
       "@mui/material/useAutocomplete": require.resolve(
         "@mui/material/node/useAutocomplete/index.js"
       ),
-      urql: "@urql/core",
     };
 
     config.module.rules.push({
