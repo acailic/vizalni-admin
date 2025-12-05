@@ -99,6 +99,20 @@ export default function TutorialPage() {
 
   const config = slug ? getTutorialConfig(slug as string) : null;
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const steps =
+    config?.steps && config.steps.length > 0
+      ? config.steps
+      : [
+          {
+            id: "coming-soon",
+            title: { sr: "Sadržaj uskoro", en: "Content coming soon" },
+            type: "instruction" as const,
+            content: {
+              sr: "Ovaj tutorial još nema detaljne korake.",
+              en: "This tutorial does not have detailed steps yet.",
+            },
+          },
+        ];
 
   // Tutorial progress hook
   const { markStepCompleted, isStepCompleted, isTutorialCompleted } =
@@ -124,11 +138,11 @@ export default function TutorialPage() {
     );
   }
 
-  const currentStep = config.steps[currentStepIndex];
-  const progressValue = ((currentStepIndex + 1) / config.steps.length) * 100;
+  const currentStep = steps[currentStepIndex];
+  const progressValue = ((currentStepIndex + 1) / steps.length) * 100;
 
   const handleNext = () => {
-    if (currentStepIndex < config.steps.length - 1) {
+    if (currentStepIndex < steps.length - 1) {
       markStepCompleted(currentStep.id);
       setCurrentStepIndex(currentStepIndex + 1);
     }
@@ -204,7 +218,7 @@ export default function TutorialPage() {
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
             <Typography variant="body2" color="text.secondary">
               {locale === "sr" ? "Korak" : "Step"} {currentStepIndex + 1}{" "}
-              {locale === "sr" ? "od" : "of"} {config.steps.length}
+              {locale === "sr" ? "od" : "of"} {steps.length}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               {Math.round(progressValue)}%{" "}
@@ -244,7 +258,7 @@ export default function TutorialPage() {
               {locale === "sr" ? "Sadržaj" : "Table of Contents"}
             </Typography>
             <List>
-              {config.steps.map((step, index) => (
+              {steps.map((step, index) => (
                 <ListItem key={step.id} disablePadding sx={{ mb: 1 }}>
                   <ListItemButton
                     selected={index === currentStepIndex}
@@ -341,17 +355,17 @@ export default function TutorialPage() {
 
             <Box sx={{ textAlign: "center" }}>
               <Typography variant="body2" color="text.secondary">
-                {currentStepIndex + 1} / {config.steps.length}
+                {currentStepIndex + 1} / {steps.length}
               </Typography>
             </Box>
 
             <Button
               variant="contained"
               onClick={handleNext}
-              disabled={currentStepIndex === config.steps.length - 1}
+              disabled={currentStepIndex === steps.length - 1}
               sx={{ textTransform: "none" }}
             >
-              {currentStepIndex === config.steps.length - 1
+              {currentStepIndex === steps.length - 1
                 ? locale === "sr"
                   ? "Završi"
                   : "Finish"

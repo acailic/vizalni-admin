@@ -196,6 +196,20 @@ Installed automatically:
 - `fp-ts`
 - `io-ts`
 
+### GitHub Pages / Static Export
+
+Serve the demo under `/vizualni-admin` (GitHub Pages) with a one-liner:
+
+```bash
+yarn build:gh-pages
+npx serve app/out
+```
+
+Customize the base path by overriding the env var, e.g.
+`NEXT_PUBLIC_BASE_PATH=/my-path yarn build:static`. The Next.js config now
+handles `basePath`, `assetPrefix`, trailing slashes, and unoptimized images so
+exported assets resolve correctly on GitHub Pages.
+
 ## Module Formats
 
 The package is published in multiple formats for maximum compatibility:

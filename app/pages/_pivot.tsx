@@ -28,6 +28,14 @@ import { ComponentId } from "@/graphql/make-component-id";
 import { visitHierarchy } from "@/rdf/tree-utils";
 import { useEvent } from "@/utils/use-event";
 
+const SafeInspector = (props: any) => {
+  // Avoid SSR errors during static export; render debug inspectors only in browser
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return <Inspector {...props} />;
+};
+
 const Card = styled(MUICard)({
   border: "1px solid #ccc",
   backgroundColor: "#eee",
@@ -562,23 +570,23 @@ const PivotTable = ({ dataset }: { dataset: (typeof datasets)[string] }) => {
             <Typography variant="caption" display="block">
               Columns
             </Typography>
-            <Inspector data={columns} table={false} />
+            <SafeInspector data={columns} table={false} />
             <Typography variant="caption" display="block">
               Pivoted
             </Typography>
-            <Inspector data={pivotted} table={false} />
+            <SafeInspector data={pivotted} table={false} />
             <Typography variant="caption" display="block">
               Pivoted tree
             </Typography>
-            <Inspector data={tree} table={false} />
+            <SafeInspector data={tree} table={false} />
             <Typography variant="caption" display="block">
               Hierarchy
             </Typography>
-            <Inspector data={hierarchy} table={false} />
+            <SafeInspector data={hierarchy} table={false} />
             <Typography variant="caption" display="block">
               Hierarchy indexes
             </Typography>
-            <Inspector data={hierarchyIndexes} table={false} />
+            <SafeInspector data={hierarchyIndexes} table={false} />
           </details>
         </Card>
         {fetchingComponents || fetchingObservations ? <Loading /> : null}
