@@ -35,10 +35,10 @@ module.exports = withMDX({
   //   defaultLocale,
   // },
   transpilePackages: ["@mui/lab", "@mui/material"],
-  // Static export configuration for reliable builds
-  output: 'export',
+  // Static export configuration for reliable builds (only in production for GitHub Pages)
+  output: process.env.NODE_ENV === 'production' && !!process.env.NEXT_PUBLIC_BASE_PATH ? 'export' : undefined,
   trailingSlash: true,
-  distDir: 'out',
+  distDir: process.env.NODE_ENV === 'production' && !!process.env.NEXT_PUBLIC_BASE_PATH ? 'out' : '.next',
   webpack(config, { dev, isServer }) {
     // Add conditional resolution for .dev.ts and .prod.ts files
     config.resolve.extensions = Array.from(

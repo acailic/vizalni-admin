@@ -83,7 +83,7 @@ export default function App({
   const shouldShowGQLDebug =
     process.env.NODE_ENV === "development" || flag("debug");
 
-  const shouldShowPerformanceAnalytics = process.env.NODE_ENV === "development";
+  const shouldShowPerformanceAnalytics = false; // Disabled to show actual content
   const shouldShowInstallPrompt = process.env.NODE_ENV === "production";
 
   return (

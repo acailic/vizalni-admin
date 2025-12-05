@@ -15,25 +15,31 @@ if (!nextAuthSecret && isProduction) {
   throw new Error("NEXTAUTH_SECRET is required in production");
 }
 
-const providers = [
-  ADFS_ID && ADFS_ISSUER
-    ? ADFS({
-        wellKnown: `${ADFS_ISSUER}/.well-known/openid-configuration`,
-        clientId: ADFS_ID,
-        clientSecret: "", // PKCE does not require a client secret
-        authorizeUrl: `${ADFS_ISSUER}/protocol/openid-connect/auth`,
-        issuer: ADFS_ISSUER,
-        token: `${ADFS_ISSUER}/protocol/openid-connect/token`,
-        userinfo: `${ADFS_ISSUER}/protocol/openid-connect/userinfo`,
-        checks: ["pkce", "state"],
-        client: {
-          token_endpoint_auth_method: "none",
-        },
-      })
-    : null,
-].filter(truthy);
+// Skip authentication for local development
+const isDevelopment = process.env.NODE_ENV !== "production";
 
-if (!providers.length) {
+const providers = isDevelopment
+  ? [] // No providers in development
+  : [
+      ADFS_ID && ADFS_ISSUER
+        ? ADFS({
+            wellKnown: `${ADFS_ISSUER}/.well-known/openid-configuration`,
+            clientId: ADFS_ID,
+            clientSecret: "", // PKCE does not require a client secret
+            authorizeUrl: `${ADFS_ISSUER}/protocol/openid-connect/auth`,
+            issuer: ADFS_ISSUER,
+            token: `${ADFS_ISSUER}/protocol/openid-connect/token`,
+            userinfo: `${ADFS_ISSUER}/protocol/openid-connect/userinfo`,
+            checks: ["pkce", "state"],
+            client: {
+              token_endpoint_auth_method: "none",
+            },
+          })
+        : null,
+    ].filter(truthy);
+
+// Only require providers in production
+if (!isDevelopment && !providers.length) {
   throw new Error(
     "No authentication providers configured. Set ADFS_ID and ADFS_ISSUER."
   );
@@ -50,7 +56,10 @@ export const nextAuthOptions = {
     redirect: async ({ url, baseUrl }) => {
       if (url.startsWith("/")) {
         if (url === "/api/auth/signout") {
-          return `${ADFS_ISSUER}/protocol/openid-connect/logout?redirect_uri=${baseUrl}`;
+          // In development, just redirect to base URL
+          return isDevelopment
+            ? baseUrl
+            : `${ADFS_ISSUER}/protocol/openid-connect/logout?redirect_uri=${baseUrl}`;
         }
         return `${baseUrl}${url}`;
       } else if (new URL(url).origin === baseUrl) {

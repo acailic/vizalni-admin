@@ -15,10 +15,12 @@ process.env.NEXT_PUBLIC_GITHUB_REPO = pkg.repository.url.replace(
 );
 
 const isGitHubPages = process.env.NEXT_PUBLIC_BASE_PATH !== undefined;
+const isDevelopment = process.env.NODE_ENV === "development";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 module.exports = {
-  output: isGitHubPages ? "export" : "standalone",
+  // Only use export mode in production for GitHub Pages
+  output: (!isDevelopment && isGitHubPages) ? "export" : undefined,
   basePath: basePath,
   assetPrefix: basePath,
   images: {
