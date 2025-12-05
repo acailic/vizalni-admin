@@ -20,6 +20,7 @@ export default [
       'app/public/dist/**',
       'app/graphql/resolver-types.ts',
       'app/graphql/query-hooks.ts',
+      'app/graphql/urql-compat.d.ts',
       'app/dist/**',
       'app/out/**',
       'app/public/static/**',
