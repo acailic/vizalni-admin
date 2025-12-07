@@ -8,6 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
+      urql: path.resolve(__dirname, "./graphql/urql-compat.ts"),
+      "@urql/core": path.resolve(__dirname, "./graphql/urql-core-compat.ts"),
     },
   },
   test: {

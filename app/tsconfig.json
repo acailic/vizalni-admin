@@ -22,6 +22,12 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "urql": [
+        "./graphql/urql-compat.ts"
+      ],
+      "@urql/core": [
+        "./graphql/urql-core-compat.ts"
       ]
     },
     "noImplicitAny": true,

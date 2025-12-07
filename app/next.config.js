@@ -66,6 +66,7 @@ module.exports = withMDX({
       "@mui/material/useAutocomplete": require.resolve(
         "@mui/material/node/useAutocomplete/index.js"
       ),
+      "@urql/core$": path.resolve(__dirname, "graphql/urql-core-compat.ts"),
       urql$: path.resolve(__dirname, "graphql/urql-compat.ts"),
     };
 
