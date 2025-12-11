@@ -1,5 +1,6 @@
-import { LocalizationProvider } from "@mui/lab";
-import DateAdapter from "@mui/lab/AdapterDateFns";
+
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { PropsWithChildren, useEffect, useState } from "react";
 
 import { Locale } from "@/locales/locales";
@@ -58,7 +59,7 @@ export const AsyncLocalizationProvider = (
   // On client, wrap with LocalizationProvider if locale is loaded
   if (dateFnsLocale) {
     return (
-      <LocalizationProvider dateAdapter={DateAdapter} locale={dateFnsLocale}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={dateFnsLocale}>
         {children}
       </LocalizationProvider>
     );

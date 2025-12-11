@@ -21,6 +21,7 @@ export default [
       'app/graphql/resolver-types.ts',
       'app/graphql/query-hooks.ts',
       'app/graphql/urql-compat.d.ts',
+      'app/graphql/urql-core-compat.d.ts',
       'app/dist/**',
       'app/out/**',
       'app/public/static/**',

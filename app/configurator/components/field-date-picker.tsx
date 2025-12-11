@@ -1,7 +1,7 @@
 import { t } from "@lingui/macro";
-import { DatePicker, DatePickerProps, PickersDay } from "@mui/lab";
-import { DatePickerView } from "@mui/lab/DatePicker/shared";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import { timeFormat } from "d3-time-format";
 import { ChangeEvent, ReactNode, useCallback } from "react";
 
@@ -10,6 +10,9 @@ import { Label } from "@/components/form";
 import { FIELD_VALUE_NONE } from "@/configurator/constants";
 import { TimeUnit } from "@/graphql/resolver-types";
 import { Icon } from "@/icons";
+
+import type { DatePickerProps } from "@mui/x-date-pickers/DatePicker";
+import type { DateView } from "@mui/x-date-pickers/models";
 
 export type DatePickerFieldProps = {
   name: string;
@@ -25,7 +28,7 @@ export type DatePickerFieldProps = {
   showClearButton?: boolean;
 } & Omit<
   DatePickerProps<Date>,
-  "value" | "onChange" | "shouldDisableDate" | "inputFormat" | "renderInput"
+  "value" | "onChange" | "shouldDisableDate" | "format" | "slots" | "slotProps"
 >;
 
 export const DatePickerField = ({
@@ -78,50 +81,38 @@ export const DatePickerField = ({
         <DatePicker<Date>
           {...rest}
           {...dateLimitProps}
-          components={{
-            OpenPickerIcon: (props) => <Icon name="calendar" {...props} />,
-          }}
-          PaperProps={{
-            elevation: 4,
-          }}
-          inputFormat={getInputFormat(timeUnit)}
-          views={getViews(timeUnit)}
-          value={value}
-          onAccept={handleChange}
-          onChange={(date, keyboardInputValue) => {
-            if (keyboardInputValue) {
-              handleChange(date);
-            }
-          }}
-          // We need to render the day picker ourselves to correctly highlight
-          // the selected day. It's broken in the MUI date picker.
-          renderDay={(day, _, dayPickerProps) => {
-            return (
+          slots={{
+            openPickerIcon: () => <Icon name="calendar" />,
+            day: (dayProps) => (
               <PickersDay
-                {...dayPickerProps}
-                selected={value?.getTime() === day.getTime()}
+                {...dayProps}
+                selected={value?.getTime() === dayProps.day.getTime()}
               />
-            );
+            ),
           }}
-          renderInput={(params) => (
-            <TextField
-              hiddenLabel
-              size="small"
-              {...params}
-              inputProps={{
-                ...params.inputProps,
+          slotProps={{
+            popper: {
+              sx: {
+                "& .MuiPaper-root": {
+                  elevation: 4,
+                },
+              },
+            },
+            textField: {
+              hiddenLabel: true,
+              size: "small",
+              inputProps: {
                 value: value
                   ? dateFormat(value)
                   : t({
                       id: "controls.dimensionvalue.select",
                       message: "Select filter",
                     }),
-              }}
-              onChange={(e) => {
+              },
+              onChange: (e) => {
                 handleChange(parseDate(e.target.value));
-              }}
-              sx={{
-                ...params.sx,
+              },
+              sx: {
                 width: "100%",
 
                 "& input": {
@@ -141,9 +132,8 @@ export const DatePickerField = ({
                 "& svg": {
                   color: "text.primary",
                 },
-              }}
-              InputProps={{
-                ...params.InputProps,
+              },
+              InputProps: {
                 endAdornment: (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     {showClearButton && value && (
@@ -158,12 +148,20 @@ export const DatePickerField = ({
                         <Icon name="close" />
                       </IconButton>
                     )}
-                    {params.InputProps?.endAdornment}
                   </Box>
                 ),
-              }}
-            />
-          )}
+              },
+            },
+          }}
+          format={getInputFormat(timeUnit)}
+          views={getViews(timeUnit)}
+          value={value}
+          onAccept={handleChange}
+          onChange={(date) => {
+            if (date) {
+              handleChange(date);
+            }
+          }}
           disabled={disabled}
         />
         {sideControls}
@@ -220,7 +218,7 @@ const getInputFormat = (timeUnit: DatePickerTimeUnit): string => {
   }
 };
 
-const getViews = (timeUnit: DatePickerTimeUnit): DatePickerView[] => {
+const getViews = (timeUnit: DatePickerTimeUnit): DateView[] => {
   switch (timeUnit) {
     case TimeUnit.Day:
     case TimeUnit.Week:

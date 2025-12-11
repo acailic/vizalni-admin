@@ -676,6 +676,27 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
               variant="outlined"
               size="large"
               component={Link}
+              href="/cene"
+              sx={{
+                py: 1.5,
+                px: 4,
+                fontWeight: 700,
+                fontSize: "1rem",
+                borderColor: "rgba(255,255,255,0.3)",
+                color: "white",
+                backdropFilter: "blur(4px)",
+                "&:hover": {
+                  borderColor: "white",
+                  backgroundColor: "rgba(255,255,255,0.1)"
+                }
+              }}
+            >
+              Анализа цена
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              component={Link}
               href="/demos"
               sx={{
                 py: 1.5,

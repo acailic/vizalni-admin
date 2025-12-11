@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { DatePicker, PickersDay } from "@mui/lab";
 import { Stack, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import { useState } from "react";
 
 import { BrowseStateProvider } from "@/browse/model/context";
