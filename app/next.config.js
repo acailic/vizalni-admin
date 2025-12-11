@@ -6,6 +6,8 @@ const withMDX = require("@next/mdx")({
   extension: /\.mdx?$/,
   options: {
     providerImportSource: "@mdx-js/react",
+    remarkPlugins: [],
+    rehypePlugins: [],
   },
 });
 const path = require("path");
@@ -67,6 +69,8 @@ module.exports = withMDX({
         "@mui/material/node/useAutocomplete/index.js"
       ),
       urql$: path.resolve(__dirname, "graphql/urql-compat.ts"),
+      // Fix for @mdx-js/loader compatibility
+      "@mdx-js/loader": require.resolve("@mdx-js/loader"),
     };
 
     config.module.rules.push({

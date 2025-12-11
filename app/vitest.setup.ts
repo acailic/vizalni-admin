@@ -5,7 +5,7 @@ import rdf from "rdf-ext";
 import DatasetExt from "rdf-ext/lib/Dataset";
 import DefaultGraphExt from "rdf-ext/lib/DefaultGraph";
 import { NamedNode, Term } from "rdf-js";
-import { vi } from "vitest";
+import { vi, expect } from "vitest";
 
 import { GRAPHQL_ENDPOINT } from "@/domain/env";
 import * as ns from "@/rdf/namespace";
@@ -152,5 +152,25 @@ expect.extend(toHaveNoViolations);
 
 // Make axe available globally for tests
 vi.stubGlobal('axe', axe);
+
+// Mock DOM methods that are not available in jsdom
+if (typeof SVGElement !== 'undefined') {
+  Object.defineProperty(SVGElement.prototype, 'getTotalLength', {
+    writable: true,
+    value: function() { return 100; }
+  });
+}
+
+if (typeof SVGPathElement !== 'undefined') {
+  Object.defineProperty(SVGPathElement.prototype, 'getTotalLength', {
+    writable: true,
+    value: function() { return 100; }
+  });
+}
+
+// Setup I18n for tests
+import { i18n } from '@lingui/core';
+i18n.load('en', {});
+i18n.activate('en');
 
 import "@testing-library/jest-dom/vitest";
