@@ -2,13 +2,19 @@ import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Box,
+  Breadcrumbs,
+  Button,
   Card,
   CardContent,
   Chip,
   Grid,
+  Link as MuiLink,
   Stack,
   Typography,
 } from "@mui/material";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { ColumnChart, LineChart, PieChart } from "@/components/demos/charts";
 import { DemoLayout } from "@/components/demos/demo-layout";
@@ -21,6 +27,8 @@ import {
 
 export default function DemoShowcasePage() {
   const { i18n } = useLingui();
+  const router = useRouter();
+  const locale = i18n.locale || 'en';
 
   const text = {
     title: i18n._(
@@ -176,17 +184,149 @@ export default function DemoShowcasePage() {
     ],
   };
 
+  // Calculate data freshness
+  const lastUpdated = new Date("2024-12-31");
+  const daysSinceUpdate = Math.floor((new Date().getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24));
+  const isDataStale = daysSinceUpdate > 90; // Consider data stale after 90 days
+
+  // SEO metadata
+  const seoTitle = locale.startsWith('sr')
+    ? "Galerija demo vizualizacija | Vizualni Admin"
+    : "Demo Showcase Visualizations | Vizualni Admin";
+  const seoDescription = locale.startsWith('sr')
+    ? "Brzi pregled više tipova grafikona sa reprezentativnim skupovima podataka. Ekonomija, mobilnost, energija i digitalizacija."
+    : "A quick look at multiple chart types using representative datasets. Economy, mobility, energy, and digitalization.";
+  const seoUrl = `https://vizualni-admin.app${router.asPath}`;
+
   return (
-    <DemoLayout
-      title={text.title}
-      description={text.description}
-      datasetInfo={{
-        title: text.datasetTitle,
-        organization: text.datasetOrganization,
-        updatedAt: "2024-12-31",
-      }}
-    >
+    <>
+      <Head>
+        {/* Primary Meta Tags */}
+        <title>{seoTitle}</title>
+        <meta name="title" content={seoTitle} />
+        <meta name="description" content={seoDescription} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="keywords" content={
+          locale.startsWith('sr')
+            ? "vizualizacija podataka, grafikoni, Srbija, BDP, energija, digitalizacija, otvoreni podaci"
+            : "data visualization, charts, Serbia, GDP, energy, digitalization, open data"
+        } />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={seoUrl} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:image" content="https://vizualni-admin.app/images/showcase-og.png" />
+        <meta property="og:locale" content={locale} />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={seoUrl} />
+        <meta property="twitter:title" content={seoTitle} />
+        <meta property="twitter:description" content={seoDescription} />
+        <meta property="twitter:image" content="https://vizualni-admin.app/images/showcase-og.png" />
+
+        {/* Additional SEO */}
+        <link rel="canonical" href={seoUrl} />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Vizualni Admin" />
+        <meta name="last-modified" content={lastUpdated.toISOString()} />
+      </Head>
+
+      <DemoLayout
+        title={text.title}
+        description={text.description}
+        datasetInfo={{
+          title: text.datasetTitle,
+          organization: text.datasetOrganization,
+          updatedAt: "2024-12-31",
+        }}
+      >
+        {/* Breadcrumb Navigation */}
+        <Box
+          sx={{ mb: 3 }}
+          role="navigation"
+          aria-label={locale.startsWith('sr') ? "Navigaciona putanja" : "Breadcrumb navigation"}
+        >
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link href="/" passHref legacyBehavior>
+              <MuiLink
+                color="inherit"
+                underline="hover"
+                sx={{
+                  '&:focus': {
+                    outline: '2px solid #0ea5e9',
+                    outlineOffset: '2px',
+                    borderRadius: '4px'
+                  }
+                }}
+              >
+                {locale.startsWith('sr') ? 'Početna' : 'Home'}
+              </MuiLink>
+            </Link>
+            <Link href="/demos" passHref legacyBehavior>
+              <MuiLink
+                color="inherit"
+                underline="hover"
+                sx={{
+                  '&:focus': {
+                    outline: '2px solid #0ea5e9',
+                    outlineOffset: '2px',
+                    borderRadius: '4px'
+                  }
+                }}
+              >
+                {locale.startsWith('sr') ? 'Demoi' : 'Demos'}
+              </MuiLink>
+            </Link>
+            <Typography color="text.primary">
+              {locale.startsWith('sr') ? 'Galerija' : 'Showcase'}
+            </Typography>
+          </Breadcrumbs>
+        </Box>
+
+        {/* Data Freshness Indicator */}
+        {isDataStale && (
+          <Box
+            sx={{
+              mb: 3,
+              p: 2,
+              bgcolor: 'warning.lighter',
+              border: '1px solid',
+              borderColor: 'warning.light',
+              borderRadius: 2,
+            }}
+            role="alert"
+            aria-live="polite"
+          >
+            <Typography variant="body2" color="warning.main" sx={{ fontWeight: 600 }}>
+              ⚠️ {locale.startsWith('sr')
+                ? `Podaci su ažurirani pre ${daysSinceUpdate} dana. Razmotrite proveru izvora za najnovije informacije.`
+                : `Data last updated ${daysSinceUpdate} days ago. Consider checking the source for the latest information.`}
+            </Typography>
+          </Box>
+        )}
+
+        {/* Last Updated Badge */}
+        <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+          <Chip
+            label={`${locale.startsWith('sr') ? 'Poslednje ažuriranje' : 'Last updated'}: ${lastUpdated.toLocaleDateString(locale, {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}`}
+            size="small"
+            sx={{
+              bgcolor: 'primary.lighter',
+              color: 'primary.main',
+              fontWeight: 600
+            }}
+          />
+        </Box>
       <Card
+        component="section"
+        aria-labelledby="hero-heading"
         sx={{
           mb: 6,
           p: { xs: 3, md: 6 },
@@ -197,6 +337,10 @@ export default function DemoShowcasePage() {
           boxShadow: "0 24px 48px -12px rgba(15, 23, 42, 0.6)",
           position: "relative",
           overflow: "hidden",
+          '&:focus-within': {
+            outline: '3px solid rgba(14, 165, 233, 0.5)',
+            outlineOffset: '2px',
+          }
         }}
       >
         <Box
@@ -221,6 +365,7 @@ export default function DemoShowcasePage() {
             <Typography
               variant="h3"
               component="h1"
+              id="hero-heading"
               sx={{
                 fontWeight: 800,
                 mb: 3,
@@ -236,41 +381,71 @@ export default function DemoShowcasePage() {
               spacing={1.5}
               flexWrap="wrap"
               sx={{ mb: 4, gap: 1.5 }}
+              role="list"
+              aria-label={locale.startsWith('sr') ? "Kategorije podataka" : "Data categories"}
             >
               <Chip
+                component="div"
+                role="listitem"
                 label={text.chips.economy}
+                tabIndex={0}
                 sx={{
                   bgcolor: "white",
                   color: "#0f172a",
                   fontWeight: 600,
                   "&:hover": { bgcolor: "rgba(255,255,255,0.9)" },
+                  "&:focus": {
+                    outline: '2px solid #fbbf24',
+                    outlineOffset: '2px'
+                  }
                 }}
               />
               <Chip
+                component="div"
+                role="listitem"
                 label={text.chips.mobility}
+                tabIndex={0}
                 sx={{
                   background: "rgba(255,255,255,0.15)",
                   color: "white",
                   backdropFilter: "blur(4px)",
                   border: "1px solid rgba(255,255,255,0.2)",
+                  "&:focus": {
+                    outline: '2px solid #fbbf24',
+                    outlineOffset: '2px'
+                  }
                 }}
               />
               <Chip
+                component="div"
+                role="listitem"
                 label={text.chips.energy}
+                tabIndex={0}
                 sx={{
                   background: "rgba(255,255,255,0.15)",
                   color: "white",
                   backdropFilter: "blur(4px)",
                   border: "1px solid rgba(255,255,255,0.2)",
+                  "&:focus": {
+                    outline: '2px solid #fbbf24',
+                    outlineOffset: '2px'
+                  }
                 }}
               />
               <Chip
+                component="div"
+                role="listitem"
                 label={text.chips.digital}
+                tabIndex={0}
                 sx={{
                   background: "rgba(255,255,255,0.15)",
                   color: "white",
                   backdropFilter: "blur(4px)",
                   border: "1px solid rgba(255,255,255,0.2)",
+                  "&:focus": {
+                    outline: '2px solid #fbbf24',
+                    outlineOffset: '2px'
+                  }
                 }}
               />
             </Stack>
@@ -327,9 +502,12 @@ export default function DemoShowcasePage() {
         </Grid>
       </Card>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={4} component="section" aria-label={locale.startsWith('sr') ? "Vizualizacije podataka" : "Data visualizations"}>
         <Grid item xs={12} md={6}>
           <Card
+            component="article"
+            aria-labelledby="economy-heading"
+            tabIndex={0}
             sx={{
               height: "100%",
               borderRadius: 4,
@@ -343,16 +521,30 @@ export default function DemoShowcasePage() {
                 boxShadow:
                   "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
               },
+              "&:focus": {
+                outline: '3px solid #0ea5e9',
+                outlineOffset: '2px',
+              }
             }}
           >
             <CardContent sx={{ p: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+              <Typography variant="h5" id="economy-heading" sx={{ fontWeight: 700, mb: 1 }}>
                 {text.economyTitle}
               </Typography>
               <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
                 {text.economyDesc}
               </Typography>
-              <Box sx={{ overflowX: "auto", pb: 1 }}>
+              {/* Screen reader summary */}
+              <Box
+                component="div"
+                sx={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}
+                aria-live="polite"
+              >
+                {locale.startsWith('sr')
+                  ? `Stubični grafikon prikazuje regionalni rast BDP-a. Beograd: 4.3%, Vojvodina: 3.1%, Šumadija i zapadna Srbija: 2.7%, Južna i istočna Srbija: 2.1%`
+                  : `Column chart showing regional GDP growth. Belgrade: 4.3%, Vojvodina: 3.1%, Sumadija and Western Serbia: 2.7%, Southern and Eastern Serbia: 2.1%`}
+              </Box>
+              <Box sx={{ overflowX: "auto", pb: 1 }} role="img" aria-label={text.economyTitle}>
                 <ColumnChart
                   data={showcaseRegionalGrowth}
                   xKey="region"
