@@ -40,8 +40,31 @@ const server = http.createServer((req, res) => {
     pathname = pathname.slice(BASE_PATH.length) || '/';
   }
 
-  // Handle trailing slash - normalize
+  // Use temp directory if it exists (for local testing)
+  const useTempDir = fs.existsSync(path.join(OUT_DIR, 'temp-for-local'));
+  const servingDir = useTempDir ? path.join(OUT_DIR, 'temp-for-local') : OUT_DIR;
+
+  // Handle trailing slash for directories
+  // Keep the slash for directories, remove for files
   if (pathname !== '/' && pathname.endsWith('/')) {
+    // Check if it's a directory (no extension)
+    const hasExtension = path.extname(pathname.slice(0, -1)) !== '';
+    if (!hasExtension) {
+      // For directories, try index.html first
+      const indexPath = path.join(servingDir, pathname, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        fs.readFile(indexPath, (err, data) => {
+          if (err) {
+            res.writeHead(404, { 'Content-Type': 'text/html' });
+            res.end('<h1>404 - Not Found</h1>');
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(data);
+        });
+        return;
+      }
+    }
     pathname = pathname.slice(0, -1);
   }
 
@@ -55,14 +78,14 @@ const server = http.createServer((req, res) => {
   const isStaticAsset = ext in MIME_TYPES;
 
   // Create file path
-  const filePath = path.join(OUT_DIR, pathname);
+  const filePath = path.join(servingDir, pathname);
 
   // Check if file exists
   fs.readFile(filePath, (err, data) => {
     if (err) {
       if (err.code === 'ENOENT' && !isStaticAsset) {
         // File not found and it's not a static asset, serve index.html (SPA routing)
-        fs.readFile(path.join(OUT_DIR, 'index.html'), (indexErr, indexData) => {
+        fs.readFile(path.join(servingDir, 'index.html'), (indexErr, indexData) => {
           if (indexErr) {
             res.writeHead(404, { 'Content-Type': 'text/html' });
             res.end('<h1>404 - Not Found</h1>');

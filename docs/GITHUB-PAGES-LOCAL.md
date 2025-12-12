@@ -27,6 +27,11 @@ yarn serve:gh-pages
 
 Then visit: http://localhost:3000/vizualni-admin/
 
+**Note**: If port 3000 is already in use, you can specify a different port:
+```bash
+PORT=3001 yarn serve:gh-pages
+```
+
 ### Method 2: Manual Build and Serve
 
 ```bash
@@ -55,10 +60,12 @@ Then visit: http://localhost:3000/vizualni-admin/
 The custom server (`scripts/serve-gh-pages.js`) handles:
 
 1. **Base Path Stripping** - Removes `/vizualni-admin/` from incoming requests
-2. **Static Asset Serving** - Serves JS, CSS, images, and other static files with correct MIME types
-3. **SPA Routing** - Serves `index.html` for client-side routes
-4. **Security Headers** - Adds security headers for production-like behavior
-5. **Caching** - Implements appropriate caching for static assets
+2. **Directory Routing** - Properly handles trailing slashes for directory routes (e.g., `/cene/`)
+3. **Static Asset Serving** - Serves JS, CSS, images, and other static files with correct MIME types
+4. **SPA Routing** - Serves `index.html` for client-side routes
+5. **Security Headers** - Adds security headers for production-like behavior
+6. **Caching** - Implements appropriate caching for static assets
+7. **Auto-detection** - Automatically uses the temp directory for local testing when available
 
 ### Directory Structure
 
