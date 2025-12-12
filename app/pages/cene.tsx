@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 
@@ -258,7 +258,7 @@ export default function CenePage({ initialData }: { initialData: ApiResponse }) 
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   try {
     // Create sample data if no real data exists
     const sampleData: PriceData[] = [
