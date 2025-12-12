@@ -104,12 +104,12 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
 
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b">
+        <header className="bg-white shadow-sm border-b sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <h1 className="text-xl font-bold text-gray-900">
+                  <h1 className="text-lg sm:text-xl font-bold text-gray-900">
                     🇷🇸 Srpski Podaci
                   </h1>
                 </div>
@@ -125,9 +125,9 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
                   </a>
                 </nav>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <span className="text-xs sm:text-sm text-gray-500 hidden sm:inline">
                     {language === "sr-Latn" ? "Jezik:" : language === "sr-Cyrl" ? "Језик:" : "Language:"}
                   </span>
                   <select
@@ -137,7 +137,7 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
                       setLanguage(newLang);
                       localStorage.setItem('serbian-script', newLang === 'sr-Cyrl' ? 'cyrillic' : 'latin');
                     }}
-                    className="text-sm border border-gray-300 rounded px-2 py-1"
+                    className="text-xs sm:text-sm border border-gray-300 rounded px-2 py-1"
                   >
                     <option value="sr-Latn">Latinica</option>
                     <option value="sr-Cyrl">Ћирилица</option>
@@ -150,10 +150,27 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          {/* Breadcrumb Navigation */}
+          <nav className="mb-4 sm:mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center space-x-2 text-sm text-gray-500">
+              <li>
+                <a href="/" className="hover:text-gray-700">
+                  {language === "sr-Latn" ? "Početna" : language === "sr-Cyrl" ? "Почетна" : "Home"}
+                </a>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="text-gray-900 font-medium">
+                {language === "sr-Latn" ? "Srpski Podaci" : language === "sr-Cyrl" ? "Српски Подаци" : "Serbian Data"}
+              </li>
+            </ol>
+          </nav>
+
           {/* Hero Section */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">
               {language === "sr-Latn"
                 ? "Vizualizacija otvorenih podataka Republike Srbije"
                 : language === "sr-Cyrl"
@@ -161,9 +178,9 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
                 : "Open Data Visualization Republic of Serbia"
               }
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               {language === "sr-Latn"
-                ? "Istrajite u interaktivne vizualizacije srpskih državnih podataka iz oblasti budžeta, kvaliteta vazduha, demografije i energije."
+                ? "Istražite interaktivne vizualizacije srpskih državnih podataka iz oblasti budžeta, kvaliteta vazduha, demografije i energije."
                 : language === "sr-Cyrl"
                 ? "Истражите интерактивне визуализације српских државних података из области буџета, квалитета ваздуха, демографије и енергије."
                 : "Explore interactive visualizations of Serbian government data covering budget, air quality, demographics, and energy."
@@ -179,11 +196,42 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
             activeDataset="overview"
           />
 
+          {/* Call-to-Action Section */}
+          <div className="my-8 sm:my-12 bg-blue-50 border border-blue-200 rounded-lg p-6 sm:p-8 text-center">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+              {language === "sr-Latn"
+                ? "Želite još?"
+                : language === "sr-Cyrl"
+                ? "Желите још?"
+                : "Want more?"
+              }
+            </h3>
+            <p className="text-sm sm:text-base text-gray-700 mb-4 sm:mb-6 max-w-2xl mx-auto">
+              {language === "sr-Latn"
+                ? "Posetite kompletnu galeriju za više kategorija i aktuelne podatke."
+                : language === "sr-Cyrl"
+                ? "Посетите комплетну галерију за више категорија и актуелне податке."
+                : "Visit the complete gallery for more categories and current data."
+              }
+            </p>
+            <a
+              href="/demos"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 sm:px-8 py-3 rounded-lg transition-colors"
+            >
+              {language === "sr-Latn"
+                ? "Pregledaj sve demoe"
+                : language === "sr-Cyrl"
+                ? "Прегледај све демое"
+                : "View all demos"
+              }
+            </a>
+          </div>
+
           {/* Additional Information Sections */}
-          <div className="mt-16 space-y-16">
+          <div className="mt-12 sm:mt-16 space-y-12 sm:space-y-16">
             {/* Dataset Information */}
             <section id="datasets">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
                 {language === "sr-Latn"
                   ? "Dostupni datasetovi"
                   : language === "sr-Cyrl"
@@ -191,7 +239,7 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
                   : "Available Datasets"
                 }
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                 <div className="text-center">
                   <div className="text-4xl mb-4">💰</div>
                   <h4 className="font-semibold text-lg mb-2">
@@ -253,7 +301,7 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
 
             {/* About Section */}
             <section id="about">
-              <h3 className="text-2xl font-bold text-gray-900 mb-8">
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6 sm:mb-8">
                 {language === "sr-Latn"
                   ? "O projektu"
                   : language === "sr-Cyrl"
@@ -284,10 +332,10 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
         </main>
 
         {/* Footer */}
-        <footer className="bg-white border-t">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-500">
+        <footer className="bg-white border-t mt-12 sm:mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
                 © 2024 {language === "sr-Latn" ? "Srpski Podaci" : language === "sr-Cyrl" ? "Српски Подаци" : "Serbian Data"}.
                 {language === "sr-Latn"
                   ? " Sva prava zadržana."
@@ -296,9 +344,9 @@ const SerbianDataPage: React.FC<SerbianDataPageProps> = ({ initialData }) => {
                   : " All rights reserved."
                 }
               </div>
-              <div className="flex space-x-6 text-sm text-gray-500">
+              <div className="flex space-x-4 sm:space-x-6 text-xs sm:text-sm text-gray-500">
                 <a href="https://data.gov.rs" target="_blank" rel="noopener noreferrer" className="hover:text-gray-700">
-                  data.gov.rs
+                  {language === "sr-Latn" ? "Izvor podataka" : language === "sr-Cyrl" ? "Извор података" : "Data source"}: data.gov.rs
                 </a>
                 <a href="https://www.euprava.gov.rs" target="_blank" rel="noopener noreferrer" className="hover:text-gray-700">
                   eUprava

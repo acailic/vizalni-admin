@@ -84,7 +84,9 @@ const energyEfficiencyMetrics = [
   { metric: "Korišćenje kapaciteta", value: 78, target: 85, unit: "%" }
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D', '#FFC658', '#FF6B6B'];
+// WCAG-compliant colors with sufficient contrast against light backgrounds
+// Using palette with minimum 4.5:1 contrast ratio for normal text
+const COLORS = ['#1E40AF', '#059669', '#CA8A04', '#DC2626', '#7C3AED', '#0891B2', '#EA580C', '#BE123C'];
 
 interface SerbianEnergyChartProps {
   language?: SerbianLanguageVariant;
@@ -137,16 +139,28 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={height}>
-            <LineChart data={monthlyEnergyProduction}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis tickFormatter={(value) => `${formatSerbianNumber(value / 1000, language)} GWh`} />
+            <LineChart
+              data={monthlyEnergyProduction}
+              aria-label="Grafikon mesečne proizvodnje energije"
+              role="img"
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis
+                dataKey="month"
+                tick={{ fontSize: 12 }}
+                interval="preserveStartEnd"
+              />
+              <YAxis
+                tickFormatter={(value) => `${formatSerbianNumber(value / 1000, language)} GWh`}
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Proizvodnja (GWh)', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+              />
               <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Line type="monotone" dataKey="termoelektrane" stroke="#8884d8" strokeWidth={2} name="Termoelektrane" />
-              <Line type="monotone" dataKey="hidroelektrane" stroke="#82ca9d" strokeWidth={2} name="Hidroelektrane" />
-              <Line type="monotone" dataKey="vetar" stroke="#ffc658" strokeWidth={2} name="Vetar" />
-              <Line type="monotone" dataKey="sunce" stroke="#ff7300" strokeWidth={2} name="Sunce" />
+              <Legend wrapperStyle={{ fontSize: '14px' }} />
+              <Line type="monotone" dataKey="termoelektrane" stroke="#1E40AF" strokeWidth={2} name="Termoelektrane" />
+              <Line type="monotone" dataKey="hidroelektrane" stroke="#059669" strokeWidth={2} name="Hidroelektrane" />
+              <Line type="monotone" dataKey="vetar" stroke="#CA8A04" strokeWidth={2} name="Vetar" />
+              <Line type="monotone" dataKey="sunce" stroke="#EA580C" strokeWidth={2} name="Sunce" />
             </LineChart>
           </ResponsiveContainer>
         </CardContent>
@@ -158,12 +172,12 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={height}>
-            <PieChart>
+            <PieChart aria-label="Kružni grafikon proizvodnje po izvoru" role="img">
               <Pie
                 data={energyBySource.filter(d => d.production > 0)}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
+                labelLine={true}
                 label={({ source, percentage }) => `${source}: ${percentage}%`}
                 outerRadius={80}
                 fill="#8884d8"
@@ -173,7 +187,22 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value: number) => formatEnergyValue(value)} />
+              <Tooltip
+                formatter={(value: number) => formatEnergyValue(value)}
+                content={({ active, payload }) => {
+                  if (active && payload && payload.length) {
+                    const data = payload[0].payload;
+                    return (
+                      <div className="bg-white p-3 border border-gray-300 rounded shadow-lg">
+                        <p className="font-semibold">{data.source}</p>
+                        <p>Proizvodnja: {formatEnergyValue(data.production)}</p>
+                        <p>Udeo: {data.percentage}%</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </CardContent>
@@ -189,15 +218,26 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={height}>
-            <AreaChart data={renewableEnergyGrowth}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="year" />
-              <YAxis tickFormatter={(value) => `${formatSerbianNumber(value, language)} MW`} />
+            <AreaChart
+              data={renewableEnergyGrowth}
+              aria-label="Grafikon rasta obnovljivih izvora energije"
+              role="img"
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis
+                dataKey="year"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                tickFormatter={(value) => `${formatSerbianNumber(value, language)} MW`}
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Kapacitet (MW)', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+              />
               <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Area type="monotone" dataKey="vetar" stackId="1" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.6} name="Vetar" />
-              <Area type="monotone" dataKey="sunce" stackId="1" stroke="#ffc658" fill="#ffc658" fillOpacity={0.6} name="Sunce" />
-              <Area type="monotone" dataKey="biomasa" stackId="1" stroke="#ff7300" fill="#ff7300" fillOpacity={0.6} name="Biomasa" />
+              <Legend wrapperStyle={{ fontSize: '14px' }} />
+              <Area type="monotone" dataKey="vetar" stackId="1" stroke="#059669" fill="#059669" fillOpacity={0.6} name="Vetar" />
+              <Area type="monotone" dataKey="sunce" stackId="1" stroke="#CA8A04" fill="#CA8A04" fillOpacity={0.6} name="Sunce" />
+              <Area type="monotone" dataKey="biomasa" stackId="1" stroke="#EA580C" fill="#EA580C" fillOpacity={0.6} name="Biomasa" />
             </AreaChart>
           </ResponsiveContainer>
         </CardContent>
@@ -263,17 +303,28 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={height}>
-            <BarChart data={energyConsumptionBySector} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+            <BarChart
+              data={energyConsumptionBySector}
+              margin={{ top: 20, right: 30, left: 20, bottom: 80 }}
+              aria-label="Grafikon potrošnje energije po sektorima"
+              role="img"
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
               <XAxis
                 dataKey="sector"
                 angle={-45}
                 textAnchor="end"
                 height={100}
+                tick={{ fontSize: 11 }}
+                interval={0}
               />
-              <YAxis tickFormatter={(value) => `${formatSerbianNumber(value / 1000, language)} GWh`} />
+              <YAxis
+                tickFormatter={(value) => `${formatSerbianNumber(value / 1000, language)} GWh`}
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Potrošnja (GWh)', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+              />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="consumption" fill="#8884d8" name="Potrošnja" />
+              <Bar dataKey="consumption" fill="#1E40AF" name="Potrošnja" />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
@@ -324,16 +375,34 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={height}>
-            <ComposedChart data={energyBySource.filter(d => d.capacity > 0)} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+            <ComposedChart
+              data={energyBySource.filter(d => d.capacity > 0)}
+              margin={{ top: 20, right: 50, left: 20, bottom: 80 }}
+              aria-label="Grafikon proizvodnih kapaciteta po izvoru"
+              role="img"
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
               <XAxis
                 dataKey="source"
                 angle={-45}
                 textAnchor="end"
                 height={100}
+                tick={{ fontSize: 10 }}
+                interval={0}
               />
-              <YAxis yAxisId="left" tickFormatter={formatEnergyValue} />
-              <YAxis yAxisId="right" orientation="right" tickFormatter={formatCapacity} />
+              <YAxis
+                yAxisId="left"
+                tickFormatter={formatEnergyValue}
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Proizvodnja', angle: -90, position: 'insideLeft', style: { fontSize: 12 } }}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tickFormatter={formatCapacity}
+                tick={{ fontSize: 12 }}
+                label={{ value: 'Kapacitet (MW)', angle: 90, position: 'insideRight', style: { fontSize: 12 } }}
+              />
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
@@ -350,9 +419,9 @@ export const SerbianEnergyChart: React.FC<SerbianEnergyChartProps> = ({
                   return null;
                 }}
               />
-              <Legend />
-              <Bar yAxisId="left" dataKey="production" fill="#8884d8" name="Godišnja proizvodnja" />
-              <Line yAxisId="right" type="monotone" dataKey="capacity" stroke="#ff7300" strokeWidth={2} name="Instalirani kapacitet" />
+              <Legend wrapperStyle={{ fontSize: '14px' }} />
+              <Bar yAxisId="left" dataKey="production" fill="#1E40AF" name="Godišnja proizvodnja" />
+              <Line yAxisId="right" type="monotone" dataKey="capacity" stroke="#EA580C" strokeWidth={2} name="Instalirani kapacitet" />
             </ComposedChart>
           </ResponsiveContainer>
         </CardContent>

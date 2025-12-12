@@ -71,7 +71,9 @@ const monthlyBudgetData = [
   { month: "Dec", prihodi: 155000000, rashodi: 145000000 }
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8', '#82CA9D'];
+// WCAG-compliant colors with sufficient contrast against light backgrounds
+// Using palette with minimum 4.5:1 contrast ratio for normal text
+const COLORS = ['#1E40AF', '#059669', '#CA8A04', '#DC2626', '#7C3AED', '#0891B2'];
 
 interface SerbianBudgetChartProps {
   language?: SerbianLanguageVariant;

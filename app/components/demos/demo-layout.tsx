@@ -224,7 +224,7 @@ export function DemoLayout({
               {i18n._(
                 defineMessage({
                   id: "demos.layout.source",
-                  message: "Data source",
+                  message: locale === "sr" ? "Izvor podataka" : "Data source",
                 })
               )}
               :{" "}
