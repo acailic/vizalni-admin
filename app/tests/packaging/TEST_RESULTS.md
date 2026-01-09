@@ -1,8 +1,13 @@
 # Export Validation Test Results Summary
 
+Note: This summary reflects a previous packaging setup. As of 2026-01-09,
+exports now target `dist/index.js`/`dist/index.mjs` and subpath bundles
+(`dist/core.*`, `dist/charts/index.*`, etc.) are expected after `build:lib`.
+
 ## Current Status: 23/29 Tests Passing ✓
 
-The packaging/export validation test is working as designed. Here's what the results mean:
+The packaging/export validation test is working as designed. Here's what the
+results mean:
 
 ## Test Results Breakdown
 
@@ -51,9 +56,11 @@ These tests validate that the package configuration is correct:
 
 ### × Failing Tests (6 tests)
 
-These tests fail because the `dist/` directory doesn't contain all built artifacts:
+These tests fail because the `dist/` directory doesn't contain all built
+artifacts:
 
-1. **Main entry point files** - Missing `dist/index.d.ts` and `dist/acailic-vizualni-admin.esm.js`
+1. **Main entry point files** - Missing `dist/index.d.ts` and
+   `dist/acailic-vizualni-admin.esm.js`
 2. **Core subpath files** - Missing `dist/core.*` files
 3. **Client subpath files** - Missing `dist/client.*` files
 4. **Charts subpath files** - Missing `dist/charts/*.*` files
@@ -62,9 +69,11 @@ These tests fail because the `dist/` directory doesn't contain all built artifac
 
 ## Why These Failures Are Expected
 
-The test detected that `dist/` exists but is incomplete. Currently, only `dist/acailic-vizualni-admin.cjs.js` exists from a partial build.
+The test detected that `dist/` exists but is incomplete. Currently, only
+`dist/acailic-vizualni-admin.cjs.js` exists from a partial build.
 
 ### Current dist/ contents:
+
 ```
 dist/
 ├── acailic-vizualni-admin.cjs.js       ✓ exists
@@ -73,6 +82,7 @@ dist/
 ```
 
 ### Expected dist/ contents:
+
 ```
 dist/
 ├── acailic-vizualni-admin.cjs.js
@@ -102,6 +112,7 @@ dist/
 ## How to Achieve Full Test Success
 
 ### Option 1: Run the full library build
+
 ```bash
 cd app
 npm run build:lib
@@ -111,6 +122,7 @@ npm test -- tests/packaging/exports --run
 This will build all entrypoints and all 29 tests should pass.
 
 ### Option 2: Use preconstruct (recommended)
+
 ```bash
 cd app
 npm run build:preconstruct
@@ -123,11 +135,14 @@ Preconstruct will build all entrypoints correctly with proper types.
 
 This test is designed to be **graceful** in development:
 
-1. **If dist doesn't exist**: Tests skip build artifact validation and only validate configuration
-2. **If dist exists but incomplete**: Tests report missing artifacts (current state)
+1. **If dist doesn't exist**: Tests skip build artifact validation and only
+   validate configuration
+2. **If dist exists but incomplete**: Tests report missing artifacts (current
+   state)
 3. **If dist is complete**: All tests pass
 
 This approach ensures:
+
 - Developers get useful feedback about package configuration
 - CI/CD can validate actual build artifacts
 - Tests don't unnecessarily fail during active development
@@ -136,20 +151,21 @@ This approach ensures:
 
 This is a **"meta-test"** that validates packaging, not functionality:
 
-✓ **Validates**: Package exports are configured correctly
-✓ **Validates**: Type definitions exist and are referenced
-✓ **Validates**: Re-exports match expectations (e.g., LineChart from charts)
-✓ **Validates**: Build tooling (preconstruct) matches package.json
-✓ **Validates**: File extensions and naming conventions
+✓ **Validates**: Package exports are configured correctly ✓ **Validates**: Type
+definitions exist and are referenced ✓ **Validates**: Re-exports match
+expectations (e.g., LineChart from charts) ✓ **Validates**: Build tooling
+(preconstruct) matches package.json ✓ **Validates**: File extensions and naming
+conventions
 
-✗ **Does NOT validate**: The actual functionality of the code
-✗ **Does NOT validate**: Runtime behavior
-✗ **Does NOT validate**: Component rendering
+✗ **Does NOT validate**: The actual functionality of the code ✗ **Does NOT
+validate**: Runtime behavior ✗ **Does NOT validate**: Component rendering
 
 ## Next Steps
 
-1. **For immediate validation**: The test is working correctly and validating configuration
-2. **For full validation**: Run `npm run build:preconstruct` to generate all artifacts
+1. **For immediate validation**: The test is working correctly and validating
+   configuration
+2. **For full validation**: Run `npm run build:preconstruct` to generate all
+   artifacts
 3. **For CI/CD**: Add this test to ensure releases have proper exports
 
 ## Files Created

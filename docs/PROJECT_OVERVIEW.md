@@ -21,10 +21,92 @@ library. The repository ships both the Next.js application and the npm package
 
 - Browse and search data.gov.rs datasets and resources.
 - Create interactive charts (line, bar, column, area, pie, map).
-- Map features in the app (MapLibre/Deck) and a D3-based `MapChart` export.
+- Map features in the app (MapLibre/Deck) and a D3-based `MapChart` export (see
+  `ai_working/decisions/2026-01-09-mapchart-packaging.md`).
 - Export charts to PNG/SVG via chart controls.
 - Embed views and share links from the app UI.
 - Demos and showcase pages for onboarding.
+
+## Library dependencies
+
+The `@acailic/vizualni-admin` npm package (located in `app/exports/`) includes
+the following runtime dependencies:
+
+### D3 visualization libraries
+
+- **d3-array**: Array manipulation utilities for data processing
+- **d3-axis**: Axis rendering for charts
+- **d3-delaunay**: Delaunay triangulation and Voronoi diagrams
+- **d3-ease**: Easing functions for animations
+- **d3-format**: Number and date formatting
+- **d3-geo**: Geographic projections and computations (for MapChart)
+- **d3-interpolate-path**: Path interpolation utilities
+- **d3-scale**: Scale functions for mapping data to visual dimensions
+- **d3-selection**: DOM selection and manipulation
+- **d3-shape**: Shape generators (lines, areas, arcs, pies)
+- **d3-time-format**: Time/date formatting
+- **d3-transition**: Smooth transitions and animations
+- **d3-zoom**: Zoom and pan interactions (for MapChart)
+
+### Data processing and utilities
+
+- **date-fns**: Modern date utility library
+- **flexsearch**: Fast full-text search
+- **fp-ts**: Functional programming utilities (TypeScript)
+- **io-ts**: Runtime type validation
+- **make-plural**: Pluralization rules for i18n
+- **simple-statistics**: Statistical computations
+- **wellknown**: Well-known text format parsing
+
+### UI and visualization components
+
+- **@uiw/react-color**: Color picker component
+- **@visx/group**: SVG group component
+- **@visx/text**: SVG text component
+- **react-i18next**: React integration for i18n
+- **react-inspector**: JSON/object inspector
+- **react-table**: Table component
+- **react-virtualized-auto-sizer**: Auto-sizing wrapper
+- **react-window**: Efficient list/window rendering
+- **urql**: Lightweight GraphQL client
+- **@urql/core**: Core urql functionality
+- **web-vitals**: Web performance metrics
+
+### Data and internationalization
+
+- **i18next**: Internationalization framework
+- **next-i18next**: Next.js integration for i18n
+- **@zazuko/cube-hierarchy-query**: RDF cube hierarchy queries
+
+### Development-only dependencies
+
+The following packages are moved to `devDependencies` as they are only used in
+the app, not in the exported library:
+
+- **@apollo/server-plugin-landing-page-graphql-playground**: GraphQL playground
+  UI
+- **apollo-server-micro**: Apollo Server for Next.js API routes
+- **graphql-constraint-directive**: GraphQL validation directives
+- **graphql-depth-limit**: GraphQL query depth limiting
+- **graphql-tag**: GraphQL template literal parser
+- **compression**: HTTP compression middleware
+- **cors**: Cross-origin resource sharing middleware
+- **global-agent**: Global HTTP/HTTPS proxy
+- **microee**: Event emitter utilities
+- **nprogress**: Progress bar UI
+
+### Removed dependencies
+
+The following map-related packages were removed from dependencies as they are
+only used in app-internal map features:
+
+- **@deck.gl/\***: Deck.gl visualization layers
+- **@mapbox/mapbox-gl-supported**: Mapbox browser support detection
+- **@math.gl/web-mercator**: Web Mercator projection utilities
+- **maplibre-gl**: MapLibre GL JS map rendering
+- **react-map-gl**: React wrapper for Mapbox/GL
+- **topojson-client**: TopoJSON to GeoJSON conversion
+- **topojson-server**: GeoJSON to TopoJSON conversion
 
 ## Supported languages
 
@@ -96,6 +178,10 @@ Testing and tooling:
 ## Roadmap
 
 See `docs/NEXT_STEPS.md` for the long-term plan and decision log pointers.
+
+## Decision log
+
+- `ai_working/decisions/2026-01-09-mapchart-packaging.md` - MapChart packaging.
 
 ---
 

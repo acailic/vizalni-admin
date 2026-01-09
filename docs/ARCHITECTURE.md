@@ -86,6 +86,8 @@ Chart implementation:
 
 - D3-based charts in `app/exports/charts/*`.
 - `MapChart` is D3-based and safe to export without maplibre dependencies.
+- MapChart packaging decision:
+  `ai_working/decisions/2026-01-09-mapchart-packaging.md`.
 - App-only map features live in `app/charts/map/`.
 
 ## State management and caching

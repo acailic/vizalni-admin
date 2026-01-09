@@ -46,37 +46,37 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/acailic-vizualni-admin.esm.js",
-      "require": "./dist/acailic-vizualni-admin.cjs.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     },
     "./core": {
       "types": "./dist/core.d.ts",
-      "import": "./dist/core.esm.js",
-      "require": "./dist/core.cjs.js"
+      "import": "./dist/core.mjs",
+      "require": "./dist/core.js"
     },
     "./client": {
       "types": "./dist/client.d.ts",
-      "import": "./dist/client.esm.js",
-      "require": "./dist/client.cjs.js"
+      "import": "./dist/client.mjs",
+      "require": "./dist/client.js"
     },
     "./charts": {
       "types": "./dist/charts/index.d.ts",
-      "import": "./dist/charts/index.esm.js",
-      "require": "./dist/charts/index.cjs.js"
+      "import": "./dist/charts/index.mjs",
+      "require": "./dist/charts/index.js"
     },
     "./hooks": {
       "types": "./dist/hooks/index.d.ts",
-      "import": "./dist/hooks/index.esm.js",
-      "require": "./dist/hooks/index.cjs.js"
+      "import": "./dist/hooks/index.mjs",
+      "require": "./dist/hooks/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.esm.js",
-      "require": "./dist/utils/index.cjs.js"
+      "import": "./dist/utils/index.mjs",
+      "require": "./dist/utils/index.js"
     }
   },
-  "main": "dist/acailic-vizualni-admin.cjs.js",
-  "module": "dist/acailic-vizualni-admin.esm.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "typesVersions": {
     "*": {
@@ -119,24 +119,11 @@
     "postbuild": "npm run build:lib"
   },
   "dependencies": {
-    "@apollo/server-plugin-landing-page-graphql-playground": "^4.0.1",
-    "@deck.gl/core": "^9.2.2",
-    "@deck.gl/extensions": "^9.2.2",
-    "@deck.gl/mapbox": "^9.2.2",
-    "@deck.gl/mesh-layers": "^9.2.2",
-    "@luma.gl/constants": "^9.2.4",
-    "@mapbox/mapbox-gl-supported": "^3.0.0",
-    "@math.gl/web-mercator": "^4.1.0",
     "@uiw/react-color": "^2.9.2",
     "@urql/core": "^6.0.0",
-    "@urql/devtools": "^2.0.3",
     "@visx/group": "^3.12.0",
     "@visx/text": "^3.12.0",
     "@zazuko/cube-hierarchy-query": "^3.0.0",
-    "apollo-server-micro": "^3.13.0",
-    "babel-plugin-import": "^1.13.8",
-    "compression": "^1.7.4",
-    "cors": "^2.8.5",
     "d3-array": "^3.2.0",
     "d3-axis": "^3.0.0",
     "d3-delaunay": "^6.0.4",
@@ -153,26 +140,16 @@
     "date-fns": "^3",
     "flexsearch": "^0.8.212",
     "fp-ts": "^2.8.2",
-    "global-agent": "^3.0.0",
-    "graphql-constraint-directive": "^6.0.0",
-    "graphql-depth-limit": "^1.1.0",
-    "graphql-tag": "^2.12.6",
     "i18next": "^25.6.3",
     "io-ts": "^2.2.21",
     "make-plural": "6.2.2",
-    "maplibre-gl": "^5.13.0",
-    "microee": "^0.0.6",
     "next-i18next": "^15.4.2",
-    "nprogress": "^0.2.0",
     "react-i18next": "^16.3.5",
     "react-inspector": "^9.0.0",
-    "react-map-gl": "^8.1.0",
     "react-table": "^7.8.0",
     "react-virtualized-auto-sizer": "^1.0.26",
     "react-window": "^1.8.10",
     "simple-statistics": "^7.8.8",
-    "topojson-client": "^3.1.0",
-    "topojson-server": "^3.0.1",
     "urql": "^5.0.1",
     "web-vitals": "^5.1.0",
     "wellknown": "^0.5.0"
@@ -198,6 +175,7 @@
     }
   },
   "devDependencies": {
+    "@apollo/server-plugin-landing-page-graphql-playground": "^4.0.1",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
     "@graphql-codegen/typescript-operations": "^4.0.0",
@@ -259,13 +237,22 @@
     "@types/wellknown": "^0.5.1",
     "@vitejs/plugin-react": "^4.5.0",
     "@vitest/coverage-v8": "^3.1.4",
+    "apollo-server-micro": "^3.13.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-module-resolver": "^4.1.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "global-agent": "^3.0.0",
+    "graphql-constraint-directive": "^6.0.0",
+    "graphql-depth-limit": "^1.1.0",
+    "graphql-tag": "^2.12.6",
     "io-ts-to-json-schema": "^0.2.0",
     "jsdom": "^26.1.0",
+    "microee": "^0.0.6",
     "msw": "^2.12.7",
+    "nprogress": "^0.2.0",
     "playwright-testing-library": "^4.5.0",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
