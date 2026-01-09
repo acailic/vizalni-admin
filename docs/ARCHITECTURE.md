@@ -1,376 +1,127 @@
-graph TB
-    A[data.gov.rs API] --> B[API Client]
-    B --> C[GraphQL Layer]
-    C --> D[React UI Components]
-    D --> E[Chart Rendering Engine]
-    F[User] --> D
-    D --> G[Export Services]
-    H[Database] --> C
-    I[File Storage] --> G
-```
+# Architecture
 
-The architecture follows a layered approach with clear separation of concerns:
-- **Data Layer**: Handles external API integration and data transformation
-- **Application Layer**: Manages business logic and state
-- **Presentation Layer**: Provides user interface and visualization rendering
-- **Infrastructure Layer**: Manages persistence, caching, and deployment
+This document describes the current runtime architecture for the vizualni-admin
+app and the exported library. It is written for execution: each subsystem
+includes concrete entry points and file paths.
 
-## Component Structure
+## Runtime modes
+
+- Static export (GitHub Pages): Next.js pages are pre-rendered and client-side
+  data fetching is used. Next API routes and database-backed features are not
+  available.
+- Full app (Next.js server): API routes, GraphQL, and database-backed features
+  are available. This mode is used for local dev and server deployments.
+
+## System overview
 
 ```mermaid
 graph TD
-    A[vizualni-admin/] --> B[app/]
-    A --> C[docs/]
-    A --> D[e2e/]
-    A --> E[scripts/]
-    A --> F[embed/]
-
-    B --> G[pages/]
-    B --> H[components/]
-    B --> I[charts/]
-    B --> J[domain/]
-    B --> K[configurator/]
-    B --> L[browse/]
-    B --> M[locales/]
-    B --> N[graphql/]
-    B --> O[rdf/]
-    B --> P[lib/]
-
-    J --> Q[data-gov-rs/]
-    P --> R[cache/]
+  User --> UI[Next.js pages (app/pages)]
+  UI -->|REST| DataGov[data.gov.rs API]
+  UI -->|GraphQL| GQL[/api/graphql (Apollo Server)]
+  GQL --> RDF[SPARQL endpoints via app/rdf]
+  GQL --> DB[(PostgreSQL via Prisma)]
+  UI --> Charts[D3 charts in app/exports/charts]
+  UI --> MapApp[Map features in app/charts/map]
 ```
 
-### Key Components
+Notes:
 
-- **pages/**: Next.js page components and routing (Pages Router)
-- **components/**: Reusable React UI components built with Material-UI
-- **charts/**: Chart implementations using D3.js, Vega, and MapLibre GL
-- **domain/**: Business logic and domain models
-- **configurator/**: Chart configuration interface
-- **browse/**: Dataset browsing and search functionality
-- **locales/**: Internationalization and localization (i18next)
-- **graphql/**: GraphQL schema and resolvers (urql client)
-- **rdf/**: SPARQL query support and caching for RDF data sources
-- **lib/**: Shared utilities including multi-level caching system
+- Map features in `app/charts/map` use MapLibre/Deck; they are app-only.
+- The exported `MapChart` in `app/exports/charts/MapChart.tsx` is D3-based and
+  does not depend on MapLibre/Deck.
 
-## Data Flow
+## Project structure (execution map)
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as React UI
-    participant GQL as GraphQL Layer
-    participant API as API Client
-    participant EXT as data.gov.rs API
-    participant DB as Database
+- `app/pages/`: Pages Router entry points, including `pages/api/*` routes.
+- `app/components/`: shared UI components and chart controls.
+- `app/exports/`: exported library entry points and chart components.
+- `app/domain/`: data.gov.rs client and domain logic.
+- `app/graphql/`: GraphQL schema, resolvers, and urql client wiring.
+- `app/rdf/`: SPARQL query helpers and caching.
+- `app/db/`: Prisma-backed persistence with static-build mocks.
+- `app/charts/`: app-only charts and map tooling.
+- `app/stores/`: zustand stores for cross-component UI state.
 
-    U->>UI: Browse datasets
-    UI->>GQL: Query datasets
-    GQL->>API: Fetch from data.gov.rs
-    API->>EXT: REST API call
-    EXT-->>API: Dataset metadata
-    API-->>GQL: Transformed data
-    GQL-->>UI: GraphQL response
-    UI-->>U: Display datasets
+## Data.gov.rs integration (REST)
 
-    U->>UI: Create visualization
-    UI->>GQL: Save configuration
-    GQL->>DB: Persist to PostgreSQL
-    DB-->>GQL: Confirmation
-    GQL-->>UI: Success response
-    UI->>UI: Render chart
-    UI-->>U: Display visualization
-```
+Primary entry points:
 
-### Data Processing Pipeline
+- `app/domain/data-gov-rs/client.ts`: REST client for data.gov.rs endpoints.
+- `app/domain/data-gov-rs/index.ts`: public API surface for the client.
+- `app/hooks/use-data-gov-rs.ts`: app hook for dataset search and resource
+  fetch.
+- `app/exports/hooks/useDataGovRs.ts`: exported hook for consumers.
 
-1. **Ingestion**: Data is fetched from data.gov.rs REST API or SPARQL endpoints
-2. **Transformation**: Raw data is normalized and transformed via GraphQL resolvers
-3. **Caching**: Multi-level caching strategy:
-   - L1: In-memory cache (50MB limit with LRU eviction)
-   - L2: IndexedDB persistence (200MB limit)
-   - L3: Network fetch as fallback
-   - Automatic cache promotion between levels
-   - TTL-based expiration (default 5 minutes)
-4. **Presentation**: Data is formatted for chart rendering engines
-5. **Export**: Visualizations can be exported in multiple formats
+Typical flow:
 
-**Note**: The application does not use Redis. All caching is client-side using the multi-level cache system.
+1. UI triggers search or dataset fetch from `useDataGovRs`.
+2. `dataGovRsClient` performs REST calls to data.gov.rs endpoints.
+3. Results are normalized and passed to chart components or demos.
 
-## State Management
+## GraphQL API (Apollo Server)
 
-The application uses a combination of local and global state management:
+Primary entry points:
 
-```mermaid
-graph LR
-    A[Local State] --> B[React useState/useReducer]
-    C[Global State] --> D[Custom useFetchData Hook]
-    E[Server State] --> F[urql GraphQL Client]
-    G[Form State] --> H[React Hook Form]
+- `app/pages/api/graphql.ts`: Apollo Server handler for `/api/graphql`.
+- `app/graphql/schema.graphql`: schema definition.
+- `app/graphql/resolvers/*`: RDF and SQL resolvers.
+- `app/graphql/client.tsx`: urql client (cacheExchange + fetchExchange).
 
-    B --> I[Component State]
-    D --> J[App-wide State]
-    F --> K[API Data]
-    H --> L[User Input]
-```
+GraphQL is used for:
 
-### State Management Strategy
+- RDF cube exploration via SPARQL (`app/rdf/*`).
+- SQL-backed metadata and config queries.
 
-- **Local State**: Component-specific state using React hooks (useState, useReducer)
-- **Global State**: Custom `useFetchData` hook with global query cache for data fetching
-- **Server State**: GraphQL data management using urql with document caching
-- **Form State**: Complex form handling with React Hook Form and validation
+## Charts and exported library
 
-**Design Decision**: Custom useFetchData hook instead of React Query to avoid additional dependencies while providing similar caching and deduplication functionality. urql is used for GraphQL due to its smaller bundle size compared to Apollo Client.
+Library entry points:
 
-## Caching Architecture
+- `app/index.ts`: public exports for the npm package.
+- `app/exports/`: charts, hooks, utils, and core exports.
+- `app/package.json`: `exports` map and entrypoints.
+- `app/tsup.config.ts`: library bundling and externalized deps.
 
-The application implements a sophisticated multi-level caching strategy to minimize API calls and improve performance:
+Chart implementation:
 
-### Cache Levels
+- D3-based charts in `app/exports/charts/*`.
+- `MapChart` is D3-based and safe to export without maplibre dependencies.
+- App-only map features live in `app/charts/map/`.
 
-```mermaid
-graph TD
-    A[Data Request] --> B{L1 Memory Cache}
-    B -->|Hit| C[Return Data]
-    B -->|Miss| D{L2 IndexedDB Cache}
-    D -->|Hit| E[Promote to L1]
-    E --> C
-    D -->|Miss| F[L3 Network Fetch]
-    F --> G[Store in L1 & L2]
-    G --> C
-```
+## State management and caching
 
-### Multi-Level Cache Implementation
+State and cache primitives:
 
-**L1: In-Memory Cache**
-- Fastest access with 50MB size limit
-- LRU (Least Recently Used) eviction policy
-- TTL-based expiration (default 5 minutes)
-- Automatic size estimation and eviction
-- Shared across all components using global Map
+- React local state for component state.
+- zustand stores in `app/stores/` for cross-component UI state.
+- `useFetchData` in `app/utils/use-fetch-data.ts` for query-keyed in-memory
+  caching and request deduplication (no TTL).
+- `useDataCache` in `app/hooks/use-data-cache.ts` for optional L1 memory and L2
+  IndexedDB caching with TTL (available, not widely used yet).
+- Multi-level cache utilities in `app/lib/cache/` with defaults in
+  `app/lib/cache/cache-config.ts`.
+- SPARQL LRU caching in `app/rdf/query-cache.ts`.
 
-**L2: IndexedDB Cache**
-- Persistent storage with 200MB size limit
-- Survives page refreshes and browser restarts
-- Asynchronous read/write operations
-- Automatic TTL-based expiration
-- Fallback for L1 misses
+## Persistence
 
-**L3: Network**
-- Final fallback when cache misses occur
-- Results automatically cached in L1 and L2
-- Timeout handling (default 10 seconds)
-- Error handling with retry support
+- Prisma client in `app/db/client.ts` with a mock fallback for static export.
+- Schema in `app/prisma/schema.prisma`.
+- Database-backed features are disabled in static export builds.
 
-### Cache Management
+## Build and release surfaces
 
-**Cache Entry Structure**:
-```typescript
-interface CacheEntry<T> {
-  key: string;           // Unique cache key
-  data: T;               // Cached data
-  timestamp: number;     // Creation time
-  ttl: number;          // Time-to-live in milliseconds
-  size: number;         // Estimated size in bytes
-  hits: number;         // Access count for LRU eviction
-  level: 1 | 2 | 3;     // Cache level
-}
-```
+- App build: Next.js build from `app/` (see root `package.json` scripts).
+- Library build: `cd app && npm run build:lib` uses `tsup`.
+- Packaging tests: `app/tests/packaging/` validate `dist` outputs and exports.
 
-**Cache Promotion**:
-- L2 hits automatically promote to L1 for faster subsequent access
-- Popular data stays in L1 due to hit count tracking
-- Automatic eviction when size limits are reached
+## Execution notes
 
-**Cache Statistics**:
-- Hit rate tracking (L1, L2, L3)
-- Memory usage monitoring
-- Entry count tracking
-- Available via `getCacheStats()` function
-
-### Specialized Caches
-
-**SPARQL Query Cache** (`app/rdf/query-cache.ts`):
-- LRU cache for SPARQL query results
-- Cache key based on endpoint URL and query string
-- Used for RDF data source queries
-- Integrates with `sparql-http-client`
-
-**urql Document Cache**:
-- GraphQL query result caching
-- Automatic cache invalidation
-- Document-based normalization
-- Configurable cache exchange
-
-**useFetchData Global Cache**:
-- Query key-based caching
-- Automatic deduplication of concurrent requests
-- Hydration support for SSR
-- Manual invalidation via `invalidate()` method
-
-### Cache Usage Examples
-
-**Using the useDataCache Hook**:
-```typescript
-const { data, loading, fromCache, invalidate } = useDataCache(
-  async () => {
-    return await dataGovRsClient.searchDatasets({ q: 'economy' });
-  },
-  {
-    key: 'datasets-economy',
-    ttl: 5 * 60 * 1000, // 5 minutes
-    useIndexedDB: true,
-    useMemory: true,
-  }
-);
-```
-
-**Using the MultiLevelCache Class**:
-```typescript
-const cache = new MultiLevelCache({
-  l1MaxSize: 50 * 1024 * 1024, // 50MB
-  l2MaxSize: 200 * 1024 * 1024, // 200MB
-  defaultTTL: 5 * 60 * 1000, // 5 minutes
-});
-
-// Get from cache
-const data = await cache.get('my-key');
-
-// Set in cache
-await cache.set('my-key', myData, 10 * 60 * 1000);
-
-// Clear all caches
-await cache.clear();
-
-// Get statistics
-const stats = cache.getStats();
-```
-
-### Cache Invalidation Strategies
-
-1. **TTL-based**: Automatic expiration after configured time
-2. **Manual**: Explicit invalidation via `invalidate()` or `clearCache()`
-3. **Size-based**: Automatic LRU eviction when limits are reached
-4. **Version-based**: Cache key includes data version for busting
-
-### Performance Benefits
-
-- **Reduced API calls**: 60-80% cache hit rate for frequently accessed data
-- **Faster load times**: L1 cache access is ~100x faster than network
-- **Offline support**: L2 cache enables offline functionality
-- **Lower costs**: Fewer API calls reduce server load and bandwidth usage
-
-## API Integration
-
-```mermaid
-graph TD
-    A[API Client] --> B[data.gov.rs REST API]
-    A --> C[GraphQL Server]
-    C --> D[Database]
-    C --> E[External Services]
-    
-    B --> F[Endpoints]
-    F --> G[/api/1/datasets/]
-    F --> H[/api/1/organizations/]
-    F --> I[/api/1/resources/]
-    
-    C --> J[Schema]
-    J --> K[Queries]
-    J --> L[Mutations]
-    J --> M[Subscriptions]
-```
-
-### API Client Architecture
-
-The API client (`app/domain/data-gov-rs/client.js`) provides:
-- Type-safe HTTP requests with TypeScript interfaces
-- Timeout handling (default 10 seconds)
-- Proxy support for production (Cloudflare Worker routing)
-- Request/response interceptors for logging and error handling
-- No built-in retry logic (relies on multi-level cache for performance)
-- Configurable page size for paginated responses
-- Support for both direct API calls and resource downloads
-
-**Key Features**:
-- Environment-aware API URL selection (direct vs. proxy)
-- Automatic language header (Serbian) for all requests
-- Optional API key authentication via X-API-KEY header
-- Pagination support with `getAllPages` generator method
-- Resource data retrieval in multiple formats (text, JSON, ArrayBuffer)
-
-**Trade-off**: REST API integration instead of GraphQL for external APIs due to data.gov.rs limitations, with internal GraphQL layer for flexibility and SPARQL support for RDF data sources.
-
-## Build Pipeline
-
-```mermaid
-graph TD
-    A[Source Code] --> B[TypeScript Compiler]
-    B --> C[ESLint]
-    C --> D[Prettier]
-    D --> E[Vitest]
-    E --> F[Playwright E2E]
-    F --> G[Bundle Analysis]
-    G --> H[Build Artifacts]
-    
-    I[CI/CD] --> J[GitHub Actions]
-    J --> K[Test Matrix]
-    K --> L[Node 18, 20, 22]
-    L --> M[Coverage Report]
-    M --> N[Codecov]
-```
-
-### Build Process
-
-1. **Linting & Formatting**: ESLint and Prettier ensure code quality
-2. **Type Checking**: TypeScript compilation with strict mode
-3. **Unit Testing**: Vitest for fast, isolated component testing
-4. **Integration Testing**: Playwright for end-to-end user flows
-5. **Bundle Analysis**: Size monitoring and optimization
-6. **Artifact Generation**: Optimized bundles for different targets
-
-**Design Decision**: Multi-stage Docker builds for efficient layer caching and smaller production images.
-
-## Deployment Architecture
-
-```mermaid
-graph TD
-    A[Git Push] --> B[GitHub Actions]
-    B --> C[Build & Test]
-    C --> D{Environment}
-    D --> E[Development]
-    D --> F[Staging]
-    D --> G[Production]
-
-    E --> H[Next.js Dev Server]
-    F --> I[Preview Deployment]
-    G --> J[Static Export]
-
-    G --> K[Cloudflare Worker]
-    K --> L[data.gov.rs API]
-    G --> M[GitHub Pages]
-    M --> N[CDN]
-
-    G --> O[Docker Build]
-    O --> P[Container Registry]
-    P --> Q[Self-hosted]
-```
-
-### Deployment Options
-
-**Primary Deployment**:
-- **GitHub Pages**: Static export with Cloudflare Worker proxy for API calls
-- Base path configuration for repository-based hosting
-- Image optimization disabled for static export compatibility
-- Trailing slash enabled for GitHub Pages compatibility
-
-**Alternative Deployments**:
-- **Vercel**: Full SSR support with API routes
-- **Docker**: Containerized deployment with full backend
-- **Self-hosted**: Node.js server with PostgreSQL database
-
-**Static Build Considerations**:
-- Prisma client is mocked for static builds
-- Database features disabled in static mode
-- API calls routed through Cloudflare Worker proxy
-- All data fetching happens client-side
+- If you add or remove exports, update `app/package.json`, `app/index.ts`, and
+  packaging tests in `app/tests/packaging/`.
+- If you change data.gov.rs client behavior, update tests in
+  `app/__tests__/unit/data-gov-rs-client.test.ts` and the README in
+  `app/domain/data-gov-rs/`.
+- If you modify GraphQL schema/resolvers, update `app/graphql/schema.graphql`
+  and resolver tests in `app/graphql/*`.
+- If you alter cache defaults, update `app/lib/cache/cache-config.ts` and this
+  document.

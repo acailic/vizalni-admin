@@ -1,373 +1,102 @@
 # Project Overview - Vizualni Admin
 
-## What is Vizualni Admin?
+Vizualni Admin is a Serbian open data visualization app and a reusable chart
+library. The repository ships both the Next.js application and the npm package
+`@acailic/vizualni-admin` built from the `app` workspace.
 
-Vizualni Admin is a web-based data visualization tool specifically designed for Serbian open data from the [Portal otvorenih podataka](https://data.gov.rs). It's a fork of the Swiss [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool) project, adapted for the Serbian context.
+## What this repo contains
 
-## Purpose
+- App: Next.js Pages Router under `app/` for browsing data.gov.rs and building
+  visualizations.
+- Library: exported charts, hooks, and utils under `app/exports/`.
+- Docs: `docs/` plus app docs in `app/docs/`.
+- Tooling: build scripts, tests, and CI helpers in `scripts/` and `e2e/`.
 
-The tool enables:
-- **Citizens** to explore and understand public data
-- **Journalists** to create data-driven stories
-- **Researchers** to analyze government datasets
-- **Developers** to build data visualizations
-- **Government agencies** to publish data in accessible formats
+## Primary outputs
 
-## Key Features
+- Web app (static export and full server mode).
+- npm library with D3-based charts and helpers.
 
-### 1. Data Browsing
-- Search and filter datasets from data.gov.rs
-- Browse by organization, topic, or keyword
-- Preview dataset metadata and resources
-- View dataset statistics and update frequency
+## Key capabilities (current)
 
-### 2. Visualization Creation
-- Create interactive charts from datasets
-- Support for multiple chart types:
-  - Line charts (time series)
-  - Bar and column charts
-  - Area charts
-  - Pie charts
-  - Scatterplots
-  - Maps (geographic data)
-  - Tables
-- Customize colors, labels, and formatting
-- Add filters and interactive elements
+- Browse and search data.gov.rs datasets and resources.
+- Create interactive charts (line, bar, column, area, pie, map).
+- Map features in the app (MapLibre/Deck) and a D3-based `MapChart` export.
+- Export charts to PNG/SVG via chart controls.
+- Embed views and share links from the app UI.
+- Demos and showcase pages for onboarding.
 
-### 3. Data Export
-- Export charts as PNG, SVG
-- Download data in various formats
-- Share visualizations via URL
-- Embed charts in websites
+## Supported languages
 
-### 4. Multilingual Support
-- Serbian (Cyrillic and Latin)
-- English
-- German, French, Italian (inherited from original)
+- `sr-Latn`, `sr-Cyrl`, `en`.
 
-### 5. Responsive Design
-- Works on desktop, tablet, and mobile
-- Touch-friendly interface
-- Accessible for screen readers
+## Runtime modes
 
-## Architecture
+- Static export (GitHub Pages): no API routes or database; client-side data
+  fetching only.
+- Full app (Next.js server): API routes, GraphQL, database, and auth available.
 
-### Technology Stack
+## Technology stack (current)
 
-```
 Frontend:
-├── Next.js (Pages Router)
-├── TypeScript (type safety)
-├── Material-UI (@mui/material) (UI components)
-├── D3.js (charts and visualizations)
-├── Vega (declarative visualizations)
-├── MapLibre GL + Deck.gl (geographic visualizations)
-├── urql (GraphQL client)
-└── i18next (internationalization)
+
+- Next.js (Pages Router), React, TypeScript
+- Material UI for UI components
+- D3 for chart rendering
+- MapLibre/Deck for app-only map features
+- Lingui for i18n
+- urql for GraphQL queries
 
 Backend:
-├── Next.js API routes
-├── PostgreSQL (database - mocked for static builds)
-├── Prisma (ORM - mocked for static builds)
-├── GraphQL (Apollo Server)
-├── SPARQL (RDF data sources)
-└── REST API (data.gov.rs integration)
 
-Data & Caching:
-├── Multi-level cache (Memory + IndexedDB)
-├── urql document caching
-├── SPARQL query caching with LRU
-└── Custom useFetchData hook with global cache
+- Next.js API routes
+- Apollo Server for `/api/graphql`
+- Prisma + PostgreSQL (mocked in static export)
+- SPARQL utilities for RDF data sources
 
-DevOps:
-├── Docker (containerization)
-├── Yarn (package management)
-├── ESLint + Prettier (code quality)
-├── Vitest (unit testing)
-└── Playwright (E2E testing)
-```
+Testing and tooling:
 
-### Project Structure
+- Vitest, Playwright
+- ESLint, Prettier
+- Docker (optional)
 
-```
-vizualni-admin/
-├── app/                        # Main application code
-│   ├── pages/                  # Next.js pages
-│   ├── components/             # React components
-│   ├── charts/                 # Chart implementations
-│   ├── domain/                 # Domain logic
-│   │   └── data-gov-rs/        # data.gov.rs API integration
-│   ├── configurator/           # Chart configuration UI
-│   ├── browse/                 # Dataset browsing
-│   ├── locales/                # Translations
-│   └── graphql/                # GraphQL schema and resolvers
-├── docs/                       # Documentation
-├── e2e/                        # End-to-end tests
-├── scripts/                    # Build and utility scripts
-├── .storybook/                 # Component documentation
-└── embed/                      # Embeddable widget
-```
+## Data sources and APIs
 
-## Data Flow
+- data.gov.rs REST API via `app/domain/data-gov-rs/client.ts`.
+- GraphQL API in `app/pages/api/graphql.ts` with resolvers in `app/graphql/`.
+- SPARQL helpers in `app/rdf/`.
+- DB access in `app/db/` with schema in `app/prisma/schema.prisma`.
 
-```
-┌─────────────────┐
-│  data.gov.rs    │ Serbian Open Data Portal
-│   API Server    │
-└────────┬────────┘
-         │
-         │ REST API / SPARQL
-         ▼
-┌─────────────────┐
-│  API Client     │ app/domain/data-gov-rs/
-│  (TypeScript)   │ - Cloudflare Worker proxy (prod)
-└────────┬────────┘ - Direct API calls (dev)
-         │
-         ▼
-┌─────────────────┐
-│  Multi-Level    │ L1: Memory (50MB)
-│  Cache          │ L2: IndexedDB (200MB)
-│                 │ L3: Network
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  GraphQL/SPARQL │ Data transformation
-│  Layer          │ - urql client
-│                 │ - SPARQL query caching
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  React UI       │ User interface
-│  Components     │ - Material-UI
-│                 │ - Custom components
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Chart          │ D3.js / Vega /
-│  Rendering      │ MapLibre GL
-└─────────────────┘
-```
+## Quick execution commands
 
-## User Workflow
+- App dev server: `yarn dev` (repo root).
+- Static build: `yarn build:static`.
+- Library build: `cd app && npm run build:lib`.
+- Tests: `yarn test` (root) or `cd app && vitest run`.
 
-### Creating a Visualization
+## Where to change things
 
-1. **Browse Datasets**
-   - User searches data.gov.rs
-   - Views dataset metadata
-   - Previews available resources
+- data.gov.rs client: `app/domain/data-gov-rs/` and
+  `app/hooks/use-data-gov-rs.ts`.
+- Charts and exports: `app/exports/charts/` and `app/exports/index.ts`.
+- App-only map features: `app/charts/map/`.
+- GraphQL schema and resolvers: `app/graphql/` and `app/pages/api/graphql.ts`.
+- Caching: `app/utils/use-fetch-data.ts` and `app/lib/cache/`.
+- Library packaging: `app/package.json` and `app/tsup.config.ts`.
 
-2. **Select Data**
-   - Choose a dataset
-   - Select specific resource (CSV, JSON, etc.)
-   - Preview data table
+## Related docs (execution order)
 
-3. **Configure Chart**
-   - Select chart type
-   - Map data fields to chart axes
-   - Add filters
-   - Customize appearance
-
-4. **Publish & Share**
-   - Save configuration
-   - Export as image
-   - Generate embed code
-   - Share URL
-
-## Integration with data.gov.rs
-
-### API Endpoints Used
-
-- `GET /api/1/datasets/` - List datasets
-- `GET /api/1/datasets/{id}/` - Get dataset details
-- `GET /api/1/organizations/` - List organizations
-- `GET /api/1/resources/{id}/` - Get resource details
-
-### Data Formats Supported
-
-- **CSV** - Comma-separated values
-- **JSON** - JavaScript Object Notation
-- **GeoJSON** - Geographic data
-- **XML** - Extensible Markup Language
-- **RDF** - Resource Description Framework
-
-### Authentication
-
-- Read operations: No authentication required
-- Write operations: API key required (for future features)
-
-## Customizations from Original
-
-### Changes Made
-
-1. **Branding**
-   - Updated name to "Vizualni Admin"
-   - Changed from Swiss to Serbian context
-   - Updated logos and colors (TODO)
-
-2. **Data Source**
-   - Original: SPARQL endpoints (Swiss LINDAS)
-   - New: REST API (data.gov.rs)
-   - Created new API client
-
-3. **Language**
-   - Original: German (default)
-   - New: Serbian (default)
-   - Added Serbian translations
-
-4. **Configuration**
-   - Updated environment variables
-   - Changed API endpoints
-   - Modified default settings
-
-### Retained Features
-
-- Chart types and rendering
-- UI components and layout
-- Configuration workflow
-- Export functionality
-- Embed system
-- Database structure
-- Authentication system
-
-## Development Principles
-
-### Code Quality
-
-- TypeScript for type safety
-- ESLint for code linting
-- Prettier for formatting
-- Comprehensive testing (unit, integration, E2E)
-- Code review process
-
-### Performance
-
-- Static site generation (SSG) for GitHub Pages deployment
-- Server-side rendering (SSR) when not in static mode
-- Multi-level caching (Memory + IndexedDB) for reduced API calls
-- Image optimization with AVIF/WebP formats
-- Code splitting and lazy loading
-- LRU cache for SPARQL queries
-- urql document caching for GraphQL
-- Virtualization for large data tables (react-window)
-- Bundle analysis and optimization
-
-### Accessibility
-
-- WCAG 2.1 compliance
-- Keyboard navigation
-- Screen reader support
-- High contrast mode
-- Internationalization
-
-### Security
-
-- Input validation
-- SQL injection prevention
-- XSS protection
-- CSRF tokens
-- Secure headers
-- Environment variables for secrets
-
-## Deployment Options
-
-### Production Environments
-
-- **GitHub Pages** - Primary static deployment with Cloudflare Worker proxy
-- **Vercel** - Full SSR deployment with API routes and database
-- **Docker** - Containerized deployment with full backend
-- **Self-hosted** - Node.js server with PostgreSQL database
-
-### Requirements
-
-**Static Deployment (GitHub Pages)**:
-- Node.js 18+ (for build only)
-- No database required
-- Cloudflare Worker for API proxy
-- GitHub Pages hosting
-
-**Full Deployment**:
-- Node.js 18+
-- PostgreSQL 12+ (for persistent storage)
-- 2GB RAM minimum
-- 10GB storage minimum
-
-## Contributing
-
-### How to Contribute
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-### Areas for Contribution
-
-- Adding Serbian translations
-- Improving data.gov.rs integration
-- Creating new chart types
-- Bug fixes
-- Documentation improvements
-- Performance optimizations
+1. `docs/ARCHITECTURE.md`
+2. `docs/NEXT_STEPS.md`
+3. `docs/GETTING-STARTED.md`
+4. `docs/DEPLOYMENT.md`
+5. `docs/TESTING_GUIDE.md`
+6. `docs/release/RELEASE.md`
 
 ## Roadmap
 
-### Phase 1 (Current)
-- [x] Fork and adapt structure
-- [x] Create API client
-- [x] Add Serbian language support
-- [ ] Test with real data
-- [ ] Update branding
-
-### Phase 2 (Next)
-- [ ] Enhanced data.gov.rs integration
-- [ ] Complete Serbian translations
-- [ ] UI/UX improvements for Serbian users
-- [ ] Performance optimizations
-- [ ] Mobile app support
-
-### Phase 3 (Future)
-- [ ] Real-time data updates
-- [ ] Collaborative features
-- [ ] Advanced analytics
-- [ ] Custom plugins
-- [ ] AI-powered insights
-
-## Support and Community
-
-### Getting Help
-
-- **Documentation**: Check the docs/ folder
-- **Issues**: GitHub Issues for bugs and features
-- **Discussions**: GitHub Discussions for questions
-- **Email**: Contact maintainers
-
-### Resources
-
-- [data.gov.rs](https://data.gov.rs) - Serbian Open Data Portal
-- [API Documentation](https://data.gov.rs/apidoc/) - API reference
-- [Original Project](https://github.com/visualize-admin/visualization-tool) - Upstream repository
-
-## License
-
-BSD-3-Clause License - See LICENSE file for details.
-
-## Acknowledgments
-
-- **Original Authors**: Federal Office for the Environment FOEN (Switzerland)
-- **Serbian Open Data Team**: For maintaining data.gov.rs
-- **Contributors**: All who contribute to open data ecosystem
-
-## Contact
-
-- **Repository**: https://github.com/acailic/vizualni-admin
-- **Issues**: https://github.com/acailic/vizualni-admin/issues
-- **Maintainer**: acailic
+See `docs/NEXT_STEPS.md` for the long-term plan and decision log pointers.
 
 ---
 
-Last Updated: November 18, 2025
+Last updated: 2026-01-09
