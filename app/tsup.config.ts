@@ -27,19 +27,12 @@ export default defineConfig((options) => ({
     "utils/index": "exports/utils/index.ts", // Utility functions
   },
   format: ["cjs", "esm"],
-  dts: false, // Disable DTS generation until config-types.ts TypeScript errors are fixed
+  dts: false, // DTS generated via tsc in separate step
   clean: true,
-  sourcemap: false, // Disable source maps for JS build
+  sourcemap: false,
   splitting: true,
   treeshake: true,
   minify: !options.watch,
   external: externalDeps,
   // Configure output to match package.json export paths
-  // Entry points will be built as:
-  // - index.ts -> dist/index.js, dist/index.mjs
-  // - exports/core.ts -> dist/core.js, dist/core.mjs
-  // - exports/client.ts -> dist/client.js, dist/client.mjs
-  // - exports/charts/index.ts -> dist/charts/index.js, dist/charts/index.mjs
-  // - exports/hooks/index.ts -> dist/hooks/index.js, dist/hooks/index.mjs
-  // - exports/utils/index.ts -> dist/utils/index.js, dist/utils/index.mjs
 }));
