@@ -1,0 +1,221 @@
+Loading locale files...
+
+=== Translation Audit Report ===
+
+Total keys in English: 636
+Total keys in sr-Latn: 636
+Total keys in sr-Cyrl: 636
+
+✅ No missing keys in sr-Latn
+✅ No missing keys in sr-Cyrl
+
+📊 Summary:
+   - Missing keys in sr-Latn: 0
+   - Missing keys in sr-Cyrl: 0
+   - Extra keys in sr-Latn: 0
+   - Extra keys in sr-Cyrl: 0
+
+✅ All translation keys are in sync!
+
+🔍 Priority UI Surfaces Check:
+
+   ❌ Missing priority key in sr-Latn: demos.layout.back
+   ❌ Missing priority key in sr-Cyrl: demos.layout.back
+   ❌ Missing priority key in sr-Latn: demos.layout.error-title
+   ❌ Missing priority key in sr-Cyrl: demos.layout.error-title
+   ❌ Missing priority key in sr-Latn: demos.layout.loading
+   ❌ Missing priority key in sr-Cyrl: demos.layout.loading
+   ❌ Missing priority key in sr-Latn: demos.layout.retry
+   ❌ Missing priority key in sr-Cyrl: demos.layout.retry
+   ❌ Missing priority key in sr-Latn: demos.layout.updated
+   ❌ Missing priority key in sr-Cyrl: demos.layout.updated
+   ❌ Missing priority key in sr-Latn: demos.layout.empty
+   ❌ Missing priority key in sr-Cyrl: demos.layout.empty
+   ❌ Missing priority key in sr-Latn: demos.layout.source
+   ❌ Missing priority key in sr-Cyrl: demos.layout.source
+   ❌ Missing priority key in sr-Latn: demos.layout.organization
+   ❌ Missing priority key in sr-Cyrl: demos.layout.organization
+   ❌ Missing priority key in sr-Latn: demos.index.title
+   ❌ Missing priority key in sr-Cyrl: demos.index.title
+   ❌ Missing priority key in sr-Latn: demos.index.description
+   ❌ Missing priority key in sr-Cyrl: demos.index.description
+   ❌ Missing priority key in sr-Latn: demos.index.hero.title
+   ❌ Missing priority key in sr-Cyrl: demos.index.hero.title
+   ❌ Missing priority key in sr-Latn: demos.index.hero.body
+   ❌ Missing priority key in sr-Cyrl: demos.index.hero.body
+   ❌ Missing priority key in sr-Latn: demos.index.hero.intro
+   ❌ Missing priority key in sr-Cyrl: demos.index.hero.intro
+   ❌ Missing priority key in sr-Latn: demos.index.about.title
+   ❌ Missing priority key in sr-Cyrl: demos.index.about.title
+   ❌ Missing priority key in sr-Latn: demos.index.about.paragraph1
+   ❌ Missing priority key in sr-Cyrl: demos.index.about.paragraph1
+   ❌ Missing priority key in sr-Latn: demos.index.about.paragraph2
+   ❌ Missing priority key in sr-Cyrl: demos.index.about.paragraph2
+   ❌ Missing priority key in sr-Latn: demos.index.showcase.title
+   ❌ Missing priority key in sr-Cyrl: demos.index.showcase.title
+   ❌ Missing priority key in sr-Latn: demos.index.showcase.description
+   ❌ Missing priority key in sr-Cyrl: demos.index.showcase.description
+   ❌ Missing priority key in sr-Latn: demos.index.showcase.cta
+   ❌ Missing priority key in sr-Cyrl: demos.index.showcase.cta
+   ❌ Missing priority key in sr-Latn: demos.index.stats.available
+   ❌ Missing priority key in sr-Cyrl: demos.index.stats.available
+   ❌ Missing priority key in sr-Latn: demos.index.stats.organizations
+   ❌ Missing priority key in sr-Cyrl: demos.index.stats.organizations
+   ❌ Missing priority key in sr-Latn: demos.index.stats.resources
+   ❌ Missing priority key in sr-Cyrl: demos.index.stats.resources
+   ❌ Missing priority key in sr-Latn: demos.showcase.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.description
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.description
+   ❌ Missing priority key in sr-Latn: demos.showcase.hero
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.hero
+   ❌ Missing priority key in sr-Latn: demos.showcase.hero.body
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.hero.body
+   ❌ Missing priority key in sr-Latn: demos.showcase.cta
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.cta
+   ❌ Missing priority key in sr-Latn: demos.showcase.cta.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.cta.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.cta.body
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.cta.body
+   ❌ Missing priority key in sr-Latn: demos.showcase.chip.economy
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.chip.economy
+   ❌ Missing priority key in sr-Latn: demos.showcase.chip.mobility
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.chip.mobility
+   ❌ Missing priority key in sr-Latn: demos.showcase.chip.energy
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.chip.energy
+   ❌ Missing priority key in sr-Latn: demos.showcase.chip.digital
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.chip.digital
+   ❌ Missing priority key in sr-Latn: demos.showcase.economy.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.economy.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.economy.description
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.economy.description
+   ❌ Missing priority key in sr-Latn: demos.showcase.transport.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.transport.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.transport.description
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.transport.description
+   ❌ Missing priority key in sr-Latn: demos.showcase.energy.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.energy.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.energy.description
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.energy.description
+   ❌ Missing priority key in sr-Latn: demos.showcase.digital.title
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.digital.title
+   ❌ Missing priority key in sr-Latn: demos.showcase.digital.description
+   ❌ Missing priority key in sr-Cyrl: demos.showcase.digital.description
+   ❌ Missing priority key in sr-Latn: controls.nav.back-to-configurator
+   ❌ Missing priority key in sr-Cyrl: controls.nav.back-to-configurator
+   ❌ Missing priority key in sr-Latn: controls.nav.back-to-preview
+   ❌ Missing priority key in sr-Cyrl: controls.nav.back-to-preview
+   ❌ Missing priority key in sr-Latn: button.download.data
+   ❌ Missing priority key in sr-Cyrl: button.download.data
+   ❌ Missing priority key in sr-Latn: button.download.data.all
+   ❌ Missing priority key in sr-Cyrl: button.download.data.all
+   ❌ Missing priority key in sr-Latn: button.download.data.visible
+   ❌ Missing priority key in sr-Cyrl: button.download.data.visible
+   ❌ Missing priority key in sr-Latn: button.share
+   ❌ Missing priority key in sr-Cyrl: button.share
+   ❌ Missing priority key in sr-Latn: button.embed
+   ❌ Missing priority key in sr-Cyrl: button.embed
+   ❌ Missing priority key in sr-Latn: button.copy-preview-link
+   ❌ Missing priority key in sr-Cyrl: button.copy-preview-link
+   ❌ Missing priority key in sr-Latn: button.save-draft
+   ❌ Missing priority key in sr-Cyrl: button.save-draft
+   ❌ Missing priority key in sr-Latn: button.publish
+   ❌ Missing priority key in sr-Cyrl: button.publish
+   ❌ Missing priority key in sr-Latn: button.update
+   ❌ Missing priority key in sr-Cyrl: button.update
+   ❌ Missing priority key in sr-Latn: button.new.visualization
+   ❌ Missing priority key in sr-Cyrl: button.new.visualization
+   ❌ Missing priority key in sr-Latn: button.copy.visualization
+   ❌ Missing priority key in sr-Cyrl: button.copy.visualization
+   ❌ Missing priority key in sr-Latn: button.back
+   ❌ Missing priority key in sr-Cyrl: button.back
+   ❌ Missing priority key in sr-Latn: button.confirm
+   ❌ Missing priority key in sr-Cyrl: button.confirm
+   ❌ Missing priority key in sr-Latn: button.hint.click.to.copy
+   ❌ Missing priority key in sr-Cyrl: button.hint.click.to.copy
+   ❌ Missing priority key in sr-Latn: button.hint.copied
+   ❌ Missing priority key in sr-Cyrl: button.hint.copied
+   ❌ Missing priority key in sr-Latn: button.copy-preview-link.success
+   ❌ Missing priority key in sr-Cyrl: button.copy-preview-link.success
+   ❌ Missing priority key in sr-Latn: button.copy-preview-link.explanation
+   ❌ Missing priority key in sr-Cyrl: button.copy-preview-link.explanation
+   ❌ Missing priority key in sr-Latn: button.layout
+   ❌ Missing priority key in sr-Cyrl: button.layout
+   ❌ Missing priority key in sr-Latn: error.boundary.title
+   ❌ Missing priority key in sr-Cyrl: error.boundary.title
+   ❌ Missing priority key in sr-Latn: error.boundary.message
+   ❌ Missing priority key in sr-Cyrl: error.boundary.message
+   ❌ Missing priority key in sr-Latn: error.boundary.retry
+   ❌ Missing priority key in sr-Cyrl: error.boundary.retry
+   ❌ Missing priority key in sr-Latn: hint.nodata.title
+   ❌ Missing priority key in sr-Cyrl: hint.nodata.title
+   ❌ Missing priority key in sr-Latn: hint.nodata.message
+   ❌ Missing priority key in sr-Cyrl: hint.nodata.message
+   ❌ Missing priority key in sr-Latn: hint.loading.data
+   ❌ Missing priority key in sr-Cyrl: hint.loading.data
+   ❌ Missing priority key in sr-Latn: hint.chartunexpected.title
+   ❌ Missing priority key in sr-Cyrl: hint.chartunexpected.title
+   ❌ Missing priority key in sr-Latn: hint.chartunexpected.message
+   ❌ Missing priority key in sr-Cyrl: hint.chartunexpected.message
+   ❌ Missing priority key in sr-Latn: dataset.search.placeholder
+   ❌ Missing priority key in sr-Cyrl: dataset.search.placeholder
+   ❌ Missing priority key in sr-Latn: dataset.search.label
+   ❌ Missing priority key in sr-Cyrl: dataset.search.label
+   ❌ Missing priority key in sr-Latn: dataset.search.preview.title
+   ❌ Missing priority key in sr-Cyrl: dataset.search.preview.title
+   ❌ Missing priority key in sr-Latn: dataset.search.preview.description
+   ❌ Missing priority key in sr-Cyrl: dataset.search.preview.description
+   ❌ Missing priority key in sr-Latn: dataset.search.preview.datasets
+   ❌ Missing priority key in sr-Cyrl: dataset.search.preview.datasets
+   ❌ Missing priority key in sr-Latn: browse.dataset.all
+   ❌ Missing priority key in sr-Cyrl: browse.dataset.all
+   ❌ Missing priority key in sr-Latn: browse.dataset.find
+   ❌ Missing priority key in sr-Cyrl: browse.dataset.find
+   ❌ Missing priority key in sr-Latn: browse.dataset.create-visualization
+   ❌ Missing priority key in sr-Cyrl: browse.dataset.create-visualization
+   ❌ Missing priority key in sr-Latn: login.sign-in
+   ❌ Missing priority key in sr-Cyrl: login.sign-in
+   ❌ Missing priority key in sr-Latn: login.sign-out
+   ❌ Missing priority key in sr-Cyrl: login.sign-out
+   ❌ Missing priority key in sr-Latn: login.chart.view
+   ❌ Missing priority key in sr-Cyrl: login.chart.view
+   ❌ Missing priority key in sr-Latn: login.chart.edit
+   ❌ Missing priority key in sr-Cyrl: login.chart.edit
+   ❌ Missing priority key in sr-Latn: login.chart.delete
+   ❌ Missing priority key in sr-Cyrl: login.chart.delete
+   ❌ Missing priority key in sr-Latn: login.chart.share
+   ❌ Missing priority key in sr-Cyrl: login.chart.share
+   ❌ Missing priority key in sr-Latn: login.chart.embed
+   ❌ Missing priority key in sr-Cyrl: login.chart.embed
+   ❌ Missing priority key in sr-Latn: login.chart.preview
+   ❌ Missing priority key in sr-Cyrl: login.chart.preview
+   ❌ Missing priority key in sr-Latn: login.chart.rename
+   ❌ Missing priority key in sr-Cyrl: login.chart.rename
+   ❌ Missing priority key in sr-Latn: login.chart.duplicate
+   ❌ Missing priority key in sr-Cyrl: login.chart.duplicate
+   ❌ Missing priority key in sr-Latn: login.profile.my-visualizations
+   ❌ Missing priority key in sr-Cyrl: login.profile.my-visualizations
+   ❌ Missing priority key in sr-Latn: login.profile.my-drafts
+   ❌ Missing priority key in sr-Cyrl: login.profile.my-drafts
+   ❌ Missing priority key in sr-Latn: login.profile.my-published-visualizations
+   ❌ Missing priority key in sr-Cyrl: login.profile.my-published-visualizations
+   ❌ Missing priority key in sr-Latn: footer.about_us.label
+   ❌ Missing priority key in sr-Cyrl: footer.about_us.label
+   ❌ Missing priority key in sr-Latn: footer.about_us.text
+   ❌ Missing priority key in sr-Cyrl: footer.about_us.text
+   ❌ Missing priority key in sr-Latn: footer.information.title
+   ❌ Missing priority key in sr-Cyrl: footer.information.title
+   ❌ Missing priority key in sr-Latn: footer.statistics
+   ❌ Missing priority key in sr-Cyrl: footer.statistics
+   ❌ Missing priority key in sr-Latn: footer.status
+   ❌ Missing priority key in sr-Cyrl: footer.status
+   ❌ Missing priority key in sr-Latn: footer.tutorials
+   ❌ Missing priority key in sr-Cyrl: footer.tutorials
+   ❌ Missing priority key in sr-Latn: footer.contact.title
+   ❌ Missing priority key in sr-Cyrl: footer.contact.title
+   ❌ Missing priority key in sr-Latn: footer.button.lindas
+   ❌ Missing priority key in sr-Cyrl: footer.button.lindas
+   ❌ Missing priority key in sr-Latn: a11y.skip.to.content
+   ❌ Missing priority key in sr-Cyrl: a11y.skip.to.content
+
+⚠️  Total missing priority keys: 198

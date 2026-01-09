@@ -104,6 +104,207 @@ State and cache primitives:
   `app/lib/cache/cache-config.ts`.
 - SPARQL LRU caching in `app/rdf/query-cache.ts`.
 
+### Multi-level cache architecture
+
+The application implements a three-tier caching strategy:
+
+1. **L1 (Memory)**: Fast in-memory cache with automatic eviction
+2. **L2 (IndexedDB)**: Persistent browser storage with TTL support
+3. **L3 (Network)**: Remote data sources (data.gov.rs, SPARQL endpoints)
+
+#### Cache flow
+
+```mermaid
+graph LR
+  Request[L1 Memory] -->|Miss| L2[L2 IndexedDB]
+  L2 -->|Miss or Expired| L3[L3 Network]
+  L2 -->|Hit| Promote[Promote to L1]
+  L3 -->|Response| Store[Store in L1 & L2]
+```
+
+#### L1 Memory cache
+
+**Implementation**: `app/lib/cache/multi-level-cache.ts` (L1 methods)
+
+- **Storage**: JavaScript `Map` object
+- **Size limit**: 50MB (`CACHE_CONFIG.L1_MAX_SIZE`)
+- **Entry limit**: 1000 entries (`CACHE_CONFIG.L1_MAX_ENTRIES`)
+- **Default TTL**: 5 minutes (`CACHE_CONFIG.DEFAULT_TTL`)
+
+**Eviction policy** (LRU with hit tracking):
+
+1. Sort entries by (hits ASC, timestamp ASC)
+2. Evict least-recently-used entries with fewest hits
+3. Stop when enough space is freed
+4. Update size tracking after eviction
+
+**TTL behavior**:
+
+- Entries expire after `timestamp + ttl` milliseconds
+- Expired entries are removed on access
+- Expired entries are NOT proactively cleaned up
+- Memory is reclaimed when expired entries are accessed
+
+**Size estimation**:
+
+- Calculated as `JSON.stringify(data).length` (approximate)
+- Updated on set/delete operations
+- Used to trigger eviction when limit is exceeded
+
+#### L2 IndexedDB cache
+
+**Implementation**: `app/lib/cache/multi-level-cache.ts` (L2 methods)
+
+- **Storage**: IndexedDB database `vizualni-admin-multi-cache`
+- **Object store**: `cache` (keyPath: `key`)
+- **Size limit**: 200MB (`CACHE_CONFIG.L2_MAX_SIZE`)
+- **Entry limit**: 10000 entries (`CACHE_CONFIG.L2_MAX_ENTRIES`)
+
+**Data structure**:
+
+```typescript
+{
+  key: string,
+  data: any,
+  timestamp: number,
+  ttl: number
+}
+```
+
+**TTL behavior**:
+
+- Same timestamp-based expiration as L1
+- Expired entries return `null` on retrieval
+- No automatic cleanup of expired entries
+
+**Error handling**:
+
+- IndexedDB errors are silently caught
+- Falls back to network fetch on failure
+- Does not throw exceptions to calling code
+
+#### Cache promotion (L2 to L1)
+
+When L2 cache hit occurs:
+
+1. Data is retrieved from IndexedDB
+2. TTL is checked (expired entries return `null`)
+3. Valid data is promoted to L1 memory cache
+4. Statistics record both L2 hit and subsequent L1 hit
+
+#### Cache configuration
+
+**Default settings** (`app/lib/cache/cache-config.ts`):
+
+```typescript
+const CACHE_CONFIG = {
+  // Size limits
+  L1_MAX_SIZE: 50 * 1024 * 1024, // 50MB
+  L1_MAX_ENTRIES: 1000,
+  L2_MAX_SIZE: 200 * 1024 * 1024, // 200MB
+  L2_MAX_ENTRIES: 10000,
+
+  // TTL presets
+  DEFAULT_TTL: 5 * 60 * 1000, // 5 minutes
+  SHORT_TTL: 1 * 60 * 1000, // 1 minute
+  LONG_TTL: 60 * 60 * 1000, // 1 hour
+
+  // Performance tuning
+  CHUNK_SIZE: 5000, // Records per chunk
+  MAX_CONCURRENT_LOADS: 3, // Parallel fetch limit
+  MAX_MEMORY: 500 * 1024 * 1024, // 500MB total memory
+  WARNING_THRESHOLD: 0.8, // 80% warning threshold
+};
+```
+
+#### useDataCache hook
+
+**Implementation**: `app/hooks/use-data-cache.ts`
+
+**Features**:
+
+- Per-key caching with configurable TTL
+- Memory and IndexedDB layer control
+- Cache invalidation and manual cache setting
+- Callbacks for cache hits/misses
+- Loading and error states
+
+**API**:
+
+```typescript
+const { data, loading, error, fromCache, cacheSource, invalidate, setCache, clearCache } = useDataCache(
+  fetcher: () => Promise<T>,
+  options: {
+    key: string,
+    ttl?: number,              // Default: 5 minutes
+    useIndexedDB?: boolean,    // Default: true
+    useMemory?: boolean,       // Default: true
+    forceRefresh?: boolean,    // Default: false
+    onCacheHit?: (source) => void,
+    onCacheMiss?: () => void
+  }
+)
+```
+
+**Cache priority**:
+
+1. Check L1 memory cache (if `useMemory: true`)
+2. Check L2 IndexedDB cache (if `useIndexedDB: true`)
+3. Fetch from network using `fetcher`
+4. Store result in enabled cache layers
+
+**Memory cache eviction** (hook-specific):
+
+- Global limit: 50MB across all hook instances
+- Eviction: Oldest entries first (by timestamp)
+- Size tracking: Updated on set/delete operations
+- No per-hook limits
+
+#### Cache statistics
+
+**MultiLevelCache stats**:
+
+```typescript
+{
+  l1: { hits, misses, size, entries },
+  l2: { hits, misses, entries },
+  l3: { hits },
+  totalHits,
+  totalMisses,
+  hitRate  // Percentage: (hits / total) * 100
+}
+```
+
+**useDataCache stats**:
+
+```typescript
+{
+  (memoryEntries, // Number of entries in memory cache
+    memorySize, // Current memory usage in bytes
+    memoryLimit, // 50MB limit
+    memoryUsagePercent); // (size / limit) * 100
+}
+```
+
+#### Testing
+
+Cache behavior is tested in:
+
+- `app/__tests__/unit/multi-level-cache.test.ts`: TTL, eviction, promotion,
+  stats
+- `app/__tests__/unit/use-data-cache.test.ts`: Hook behavior, callbacks,
+  invalidation
+
+**Test coverage**:
+
+- TTL expiration in L1 and L2
+- LRU eviction with hit tracking
+- Cache promotion from L2 to L1
+- Cache layer priority (L1 → L2 → L3)
+- Statistics tracking
+- Error handling (IndexedDB failures)
+- Manual cache operations (invalidate, clear, set)
+
 ## Persistence
 
 - Prisma client in `app/db/client.ts` with a mock fallback for static export.

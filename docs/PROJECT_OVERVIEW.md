@@ -32,6 +32,20 @@ library. The repository ships both the Next.js application and the npm package
 The `@acailic/vizualni-admin` npm package (located in `app/exports/`) includes
 the following runtime dependencies:
 
+### Export dependency audit (2026-01-09)
+
+Direct imports from export entrypoints (`app/index.ts`, `app/exports/*`) rely
+on:
+
+- peer deps: react, react-dom, @lingui/core, @lingui/react
+- runtime deps: d3-array, d3-axis, d3-ease, d3-format, d3-geo, d3-scale,
+  d3-selection, d3-shape, d3-time-format, d3-transition, d3-zoom, fp-ts, io-ts,
+  make-plural
+
+All of the above are declared in `app/package.json` (dependencies or peers). The
+lists below include app-only dependencies that are not required by the exported
+library entrypoints.
+
 ### D3 visualization libraries
 
 - **d3-array**: Array manipulation utilities for data processing

@@ -5,9 +5,17 @@
  */
 
 import { renderHook, act } from "@testing-library/react";
+import React from "react";
+import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 
-import { i18n, locales, defaultLocale } from "../../../exports/core";
+import {
+  i18n,
+  locales,
+  defaultLocale,
+  type Locale,
+} from "../../../exports/core";
 import { useLocale } from "../../../exports/hooks/useLocale";
 
 // Mock i18n
@@ -751,6 +759,58 @@ describe("useLocale", () => {
 
       expect(result.current.setLocale).toBe(initialSetLocale);
       expect(result.current.parseLocale).toBe(initialParseLocale);
+    });
+  });
+
+  describe("SSR rendering and hydration (ReactDOM)", () => {
+    const LocaleMarkup = ({ initialLocale }: { initialLocale?: Locale }) => {
+      const { locale } = useLocale(initialLocale);
+      return React.createElement("div", { "data-locale": locale }, locale);
+    };
+
+    it("should render server markup with the expected locale", () => {
+      const html = renderToString(
+        React.createElement(LocaleMarkup, { initialLocale: "en" })
+      );
+
+      expect(html).toContain('data-locale="en"');
+      expect(html).toContain(">en<");
+    });
+
+    it("should hydrate without locale mismatch when server and client locales match", () => {
+      const serverLocale: Locale = "sr-Cyrl";
+      const html = renderToString(
+        React.createElement(LocaleMarkup, { initialLocale: serverLocale })
+      );
+
+      const container = document.createElement("div");
+      container.innerHTML = html;
+
+      const consoleSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      let root: ReturnType<typeof hydrateRoot> | null = null;
+
+      act(() => {
+        root = hydrateRoot(
+          container,
+          React.createElement(LocaleMarkup, { initialLocale: serverLocale })
+        );
+      });
+
+      expect(container.textContent).toBe(serverLocale);
+      expect(consoleSpy).not.toHaveBeenCalled();
+
+      if (!root) {
+        consoleSpy.mockRestore();
+        throw new Error("Hydration root was not created");
+      }
+
+      act(() => {
+        root.unmount();
+      });
+
+      consoleSpy.mockRestore();
     });
   });
 

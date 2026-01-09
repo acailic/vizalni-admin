@@ -57,8 +57,8 @@ export interface SearchParams {
   page_size?: number;
   organization?: string;
   tag?: string;
-  sort?: 'created' | 'updated' | 'title';
-  order?: 'asc' | 'desc';
+  sort?: "created" | "updated" | "title";
+  order?: "asc" | "desc";
 }
 
 export interface DataGovRsConfig {
@@ -66,10 +66,21 @@ export interface DataGovRsConfig {
   apiKey?: string;
   defaultPageSize?: number;
   timeout?: number;
+  retryConfig?: RetryConfig;
+}
+
+export interface RetryConfig {
+  maxRetries?: number;
+  initialDelay?: number;
+  maxDelay?: number;
+  backoffMultiplier?: number;
+  retryableStatuses?: number[];
+  retryableErrors?: string[];
 }
 
 export interface ApiError {
   message: string;
   status: number;
   details?: any;
+  isRetryable?: boolean;
 }

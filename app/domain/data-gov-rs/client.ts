@@ -16,13 +16,25 @@ import type {
   SearchParams,
   DataGovRsConfig,
   ApiError,
-} from './types';
+  RetryConfig,
+} from "./types";
 
-const DIRECT_API_URL = 'https://data.gov.rs/api/1';
+const DIRECT_API_URL = "https://data.gov.rs/api/1";
+
+const DEFAULT_RETRY_CONFIG: Required<RetryConfig> = {
+  maxRetries: 3,
+  initialDelay: 1000,
+  maxDelay: 10000,
+  backoffMultiplier: 2,
+  retryableStatuses: [408, 429, 500, 502, 503, 504],
+  retryableErrors: ["ECONNRESET", "ETIMEDOUT", "ENOTFOUND", "EAI_AGAIN"],
+};
 
 function getDefaultApiUrl(): string {
   const proxyUrl = process.env.NEXT_PUBLIC_API_PROXY_URL;
-  const useProxy = process.env.NODE_ENV === 'production' || process.env.NEXT_PUBLIC_USE_PROXY === 'true';
+  const useProxy =
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_USE_PROXY === "true";
 
   if (useProxy && proxyUrl) {
     return `${proxyUrl}/api/data-gov`;
@@ -37,42 +49,145 @@ export class DataGovRsClient {
     apiKey?: string;
     defaultPageSize: number;
     timeout: number;
+    retryConfig: Required<RetryConfig>;
   };
 
   constructor(config: DataGovRsConfig = {}) {
+    const retryConfig: Required<RetryConfig> = {
+      maxRetries:
+        config.retryConfig?.maxRetries ?? DEFAULT_RETRY_CONFIG.maxRetries,
+      initialDelay:
+        config.retryConfig?.initialDelay ?? DEFAULT_RETRY_CONFIG.initialDelay,
+      maxDelay: config.retryConfig?.maxDelay ?? DEFAULT_RETRY_CONFIG.maxDelay,
+      backoffMultiplier:
+        config.retryConfig?.backoffMultiplier ??
+        DEFAULT_RETRY_CONFIG.backoffMultiplier,
+      retryableStatuses: config.retryConfig?.retryableStatuses ?? [
+        ...DEFAULT_RETRY_CONFIG.retryableStatuses,
+      ],
+      retryableErrors: config.retryConfig?.retryableErrors ?? [
+        ...DEFAULT_RETRY_CONFIG.retryableErrors,
+      ],
+    };
+
     this.config = {
       apiUrl: config.apiUrl || getDefaultApiUrl(),
       apiKey: config.apiKey || process.env.DATA_GOV_RS_API_KEY,
       defaultPageSize: config.defaultPageSize || 20,
       timeout: config.timeout || 10000,
+      retryConfig,
     };
   }
 
   /**
-   * Make an API request
+   * Calculate delay with exponential backoff
+   */
+  private calculateRetryDelay(attempt: number): number {
+    const delay = Math.min(
+      this.config.retryConfig.initialDelay *
+        Math.pow(this.config.retryConfig.backoffMultiplier, attempt),
+      this.config.retryConfig.maxDelay
+    );
+    // Add some jitter to avoid thundering herd
+    return delay * (0.5 + Math.random() * 0.5);
+  }
+
+  /**
+   * Check if an error is retryable
+   */
+  private isRetryableError(error: ApiError | Error): boolean {
+    // Check if it's an ApiError with retryable status
+    if ("status" in error) {
+      const apiError = error as ApiError;
+      if (apiError.isRetryable !== undefined) {
+        return apiError.isRetryable;
+      }
+      return this.config.retryConfig.retryableStatuses.includes(
+        apiError.status
+      );
+    }
+
+    // Check error message for network errors
+    const errorMessage = error.message || "";
+    return this.config.retryConfig.retryableErrors.some((retryableError) =>
+      errorMessage.includes(retryableError)
+    );
+  }
+
+  /**
+   * Sleep for specified milliseconds
+   */
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Make an API request with retry logic and abortable timeout
    */
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
+    let lastError: ApiError | Error;
+    let attempt = 0;
+
+    while (attempt <= this.config.retryConfig.maxRetries) {
+      try {
+        return await this.requestWithTimeout<T>(endpoint, options);
+      } catch (error) {
+        lastError = error as ApiError | Error;
+        attempt++;
+
+        // Don't retry if we've exceeded max retries or error is not retryable
+        if (
+          attempt > this.config.retryConfig.maxRetries ||
+          !this.isRetryableError(lastError)
+        ) {
+          throw lastError;
+        }
+
+        // Calculate delay and wait before retry
+        const delay = this.calculateRetryDelay(attempt - 1);
+        await this.sleep(delay);
+      }
+    }
+
+    throw lastError!;
+  }
+
+  /**
+   * Make a single API request with abortable timeout
+   */
+  private async requestWithTimeout<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<T> {
     const url = `${this.config.apiUrl}${endpoint}`;
     const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Accept-Language': 'sr', // Default to Serbian
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "Accept-Language": "sr", // Default to Serbian
       ...(options.headers as Record<string, string>),
     };
 
     // Add API key if available
     if (this.config.apiKey) {
-      headers['X-API-KEY'] = this.config.apiKey;
+      headers["X-API-KEY"] = this.config.apiKey;
     }
 
-    const fetchPromise = (async () => {
+    // Create AbortController for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
+
+    try {
       const response = await fetch(url, {
         ...options,
         headers,
+        signal: controller.signal,
       });
+
+      // Clear timeout on successful response
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const error: ApiError = {
@@ -91,20 +206,22 @@ export class DataGovRsClient {
       }
 
       return response.json() as Promise<T>;
-    })();
+    } catch (error) {
+      // Clear timeout on error
+      clearTimeout(timeoutId);
 
-    const timeoutPromise = new Promise<never>((_, reject) =>
-      setTimeout(
-        () =>
-          reject({
-            message: 'Request timeout',
-            status: 408,
-          } as ApiError),
-        this.config.timeout
-      )
-    );
+      // Handle AbortError from timeout
+      if (error instanceof Error && error.name === "AbortError") {
+        const timeoutError: ApiError = {
+          message: "Request timeout",
+          status: 408,
+          isRetryable: true,
+        };
+        throw timeoutError;
+      }
 
-    return Promise.race([fetchPromise, timeoutPromise]);
+      throw error;
+    }
   }
 
   /**
@@ -115,24 +232,32 @@ export class DataGovRsClient {
   ): Promise<PaginatedResponse<DatasetMetadata>> {
     const queryParts: [string, string | number][] = [];
 
-    if (params.q) queryParts.push(['q', params.q]);
-    if (!params.q && params.organization) queryParts.push(['organization', params.organization]);
+    if (params.q) queryParts.push(["q", params.q]);
+    if (!params.q && params.organization)
+      queryParts.push(["organization", params.organization]);
 
     if (params.page) {
-      queryParts.push(['page', params.page]);
+      queryParts.push(["page", params.page]);
     }
-    queryParts.push(['page_size', params.page_size ?? this.config.defaultPageSize]);
+    queryParts.push([
+      "page_size",
+      params.page_size ?? this.config.defaultPageSize,
+    ]);
 
-    if (params.q && params.organization) queryParts.push(['organization', params.organization]);
-    if (params.tag) queryParts.push(['tag', params.tag]);
-    if (params.sort) queryParts.push(['sort', params.sort]);
-    if (params.order) queryParts.push(['order', params.order]);
+    if (params.q && params.organization)
+      queryParts.push(["organization", params.organization]);
+    if (params.tag) queryParts.push(["tag", params.tag]);
+    if (params.sort) queryParts.push(["sort", params.sort]);
+    if (params.order) queryParts.push(["order", params.order]);
 
     const query = queryParts
-      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`
+      )
       .join("&");
 
-    const endpoint = `/datasets/${query ? `?${query}` : ''}`;
+    const endpoint = `/datasets/${query ? `?${query}` : ""}`;
 
     return this.request<PaginatedResponse<DatasetMetadata>>(endpoint);
   }
@@ -251,12 +376,18 @@ export class DataGovRsClient {
 /**
  * Create a default client instance
  */
-export function createDataGovRsClient(config?: Partial<DataGovRsConfig>): DataGovRsClient {
+export function createDataGovRsClient(
+  config?: Partial<DataGovRsConfig>
+): DataGovRsClient {
   return new DataGovRsClient({
-    apiUrl: config?.apiUrl || process.env.DATA_GOV_RS_API_URL || 'https://data.gov.rs/api/1',
+    apiUrl:
+      config?.apiUrl ||
+      process.env.DATA_GOV_RS_API_URL ||
+      "https://data.gov.rs/api/1",
     apiKey: config?.apiKey || process.env.DATA_GOV_RS_API_KEY,
     defaultPageSize: config?.defaultPageSize || 20,
     timeout: config?.timeout || 10000,
+    retryConfig: config?.retryConfig,
   });
 }
 

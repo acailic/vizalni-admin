@@ -37,7 +37,7 @@ scoped, specific, and tied to files and tests.
 
 ## 0-30 Days: Stabilize and align
 
-- [todo] Dependency audit for exported charts and hooks.
+- [done] Dependency audit for exported charts and hooks.
   - Goal: ensure `app/package.json` runtime deps cover `app/exports/*` usage.
   - Deliverables: dependency list, updated `app/package.json`, note in
     `docs/PROJECT_OVERVIEW.md`.
@@ -73,7 +73,7 @@ scoped, specific, and tied to files and tests.
     Column, Pie, Area, and Line charts (empty/null/single/negative/stack).
   - Definition of done: tests capture at least one edge case per chart.
 
-- [todo] Expand `useLocale` tests for SSR and hydration behavior.
+- [done] Expand `useLocale` tests for SSR and hydration behavior.
   - Goal: confirm locale switching works across SSR and hydration boundaries.
   - Deliverables: additional cases in
     `app/tests/exports/hooks/useLocale.spec.ts`.
@@ -106,11 +106,13 @@ scoped, specific, and tied to files and tests.
     or eviction behavior in relevant unit tests.
   - Definition of done: docs and tests describe the same behavior.
 
-- [todo] Localization audit (sr/en parity).
+- [done] Localization audit (sr/en parity).
   - Goal: ensure every user-facing surface has sr/en coverage.
   - Deliverables: list of missing keys, updated locale files, brief note in docs
     if gaps remain.
   - Definition of done: all priority UI surfaces are translated.
+  - Completed: 2026-01-09. All 636 translation keys present across en, sr-Latn,
+    and sr-Cyrl. See `docs/LOCALIZATION_AUDIT.md` for full report.
 
 ## 60-90 Days: Scale and operational readiness
 
