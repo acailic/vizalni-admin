@@ -566,7 +566,7 @@ See the existing connectors for reference implementations.
 - [API Documentation](./API.md) - Full API reference
 - [Architecture](./ARCHITECTURE.md) - System architecture
 - [Getting Started](./GETTING-STARTED.md) - Quick start guide
-- [Data.gov.rs Client](./client.ts) - Data.gov.rs API client
+- [Data.gov.rs Client](../app/exports/client.ts) - Data.gov.rs API client source
 
 ## License
 

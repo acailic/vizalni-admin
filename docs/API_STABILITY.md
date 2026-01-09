@@ -11,6 +11,13 @@ changes.
 - [Stability Levels](#stability-levels)
 - [Classification Criteria](#classification-criteria)
 - [Current API Classifications](#current-api-classifications)
+  - [Chart Components](#chart-components-acailicvizualni-admincharts)
+  - [Chart Plugin System](#chart-plugin-system-acailicvizualni-admincharts)
+  - [React Hooks](#react-hooks-acailicvizualni-adminhooks)
+  - [Utility Functions](#utility-functions-acailicvizualni-adminutils)
+  - [Core Exports](#core-exports-acailicvizualni-admincore)
+  - [Data.gov.rs Client](#datagovrs-client-acailicvizualni-adminclient)
+  - [Data Connectors](#data-connectors-acailicvizualni-adminconnectors)
 - [Deprecation Policy](#deprecation-policy)
 - [Versioning Policy](#versioning-policy)
 - [Migration Guidelines](#migration-guidelines)
@@ -257,6 +264,33 @@ Stability reviews occur during:
 | `SearchParams` type      | Experimental | 0.1.0-beta.1 | May add filters as API evolves              |
 | `DataGovRsConfig` type   | Experimental | 0.1.0-beta.1 | Config options may change                   |
 | `ApiError` type          | Experimental | 0.1.0-beta.1 | Error format may evolve                     |
+
+### Data Connectors (`@acailic/vizualni-admin/connectors`)
+
+| Export                       | Stability    | Since        | Notes                                       |
+| ---------------------------- | ------------ | ------------ | ------------------------------------------- |
+| `IDataConnector` interface   | Experimental | 0.1.0-beta.1 | Interface may extend with new methods       |
+| `BaseConnectorConfig` type   | Experimental | 0.1.0-beta.1 | Config options may be added                 |
+| `DataSchema` type            | Experimental | 0.1.0-beta.1 | Schema structure may evolve                 |
+| `DataType` type              | Stable       | 0.1.0-beta.1 | Type union, unlikely to change              |
+| `ConnectorResult` type       | Experimental | 0.1.0-beta.1 | Result format may change                    |
+| `PaginatedResult` type       | Experimental | 0.1.0-beta.1 | Pagination format may change                |
+| `HealthCheckResult` type     | Experimental | 0.1.0-beta.1 | Health check format may change              |
+| `ConnectorCapabilities` type | Experimental | 0.1.0-beta.1 | Capabilities may be added                   |
+| `ConnectorErrorCode` type    | Stable       | 0.1.0-beta.1 | Error code enum, unlikely to change         |
+| `ConnectorFactory` type      | Experimental | 0.1.0-beta.1 | Factory signature may change                |
+| `ConnectorError` class       | Experimental | 0.1.0-beta.1 | Error handling may evolve                   |
+| `CsvUrlConnector` class      | Experimental | 0.1.0-beta.1 | CSV parsing may improve, options may change |
+| `createCsvUrlConnector` fn   | Experimental | 0.1.0-beta.1 | Factory function may change                 |
+| `CsvUrlConnectorConfig` type | Experimental | 0.1.0-beta.1 | Config options may be added                 |
+| `CsvRow` type                | Experimental | 0.1.0-beta.1 | Row type may change based on parsing        |
+| `ConnectorRegistry` class    | Experimental | 0.1.0-beta.1 | Registry API may evolve                     |
+| `registerConnector` fn       | Experimental | 0.1.0-beta.1 | Registration API may change                 |
+| `unregisterConnector` fn     | Experimental | 0.1.0-beta.1 | Unregistration API may change               |
+| `createConnector` fn         | Experimental | 0.1.0-beta.1 | Creation API may change                     |
+| `getConnector` fn            | Experimental | 0.1.0-beta.1 | Retrieval API may change                    |
+| `listConnectors` fn          | Experimental | 0.1.0-beta.1 | List format may change                      |
+| `destroyConnector` fn        | Experimental | 0.1.0-beta.1 | Cleanup API may change                      |
 
 ---
 

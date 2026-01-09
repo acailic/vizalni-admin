@@ -124,6 +124,49 @@ export type {
   ApiError,
 } from "./domain/data-gov-rs/types";
 
+// Export data connectors
+/**
+ * Data connectors for fetching data from various sources.
+ * Includes CSV URL connector and extensible connector interface.
+ *
+ * @example
+ * ```ts
+ * import { CsvUrlConnector } from '@acailic/vizualni-admin/connectors';
+ *
+ * const connector = new CsvUrlConnector({
+ *   id: 'my-data',
+ *   url: 'https://example.com/data.csv',
+ * });
+ * ```
+ */
+export {
+  // Types and interfaces
+  type IDataConnector,
+  type BaseConnectorConfig,
+  type DataSchema,
+  type DataType,
+  type ConnectorResult,
+  type PaginatedResult,
+  type HealthCheckResult,
+  type ConnectorCapabilities,
+  type ConnectorErrorCode,
+  type ConnectorFactory,
+  ConnectorError,
+  // CSV connector
+  CsvUrlConnector,
+  createCsvUrlConnector,
+  type CsvUrlConnectorConfig,
+  type CsvRow,
+  // Registry
+  ConnectorRegistry,
+  registerConnector,
+  unregisterConnector,
+  createConnector,
+  getConnector,
+  listConnectors,
+  destroyConnector,
+} from "./exports/connectors";
+
 // Note: Configurator, ConfiguratorStateProvider, and other components
 // are not exported in this release as they have deep dependencies on the
 // Next.js app structure. They will be refactored for standalone use

@@ -25,6 +25,7 @@ export default defineConfig((options) => ({
     "charts/index": "exports/charts/index.ts", // Chart components
     "hooks/index": "exports/hooks/index.ts", // React hooks
     "utils/index": "exports/utils/index.ts", // Utility functions
+    "connectors/index": "exports/connectors/index.ts", // Data connectors
   },
   format: ["cjs", "esm"],
   dts: false, // DTS generated via tsc in separate step
