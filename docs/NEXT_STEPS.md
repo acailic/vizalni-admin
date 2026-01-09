@@ -209,23 +209,30 @@ scoped, specific, and tied to files and tests.
 
 ## 180-365 Days: Ecosystem and sustainability
 
-- [todo] Map module extraction (if chosen).
+- [done] Map module extraction (if chosen).
   - Goal: optional map package with separate release cycle.
   - Deliverables: new package in workspace, migration guide, build pipeline
     updates.
   - Definition of done: core package works without map deps; map package is
     documented and versioned.
+  - Completed: 2026-01-09. Decision made to keep MapChart in core package. See
+    `ai_working/decisions/2026-01-09-mapchart-packaging.md`.
 
-- [todo] Data connector roadmap.
+- [done] Data connector roadmap.
   - Goal: support non-data.gov.rs sources.
   - Deliverables: connector interface definition and one additional adapter (CSV
     URL or CKAN).
   - Definition of done: documented interface and working example integration.
+  - Completed: 2026-01-09. See `docs/DATA_CONNECTORS.md`. Generic connector
+    interface implemented, CSV URL connector added, connector registry created.
 
-- [todo] Governance and contribution path.
+- [done] Governance and contribution path.
   - Goal: make external contributions predictable.
   - Deliverables: updates to `CONTRIBUTING.md`, issue templates, triage labels.
   - Definition of done: contributor onboarding is documented end-to-end.
+  - Completed: 2026-01-09. See `docs/GOVERNANCE.md` and `docs/TRIAGE.md`.
+    Updated CONTRIBUTING.md, added documentation issue template, enhanced PR
+    template, created CODE_OF_CONDUCT.md.
 
 ## Decisions required (create records in `ai_working/decisions/`)
 
