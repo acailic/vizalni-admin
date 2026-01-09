@@ -4,14 +4,15 @@ import { GA_TRACKING_ID } from "@/domain/env";
 
 // Detect static export mode (GitHub Pages) - /api routes don't exist
 const isStaticExport = !!process.env.NEXT_PUBLIC_BASE_PATH;
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html data-app-version={`${process.env.NEXT_PUBLIC_VERSION}`}>
         <Head>
-          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-          <link rel="alternate icon" href="/favicon.ico" />
+          <link rel="icon" href={`${basePath}/favicon.svg`} type="image/svg+xml" />
+          <link rel="alternate icon" href={`${basePath}/favicon.ico`} />
           {/* Only load client-env from API in non-static builds */}
           {/* eslint-disable-next-line @next/next/no-sync-scripts */}
           {!isStaticExport && <script src="/api/client-env"></script>}
@@ -31,7 +32,7 @@ class MyDocument extends Document {
         </Head>
         <body>
           <Main />
-          <script noModule src="/static/ie-check.js" defer></script>
+          <script noModule src={`${basePath}/static/ie-check.js`} defer></script>
           <NextScript />
         </body>
       </Html>

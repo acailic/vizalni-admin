@@ -1,35 +1,119 @@
-# @acailic/vizualni-admin
+# Vizualni Admin
 
-> Alat za vizualizaciju otvorenih podataka Srbije – Beta izdanje
+> Serbian Open Data Visualization Tool | Aлат за визуализацију отворених података Србије
 
-[![npm version](https://img.shields.io/npm/v/@acailic/vizualni-admin.svg)](https://www.npmjs.com/package/@acailic/vizualni-admin)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://acailic.github.io/vizualni-admin/)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/acailic/vizualni-admin/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/acailic/vizualni-admin.svg)](https://github.com/acailic/vizualni-admin/stargazers)
 
-## O paketu (srpski)
+## 📋 Table of Contents / Садржај
 
-`@acailic/vizualni-admin` je **beta** paket zasnovan na projektu [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool). Namenjen je brzim vizualizacijama zvaničnih otvorenih podataka Republike Srbije, uz podršku za latinično i ćirilično pismo.
+- [What is Vizualni Admin?](#what-is-vizualni-admin)
+- [Features / Могућности](#features)
+- [Quick Start / Брзи почетак](#quick-start)
+- [Installation / Инсталација](#installation)
+- [Usage / Употреба](#usage)
+- [Deploying / Deployment](#deploying)
+- [Examples / Примери](#examples)
+- [Contributing / Допринос](#contributing)
+- [License / Лиценца](#license)
 
-## Instalacija
+---
 
+## What is Vizualni Admin?
+
+**Vizualni Admin** is a powerful visualization tool for Serbian open data. It allows you to:
+
+- 📊 Create beautiful, interactive charts from [data.gov.rs](https://data.gov.rs) datasets
+- 🌐 Support for both Latin and Cyrillic Serbian scripts
+- 📱 Responsive design that works on all devices
+- 🎨 Customize colors, styles, and chart types
+- 📤 Export charts in various formats
+- 🔍 Browse and filter datasets from the Serbian Open Data Portal
+
+---
+
+## Features / Могућности
+
+### 🎯 Core Features
+- **No Code Required** - Create visualizations without programming
+- **Serbian Open Data Integration** - Direct access to data.gov.rs datasets
+- **Multiple Chart Types** - Line, Bar, Pie, Area, Scatter, Map, and more
+- **Real-time Data** - Fetch live data from APIs
+- **Export Options** - PNG, SVG, PDF, and embedded HTML
+
+### 🌍 Localization
+- Full Serbian language support (Latin and Cyrillic)
+- English language support
+- Localized interface and date formats
+
+### 📱 Responsive Design
+- Works on desktop, tablet, and mobile
+- Touch-friendly interactions
+- Optimized for different screen sizes
+
+### 🔧 Technical Features
+- Built with Next.js and React
+- TypeScript support
+- Server-side rendering (SSR)
+- Static site generation (SSG)
+- PWA capabilities
+
+---
+
+## Quick Start / Брзи почетак
+
+### Option 1: Use the Live Demo
+Visit [https://acailic.github.io/vizualni-admin/](https://acailic.github.io/vizualni-admin/) to start creating visualizations immediately.
+
+### Option 2: Install Locally
+```bash
+# Clone the repository
+git clone https://github.com/acailic/vizualni-admin.git
+cd vizualni-admin
+
+# Install dependencies
+yarn install
+
+# Start development server
+yarn dev
+```
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Installation / Инсталација
+
+### As an NPM Package
 ```bash
 npm install @acailic/vizualni-admin
-# ili
+# or
 yarn add @acailic/vizualni-admin
 ```
 
-## Šta je uključeno
+### From Source
+```bash
+git clone https://github.com/acailic/vizualni-admin.git
+cd vizualni-admin
+yarn install
+```
 
-- Lokalizacija: `defaultLocale`, `locales`, `parseLocaleString`
-- TypeScript tipovi za grafikon/konfiguracije
-- I18n podrška (`I18nProvider`)
-- Komponente za grafikone spremne za demo (Line/Column/Pie) koje koristimo na GitHub Pages
-- Spremno za ugradnju (embed) – vidi primere ispod
+---
 
-## Brzi primeri
+## Usage / Употреба
 
-### Linijski grafikon
+### 1. Creating Your First Visualization
 
-```tsx
+#### Web Interface (No Code)
+1. Go to [Create Chart](https://acailic.github.io/vizualni-admin/create)
+2. Select a dataset from data.gov.rs or upload your own
+3. Choose a chart type
+4. Customize colors and labels
+5. Save or embed your chart
+
+#### As a React Component
+```jsx
 import { LineChart } from '@acailic/vizualni-admin';
 
 const data = [
@@ -39,205 +123,294 @@ const data = [
   { label: '2022', value: 81 },
 ];
 
-export function Primer() {
+export function MyChart() {
   return (
     <LineChart
       data={data}
       xKey="label"
       yKey="value"
-      title="Oporavak zaposlenosti"
+      title="Employment Recovery"
       width={720}
       height={360}
-      showTooltip
-      showCrosshair
+      locale="sr"
     />
   );
 }
 ```
 
-### Stubičasti i pie grafikon
+### 2. Using Serbian Open Data
 
-```tsx
-import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
+```jsx
+import { useDataGovRs } from '@acailic/vizualni-admin';
 
-// Stubičasti
-<ColumnChart
-  data={[
-    { year: '2019', jobs: 180 },
-    { year: '2020', jobs: 140 },
-  ]}
-  xKey="year"
-  yKey="jobs"
-  title="Nove pozicije po godinama"
-  color="#0ea5e9"
-  showTooltip
-  showCrosshair
-/>
+function BudgetVisualization() {
+  const { data, loading, error } = useDataGovRs('budzet-srbije');
 
-// Pie
-<PieChart
-  data={[
-    { label: 'Solar', value: 18 },
-    { label: 'Wind', value: 22 },
-  ]}
-  labelKey="label"
-  valueKey="value"
-  title="Mix proizvodnje"
-  showLegend
-/>
-```
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
-### Ugradnja (iframe)
-
-Koristi javni demo na GitHub Pages i prosledi temu/jezik:
-
-```html
-<iframe
-  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=sr"
-  style="width: 100%; height: 520px; border: 0;"
-  loading="lazy"
-  referrerpolicy="no-referrer"
-></iframe>
-```
-
-Generator koda za ugradnju nalazi se na `/embed` (u okviru GitHub Pages build-a) – izaberi širinu/visinu/temu/jezik i kopiraj snippet.
-
-### Generisanje URL-a za embed u kodu
-
-```ts
-import { buildEmbedUrl } from '@acailic/vizualni-admin/lib/embed-url';
-
-const url = buildEmbedUrl('https://acailic.github.io/vizualni-admin/embed/demo', {
-  theme: 'dark',
-  lang: 'sr',
-});
-// https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
-```
-
-### Lokalizacija
-
-```ts
-import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-admin';
-
-console.log(defaultLocale); // 'sr-Latn'
-console.log(locales);       // ['sr-Latn', 'sr-Cyrl', 'en']
-console.log(parseLocaleString('sr-Cyrl')); // 'sr-Cyrl'
-console.log(parseLocaleString('de'));      // vraća podrazumevani
-```
-
-### React + Lingui
-
-```tsx
-import { I18nProvider } from '@acailic/vizualni-admin';
-import { i18n } from '@lingui/core';
-
-function App() {
   return (
-    <I18nProvider i18n={i18n}>
-      {/* Vaš sadržaj */}
-    </I18nProvider>
+    <BarChart
+      data={data}
+      xKey="godina"
+      yKey="iznos"
+      title="Буџет Србије по годинама"
+    />
   );
 }
 ```
 
-## Šta još nije uključeno
+### 3. Customizing Charts
 
-Ovo je beta. Planiramo da ojačamo:
+```jsx
+<LineChart
+  data={data}
+  xKey="label"
+  yKey="value"
+  title="Прираст становништва"
+  // Customization options
+  colors={['#0090ff', '#00d4ff']}
+  showLegend={true}
+  showGrid={true}
+  curve="monotone"
+  locale="sr-Latn"
+  // Style customization
+  style={{
+    fontFamily: 'NotoSans, sans-serif',
+    fontSize: 14,
+  }}
+/>
+```
 
-- Konfigurator UI
-- Komponente za celu Next.js aplikaciju
-- CLI alate
-- Dodatne util funkcije
+### 4. Embedding Charts
+
+```html
+<!-- Option 1: Using iframe -->
+<iframe
+  src="https://acailic.github.io/vizualni-admin/embed/chart-id"
+  width="800"
+  height="400"
+  frameborder="0"
+></iframe>
+
+<!-- Option 2: Using script tag -->
+<div id="vizualni-chart"></div>
+<script
+  src="https://acailic.github.io/vizualni-admin/embed/chart-id.js"
+  async
+></script>
+```
 
 ---
 
-## English summary
+## Deploying / Deployment
 
-This is a **beta** of `@acailic/vizualni-admin` for Serbian open data visualizations (Latin/Cyrillic). Includes locale utilities, types, Lingui I18n provider, demo chart components (Line/Column/Pie), and embed-ready endpoints.
-
-Install: `npm install @acailic/vizualni-admin` or `yarn add @acailic/vizualni-admin`.
-
-Quick starts mirror the Serbian examples above. Use the hosted embed demo (`/embed/demo?theme=light&lang=en`) and the `/embed` generator to craft iframe snippets. `buildEmbedUrl` helps construct embed URLs in code. Locale helpers: `defaultLocale`, `locales`, `parseLocaleString`. React usage: wrap with `I18nProvider`.
-
-Planned next: configurator UI, full Next.js components, CLI, and more utilities.
-
-## Supported Locales
-
-The package supports three locales:
-
-- **sr-Latn** (Serbian Latin) - Default
-- **sr-Cyrl** (Serbian Cyrillic)
-- **en** (English)
-
-## Requirements
-
-### Node Version
-
-- Node.js 18 or newer
-
-### Peer Dependencies
-
-```json
-{
-  "@lingui/core": "^4.0.0",
-  "@lingui/react": "^4.0.0",
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0"
-}
-```
-
-### Runtime Dependencies (bundled)
-
-Installed automatically:
-
-- `d3-format`
-- `d3-time-format`
-- `make-plural`
-- `fp-ts`
-- `io-ts`
-
-### GitHub Pages / Static Export
-
-Serve the demo under `/vizualni-admin` (GitHub Pages) with a one-liner:
+### Option 1: GitHub Pages (Recommended)
 
 ```bash
-yarn build:gh-pages
-npx serve app/out
+# Build for GitHub Pages
+NEXT_PUBLIC_BASE_PATH=/vizualni-admin yarn build:gh-pages
+
+# Deploy to GitHub Pages (automatic on push to main)
+git push origin main
 ```
 
-Customize the base path by overriding the env var, e.g.
-`NEXT_PUBLIC_BASE_PATH=/my-path yarn build:static`. The Next.js config now
-handles `basePath`, `assetPrefix`, trailing slashes, and unoptimized images so
-exported assets resolve correctly on GitHub Pages.
+For local testing:
+```bash
+# Build and serve locally
+yarn build:gh-pages-local
+yarn serve:gh-pages
 
-## Module Formats
+# Or one command
+yarn start:gh-pages-local
+```
 
-The package is published in multiple formats for maximum compatibility:
+### Option 2: Vercel
 
-- **CommonJS** (`dist/index.js`) - For Node.js
-- **ES Modules** (`dist/index.mjs`) - For modern bundlers
-- **TypeScript** (`dist/index.d.ts`) - Type declarations
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-## Contributing
+# Deploy
+vercel --prod
+```
 
-Contributions are welcome! Please see the main repository for contribution guidelines.
+### Option 3: Docker
 
-## Related Projects
+```bash
+# Build Docker image
+docker build -t vizualni-admin .
 
-- [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool) - Original upstream project
-- [data.gov.rs](https://data.gov.rs) - Serbian Open Data Portal
+# Run container
+docker run -p 3000:3000 vizualni-admin
+```
 
-## License
+### Option 4: Static Export
 
-BSD-3-Clause - See [LICENSE](https://github.com/acailic/vizualni-admin/blob/main/LICENSE) for details.
+```bash
+# Export static files
+yarn build:static
 
-## Links
+# Deploy the 'out' folder to any static host
+```
 
-- **npm Package**: https://www.npmjs.com/package/@acailic/vizualni-admin
-- **GitHub Repository**: https://github.com/acailic/vizualni-admin
-- **Issues**: https://github.com/acailic/vizualni-admin/issues
-- **Live Demo**: https://acailic.github.io/vizualni-admin/
+---
 
-## Changelog
+## Examples / Примери
 
-See [CHANGELOG.md](https://github.com/acailic/vizualni-admin/blob/main/CHANGELOG.md) for release history.
+### 1. Price Analysis Dashboard
+```jsx
+import { PriceAnalysisChart } from '@acailic/vizualni-admin';
+
+<PriceAnalysisChart
+  datasetId="cene-proizvoda"
+  filters={{
+    category: "Електроника",
+    location: "Београд"
+  }}
+/>
+```
+
+### 2. Budget Comparison
+```jsx
+import { BudgetComparison } from '@acailic/vizualni-admin';
+
+<BudgetComparison
+  years={[2020, 2021, 2022]}
+  categories={['Здравство', 'Образовање', 'Инфраструктура']}
+/>
+```
+
+### 3. Geographic Data Visualization
+```jsx
+import { SerbiaMap } from '@acailic/vizualni-admin';
+
+<SerbiaMap
+  data={regionalData}
+  metricKey="population"
+  colorScale="blues"
+  showTooltip={true}
+/>
+```
+
+### View More Examples
+- [Live Gallery](https://acailic.github.io/vizualni-admin/gallery)
+- [Demos by Category](https://acailic.github.io/vizualni-admin/demos)
+- [Tutorials](https://acailic.github.io/vizualni-admin/tutorials)
+
+---
+
+## API Reference
+
+### Main Components
+
+| Component | Props | Description |
+|-----------|-------|-------------|
+| `LineChart` | `data`, `xKey`, `yKey` | Line/area charts |
+| `BarChart` | `data`, `xKey`, `yKey` | Bar/column charts |
+| `PieChart` | `data`, `nameKey`, `valueKey` | Pie/donut charts |
+| `ScatterPlot` | `data`, `xKey`, `yKey` | Scatter plots |
+| `SerbiaMap` | `data`, `regionKey`, `valueKey` | Serbia regional map |
+| `DataTable` | `data`, `columns` | Sortable data table |
+
+### Data Hooks
+
+| Hook | Parameters | Returns |
+|------|------------|---------|
+| `useDataGovRs` | `datasetId`, `options` | `{ data, loading, error }` |
+| `useSerbianData` | `endpoint`, `params` | `{ data, loading, error }` |
+| `useLocalDataset` | `file` | `{ data, loading, error }` |
+
+### Utility Functions
+
+```js
+import {
+  formatSerbianNumber,
+  formatSerbianDate,
+  translateToSerbian,
+  validateSerbianData
+} from '@acailic/vizualni-admin/utils';
+```
+
+---
+
+## Contributing / Допринос
+
+We welcome contributions! Here's how to get started:
+
+### Setup Development Environment
+
+```bash
+# Fork and clone the repository
+git clone https://github.com/YOUR_USERNAME/vizualni-admin.git
+cd vizualni-admin
+
+# Install dependencies
+yarn install
+
+# Set up development database (optional)
+yarn setup:dev
+
+# Start development server
+yarn dev
+```
+
+### How to Contribute
+
+1. **Report Bugs** - Open an issue on GitHub
+2. **Suggest Features** - Open an issue with "Feature Request" label
+3. **Submit Pull Requests** - Fork, create a branch, and submit a PR
+4. **Improve Documentation** - Help us make the docs better
+
+### Development Scripts
+
+```bash
+yarn dev          # Start development server
+yarn build        # Build for production
+yarn test         # Run tests
+yarn lint         # Run linter
+yarn typecheck    # Check TypeScript types
+yarn storybook    # Run component library
+```
+
+---
+
+## FAQ
+
+### Q: Can I use my own data?
+A: Yes! You can upload CSV, JSON, or connect to any API endpoint.
+
+### Q: Is it really free?
+A: Yes, Vizualni Admin is open source and free to use.
+
+### Q: Do I need to know how to code?
+A: No! The web interface allows you to create visualizations without any coding.
+
+### Q: Can I export my charts?
+A: Yes, you can export as PNG, SVG, PDF, or embed them in websites.
+
+### Q: Does it work offline?
+A: The static export version works offline after loading.
+
+---
+
+## Support / Подршка
+
+- 📖 [Documentation](https://acailic.github.io/vizualni-admin/docs)
+- 🎓 [Tutorials](https://acailic.github.io/vizualni-admin/tutorials)
+- 🐛 [Report Issues](https://github.com/acailic/vizualni-admin/issues)
+- 💬 [Discussions](https://github.com/acailic/vizualni-admin/discussions)
+
+---
+
+## License / Лиценца
+
+[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/) © 2024 Vizualni Admin
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ for the Serbian open data community</sub>
+  <br>
+  <sub>Изграђено са ❤️ за заједницу отворених података Србије</sub>
+</div>

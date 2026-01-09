@@ -1,15 +1,114 @@
-# Deployment Guide
+# Deployment Guide / Водич за распоређивање
 
-This guide covers deploying Vizualni Admin to various platforms.
+Complete guide to deploying Vizualni Admin to various platforms.
+
+---
+
+## 📋 Table of Contents
+
+- [Before You Deploy](#before-you-deploy)
+- [GitHub Pages (Recommended)](#github-pages)
+- [Vercel](#vercel)
+- [Netlify](#netlify)
+- [Docker](#docker)
+- [Custom Server](#custom-server)
+- [Static Export](#static-export)
+- [Environment Variables](#environment-variables)
+
+---
+
+## Before You Deploy
+
+### Checklist
+- [ ] Update `package.json` version
+- [ ] Test your build locally: `yarn build`
+- [ ] Review environment variables
+- [ ] Check responsive design
+- [ ] Test all interactive features
+
+### Build Commands
+
+```bash
+# Standard build
+yarn build
+
+# Static export (for GitHub Pages)
+NEXT_PUBLIC_BASE_PATH=/your-repo-name yarn build:static
+
+# Optimized build
+yarn build:optimized
+
+# Build for production with analysis
+yarn build:analyze
+```
+
+---
+
+## GitHub Pages (Recommended) / GitHub Pages (Препоручено)
+
+### Automatic Deployment (Easiest)
+
+1. **Enable GitHub Pages**
+   - Go to repository Settings → Pages
+   - Source: Deploy from a branch
+   - Branch: `main` and `/ (root)`
+   - Save
+
+2. **Push to Main**
+   ```bash
+   git add .
+   git commit -m "Deploy to GitHub Pages"
+   git push origin main
+   ```
+
+3. **Wait for Deployment**
+   - GitHub Actions will automatically build and deploy
+   - Visit: `https://username.github.io/vizualni-admin/`
+
+### Manual Deployment
+
+```bash
+# Build for GitHub Pages
+NEXT_PUBLIC_BASE_PATH=/vizualni-admin yarn build:gh-pages
+
+# Deploy using gh-pages CLI
+npm install -g gh-pages
+cd app/out
+gh-pages -d . -b gh-pages
+```
+
+### Local Testing for GitHub Pages
+
+```bash
+# Build and serve locally
+yarn build:gh-pages-local
+yarn serve:gh-pages
+
+# Visit http://localhost:3000/vizualni-admin/
+```
+
+---
 
 ## Environment Variables
 
-Before deploying, ensure these environment variables are set:
+### Required for Production
 
-### Required
-- `DATABASE_URL` - PostgreSQL connection string
-- `NEXTAUTH_SECRET` - Random secret for authentication
-- `NEXTAUTH_URL` - Your application URL
+```bash
+# Next.js
+NODE_ENV=production
+
+# App Configuration
+NEXT_PUBLIC_APP_NAME=Vizualni Admin
+NEXT_PUBLIC_DEFAULT_LOCALE=sr
+NEXT_PUBLIC_SUPPORTED_LOCALES=sr,en
+
+# Maps (optional)
+NEXT_PUBLIC_MAPTILER_STYLE_KEY=your_key
+
+# Authentication (optional)
+NEXTAUTH_URL=https://yourdomain.com
+NEXTAUTH_SECRET=your_secret
+```
 
 ### Optional
 - `DATA_GOV_RS_API_KEY` - API key for data.gov.rs (for write operations)
