@@ -3,59 +3,126 @@
  * Alarming data about waiting lists, capacity issues, and healthcare worker exodus
  */
 
-import { useLingui } from '@lingui/react';
-import { Alert, Box, Card, CardContent, Chip, Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { useLingui } from "@lingui/react";
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Grid,
+  LinearProgress,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { useEffect } from "react";
 
-import { DemoPageTemplate } from '@/components/demo/DemoPageTemplate';
-import { LineChart } from '@/components/demos/charts';
-import { LiveDatasetPanel } from '@/components/demos/LiveDatasetPanel';
+import { DemoPageTemplate } from "@/components/demo/DemoPageTemplate";
+import { LineChart } from "@/components/demos/charts";
+import { DemoCodeBlock } from "@/components/demos/demo-code-block";
+import { LiveDatasetPanel } from "@/components/demos/LiveDatasetPanel";
+import {
+  PerformanceBadge,
+  usePerformanceMetrics,
+} from "@/components/demos/performance-badge";
 import {
   healthcareStats,
   healthcareWorkerExodus,
   healthIndicators,
   hospitalCapacity,
-  waitingLists
-} from '@/data/serbia-healthcare';
+  waitingLists,
+} from "@/data/serbia-healthcare";
 
 export default function HealthcareDemo() {
   const { i18n } = useLingui();
-  const locale = i18n.locale?.startsWith('sr') ? 'sr' : 'en';
+  const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
 
-  const title = locale === 'sr'
-    ? '🚨 Zdravstvena kriza u Srbiji'
-    : '🚨 Healthcare Crisis in Serbia';
+  const title =
+    locale === "sr"
+      ? "🚨 Zdravstvena kriza u Srbiji"
+      : "🚨 Healthcare Crisis in Serbia";
 
-  const description = locale === 'sr'
-    ? 'Alarmantni podaci o listama čekanja, kapacitetima bolnica i odlivu zdravstvenih radnika'
-    : 'Alarming data on waiting lists, hospital capacity, and healthcare worker exodus';
+  const description =
+    locale === "sr"
+      ? "Alarmantni podaci o listama čekanja, kapacitetima bolnica i odlivu zdravstvenih radnika"
+      : "Alarming data on waiting lists, hospital capacity, and healthcare worker exodus";
+
+  const {
+    metrics,
+    markDataLoadStart,
+    markDataLoadEnd,
+    markRenderStart,
+    markRenderEnd,
+  } = usePerformanceMetrics();
 
   // Calculate worst waiting times
   const longestWait = waitingLists.reduce((max, item) =>
     item.averageWaitDays > max.averageWaitDays ? item : max
   );
 
+  // Mark data load on mount
+  useEffect(() => {
+    markDataLoadStart();
+    // Simulate data load timing
+    setTimeout(() => {
+      const totalDataPoints =
+        healthcareWorkerExodus.length +
+        hospitalCapacity.length +
+        waitingLists.length;
+      markDataLoadEnd(totalDataPoints, false);
+      markRenderStart();
+      // Charts will render, mark render end after
+      setTimeout(() => markRenderEnd(), 100);
+    }, 50);
+  }, []);
+
   const dashboardContent = (
     <Box>
-      <LiveDatasetPanel demoId="healthcare" title={locale === 'sr' ? 'Živi podaci (zdravstvo)' : 'Live data (healthcare)'} />
+      <LiveDatasetPanel
+        demoId="healthcare"
+        title={
+          locale === "sr" ? "Živi podaci (zdravstvo)" : "Live data (healthcare)"
+        }
+      />
       <Box>
         {/* Critical Warning Banner */}
         <Alert
           severity="error"
-          sx={{ mb: 4, fontSize: '1.1rem', fontWeight: 500 }}
+          sx={{ mb: 4, fontSize: "1.1rem", fontWeight: 500 }}
         >
-          {locale === 'sr' ? (
+          {locale === "sr" ? (
             <>
-              <strong>⚠️ ZDRAVSTVENA KRIZA:</strong> Preko <strong>{healthcareStats.totalPatientsWaiting.toLocaleString()}</strong> pacijenata
-              čeka na medicinske procedure. Prosečno vreme čekanja je <strong>{healthcareStats.averageWaitTimeAllProcedures} dana</strong>.
-              Za {longestWait.procedure.toLowerCase()} pacijenti čekaju do <strong>{longestWait.averageWaitDays} dana</strong>
-              ({(longestWait.averageWaitDays / longestWait.recommendedMaxDays).toFixed(1)}x duže od preporučenog).
+              <strong>⚠️ ZDRAVSTVENA KRIZA:</strong> Preko{" "}
+              <strong>
+                {healthcareStats.totalPatientsWaiting.toLocaleString()}
+              </strong>{" "}
+              pacijenata čeka na medicinske procedure. Prosečno vreme čekanja je{" "}
+              <strong>
+                {healthcareStats.averageWaitTimeAllProcedures} dana
+              </strong>
+              . Za {longestWait.procedure.toLowerCase()} pacijenti čekaju do{" "}
+              <strong>{longestWait.averageWaitDays} dana</strong>(
+              {(
+                longestWait.averageWaitDays / longestWait.recommendedMaxDays
+              ).toFixed(1)}
+              x duže od preporučenog).
             </>
           ) : (
             <>
-              <strong>⚠️ HEALTHCARE CRISIS:</strong> Over <strong>{healthcareStats.totalPatientsWaiting.toLocaleString()}</strong> patients
-              waiting for medical procedures. Average wait time is <strong>{healthcareStats.averageWaitTimeAllProcedures} days</strong>.
-              For {longestWait.procedureEn.toLowerCase()}, patients wait up to <strong>{longestWait.averageWaitDays} days</strong>
-              ({(longestWait.averageWaitDays / longestWait.recommendedMaxDays).toFixed(1)}x longer than recommended).
+              <strong>⚠️ HEALTHCARE CRISIS:</strong> Over{" "}
+              <strong>
+                {healthcareStats.totalPatientsWaiting.toLocaleString()}
+              </strong>{" "}
+              patients waiting for medical procedures. Average wait time is{" "}
+              <strong>
+                {healthcareStats.averageWaitTimeAllProcedures} days
+              </strong>
+              . For {longestWait.procedureEn.toLowerCase()}, patients wait up to{" "}
+              <strong>{longestWait.averageWaitDays} days</strong>(
+              {(
+                longestWait.averageWaitDays / longestWait.recommendedMaxDays
+              ).toFixed(1)}
+              x longer than recommended).
             </>
           )}
         </Alert>
@@ -63,64 +130,96 @@ export default function HealthcareDemo() {
         {/* Key Statistics Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.main' }}>
+            <Card
+              sx={{ height: "100%", borderLeft: 4, borderColor: "error.main" }}
+            >
               <CardContent>
                 <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Ukupno na listi čekanja' : 'Total on waiting lists'}
+                  {locale === "sr"
+                    ? "Ukupno na listi čekanja"
+                    : "Total on waiting lists"}
                 </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 700, my: 1, color: 'error.main' }}>
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: 700, my: 1, color: "error.main" }}
+                >
                   {healthcareStats.totalPatientsWaiting.toLocaleString()}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr' ? 'pacijenata čeka na procedure' : 'patients waiting for procedures'}
+                  {locale === "sr"
+                    ? "pacijenata čeka na procedure"
+                    : "patients waiting for procedures"}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'warning.main' }}>
+            <Card
+              sx={{
+                height: "100%",
+                borderLeft: 4,
+                borderColor: "warning.main",
+              }}
+            >
               <CardContent>
                 <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Prosečno vreme čekanja' : 'Average waiting time'}
+                  {locale === "sr"
+                    ? "Prosečno vreme čekanja"
+                    : "Average waiting time"}
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
                   {healthcareStats.averageWaitTimeAllProcedures}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr' ? 'dana (~7 meseci)' : 'days (~7 months)'}
+                  {locale === "sr" ? "dana (~7 meseci)" : "days (~7 months)"}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'error.dark' }}>
+            <Card
+              sx={{ height: "100%", borderLeft: 4, borderColor: "error.dark" }}
+            >
               <CardContent>
                 <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Zdravstveni radnici otišli (2024)' : 'Healthcare workers left (2024)'}
+                  {locale === "sr"
+                    ? "Zdravstveni radnici otišli (2024)"
+                    : "Healthcare workers left (2024)"}
                 </Typography>
-                <Typography variant="h4" sx={{ fontWeight: 700, my: 1, color: 'error.dark' }}>
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: 700, my: 1, color: "error.dark" }}
+                >
                   {healthcareStats.workersLeftLastYear.toLocaleString()}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr' ? 'lekara i sestara' : 'doctors and nurses'}
+                  {locale === "sr" ? "lekara i sestara" : "doctors and nurses"}
                 </Typography>
               </CardContent>
             </Card>
           </Grid>
 
           <Grid item xs={12} md={6} lg={3}>
-            <Card sx={{ height: '100%', borderLeft: 4, borderColor: 'warning.dark' }}>
+            <Card
+              sx={{
+                height: "100%",
+                borderLeft: 4,
+                borderColor: "warning.dark",
+              }}
+            >
               <CardContent>
                 <Typography variant="caption" color="text.secondary">
-                  {locale === 'sr' ? 'Smanjenje kapaciteta (2015-2024)' : 'Capacity reduction (2015-2024)'}
+                  {locale === "sr"
+                    ? "Smanjenje kapaciteta (2015-2024)"
+                    : "Capacity reduction (2015-2024)"}
                 </Typography>
                 <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
                   -{healthcareStats.bedReduction2015to2024.toLocaleString()}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {locale === 'sr' ? 'bolničkih kreveta' : 'hospital beds'}
+                  {locale === "sr" ? "bolničkih kreveta" : "hospital beds"}
                 </Typography>
               </CardContent>
             </Card>
@@ -130,78 +229,91 @@ export default function HealthcareDemo() {
         {/* Waiting Lists Visualization */}
         <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            {locale === 'sr'
-              ? '⏰ Liste čekanja za medicinske procedure'
-              : '⏰ Waiting Lists for Medical Procedures'
-            }
+            {locale === "sr"
+              ? "⏰ Liste čekanja za medicinske procedure"
+              : "⏰ Waiting Lists for Medical Procedures"}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {locale === 'sr'
-              ? 'Uporedba stvarnog vremena čekanja sa preporučenim maksimumom. Crvena linija pokazuje kritičnu granicu.'
-              : 'Comparison of actual waiting times with recommended maximum. Red line shows critical threshold.'
-            }
+            {locale === "sr"
+              ? "Uporedba stvarnog vremena čekanja sa preporučenim maksimumom. Crvena linija pokazuje kritičnu granicu."
+              : "Comparison of actual waiting times with recommended maximum. Red line shows critical threshold."}
           </Typography>
 
           {/* Waiting time bars with progress indicators */}
           <Box sx={{ mb: 4 }}>
             {waitingLists.map((item, index) => {
-              const exceedanceRatio = item.averageWaitDays / item.recommendedMaxDays;
+              const exceedanceRatio =
+                item.averageWaitDays / item.recommendedMaxDays;
               const isCritical = exceedanceRatio > 2;
 
               return (
                 <Box key={index} sx={{ mb: 3 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 1,
+                    }}
+                  >
                     <Typography variant="body1" fontWeight={600}>
-                      {locale === 'sr' ? item.procedure : item.procedureEn}
+                      {locale === "sr" ? item.procedure : item.procedureEn}
                     </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {item.patientsWaiting.toLocaleString()} {locale === 'sr' ? 'pacijenata' : 'patients'}
+                        {item.patientsWaiting.toLocaleString()}{" "}
+                        {locale === "sr" ? "pacijenata" : "patients"}
                       </Typography>
-                      {isCritical && <Chip label="KRITIČNO" size="small" color="error" />}
+                      {isCritical && (
+                        <Chip label="KRITIČNO" size="small" color="error" />
+                      )}
                     </Box>
                   </Box>
 
-                  <Box sx={{ position: 'relative' }}>
+                  <Box sx={{ position: "relative" }}>
                     <LinearProgress
                       variant="determinate"
                       value={Math.min((exceedanceRatio / 4) * 100, 100)}
                       sx={{
                         height: 28,
                         borderRadius: 1,
-                        backgroundColor: 'success.lighter',
-                        '& .MuiLinearProgress-bar': {
-                          backgroundColor: isCritical ? 'error.main' : 'warning.main',
-                          borderRadius: 1
-                        }
+                        backgroundColor: "success.lighter",
+                        "& .MuiLinearProgress-bar": {
+                          backgroundColor: isCritical
+                            ? "error.main"
+                            : "warning.main",
+                          borderRadius: 1,
+                        },
                       }}
                     />
                     <Typography
                       variant="caption"
                       sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         left: 8,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontWeight: 700,
-                        color: exceedanceRatio > 0.5 ? 'white' : 'text.primary'
+                        color: exceedanceRatio > 0.5 ? "white" : "text.primary",
                       }}
                     >
-                      {item.averageWaitDays} {locale === 'sr' ? 'dana' : 'days'}
-                      {' '}({exceedanceRatio.toFixed(1)}x {locale === 'sr' ? 'duže' : 'longer'})
+                      {item.averageWaitDays} {locale === "sr" ? "dana" : "days"}{" "}
+                      ({exceedanceRatio.toFixed(1)}x{" "}
+                      {locale === "sr" ? "duže" : "longer"})
                     </Typography>
                     <Typography
                       variant="caption"
                       sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         right: 8,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
+                        top: "50%",
+                        transform: "translateY(-50%)",
                         fontWeight: 600,
-                        color: 'success.dark'
+                        color: "success.dark",
                       }}
                     >
-                      {locale === 'sr' ? 'Max' : 'Max'}: {item.recommendedMaxDays} {locale === 'sr' ? 'dana' : 'days'}
+                      {locale === "sr" ? "Max" : "Max"}:{" "}
+                      {item.recommendedMaxDays}{" "}
+                      {locale === "sr" ? "dana" : "days"}
                     </Typography>
                   </Box>
                 </Box>
@@ -213,23 +325,21 @@ export default function HealthcareDemo() {
         {/* Healthcare Worker Exodus */}
         <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            {locale === 'sr'
+            {locale === "sr"
               ? '🌍 Odliv zdravstvenih radnika - "Brain Drain"'
-              : '🌍 Healthcare Worker Exodus - Brain Drain'
-            }
+              : "🌍 Healthcare Worker Exodus - Brain Drain"}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {locale === 'sr'
-              ? 'Broj lekara i medicinskih sestara koji su napustili Srbiju po godinama. Trend je alarmantno rastući.'
-              : 'Number of doctors and nurses who left Serbia by year. The trend is alarmingly increasing.'
-            }
+            {locale === "sr"
+              ? "Broj lekara i medicinskih sestara koji su napustili Srbiju po godinama. Trend je alarmantno rastući."
+              : "Number of doctors and nurses who left Serbia by year. The trend is alarmingly increasing."}
           </Typography>
 
           <LineChart
-            data={healthcareWorkerExodus.map(item => ({
+            data={healthcareWorkerExodus.map((item) => ({
               label: item.year.toString(),
               value: item.totalLeft,
-              category: locale === 'sr' ? 'Ukupno' : 'Total'
+              category: locale === "sr" ? "Ukupno" : "Total",
             }))}
             xKey="label"
             yKey="value"
@@ -239,42 +349,88 @@ export default function HealthcareDemo() {
           />
 
           <Alert severity="error" sx={{ mt: 3 }}>
-            <strong>{locale === 'sr' ? 'KRITIČAN TREND:' : 'CRITICAL TREND:'}</strong>{' '}
-            {locale === 'sr'
+            <strong>
+              {locale === "sr" ? "KRITIČAN TREND:" : "CRITICAL TREND:"}
+            </strong>{" "}
+            {locale === "sr"
               ? `Od 2015. godine, ${healthcareStats.totalWorkersLeft2015to2024.toLocaleString()} zdravstvenih radnika je napustilo Srbiju.
                  Samo 2024. godine otišlo je ${healthcareStats.workersLeftLastYear.toLocaleString()} radnika.`
               : `Since 2015, ${healthcareStats.totalWorkersLeft2015to2024.toLocaleString()} healthcare workers have left Serbia.
-                 In 2024 alone, ${healthcareStats.workersLeftLastYear.toLocaleString()} workers left.`
-            }
+                 In 2024 alone, ${healthcareStats.workersLeftLastYear.toLocaleString()} workers left.`}
           </Alert>
         </Paper>
+
+        {/* Code Block for Healthcare Worker Exodus Chart */}
+        <DemoCodeBlock
+          title={
+            locale === "sr"
+              ? "📝 Kod za grafikon odliva zdravstvenih radnika"
+              : "📝 Code for Healthcare Worker Exodus Chart"
+          }
+          code={`import { LineChart } from '@/components/demos/charts';
+
+// Healthcare worker exodus data
+const exodusData = [
+  { year: '2015', totalLeft: 580, doctors: 320, nurses: 260 },
+  { year: '2018', totalLeft: 892, doctors: 487, nurses: 405 },
+  { year: '2021', totalLeft: 1245, doctors: 678, nurses: 567 },
+  { year: '2024', totalLeft: 1567, doctors: 856, nurses: 711 },
+];
+
+// Using the component API
+<LineChart
+  data={exodusData.map(item => ({
+    label: item.year,
+    value: item.totalLeft,
+    category: 'Total'
+  }))}
+  xKey="label"
+  yKey="value"
+  width={900}
+  height={400}
+/>
+
+// Or using the new standalone export
+import { LineChart } from '@acailic/vizualni-admin/charts';
+
+<LineChart
+  data={exodusData}
+  config={{
+    xAxis: 'year',
+    yAxis: 'totalLeft',
+    color: '#ef4444',
+    showGrid: true,
+    showTooltip: true,
+  }}
+  height={400}
+/>`}
+          language="tsx"
+        />
 
         {/* Hospital Capacity Decline */}
         <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            {locale === 'sr'
-              ? '🏥 Pad kapaciteta bolničkih ustanova'
-              : '🏥 Declining Hospital Capacity'
-            }
+            {locale === "sr"
+              ? "🏥 Pad kapaciteta bolničkih ustanova"
+              : "🏥 Declining Hospital Capacity"}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-            {locale === 'sr'
-              ? 'Smanjenje broja kreveta i povećanje opterećenja po lekaru i sestri.'
-              : 'Reduction in number of beds and increasing workload per doctor and nurse.'
-            }
+            {locale === "sr"
+              ? "Smanjenje broja kreveta i povećanje opterećenja po lekaru i sestri."
+              : "Reduction in number of beds and increasing workload per doctor and nurse."}
           </Typography>
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {locale === 'sr' ? 'Bolnički kreveti' : 'Hospital beds'}
+                  {locale === "sr" ? "Bolnički kreveti" : "Hospital beds"}
                 </Typography>
                 <LineChart
-                  data={hospitalCapacity.map(item => ({
+                  data={hospitalCapacity.map((item) => ({
                     label: item.year.toString(),
                     value: item.totalBeds,
-                    category: locale === 'sr' ? 'Kreveti' : 'Beds'
+                    category: locale === "sr" ? "Kreveti" : "Beds",
                   }))}
                   xKey="label"
                   yKey="value"
@@ -287,13 +443,16 @@ export default function HealthcareDemo() {
             <Grid item xs={12} md={6}>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle2" gutterBottom>
-                  {locale === 'sr' ? 'Pacijenti po lekaru' : 'Patients per doctor'}
+                  {locale === "sr"
+                    ? "Pacijenti po lekaru"
+                    : "Patients per doctor"}
                 </Typography>
                 <LineChart
-                  data={hospitalCapacity.map(item => ({
+                  data={hospitalCapacity.map((item) => ({
                     label: item.year.toString(),
                     value: item.patientsPerDoctor,
-                    category: locale === 'sr' ? 'Pacijenti/Lekar' : 'Patients/Doctor'
+                    category:
+                      locale === "sr" ? "Pacijenti/Lekar" : "Patients/Doctor",
                   }))}
                   xKey="label"
                   yKey="value"
@@ -306,24 +465,101 @@ export default function HealthcareDemo() {
           </Grid>
 
           <Alert severity="warning" sx={{ mt: 2 }}>
-            {locale === 'sr'
-              ? `Broj pacijenata po lekaru je porastao za ${healthcareStats.patientsPerDoctorIncrease}
-                 (sa ${hospitalCapacity[0].patientsPerDoctor} na ${hospitalCapacity[hospitalCapacity.length - 1].patientsPerDoctor}),
-                 dok je zauzetost kreveta porasla na alarmantnih ${healthcareStats.currentOccupancyRate}%.`
-              : `The number of patients per doctor increased by ${healthcareStats.patientsPerDoctorIncrease}
-                 (from ${hospitalCapacity[0].patientsPerDoctor} to ${hospitalCapacity[hospitalCapacity.length - 1].patientsPerDoctor}),
-                 while bed occupancy rose to an alarming ${healthcareStats.currentOccupancyRate}%.`
-            }
+            {locale === "sr"
+              ? `Broj pacijenata po lekaru je porastao za ${
+                  healthcareStats.patientsPerDoctorIncrease
+                }
+                 (sa ${hospitalCapacity[0].patientsPerDoctor} na ${
+                  hospitalCapacity[hospitalCapacity.length - 1]
+                    .patientsPerDoctor
+                }),
+                 dok je zauzetost kreveta porasla na alarmantnih ${
+                   healthcareStats.currentOccupancyRate
+                 }%.`
+              : `The number of patients per doctor increased by ${
+                  healthcareStats.patientsPerDoctorIncrease
+                }
+                 (from ${hospitalCapacity[0].patientsPerDoctor} to ${
+                  hospitalCapacity[hospitalCapacity.length - 1]
+                    .patientsPerDoctor
+                }),
+                 while bed occupancy rose to an alarming ${
+                   healthcareStats.currentOccupancyRate
+                 }%.`}
           </Alert>
         </Paper>
+
+        {/* Code Block for Hospital Capacity Charts */}
+        <DemoCodeBlock
+          title={
+            locale === "sr"
+              ? "📝 Kod za grafikone kapaciteta bolnica"
+              : "📝 Code for Hospital Capacity Charts"
+          }
+          code={`import { LineChart } from '@/components/demos/charts';
+
+// Hospital capacity data
+const capacityData = [
+  { year: '2015', totalBeds: 42156, patientsPerDoctor: 285 },
+  { year: '2018', totalBeds: 39842, patientsPerDoctor: 312 },
+  { year: '2021', totalBeds: 37567, patientsPerDoctor: 348 },
+  { year: '2024', totalBeds: 35234, patientsPerDoctor: 389 },
+];
+
+// Create multi-series chart for hospital capacity
+<Grid container spacing={3}>
+  <Grid item xs={12} md={6}>
+    <LineChart
+      data={capacityData.map(item => ({
+        label: item.year,
+        value: item.totalBeds,
+        category: 'Beds'
+      }))}
+      xKey="label"
+      yKey="value"
+      width={450}
+      height={300}
+    />
+  </Grid>
+  <Grid item xs={12} md={6}>
+    <LineChart
+      data={capacityData.map(item => ({
+        label: item.year,
+        value: item.patientsPerDoctor,
+        category: 'Patients/Doctor'
+      }))}
+      xKey="label"
+      yKey="value"
+      width={450}
+      height={300}
+    />
+  </Grid>
+</Grid>
+
+// Or using the new standalone export API
+import { LineChart } from '@acailic/vizualni-admin/charts';
+
+<LineChart
+  data={capacityData}
+  config={{
+    xAxis: 'year',
+    yAxis: ['totalBeds', 'patientsPerDoctor'],
+    seriesKeys: ['totalBeds', 'patientsPerDoctor'],
+    colors: ['#ef4444', '#f59e0b'],
+    showGrid: true,
+    showLegend: true,
+  }}
+  height={300}
+/>`}
+          language="tsx"
+        />
 
         {/* Health Indicators Comparison */}
         <Paper elevation={2} sx={{ p: 3 }}>
           <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            {locale === 'sr'
-              ? '📊 Zdravstveni indikatori - Poređenje sa EU'
-              : '📊 Health Indicators - EU Comparison'
-            }
+            {locale === "sr"
+              ? "📊 Zdravstveni indikatori - Poređenje sa EU"
+              : "📊 Health Indicators - EU Comparison"}
           </Typography>
 
           <Grid container spacing={2}>
@@ -331,33 +567,57 @@ export default function HealthcareDemo() {
               <Grid item xs={12} md={6} key={index}>
                 <Card variant="outlined">
                   <CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        mb: 1,
+                      }}
+                    >
                       <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                        {locale === 'sr' ? indicator.indicator : indicator.indicatorEn}
+                        {locale === "sr"
+                          ? indicator.indicator
+                          : indicator.indicatorEn}
                       </Typography>
                       <Chip
                         label={
-                          indicator.trend === 'worsening'
-                            ? (locale === 'sr' ? 'Pogoršanje' : 'Worsening')
-                            : indicator.trend === 'improving'
-                            ? (locale === 'sr' ? 'Poboljšanje' : 'Improving')
-                            : (locale === 'sr' ? 'Stabilno' : 'Stable')
+                          indicator.trend === "worsening"
+                            ? locale === "sr"
+                              ? "Pogoršanje"
+                              : "Worsening"
+                            : indicator.trend === "improving"
+                            ? locale === "sr"
+                              ? "Poboljšanje"
+                              : "Improving"
+                            : locale === "sr"
+                            ? "Stabilno"
+                            : "Stable"
                         }
                         size="small"
                         color={
-                          indicator.trend === 'worsening'
-                            ? 'error'
-                            : indicator.trend === 'improving'
-                            ? 'success'
-                            : 'default'
+                          indicator.trend === "worsening"
+                            ? "error"
+                            : indicator.trend === "improving"
+                            ? "success"
+                            : "default"
                         }
                       />
                     </Box>
-                    <Typography variant="h4" color="primary.main" sx={{ fontWeight: 700, mb: 1 }}>
-                      {indicator.value} <Typography component="span" variant="body2">{indicator.unit}</Typography>
+                    <Typography
+                      variant="h4"
+                      color="primary.main"
+                      sx={{ fontWeight: 700, mb: 1 }}
+                    >
+                      {indicator.value}{" "}
+                      <Typography component="span" variant="body2">
+                        {indicator.unit}
+                      </Typography>
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {locale === 'sr' ? indicator.comparison : indicator.comparisonEn}
+                      {locale === "sr"
+                        ? indicator.comparison
+                        : indicator.comparisonEn}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -366,14 +626,25 @@ export default function HealthcareDemo() {
           </Grid>
 
           <Alert severity="info" sx={{ mt: 3 }}>
-            {locale === 'sr'
+            {locale === "sr"
               ? `Većina zdravstvenih indikatora pokazuje zabrinjavajuće zaostajanje za EU prosekom,
                  posebno u broju lekara i medicinskih sestara po stanovništvu.`
               : `Most health indicators show concerning lag behind EU average,
-                 especially in the number of doctors and nurses per population.`
-            }
+                 especially in the number of doctors and nurses per population.`}
           </Alert>
         </Paper>
+
+        {/* Performance Badge */}
+        <Box
+          sx={{
+            mt: 4,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <PerformanceBadge metrics={metrics} showDetails={true} />
+        </Box>
       </Box>
     </Box>
   );
@@ -386,16 +657,32 @@ export default function HealthcareDemo() {
       chartComponent={dashboardContent}
       fallbackData={healthcareWorkerExodus}
       insightsConfig={{
-        datasetId: 'healthcare-demo',
+        datasetId: "healthcare-demo",
         sampleData: healthcareWorkerExodus,
-        valueColumn: 'totalLeft',
-        timeColumn: 'year'
+        valueColumn: "totalLeft",
+        timeColumn: "year",
       }}
       columns={[
-        { key: 'year', header: locale === 'sr' ? 'Godina' : 'Year', width: 100 },
-        { key: 'totalLeft', header: locale === 'sr' ? 'Ukupno otišlo' : 'Total Left', width: 150 },
-        { key: 'doctors', header: locale === 'sr' ? 'Lekari' : 'Doctors', width: 150 },
-        { key: 'nurses', header: locale === 'sr' ? 'Sestre' : 'Nurses', width: 150 },
+        {
+          key: "year",
+          header: locale === "sr" ? "Godina" : "Year",
+          width: 100,
+        },
+        {
+          key: "totalLeft",
+          header: locale === "sr" ? "Ukupno otišlo" : "Total Left",
+          width: 150,
+        },
+        {
+          key: "doctors",
+          header: locale === "sr" ? "Lekari" : "Doctors",
+          width: 150,
+        },
+        {
+          key: "nurses",
+          header: locale === "sr" ? "Sestre" : "Nurses",
+          width: 150,
+        },
       ]}
     />
   );
@@ -406,6 +693,6 @@ export default function HealthcareDemo() {
  */
 export async function getStaticProps() {
   return {
-    props: {}
+    props: {},
   };
 }
