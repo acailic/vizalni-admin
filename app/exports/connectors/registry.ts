@@ -44,6 +44,7 @@ interface RegistryEntry {
 class ConnectorRegistryClass {
   private registry = new Map<string, RegistryEntry>();
   private instances = new Map<string, IDataConnector>();
+  private instanceTypes = new Map<string, string>(); // Track which type each instance was created from
 
   /**
    * Register a connector factory
@@ -61,9 +62,7 @@ class ConnectorRegistryClass {
     }
   ): void {
     if (this.registry.has(type)) {
-      console.warn(
-        `Connector type "${type}" is already registered. Overwriting.`
-      );
+      throw new Error(`Connector type "${type}" is already registered`);
     }
 
     this.registry.set(type, {
@@ -81,12 +80,14 @@ class ConnectorRegistryClass {
    */
   unregister(type: string): boolean {
     // Clean up any instances of this type
-    for (const [id, instance] of this.instances.entries()) {
-      if (instance.config.id === type) {
-        if (instance.destroy) {
+    for (const [id, instanceType] of this.instanceTypes.entries()) {
+      if (instanceType === type) {
+        const instance = this.instances.get(id);
+        if (instance && instance.destroy) {
           instance.destroy();
         }
         this.instances.delete(id);
+        this.instanceTypes.delete(id);
       }
     }
 
@@ -122,10 +123,29 @@ class ConnectorRegistryClass {
       throw new Error(`Connector type "${type}" is not registered`);
     }
 
-    const instance = entry.factory(config);
+    // Check for duplicate instance
+    if (this.instances.has(config.id)) {
+      throw new Error(
+        `Connector instance with id "${config.id}" already exists`
+      );
+    }
 
-    // Store instance for cleanup
+    // Handle both factory functions and class constructors
+    let instance: IDataConnector<TConfig>;
+    try {
+      // Try as a factory function first
+      instance = entry.factory(config);
+    } catch {
+      // If that fails, try as a class constructor
+      const FactoryClass = entry.factory as unknown as new (
+        config: TConfig
+      ) => IDataConnector<TConfig>;
+      instance = new FactoryClass(config);
+    }
+
+    // Store instance for cleanup and track its type
     this.instances.set(config.id, instance);
+    this.instanceTypes.set(config.id, type);
 
     return instance;
   }
@@ -157,6 +177,7 @@ class ConnectorRegistryClass {
       instance.destroy();
     }
 
+    this.instanceTypes.delete(id);
     return this.instances.delete(id);
   }
 
@@ -210,6 +231,7 @@ class ConnectorRegistryClass {
     }
 
     this.instances.clear();
+    this.instanceTypes.clear();
     this.registry.clear();
   }
 }
@@ -218,6 +240,13 @@ class ConnectorRegistryClass {
  * Global connector registry instance
  */
 export const ConnectorRegistry = new ConnectorRegistryClass();
+
+/**
+ * Connector Registry class
+ *
+ * Exported for testing purposes to allow creating isolated instances
+ */
+export { ConnectorRegistryClass as ConnectorRegistryClass_ };
 
 /**
  * Register a connector type

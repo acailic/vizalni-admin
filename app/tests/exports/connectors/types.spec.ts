@@ -155,7 +155,7 @@ describe("Connector Types", () => {
 
 describe("ConnectorError", () => {
   it("should create error with code and message", () => {
-    const error = new ConnectorError("NETWORK_ERROR", "Network failed");
+    const error = new ConnectorError("Network failed", "NETWORK_ERROR");
 
     expect(error.code).toBe("NETWORK_ERROR");
     expect(error.message).toBe("Network failed");
@@ -163,26 +163,26 @@ describe("ConnectorError", () => {
   });
 
   it("should create error with context", () => {
-    const error = new ConnectorError("TIMEOUT", "Request timed out", {
+    const error = new ConnectorError("Request timed out", "TIMEOUT", {
       url: "https://example.com",
       timeout: 5000,
     });
 
-    expect(error.context).toEqual({
+    expect(error.details).toEqual({
       url: "https://example.com",
       timeout: 5000,
     });
   });
 
   it("should be instanceof Error", () => {
-    const error = new ConnectorError("UNKNOWN_ERROR", "Unknown error");
+    const error = new ConnectorError("Unknown error", "UNKNOWN_ERROR");
 
     expect(error instanceof Error).toBe(true);
     expect(error instanceof ConnectorError).toBe(true);
   });
 
   it("should have stack trace", () => {
-    const error = new ConnectorError("PARSING_ERROR", "Parse failed");
+    const error = new ConnectorError("Parse failed", "PARSING_ERROR");
 
     expect(error.stack).toBeDefined();
     expect(error.stack).toContain("ConnectorError");

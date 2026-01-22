@@ -4,10 +4,11 @@
  * Tests for the connector registry functionality.
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
 import {
   ConnectorRegistry,
+  ConnectorRegistryClass_,
   registerConnector,
   unregisterConnector,
   createConnector,
@@ -22,14 +23,17 @@ import type {
 } from "../../../exports/connectors";
 
 // Mock connector for testing
-class MockConnector implements IDataConnector<Record<string, unknown>> {
-  readonly id: string;
-  readonly name: string;
-  readonly version = "1.0.0";
+class MockConnector implements IDataConnector<BaseConnectorConfig> {
+  readonly config: BaseConnectorConfig;
+  readonly capabilities = {
+    pagination: false,
+    filtering: false,
+    sorting: false,
+    realtime: false,
+  };
 
   constructor(config: BaseConnectorConfig) {
-    this.id = config.id;
-    this.name = config.name;
+    this.config = config;
   }
 
   async fetch() {
@@ -45,12 +49,7 @@ class MockConnector implements IDataConnector<Record<string, unknown>> {
   }
 
   getCapabilities() {
-    return {
-      pagination: false,
-      filtering: false,
-      sorting: false,
-      realtime: false,
-    };
+    return this.capabilities;
   }
 
   async healthCheck() {
@@ -63,10 +62,10 @@ class MockConnector implements IDataConnector<Record<string, unknown>> {
 }
 
 describe("ConnectorRegistry", () => {
-  let registry: ConnectorRegistry;
+  let registry: InstanceType<typeof ConnectorRegistryClass_>;
 
   beforeEach(() => {
-    registry = new ConnectorRegistry();
+    registry = new ConnectorRegistryClass_();
   });
 
   afterEach(() => {
@@ -76,15 +75,7 @@ describe("ConnectorRegistry", () => {
   describe("register", () => {
     it("should register a new connector type", () => {
       registry.register("mock", MockConnector, {
-        name: "Mock Connector",
         description: "A mock connector for testing",
-        version: "1.0.0",
-        capabilities: {
-          pagination: false,
-          filtering: false,
-          sorting: false,
-          realtime: false,
-        },
       });
 
       expect(registry.has("mock")).toBe(true);
@@ -92,26 +83,26 @@ describe("ConnectorRegistry", () => {
 
     it("should throw when registering duplicate type", () => {
       registry.register("mock", MockConnector, {
-        name: "Mock",
+        description: "Mock",
       });
 
       expect(() => {
-        registry.register("mock", MockConnector, { name: "Duplicate" });
+        registry.register("mock", MockConnector, { description: "Duplicate" });
       }).toThrow();
     });
 
     it("should return metadata for registered type", () => {
-      const metadata = registry.register("mock", MockConnector, {
-        name: "Mock Connector",
-        version: "2.0.0",
+      registry.register("mock", MockConnector, {
+        description: "Mock Connector",
       });
 
-      expect(metadata.name).toBe("Mock Connector");
-      expect(metadata.version).toBe("2.0.0");
+      const metadata = registry.listMetadata();
+      const mockMetadata = metadata.find((m) => m.type === "mock");
+      expect(mockMetadata?.description).toBe("Mock Connector");
     });
 
     it("should store connector factory", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
 
       const factory = registry.getFactory("mock");
       expect(factory).toBe(MockConnector);
@@ -120,7 +111,7 @@ describe("ConnectorRegistry", () => {
 
   describe("unregister", () => {
     it("should unregister a connector type", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       expect(registry.has("mock")).toBe(true);
 
       registry.unregister("mock");
@@ -128,7 +119,7 @@ describe("ConnectorRegistry", () => {
     });
 
     it("should destroy existing instances when unregistering", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       registry.create("mock", { id: "test-1", name: "Test" });
       registry.create("mock", { id: "test-2", name: "Test" });
 
@@ -150,7 +141,7 @@ describe("ConnectorRegistry", () => {
   describe("create", () => {
     beforeEach(() => {
       registry.register("mock", MockConnector, {
-        name: "Mock Connector",
+        description: "Mock Connector",
       });
     });
 
@@ -161,8 +152,8 @@ describe("ConnectorRegistry", () => {
       });
 
       expect(connector).toBeInstanceOf(MockConnector);
-      expect(connector.id).toBe("test-connector");
-      expect(connector.name).toBe("Test Connector");
+      expect(connector.config.id).toBe("test-connector");
+      expect(connector.config.name).toBe("Test Connector");
     });
 
     it("should throw when creating unregistered type", () => {
@@ -191,7 +182,7 @@ describe("ConnectorRegistry", () => {
 
   describe("getInstance", () => {
     it("should return existing instance", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       const connector = registry.create("mock", { id: "test", name: "Test" });
 
       const retrieved = registry.getInstance("test");
@@ -206,7 +197,7 @@ describe("ConnectorRegistry", () => {
 
   describe("destroyInstance", () => {
     it("should destroy connector instance", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       registry.create("mock", { id: "test", name: "Test" });
 
       expect(registry.getInstance("test")).toBeDefined();
@@ -217,7 +208,7 @@ describe("ConnectorRegistry", () => {
     });
 
     it("should call destroy on connector", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       const connector = registry.create("mock", { id: "test", name: "Test" });
 
       const destroySpy = vi.spyOn(connector, "destroy");
@@ -236,7 +227,7 @@ describe("ConnectorRegistry", () => {
 
   describe("has", () => {
     it("should return true for registered type", () => {
-      registry.register("mock", MockConnector, { name: "Mock" });
+      registry.register("mock", MockConnector, { description: "Mock" });
       expect(registry.has("mock")).toBe(true);
     });
 
@@ -252,8 +243,8 @@ describe("ConnectorRegistry", () => {
     });
 
     it("should return all registered types", () => {
-      registry.register("mock1", MockConnector, { name: "Mock 1" });
-      registry.register("mock2", MockConnector, { name: "Mock 2" });
+      registry.register("mock1", MockConnector, { description: "Mock 1" });
+      registry.register("mock2", MockConnector, { description: "Mock 2" });
 
       const types = registry.list();
       expect(types).toEqual(["mock1", "mock2"]);
@@ -263,26 +254,24 @@ describe("ConnectorRegistry", () => {
   describe("listMetadata", () => {
     it("should return metadata for all registered types", () => {
       registry.register("mock1", MockConnector, {
-        name: "Mock 1",
-        version: "1.0.0",
+        description: "Mock 1",
       });
       registry.register("mock2", MockConnector, {
-        name: "Mock 2",
-        version: "2.0.0",
+        description: "Mock 2",
       });
 
       const metadata = registry.listMetadata();
 
       expect(metadata).toHaveLength(2);
-      expect(metadata[0].name).toBe("Mock 1");
-      expect(metadata[1].name).toBe("Mock 2");
+      expect(metadata[0].description).toBe("Mock 1");
+      expect(metadata[1].description).toBe("Mock 2");
     });
   });
 
   describe("clear", () => {
     it("should remove all registered types and instances", () => {
-      registry.register("mock1", MockConnector, { name: "Mock 1" });
-      registry.register("mock2", MockConnector, { name: "Mock 2" });
+      registry.register("mock1", MockConnector, { description: "Mock 1" });
+      registry.register("mock2", MockConnector, { description: "Mock 2" });
       registry.create("mock1", { id: "test-1", name: "Test" });
 
       expect(registry.list()).toHaveLength(2);
@@ -298,13 +287,12 @@ describe("ConnectorRegistry", () => {
 describe("Convenience Functions", () => {
   afterEach(() => {
     // Clear the default registry after each test
-    const registry = new ConnectorRegistry();
-    registry.clear();
+    ConnectorRegistry.clear();
   });
 
   describe("registerConnector", () => {
     it("should use default registry", () => {
-      registerConnector("mock", MockConnector, { name: "Mock" });
+      registerConnector("mock", MockConnector, { description: "Mock" });
 
       const types = listConnectors();
       expect(types).toContain("mock");
@@ -313,7 +301,7 @@ describe("Convenience Functions", () => {
 
   describe("unregisterConnector", () => {
     it("should use default registry", () => {
-      registerConnector("mock", MockConnector, { name: "Mock" });
+      registerConnector("mock", MockConnector, { description: "Mock" });
       expect(listConnectors()).toContain("mock");
 
       unregisterConnector("mock");
@@ -324,7 +312,7 @@ describe("Convenience Functions", () => {
 
   describe("createConnector", () => {
     it("should use default registry", () => {
-      registerConnector("mock", MockConnector, { name: "Mock" });
+      registerConnector("mock", MockConnector, { description: "Mock" });
 
       const connector = createConnector("mock", {
         id: "test",
@@ -337,18 +325,18 @@ describe("Convenience Functions", () => {
 
   describe("getConnector", () => {
     it("should use default registry", () => {
-      registerConnector("mock", MockConnector, { name: "Mock" });
+      registerConnector("mock", MockConnector, { description: "Mock" });
       createConnector("mock", { id: "test", name: "Test" });
 
       const connector = getConnector("test");
       expect(connector).toBeDefined();
-      expect(connector?.id).toBe("test");
+      expect(connector?.config.id).toBe("test");
     });
   });
 
   describe("destroyConnector", () => {
     it("should use default registry", () => {
-      registerConnector("mock", MockConnector, { name: "Mock" });
+      registerConnector("mock", MockConnector, { description: "Mock" });
       createConnector("mock", { id: "test", name: "Test" });
 
       expect(getConnector("test")).toBeDefined();

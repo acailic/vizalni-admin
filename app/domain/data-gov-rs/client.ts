@@ -211,7 +211,12 @@ export class DataGovRsClient {
       clearTimeout(timeoutId);
 
       // Handle AbortError from timeout
-      if (error instanceof Error && error.name === "AbortError") {
+      // Note: In some environments (like jsdom), fetch abort throws DOMException instead of Error
+      if (
+        error &&
+        ((error instanceof Error && error.name === "AbortError") ||
+          (error instanceof DOMException && error.name === "AbortError"))
+      ) {
         const timeoutError: ApiError = {
           message: "Request timeout",
           status: 408,
