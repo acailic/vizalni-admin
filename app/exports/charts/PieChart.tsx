@@ -28,6 +28,7 @@
  */
 
 import { easeCubicOut } from "d3-ease";
+import { interpolateArray } from "d3-interpolate";
 import { select } from "d3-selection";
 import { arc, pie } from "d3-shape";
 import "d3-transition";
@@ -262,12 +263,13 @@ export const PieChart = memo(
           if (!animated) {
             return () => arcGenerator(d) || "";
           }
-          const interpolate = select(this)
-            .datum({ startAngle: d.startAngle, endAngle: d.startAngle })
-            .data()[0] as any;
-          const i = select(this).interpolate(interpolate, d);
+          const interpolator = interpolateArray(
+            [d.startAngle, d.startAngle],
+            [d.startAngle, d.endAngle]
+          );
           return function (t) {
-            return arcGenerator(i(t)) || "";
+            const [startAngle, endAngle] = interpolator(t);
+            return arcGenerator({ ...d, startAngle, endAngle }) || "";
           };
         });
 
