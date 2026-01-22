@@ -7,14 +7,14 @@
  * @packageDocumentation
  */
 
+import { ConnectorError } from "./types";
+
 import type {
   IDataConnector,
   BaseConnectorConfig,
-  ConnectorResult,
   ConnectorCapabilities,
   DataSchema,
   DataType,
-  ConnectorError,
   ConnectorErrorCode,
   HealthCheckResult,
 } from "./types";
@@ -71,12 +71,41 @@ export interface CsvUrlConnectorConfig extends BaseConnectorConfig {
 export type CsvRow = Record<string, string | number | boolean | null>;
 
 /**
+ * CSV fetch metadata
+ */
+interface CsvFetchMetadata {
+  source: string;
+  rowCount: number;
+  fetchedAt: string;
+}
+
+/**
+ * CSV fetch result with schema
+ */
+interface CsvFetchResult {
+  data: CsvRow[];
+  schema: DataSchema & { fields: SchemaField[] };
+  metadata: CsvFetchMetadata;
+  cacheKey?: string;
+}
+
+/**
+ * Schema field definition
+ */
+interface SchemaField {
+  name: string;
+  type: DataType;
+  required: boolean;
+}
+
+/**
  * Schema detection result
  */
 interface SchemaDetection {
   columns: string[];
   columnTypes: Record<string, DataType>;
   nullableColumns: string[];
+  fields: SchemaField[];
 }
 
 /**
@@ -88,10 +117,23 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
   readonly config: Required<CsvUrlConnectorConfig>;
   readonly capabilities: ConnectorCapabilities;
 
+  // Public properties for test compatibility
+  readonly id: string;
+  readonly name: string;
+  readonly delimiter: string;
+  readonly quoteChar: string;
+  readonly hasHeader: boolean;
+
   private cachedData?: CsvRow[];
   private cachedSchema?: DataSchema;
 
   constructor(config: CsvUrlConnectorConfig) {
+    this.id = config.id;
+    this.name = config.name;
+    this.delimiter = config.delimiter ?? ",";
+    this.quoteChar = config.quoteChar ?? '"';
+    this.hasHeader = config.hasHeader ?? true;
+
     this.config = {
       id: config.id,
       name: config.name,
@@ -131,7 +173,10 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
   /**
    * Health check for the connector
    */
-  async healthCheck(): Promise<HealthCheckResult> {
+  async healthCheck(): Promise<
+    HealthCheckResult & { status: string; latency?: number; error?: string }
+  > {
+    const startTime = Date.now();
     try {
       const response = await this.fetchWithTimeout(this.config.url, {
         method: "HEAD",
@@ -147,27 +192,35 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
         this.config.url.endsWith(".csv");
 
       const healthy = response.ok && isCsv;
+      const latency = Date.now() - startTime;
 
       return {
+        status: healthy ? "healthy" : "unhealthy",
         healthy,
         message: healthy
           ? "CSV URL is accessible"
           : `CSV URL is ${response.ok ? "not CSV format" : "not accessible"}`,
         details: {
           url: this.config.url,
-          status: response.status,
+          statusCode: response.status,
           contentType,
           size,
+          latency,
         },
         timestamp: new Date().toISOString(),
+        latency,
       };
     } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       return {
+        status: "unhealthy",
         healthy: false,
-        message: `Health check failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+        message: `Health check failed: ${errorMessage}`,
+        error: errorMessage,
         details: {
           url: this.config.url,
-          error: error instanceof Error ? error.message : String(error),
+          error: errorMessage,
         },
         timestamp: new Date().toISOString(),
       };
@@ -177,10 +230,17 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
   /**
    * Fetch and parse the CSV data
    */
-  async fetch(): Promise<ConnectorResult<CsvRow[]>> {
+  async fetch(): Promise<CsvFetchResult> {
     if (this.cachedData) {
+      const schema = await this.buildSchema(this.cachedData);
       return {
         data: this.cachedData,
+        schema,
+        metadata: {
+          source: this.config.url,
+          rowCount: this.cachedData.length,
+          fetchedAt: new Date().toISOString(),
+        },
         cacheKey: this.getCacheKey(),
       };
     }
@@ -189,7 +249,7 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
       const response = await this.fetchWithTimeout(this.config.url);
 
       // Check content length
-      const contentLength = response.headers.get("content-length");
+      const contentLength = response.headers?.get("content-length");
       if (contentLength) {
         const size = parseInt(contentLength, 10);
         if (this.config.maxFileSize > 0 && size > this.config.maxFileSize) {
@@ -214,11 +274,19 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
       }
 
       const data = this.parseCsv(csvText);
+      const schema = await this.buildSchema(data);
 
       this.cachedData = data;
+      this.cachedSchema = schema;
 
       return {
         data,
+        schema,
+        metadata: {
+          source: this.config.url,
+          rowCount: data.length,
+          fetchedAt: new Date().toISOString(),
+        },
         cacheKey: this.getCacheKey(),
       };
     } catch (error) {
@@ -226,9 +294,24 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
         throw error;
       }
 
+      // Determine error code based on error type
+      let code: ConnectorErrorCode = "UNKNOWN_ERROR";
+      if (error instanceof Error) {
+        const message = (error.message ?? "").toLowerCase();
+        if (error.name === "AbortError" || message.includes("timeout")) {
+          code = "TIMEOUT";
+        } else if (message.includes("network") || message.includes("fetch")) {
+          code = "NETWORK_ERROR";
+        }
+      }
+
+      const errorMessage =
+        error instanceof Error
+          ? (error.message ?? "Unknown error")
+          : "Unknown error";
       throw this.createError(
-        "UNKNOWN_ERROR",
-        `Failed to fetch CSV: ${error instanceof Error ? error.message : "Unknown error"}`,
+        code,
+        `Failed to fetch CSV: ${errorMessage}`,
         error
       );
     }
@@ -245,10 +328,14 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
     const timeoutId = setTimeout(() => controller.abort(), this.config.timeout);
 
     try {
-      const response = await fetch(url, {
+      const response = (await fetch(url, {
         ...options,
         signal: controller.signal,
-      });
+      })) as Response | undefined;
+
+      if (!response) {
+        throw this.createError("NETWORK_ERROR", "Fetch returned no response");
+      }
 
       if (!response.ok) {
         throw this.createError(
@@ -279,7 +366,7 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
     const rows: CsvRow[] = [];
 
     if (lines.length === 0) {
-      return rows;
+      throw this.createError("PARSING_ERROR", "CSV is empty");
     }
 
     // Parse header row
@@ -292,14 +379,15 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
 
     // Parse data rows
     for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
+      const line = lines[i];
 
-      // Skip empty lines if configured
-      if (this.config.skipEmptyLines && line.length === 0) {
+      // Skip completely empty lines (after trim) if configured
+      const trimmedLine = line.trim();
+      if (this.config.skipEmptyLines && trimmedLine.length === 0) {
         continue;
       }
 
-      const values = this.parseLine(line);
+      const values = this.parseLine(trimmedLine);
 
       // Skip rows with mismatched column count
       if (values.length !== headers.length) {
@@ -365,8 +453,8 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
   private parseValue(value: string): string | number | boolean | null {
     const trimmed = value.trim();
 
-    // Empty string becomes null
-    if (trimmed === "") {
+    // Empty string or "null" string becomes null
+    if (trimmed === "" || trimmed.toLowerCase() === "null") {
       return null;
     }
 
@@ -385,6 +473,37 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
 
     // String
     return trimmed;
+  }
+
+  /**
+   * Build schema from CSV data (includes fields array)
+   */
+  private async buildSchema(
+    data: CsvRow[]
+  ): Promise<DataSchema & { fields: SchemaField[] }> {
+    if (data.length === 0) {
+      return {
+        columns: [],
+        columnTypes: {},
+        nullableColumns: [],
+        fields: [],
+      };
+    }
+
+    const detection = this.detectSchema(data);
+
+    const fields: SchemaField[] = detection.columns.map((column) => ({
+      name: column,
+      type: detection.columnTypes[column],
+      required: !detection.nullableColumns.includes(column),
+    }));
+
+    return {
+      columns: detection.columns,
+      columnTypes: detection.columnTypes,
+      nullableColumns: detection.nullableColumns,
+      fields,
+    };
   }
 
   /**
@@ -463,7 +582,8 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
         }
       });
 
-      columnTypes[col] = dominantType;
+      // Normalize integer to number for consistency
+      columnTypes[col] = dominantType === "integer" ? "number" : dominantType;
 
       // Check if column is nullable (has null values)
       const nullCount = data.filter((row) => row[col] === null).length;
@@ -472,10 +592,18 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
       }
     });
 
+    // Build fields array
+    const fields: SchemaField[] = columns.map((column) => ({
+      name: column,
+      type: columnTypes[column],
+      required: !nullableColumns.includes(column),
+    }));
+
     return {
       columns,
       columnTypes,
       nullableColumns,
+      fields,
     };
   }
 
@@ -516,6 +644,24 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
   }
 
   /**
+   * Get connector capabilities
+   */
+  getCapabilities(): ConnectorCapabilities & {
+    pagination: boolean;
+    filtering: boolean;
+    sorting: boolean;
+    realtime: boolean;
+  } {
+    return {
+      ...this.capabilities,
+      pagination: false,
+      filtering: false,
+      sorting: false,
+      realtime: false,
+    };
+  }
+
+  /**
    * Test the connection to the CSV URL
    */
   async testConnection(): Promise<boolean> {
@@ -531,8 +677,8 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
    * Clean up resources
    */
   destroy(): void {
-    this.cachedData = undefined;
-    this.cachedSchema = undefined;
+    delete this.cachedData;
+    delete this.cachedSchema;
   }
 
   /**
@@ -543,10 +689,7 @@ export class CsvUrlConnector implements IDataConnector<CsvUrlConnectorConfig> {
     message: string,
     details?: unknown
   ): ConnectorError {
-    const error = new Error(message) as ConnectorError;
-    error.code = code;
-    error.details = details;
-    return error;
+    return new ConnectorError(message, code, details);
   }
 
   /**
