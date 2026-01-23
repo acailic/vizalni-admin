@@ -31,6 +31,11 @@ module.exports = withMDX({
   assetPrefix: basePath || undefined,
   trailingSlash: isGitHubPages,
 
+  // Disable Turbopack to use webpack with custom loaders
+  experimental: {
+    turbo: undefined,
+  },
+
   // Static export for GitHub Pages
   output: isProduction && isGitHubPages ? "export" : undefined,
 
