@@ -6,73 +6,14 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 import { StoryContainer } from "@/components/stories";
-import type { StoryConfig } from "@/types/stories";
+import { ALL_STORIES } from "@/lib/stories";
 
 import { StoryLayout } from "./_components/StoryLayout";
 
-// Temporary story configs - will be replaced with proper imports
-const STORY_CONFIGS: Record<string, StoryConfig> = {
-  demographics: {
-    id: "demographics",
-    title: {
-      sr: "Demografska Kriza",
-      en: "Demographic Crisis",
-    },
-    description: {
-      sr: "Istražite pad populacije Srbije kroz 5 ključnih koraka.",
-      en: "Explore Serbia's population decline through 5 key steps.",
-    },
-    estimatedMinutes: 5,
-    difficulty: "beginner",
-    theme: "demographics",
-    steps: [], // Will be populated in Phase 2
-  },
-  economy: {
-    id: "economy",
-    title: {
-      sr: "Ekonomska Tranzicija",
-      en: "Economic Transition",
-    },
-    description: {
-      sr: "Regionalne nejednakosti i ekonomski razvoj.",
-      en: "Regional disparities and economic development.",
-    },
-    estimatedMinutes: 6,
-    difficulty: "intermediate",
-    theme: "economy",
-    steps: [],
-  },
-  climate: {
-    id: "climate",
-    title: {
-      sr: "Klimatska Kriza",
-      en: "Climate Crisis",
-    },
-    description: {
-      sr: "Klimatske promene u Srbiji.",
-      en: "Climate change in Serbia.",
-    },
-    estimatedMinutes: 5,
-    difficulty: "beginner",
-    theme: "climate",
-    steps: [],
-  },
-  healthcare: {
-    id: "healthcare",
-    title: {
-      sr: "Izazovi Zdravstva",
-      en: "Healthcare Challenges",
-    },
-    description: {
-      sr: "Zdravstveni sistem u Srbiji.",
-      en: "Healthcare system in Serbia.",
-    },
-    estimatedMinutes: 6,
-    difficulty: "intermediate",
-    theme: "healthcare",
-    steps: [],
-  },
-};
+// Create a lookup object for stories
+const stories = Object.fromEntries(
+  ALL_STORIES.map((story) => [story.id, story])
+) as Record<string, (typeof ALL_STORIES)[number]>;
 
 export default function StoryPage() {
   const { i18n } = useLingui();
@@ -81,7 +22,7 @@ export default function StoryPage() {
 
   const story = useMemo(() => {
     if (typeof storyId !== "string") return null;
-    return STORY_CONFIGS[storyId] || null;
+    return stories[storyId] || null;
   }, [storyId]);
 
   if (!story) {
@@ -125,8 +66,8 @@ export default function StoryPage() {
 }
 
 export async function getStaticPaths() {
-  const paths = Object.keys(STORY_CONFIGS).map((storyId) => ({
-    params: { storyId },
+  const paths = ALL_STORIES.map((story) => ({
+    params: { storyId: story.id },
   }));
 
   return {
@@ -135,11 +76,7 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps({
-  params,
-}: {
-  params: { storyId: string };
-}) {
+export async function getStaticProps() {
   return {
     props: {},
   };

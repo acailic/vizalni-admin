@@ -2,74 +2,10 @@ import { useLingui } from "@lingui/react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 
-import type { StoryConfig } from "@/types/stories";
+import { ALL_STORIES } from "@/lib/stories";
 
 import { StoryCard } from "./_components/StoryCard";
 import { StoryLayout } from "./_components/StoryLayout";
-
-// Temporary story configs - will be replaced with proper imports
-const DEMO_STORIES: StoryConfig[] = [
-  {
-    id: "demographics",
-    title: {
-      sr: "Demografska Kriza",
-      en: "Demographic Crisis",
-    },
-    description: {
-      sr: "Istražite pad populacije Srbije, starenje društva i odliv mozgova kroz interaktivne podatke.",
-      en: "Explore Serbia's population decline, aging society, and brain drain through interactive data.",
-    },
-    estimatedMinutes: 5,
-    difficulty: "beginner",
-    theme: "demographics",
-    steps: [],
-  },
-  {
-    id: "economy",
-    title: {
-      sr: "Ekonomska Tranzicija",
-      en: "Economic Transition",
-    },
-    description: {
-      sr: "Regionalne nejednakosti, energetska zavisnost i digitalni jaz u srpskoj ekonomiji.",
-      en: "Regional disparities, energy dependency, and digital gap in the Serbian economy.",
-    },
-    estimatedMinutes: 6,
-    difficulty: "intermediate",
-    theme: "economy",
-    steps: [],
-  },
-  {
-    id: "climate",
-    title: {
-      sr: "Klimatska Kriza",
-      en: "Climate Crisis",
-    },
-    description: {
-      sr: "Porast temperature, zagađenje vazduha i tranzicija na obnovljive izvore energije.",
-      en: "Temperature rise, air pollution, and the transition to renewable energy sources.",
-    },
-    estimatedMinutes: 5,
-    difficulty: "beginner",
-    theme: "climate",
-    steps: [],
-  },
-  {
-    id: "healthcare",
-    title: {
-      sr: "Izazovi Zdravstvenog Sistema",
-      en: "Healthcare Challenges",
-    },
-    description: {
-      sr: "Liste čekanja, regionalni pristup i nedostatak zdravstvenog kadra.",
-      en: "Waiting lists, regional access, and healthcare workforce shortages.",
-    },
-    estimatedMinutes: 6,
-    difficulty: "intermediate",
-    theme: "healthcare",
-    steps: [],
-  },
-];
 
 export default function StoriesIndexPage() {
   const { i18n } = useLingui();
@@ -114,7 +50,7 @@ export default function StoriesIndexPage() {
 
       {/* Stories Grid */}
       <Grid container spacing={3}>
-        {DEMO_STORIES.map((story) => (
+        {ALL_STORIES.map((story) => (
           <Grid item xs={12} sm={6} md={3} key={story.id}>
             <StoryCard story={story} href={`/stories/${story.id}`} />
           </Grid>
