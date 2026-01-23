@@ -8,7 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
-      urql: path.resolve(__dirname, "./graphql/urql-compat.ts"),
+      // Note: urql alias removed - it was causing circular dependency issues
+      // The urql-compat.ts file provides compatibility instead
     },
   },
   test: {
@@ -25,6 +26,9 @@ export default defineConfig({
       "**/*.config.{js,ts}",
       "**/vitest.setup.ts",
       "**/*.stories.{js,jsx,ts,tsx}",
+      // Visual/playwright tests should be run by Playwright, not Vitest
+      "tests/visual/**",
+      "tests/integration/**/*.integration.test.tsx",
     ],
     coverage: {
       provider: "v8",
