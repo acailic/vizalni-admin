@@ -319,7 +319,9 @@
     "browserslist": "^4.24.4",
     "node-forge": "^1.3.1",
     "strip-ansi": "^6.0.1",
-    "follow-redirects": "^1.15.9"
+    "follow-redirects": "^1.15.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "bugs": {
     "url": "https://github.com/acailic/vizualni-admin/issues"
