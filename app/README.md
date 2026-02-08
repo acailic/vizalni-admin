@@ -1,229 +1,211 @@
 # @acailic/vizualni-admin
 
-> Alat za vizualizaciju otvorenih podataka Srbije – Beta izdanje
+> Serbian Open Data visualization toolkit for React. Beta, but usable today.
 
 [![npm version](https://img.shields.io/npm/v/@acailic/vizualni-admin.svg)](https://www.npmjs.com/package/@acailic/vizualni-admin)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/acailic/vizualni-admin/blob/main/LICENSE)
 
-## O paketu (srpski)
+## Why This Package
 
-`@acailic/vizualni-admin` je **beta** paket zasnovan na projektu [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool). Namenjen je brzim vizualizacijama zvaničnih otvorenih podataka Republike Srbije, uz podršku za latinično i ćirilično pismo.
+- Ready-to-use chart components backed by D3
+- `data.gov.rs` API client and React hooks
+- Locale helpers and Serbian-friendly formatters
+- Utilities for transforming data before charting
 
-## Instalacija
+## Quick Start (Charts)
 
 ```bash
 npm install @acailic/vizualni-admin
-# ili
-yarn add @acailic/vizualni-admin
 ```
 
-## Šta je uključeno
-
-- Lokalizacija: `defaultLocale`, `locales`, `parseLocaleString`
-- TypeScript tipovi za grafikon/konfiguracije
-- I18n podrška (`I18nProvider`)
-- Komponente za grafikone spremne za demo (Line/Column/Pie) koje koristimo na GitHub Pages
-- Spremno za ugradnju (embed) – vidi primere ispod
-
-## Brzi primeri
-
-### Linijski grafikon
-
 ```tsx
-import { LineChart } from '@acailic/vizualni-admin';
+import { LineChart } from "@acailic/vizualni-admin/charts";
 
 const data = [
-  { label: '2019', value: 72 },
-  { label: '2020', value: 54 },
-  { label: '2021', value: 63 },
-  { label: '2022', value: 81 },
+  { year: "2019", value: 72 },
+  { year: "2020", value: 54 },
+  { year: "2021", value: 63 },
+  { year: "2022", value: 81 },
 ];
 
-export function Primer() {
+export function MyChart() {
   return (
     <LineChart
       data={data}
-      xKey="label"
-      yKey="value"
-      title="Oporavak zaposlenosti"
-      width={720}
+      config={{ xAxis: "year", yAxis: "value", title: "Employment Recovery" }}
       height={360}
-      showTooltip
-      showCrosshair
+      width="100%"
     />
   );
 }
 ```
 
-### Stubičasti i pie grafikon
+## Entry Points (Cheat Sheet)
+
+| Import                               | What You Get                         |
+| ------------------------------------ | ------------------------------------ |
+| `@acailic/vizualni-admin/charts`     | Chart components + chart types       |
+| `@acailic/vizualni-admin/hooks`      | React hooks like `useDataGovRs`      |
+| `@acailic/vizualni-admin/client`     | Data.gov.rs client + types           |
+| `@acailic/vizualni-admin/core`       | Locale helpers + config validation   |
+| `@acailic/vizualni-admin/utils`      | Formatters + data transforms         |
+| `@acailic/vizualni-admin/connectors` | CSV connector + registry             |
+| `@acailic/vizualni-admin`            | Core exports + client + config types |
+
+## Charts
+
+### Multi-series Line Chart
 
 ```tsx
-import { ColumnChart, PieChart } from '@acailic/vizualni-admin';
+import { LineChart } from "@acailic/vizualni-admin/charts";
 
-// Stubičasti
-<ColumnChart
-  data={[
-    { year: '2019', jobs: 180 },
-    { year: '2020', jobs: 140 },
-  ]}
-  xKey="year"
-  yKey="jobs"
-  title="Nove pozicije po godinama"
-  color="#0ea5e9"
+const data = [
+  { year: "2020", revenue: 120, profit: 40 },
+  { year: "2021", revenue: 180, profit: 65 },
+  { year: "2022", revenue: 160, profit: 55 },
+];
+
+<LineChart
+  data={data}
+  config={{
+    xAxis: "year",
+    yAxis: ["revenue", "profit"],
+    title: "Revenue vs Profit",
+  }}
+  height={360}
   showTooltip
-  showCrosshair
-/>
+/>;
+```
 
-// Pie
+### Bar and Pie Charts
+
+```tsx
+import { BarChart, PieChart } from "@acailic/vizualni-admin/charts";
+
+<BarChart
+  data={[
+    { label: "2019", value: 180 },
+    { label: "2020", value: 140 },
+  ]}
+  config={{ xAxis: "label", yAxis: "value", title: "New Jobs" }}
+  height={320}
+/>;
+
 <PieChart
   data={[
-    { label: 'Solar', value: 18 },
-    { label: 'Wind', value: 22 },
+    { label: "Solar", value: 18 },
+    { label: "Wind", value: 22 },
   ]}
-  labelKey="label"
-  valueKey="value"
-  title="Mix proizvodnje"
-  showLegend
-/>
+  config={{ xAxis: "label", yAxis: "value", title: "Energy Mix" }}
+  height={320}
+/>;
 ```
 
-### Ugradnja (iframe)
+## Data.gov.rs
 
-Koristi javni demo na GitHub Pages i prosledi temu/jezik:
-
-```html
-<iframe
-  src="https://acailic.github.io/vizualni-admin/embed/demo?theme=light&lang=sr"
-  style="width: 100%; height: 520px; border: 0;"
-  loading="lazy"
-  referrerpolicy="no-referrer"
-></iframe>
-```
-
-Generator koda za ugradnju nalazi se na `/embed` (u okviru GitHub Pages build-a) – izaberi širinu/visinu/temu/jezik i kopiraj snippet.
-
-### Generisanje URL-a za embed u kodu
-
-```ts
-import { buildEmbedUrl } from '@acailic/vizualni-admin/lib/embed-url';
-
-const url = buildEmbedUrl('https://acailic.github.io/vizualni-admin/embed/demo', {
-  theme: 'dark',
-  lang: 'sr',
-});
-// https://acailic.github.io/vizualni-admin/embed/demo?theme=dark&lang=sr
-```
-
-### Lokalizacija
-
-```ts
-import { defaultLocale, locales, parseLocaleString } from '@acailic/vizualni-admin';
-
-console.log(defaultLocale); // 'sr-Latn'
-console.log(locales);       // ['sr-Latn', 'sr-Cyrl', 'en']
-console.log(parseLocaleString('sr-Cyrl')); // 'sr-Cyrl'
-console.log(parseLocaleString('de'));      // vraća podrazumevani
-```
-
-### React + Lingui
+### React Hook
 
 ```tsx
-import { I18nProvider } from '@acailic/vizualni-admin';
-import { i18n } from '@lingui/core';
+import { useDataGovRs } from "@acailic/vizualni-admin/hooks";
 
-function App() {
+export function DatasetSearch() {
+  const { data, count, isLoading, error } = useDataGovRs({
+    params: { q: "ekonomija", page_size: 10 },
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
-    <I18nProvider i18n={i18n}>
-      {/* Vaš sadržaj */}
-    </I18nProvider>
+    <div>
+      {count} results
+      {data?.map((d) => (
+        <div key={d.id}>{d.title}</div>
+      ))}
+    </div>
   );
 }
 ```
 
-## Šta još nije uključeno
+### Client (Non-React)
 
-Ovo je beta. Planiramo da ojačamo:
+```ts
+import { DataGovRsClient } from "@acailic/vizualni-admin/client";
 
-- Konfigurator UI
-- Komponente za celu Next.js aplikaciju
-- CLI alate
-- Dodatne util funkcije
+const client = new DataGovRsClient({ timeout: 8000 });
+const result = await client.searchDatasets({ q: "budzet" });
+console.log(result.data.length, result.total);
+```
 
----
+## Locale and Formatting
 
-## English summary
+```ts
+import { defaultLocale, parseLocaleString } from "@acailic/vizualni-admin/core";
+import { formatNumber, formatDate } from "@acailic/vizualni-admin/utils";
 
-This is a **beta** of `@acailic/vizualni-admin` for Serbian open data visualizations (Latin/Cyrillic). Includes locale utilities, types, Lingui I18n provider, demo chart components (Line/Column/Pie), and embed-ready endpoints.
+const locale = parseLocaleString("sr-Cyrl");
+console.log(defaultLocale);
+console.log(formatNumber(1234567.89, locale));
+console.log(formatDate(new Date(), locale));
+```
 
-Install: `npm install @acailic/vizualni-admin` or `yarn add @acailic/vizualni-admin`.
+## I18n (Optional)
 
-Quick starts mirror the Serbian examples above. Use the hosted embed demo (`/embed/demo?theme=light&lang=en`) and the `/embed` generator to craft iframe snippets. `buildEmbedUrl` helps construct embed URLs in code. Locale helpers: `defaultLocale`, `locales`, `parseLocaleString`. React usage: wrap with `I18nProvider`.
+```tsx
+import { I18nProvider, i18n } from "@acailic/vizualni-admin";
 
-Planned next: configurator UI, full Next.js components, CLI, and more utilities.
-
-## Supported Locales
-
-The package supports three locales:
-
-- **sr-Latn** (Serbian Latin) - Default
-- **sr-Cyrl** (Serbian Cyrillic)
-- **en** (English)
-
-## Requirements
-
-### Node Version
-
-- Node.js 18 or newer
-
-### Peer Dependencies
-
-```json
-{
-  "@lingui/core": "^4.0.0",
-  "@lingui/react": "^4.0.0",
-  "react": "^18.2.0",
-  "react-dom": "^18.2.0"
+export function App({ children }: { children: React.ReactNode }) {
+  return <I18nProvider i18n={i18n}>{children}</I18nProvider>;
 }
 ```
 
-### Runtime Dependencies (bundled)
+## CSV Connector
 
-Installed automatically:
+```ts
+import { CsvUrlConnector } from "@acailic/vizualni-admin/connectors";
 
-- `d3-format`
-- `d3-time-format`
-- `make-plural`
-- `fp-ts`
-- `io-ts`
+const connector = new CsvUrlConnector({
+  id: "demo",
+  name: "Demo CSV",
+  url: "https://example.com/data.csv",
+});
 
-## Module Formats
+const { data, schema } = await connector.fetch();
+console.log(schema.fields);
+```
 
-The package is published in multiple formats for maximum compatibility:
+## TypeScript Tips
 
-- **CommonJS** (`dist/index.js`) - For Node.js
-- **ES Modules** (`dist/index.mjs`) - For modern bundlers
-- **TypeScript** (`dist/index.d.ts`) - Type declarations
+- Use `ChartData` and `BaseChartConfig` from `@acailic/vizualni-admin/charts`.
+- `useDataGovRs` is fully typed and returns `DatasetMetadata[]`.
+- The config validator is in `@acailic/vizualni-admin/core`.
 
-## Contributing
+## Supported Locales
 
-Contributions are welcome! Please see the main repository for contribution guidelines.
+- `sr-Latn` (default)
+- `sr-Cyrl`
+- `en`
 
-## Related Projects
+## Requirements
 
-- [visualize-admin/visualization-tool](https://github.com/visualize-admin/visualization-tool) - Original upstream project
-- [data.gov.rs](https://data.gov.rs) - Serbian Open Data Portal
+- Node.js 18+
+- React 18 or 19
 
-## License
+## Optional Dependencies
 
-BSD-3-Clause - See [LICENSE](https://github.com/acailic/vizualni-admin/blob/main/LICENSE) for details.
+If you use Lingui integration, install:
+
+```bash
+npm install @lingui/core @lingui/react
+```
 
 ## Links
 
-- **npm Package**: https://www.npmjs.com/package/@acailic/vizualni-admin
-- **GitHub Repository**: https://github.com/acailic/vizualni-admin
-- **Issues**: https://github.com/acailic/vizualni-admin/issues
-- **Live Demo**: https://acailic.github.io/vizualni-admin/
+- npm: https://www.npmjs.com/package/@acailic/vizualni-admin
+- Repo: https://github.com/acailic/vizualni-admin
+- Live demo: https://acailic.github.io/vizualni-admin/
+- Issues: https://github.com/acailic/vizualni-admin/issues
 
 ## Changelog
 
-See [CHANGELOG.md](https://github.com/acailic/vizualni-admin/blob/main/CHANGELOG.md) for release history.
+See `CHANGELOG.md` in the repository root.

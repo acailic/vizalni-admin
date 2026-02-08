@@ -1,6 +1,7 @@
 # Vizualni Admin
 
-> Serbian Open Data Visualization Tool | Aлат за визуализацију отворених података Србије
+> Serbian Open Data Visualization Tool | Aлат за визуализацију отворених
+> података Србије
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://acailic.github.io/vizualni-admin/)
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/acailic/vizualni-admin/blob/main/LICENSE)
@@ -22,9 +23,11 @@
 
 ## What is Vizualni Admin?
 
-**Vizualni Admin** is a powerful visualization tool for Serbian open data. It allows you to:
+**Vizualni Admin** is a powerful visualization tool for Serbian open data. It
+allows you to:
 
-- 📊 Create beautiful, interactive charts from [data.gov.rs](https://data.gov.rs) datasets
+- 📊 Create beautiful, interactive charts from
+  [data.gov.rs](https://data.gov.rs) datasets
 - 🌐 Support for both Latin and Cyrillic Serbian scripts
 - 📱 Responsive design that works on all devices
 - 🎨 Customize colors, styles, and chart types
@@ -36,6 +39,7 @@
 ## Features / Могућности
 
 ### 🎯 Core Features
+
 - **No Code Required** - Create visualizations without programming
 - **Serbian Open Data Integration** - Direct access to data.gov.rs datasets
 - **Multiple Chart Types** - Line, Bar, Pie, Area, Scatter, Map, and more
@@ -43,16 +47,19 @@
 - **Export Options** - PNG, SVG, PDF, and embedded HTML
 
 ### 🌍 Localization
+
 - Full Serbian language support (Latin and Cyrillic)
 - English language support
 - Localized interface and date formats
 
 ### 📱 Responsive Design
+
 - Works on desktop, tablet, and mobile
 - Touch-friendly interactions
 - Optimized for different screen sizes
 
 ### 🔧 Technical Features
+
 - Built with Next.js and React
 - TypeScript support
 - Server-side rendering (SSR)
@@ -64,9 +71,13 @@
 ## Quick Start / Брзи почетак
 
 ### Option 1: Use the Live Demo
-Visit [https://acailic.github.io/vizualni-admin/](https://acailic.github.io/vizualni-admin/) to start creating visualizations immediately.
+
+Visit
+[https://acailic.github.io/vizualni-admin/](https://acailic.github.io/vizualni-admin/)
+to start creating visualizations immediately.
 
 ### Option 2: Install Locally
+
 ```bash
 # Clone the repository
 git clone https://github.com/acailic/vizualni-admin.git
@@ -86,6 +97,7 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Installation / Инсталација
 
 ### As an NPM Package
+
 ```bash
 npm install @acailic/vizualni-admin
 # or
@@ -93,6 +105,7 @@ yarn add @acailic/vizualni-admin
 ```
 
 ### From Source
+
 ```bash
 git clone https://github.com/acailic/vizualni-admin.git
 cd vizualni-admin
@@ -106,6 +119,7 @@ yarn install
 ### 1. Creating Your First Visualization
 
 #### Web Interface (No Code)
+
 1. Go to [Create Chart](https://acailic.github.io/vizualni-admin/create)
 2. Select a dataset from data.gov.rs or upload your own
 3. Choose a chart type
@@ -113,26 +127,25 @@ yarn install
 5. Save or embed your chart
 
 #### As a React Component
+
 ```jsx
-import { LineChart } from '@acailic/vizualni-admin';
+import { LineChart } from "@acailic/vizualni-admin/charts";
 
 const data = [
-  { label: '2019', value: 72 },
-  { label: '2020', value: 54 },
-  { label: '2021', value: 63 },
-  { label: '2022', value: 81 },
+  { year: "2019", value: 72 },
+  { year: "2020", value: 54 },
+  { year: "2021", value: 63 },
+  { year: "2022", value: 81 },
 ];
 
 export function MyChart() {
   return (
     <LineChart
       data={data}
-      xKey="label"
-      yKey="value"
-      title="Employment Recovery"
+      config={{ xAxis: "year", yAxis: "value", title: "Employment Recovery" }}
       width={720}
       height={360}
-      locale="sr"
+      locale="sr-Latn"
     />
   );
 }
@@ -141,21 +154,22 @@ export function MyChart() {
 ### 2. Using Serbian Open Data
 
 ```jsx
-import { useDataGovRs } from '@acailic/vizualni-admin';
+import { useDataGovRs } from "@acailic/vizualni-admin/hooks";
 
 function BudgetVisualization() {
-  const { data, loading, error } = useDataGovRs('budzet-srbije');
+  const { data, isLoading, error } = useDataGovRs({
+    params: { q: "budzet", page_size: 10 },
+  });
 
-  if (loading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <BarChart
-      data={data}
-      xKey="godina"
-      yKey="iznos"
-      title="Буџет Србије по годинама"
-    />
+    <ul>
+      {data?.map((dataset) => (
+        <li key={dataset.id}>{dataset.title}</li>
+      ))}
+    </ul>
   );
 }
 ```
@@ -165,18 +179,17 @@ function BudgetVisualization() {
 ```jsx
 <LineChart
   data={data}
-  xKey="label"
-  yKey="value"
-  title="Прираст становништва"
-  // Customization options
-  colors={['#0090ff', '#00d4ff']}
-  showLegend={true}
-  showGrid={true}
-  curve="monotone"
+  config={{
+    xAxis: "label",
+    yAxis: "value",
+    title: "Прираст становништва",
+    color: "#0090ff",
+  }}
+  showTooltip
+  animated
   locale="sr-Latn"
-  // Style customization
   style={{
-    fontFamily: 'NotoSans, sans-serif',
+    fontFamily: "NotoSans, sans-serif",
     fontSize: 14,
   }}
 />
@@ -216,6 +229,7 @@ git push origin main
 ```
 
 For local testing:
+
 ```bash
 # Build and serve locally
 yarn build:gh-pages-local
@@ -258,42 +272,52 @@ yarn build:static
 
 ## Examples / Примери
 
-### 1. Price Analysis Dashboard
-```jsx
-import { PriceAnalysisChart } from '@acailic/vizualni-admin';
+### 1. Revenue Trend (Line Chart)
 
-<PriceAnalysisChart
-  datasetId="cene-proizvoda"
-  filters={{
-    category: "Електроника",
-    location: "Београд"
-  }}
-/>
+```jsx
+import { LineChart } from "@acailic/vizualni-admin/charts";
+
+<LineChart
+  data={[
+    { year: "2020", revenue: 120 },
+    { year: "2021", revenue: 180 },
+    { year: "2022", revenue: 160 },
+  ]}
+  config={{ xAxis: "year", yAxis: "revenue", title: "Revenue Trend" }}
+  height={320}
+/>;
 ```
 
-### 2. Budget Comparison
-```jsx
-import { BudgetComparison } from '@acailic/vizualni-admin';
+### 2. Category Split (Pie Chart)
 
-<BudgetComparison
-  years={[2020, 2021, 2022]}
-  categories={['Здравство', 'Образовање', 'Инфраструктура']}
-/>
+```jsx
+import { PieChart } from "@acailic/vizualni-admin/charts";
+
+<PieChart
+  data={[
+    { label: "Health", value: 35 },
+    { label: "Education", value: 25 },
+    { label: "Infrastructure", value: 40 },
+  ]}
+  config={{ xAxis: "label", yAxis: "value", title: "Budget Split" }}
+  height={320}
+/>;
 ```
 
-### 3. Geographic Data Visualization
-```jsx
-import { SerbiaMap } from '@acailic/vizualni-admin';
+### 3. GeoJSON Map (Map Chart)
 
-<SerbiaMap
-  data={regionalData}
-  metricKey="population"
-  colorScale="blues"
-  showTooltip={true}
-/>
+```jsx
+import { MapChart } from "@acailic/vizualni-admin/charts";
+
+<MapChart
+  data={geoJson}
+  config={{ colorScale: ["#e0f2fe", "#0369a1"], showLegend: true }}
+  height={420}
+/>;
 ```
 
 ### View More Examples
+
 - [Live Gallery](https://acailic.github.io/vizualni-admin/gallery)
 - [Demos by Category](https://acailic.github.io/vizualni-admin/demos)
 - [Tutorials](https://acailic.github.io/vizualni-admin/tutorials)
@@ -304,32 +328,29 @@ import { SerbiaMap } from '@acailic/vizualni-admin';
 
 ### Main Components
 
-| Component | Props | Description |
-|-----------|-------|-------------|
-| `LineChart` | `data`, `xKey`, `yKey` | Line/area charts |
-| `BarChart` | `data`, `xKey`, `yKey` | Bar/column charts |
-| `PieChart` | `data`, `nameKey`, `valueKey` | Pie/donut charts |
-| `ScatterPlot` | `data`, `xKey`, `yKey` | Scatter plots |
-| `SerbiaMap` | `data`, `regionKey`, `valueKey` | Serbia regional map |
-| `DataTable` | `data`, `columns` | Sortable data table |
+| Component     | Props            | Description                          |
+| ------------- | ---------------- | ------------------------------------ |
+| `LineChart`   | `data`, `config` | Line charts (single or multi-series) |
+| `BarChart`    | `data`, `config` | Bar charts                           |
+| `ColumnChart` | `data`, `config` | Column charts                        |
+| `AreaChart`   | `data`, `config` | Area charts                          |
+| `PieChart`    | `data`, `config` | Pie charts                           |
+| `MapChart`    | `data`, `config` | GeoJSON choropleth maps              |
 
 ### Data Hooks
 
-| Hook | Parameters | Returns |
-|------|------------|---------|
-| `useDataGovRs` | `datasetId`, `options` | `{ data, loading, error }` |
-| `useSerbianData` | `endpoint`, `params` | `{ data, loading, error }` |
-| `useLocalDataset` | `file` | `{ data, loading, error }` |
+| Hook           | Parameters                                        | Returns                                             |
+| -------------- | ------------------------------------------------- | --------------------------------------------------- |
+| `useDataGovRs` | `{ params, enabled, cacheTime, refetchInterval }` | `{ data, count, isLoading, error, refetch, fetch }` |
 
 ### Utility Functions
 
 ```js
 import {
-  formatSerbianNumber,
-  formatSerbianDate,
-  translateToSerbian,
-  validateSerbianData
-} from '@acailic/vizualni-admin/utils';
+  formatNumber,
+  formatDate,
+  truncate,
+} from "@acailic/vizualni-admin/utils";
 ```
 
 ---
@@ -378,18 +399,23 @@ yarn storybook    # Run component library
 ## FAQ
 
 ### Q: Can I use my own data?
+
 A: Yes! You can upload CSV, JSON, or connect to any API endpoint.
 
 ### Q: Is it really free?
+
 A: Yes, Vizualni Admin is open source and free to use.
 
 ### Q: Do I need to know how to code?
+
 A: No! The web interface allows you to create visualizations without any coding.
 
 ### Q: Can I export my charts?
+
 A: Yes, you can export as PNG, SVG, PDF, or embed them in websites.
 
 ### Q: Does it work offline?
+
 A: The static export version works offline after loading.
 
 ---
@@ -405,7 +431,8 @@ A: The static export version works offline after loading.
 
 ## License / Лиценца
 
-[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/) © 2024 Vizualni Admin
+[BSD-3-Clause](https://choosealicense.com/licenses/bsd-3-clause/) © 2024
+Vizualni Admin
 
 ---
 

@@ -214,8 +214,16 @@
     "fp-ts": "^2.0.0",
     "io-ts": "^2.0.0",
     "make-plural": "^6.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": ">=18 <20",
+    "react-dom": ">=18 <20"
+  },
+  "peerDependenciesMeta": {
+    "@lingui/core": {
+      "optional": true
+    },
+    "@lingui/react": {
+      "optional": true
+    }
   },
   "preconstruct": {
     "entrypoints": [
