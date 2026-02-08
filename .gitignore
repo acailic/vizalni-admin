@@ -39,6 +39,8 @@ pnpm-debug.log*
 lerna-debug.log*
 .cache/
 .parcel-cache/
+__pycache__/
+*.pyc
 
 # Runtime data
 *.pid
@@ -126,6 +128,7 @@ temp/
 
 # Git worktrees for isolated development
 .worktrees/
+.git_disabled/
 
 # Development tool build outputs
 .next/
@@ -173,6 +176,7 @@ NAVIGATION_UPDATE.md
 PERFORMANCE_OPTIMIZATION_IMPLEMENTATION.md
 VITEPRESS_DOCUMENTATION.md
 TOP_0.1_PERCENT_ROADMAP.md
+overnight-report-*.md
 
 # Test artifacts (HAR archives and other test outputs)
 screenshots/
