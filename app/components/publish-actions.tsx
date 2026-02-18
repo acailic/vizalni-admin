@@ -17,7 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { ChangeEvent, ReactNode, RefObject, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { CHART_RESIZE_EVENT_TYPE } from "@/charts/shared/use-size";
 import { CopyToClipboardTextInput } from "@/components/copy-to-clipboard-text-input";
@@ -202,6 +209,8 @@ export const EmbedContent = ({
   };
 
   const [sizePreset, setSizePreset] = useState<EmbedSizePreset>("responsive");
+  const [showPreview, setShowPreview] = useState(true);
+  const previewRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const { origin } = window.location;
@@ -381,6 +390,45 @@ export const EmbedContent = ({
           ))}
         </ToggleButtonGroup>
       </Box>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showPreview}
+            onChange={(_, checked) => setShowPreview(checked)}
+          />
+        }
+        label={<Typography variant="body2">Show preview</Typography>}
+        sx={{ mb: 2 }}
+      />
+      {showPreview && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
+            Preview
+          </Typography>
+          <Box
+            sx={{
+              border: 1,
+              borderColor: "divider",
+              borderRadius: 2,
+              overflow: "hidden",
+              bgcolor: "grey.50",
+              height:
+                sizePreset === "responsive"
+                  ? 400
+                  : parseInt(SIZE_PRESETS[sizePreset].height),
+            }}
+          >
+            <iframe
+              ref={previewRef}
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              title="Embed preview"
+            />
+          </Box>
+        </Box>
+      )}
       <CopyToClipboardTextInput
         content={`<iframe src="${embedUrl}" width="${SIZE_PRESETS[sizePreset].width}" style="${sizePreset === "responsive" ? "" : `height: ${SIZE_PRESETS[sizePreset].height}; `}border: 0px #ffffff none;" name="visualize.admin.ch"></iframe>${sizePreset === "responsive" ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`}
       />
