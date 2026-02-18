@@ -501,73 +501,9 @@ export const ShareContent = ({
 
   return (
     <Flex sx={{ flexDirection: "column", gap: 2, p: 4 }}>
-      <Flex sx={{ justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
-          <Trans id="publication.popup.share">Share</Trans>
-        </Typography>
-        <Flex>
-          <IconButton
-            title={i18n._(
-              t({
-                id: "publication.share.linktitle.linkedin",
-                message: `Share on LinkedIn`,
-              })
-            )}
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name="linkedIn" />
-          </IconButton>
-          <IconButton
-            title={i18n._(
-              t({
-                id: "publication.share.linktitle.x",
-                message: `Share on X (Twitter)`,
-              })
-            )}
-            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bafuCH`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name="twitter" />
-          </IconButton>
-          <IconButton
-            title={i18n._(
-              t({
-                id: "publication.share.linktitle.facebook",
-                message: `Share on Facebook`,
-              })
-            )}
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Icon name="facebook" />
-          </IconButton>
-          <IconButton
-            title={i18n._(
-              t({
-                id: "publication.share.linktitle.mail",
-                message: `Share via email`,
-              })
-            )}
-            href={`mailto:?subject=${i18n._(
-              t({
-                id: "publication.share.mail.subject",
-                message: `visualize.admin.ch`,
-              })
-            )}&body=${i18n._(
-              t({
-                id: "publication.share.mail.body",
-                message: `Here is a link to a visualization I created on visualize.admin.ch`,
-              })
-            )}: ${shareUrl}`}
-          >
-            <Icon name="envelope" />
-          </IconButton>
-        </Flex>
-      </Flex>
+      <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+        <Trans id="publication.popup.share">Share</Trans>
+      </Typography>
       <Button
         variant="contained"
         color="primary"
@@ -578,10 +514,72 @@ export const ShareContent = ({
           setLinkCopied(true);
           setTimeout(() => setLinkCopied(false), 2000);
         }}
-        sx={{ mb: 2, py: 1.5, fontWeight: 700 }}
+        sx={{ py: 1.5, fontWeight: 700 }}
       >
         {linkCopied ? "Copied!" : "Copy Link"}
       </Button>
+      <Flex sx={{ justifyContent: "center", gap: 1 }}>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.linkedin",
+              message: `Share on LinkedIn`,
+            })
+          )}
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="linkedIn" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.x",
+              message: `Share on X (Twitter)`,
+            })
+          )}
+          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bafuCH`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="twitter" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.facebook",
+              message: `Share on Facebook`,
+            })
+          )}
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="facebook" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.mail",
+              message: `Share via email`,
+            })
+          )}
+          href={`mailto:?subject=${i18n._(
+            t({
+              id: "publication.share.mail.subject",
+              message: `visualize.admin.ch`,
+            })
+          )}&body=${i18n._(
+            t({
+              id: "publication.share.mail.body",
+              message: `Here is a link to a visualization I created on visualize.admin.ch`,
+            })
+          )}: ${shareUrl}`}
+        >
+          <Icon name="envelope" />
+        </IconButton>
+      </Flex>
       <div>
         <Typography
           variant="h6"
