@@ -35,6 +35,8 @@ export const PieChart = memo(
     height = 500,
     colors = [...schemeCategory10],
     showPercentages = true,
+    title,
+    description,
   }: PieChartProps) => {
     const svgRef = useRef<SVGSVGElement>(null);
 
@@ -176,12 +178,33 @@ export const PieChart = memo(
           overflow: "auto",
           display: "flex",
           justifyContent: "center",
+          position: "relative",
         }}
       >
+        {/* Visually hidden description for screen readers */}
+        <Box
+          component="span"
+          sx={{
+            position: "absolute",
+            width: 1,
+            height: 1,
+            padding: 0,
+            margin: -1,
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            whiteSpace: "nowrap",
+            border: 0,
+          }}
+        >
+          {description ||
+            `Pie chart displays ${data.length} segments. Labels: ${labelKey}, Values: ${valueKey}.`}
+        </Box>
         <svg
           ref={svgRef}
           width={width}
           height={height}
+          role="img"
+          aria-label={title || `Pie chart showing ${labelKey} distribution`}
           style={{ maxWidth: "100%", height: "auto" }}
         />
       </Box>

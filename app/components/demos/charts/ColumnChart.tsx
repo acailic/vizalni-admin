@@ -54,6 +54,8 @@ function ColumnChartComponent({
   colors = ["#ff9800", "#ff5722", "#f44336", "#e91e63", "#9c27b0", "#673ab7"],
   xLabel = "",
   yLabel = "",
+  title,
+  description,
   multiSeries = false,
   stacked = false,
   showZeroLine = false,
@@ -416,12 +418,33 @@ function ColumnChartComponent({
         borderRadius: 2,
         boxShadow: 1,
         p: 2,
+        position: "relative",
       }}
     >
+      {/* Visually hidden description for screen readers */}
+      <Box
+        component="span"
+        sx={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {description ||
+          `Column chart displays ${data.length} categories. ${xLabel}: ${xKey}, ${yLabel}: ${yKey}.`}
+      </Box>
       <svg
         ref={svgRef}
         width={computedWidth}
         height={height}
+        role="img"
+        aria-label={title || `Column chart showing ${xLabel} vs ${yLabel}`}
         style={{ maxWidth: "100%", height: "auto" }}
       />
     </Box>

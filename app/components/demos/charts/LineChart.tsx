@@ -57,6 +57,8 @@ export const LineChart = memo(
     colors = CHART_COLORS.PROFESSIONAL_PALETTE,
     xLabel = "",
     yLabel = "",
+    title,
+    description,
     multiSeries = false,
     showZeroLine = false,
     showArea = true,
@@ -481,10 +483,30 @@ export const LineChart = memo(
         ref={containerRef}
         sx={{ width: "100%", overflow: "visible", position: "relative" }}
       >
+        {/* Visually hidden description for screen readers */}
+        <Box
+          component="span"
+          sx={{
+            position: "absolute",
+            width: 1,
+            height: 1,
+            padding: 0,
+            margin: -1,
+            overflow: "hidden",
+            clip: "rect(0, 0, 0, 0)",
+            whiteSpace: "nowrap",
+            border: 0,
+          }}
+        >
+          {description ||
+            `Chart displays ${data.length} data points. ${xLabel}: ${xKey}, ${yLabel}: ${yKey}.`}
+        </Box>
         <svg
           ref={svgRef}
           width={width}
           height={height}
+          role="img"
+          aria-label={title || `Line chart showing ${xLabel} vs ${yLabel}`}
           style={{ maxWidth: "100%", height: "auto", overflow: "visible" }}
         />
         {/* Custom Tooltip */}

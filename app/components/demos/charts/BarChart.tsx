@@ -40,6 +40,8 @@ export const BarChart = ({
   color = "#2196f3",
   xLabel = "",
   yLabel = "",
+  title,
+  description,
 }: BarChartProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
   // Expand chart width when there are many categories to keep labels legible
@@ -213,12 +215,33 @@ export const BarChart = ({
         borderRadius: 2,
         boxShadow: 1,
         p: 2,
+        position: "relative",
       }}
     >
+      {/* Visually hidden description for screen readers */}
+      <Box
+        component="span"
+        sx={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {description ||
+          `Bar chart displays ${data.length} categories. ${xLabel}: ${xKey}, ${yLabel}: ${yKey}.`}
+      </Box>
       <svg
         ref={svgRef}
         width={computedWidth}
         height={height}
+        role="img"
+        aria-label={title || `Bar chart showing ${xLabel} vs ${yLabel}`}
         style={{ maxWidth: "100%", height: "auto" }}
       />
     </Box>
