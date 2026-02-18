@@ -3,12 +3,14 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   FormControlLabel,
   IconButton,
   Popover,
   PopoverProps,
+  Snackbar,
   Stack,
   Switch,
   ToggleButton,
@@ -210,6 +212,7 @@ export const EmbedContent = ({
 
   const [sizePreset, setSizePreset] = useState<EmbedSizePreset>("responsive");
   const [showPreview, setShowPreview] = useState(true);
+  const [copied, setCopied] = useState(false);
   const previewRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -250,202 +253,237 @@ export const EmbedContent = ({
   }, [configKey, locale, embedParams, router]);
 
   return (
-    <Flex sx={{ flexDirection: "column", gap: 4, p: 4 }}>
-      <Flex sx={{ flexDirection: "column", gap: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
-          <Trans id="publication.embed.iframe">Iframe Embed Code</Trans>
-        </Typography>
-        <Typography variant="body2">
-          <Trans id="publication.embed.iframe.caption">
-            Use this link to embed the chart into other webpages.
-          </Trans>
-        </Typography>
-        <Accordion
-          defaultExpanded={Object.values(embedParams).some((d) => d)}
-          sx={{
-            boxShadow: 0,
-
-            "&::before": {
-              display: "none",
-            },
-          }}
-        >
-          <AccordionSummary
+    <>
+      <Flex sx={{ flexDirection: "column", gap: 4, p: 4 }}>
+        <Flex sx={{ flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+            <Trans id="publication.embed.iframe">Iframe Embed Code</Trans>
+          </Typography>
+          <Typography variant="body2">
+            <Trans id="publication.embed.iframe.caption">
+              Use this link to embed the chart into other webpages.
+            </Trans>
+          </Typography>
+          <Accordion
+            defaultExpanded={Object.values(embedParams).some((d) => d)}
             sx={{
-              width: "fit-content",
-              gap: 1,
-              minHeight: 0,
-              color: "primary.main",
-              transition: "color 0.2s ease",
+              boxShadow: 0,
 
-              "&:hover": {
-                color: "primary.dark",
-              },
-
-              "& > .MuiAccordionSummary-content": {
-                m: 0,
-                p: 0,
-              },
-
-              "& svg": {
-                color: "primary.main",
+              "&::before": {
+                display: "none",
               },
             }}
           >
-            <Typography variant="h6" component="p">
-              <Trans id="publication.embed.advanced-settings">
-                Advanced settings
-              </Trans>
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails sx={{ pt: 3 }}>
-            <EmbedToggleSwitch
-              checked={embedParams.removeBorder}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("removeBorder", checked);
+            <AccordionSummary
+              sx={{
+                width: "fit-content",
+                gap: 1,
+                minHeight: 0,
+                color: "primary.main",
+                transition: "color 0.2s ease",
+
+                "&:hover": {
+                  color: "primary.dark",
+                },
+
+                "& > .MuiAccordionSummary-content": {
+                  m: 0,
+                  p: 0,
+                },
+
+                "& svg": {
+                  color: "primary.main",
+                },
               }}
-              label={t({
-                id: "publication.embed.iframe.remove-border",
-                message: "Remove border",
-              })}
-              infoMessage={t({
-                id: "publication.embed.iframe.remove-border.warn",
-                message:
-                  "For embedding visualizations in systems without a border.",
-              })}
-            />
-            <EmbedToggleSwitch
-              checked={embedParams.optimizeSpace}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("optimizeSpace", checked);
-              }}
-              label={t({
-                id: "publication.embed.iframe.optimize-space",
-                message: "Optimize white space around and within chart",
-              })}
-            />
-            <EmbedToggleSwitch
-              checked={embedParams.removeMoreOptionsButton}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("removeMoreOptionsButton", checked);
-              }}
-              label={t({
-                id: "publication.embed.iframe.remove-more-options-button",
-                message:
-                  "Remove options for table view, copy & edit, sharing, and downloading",
-              })}
-            />
-            <EmbedToggleSwitch
-              checked={embedParams.removeLabelsInteractivity}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("removeLabelsInteractivity", checked);
-              }}
-              label={t({
-                id: "publication.embed.iframe.remove-axis-labels-interactivity",
-                message: "Hide interactive labels",
-              })}
-            />
-            <EmbedToggleSwitch
-              checked={embedParams.removeFootnotes}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("removeFootnotes", checked);
-              }}
-              label={t({
-                id: "publication.embed.iframe.remove-legend",
-                message: "Hide footnotes",
-              })}
-            />
-            <EmbedToggleSwitch
-              checked={embedParams.removeFilters}
-              onChange={(_, checked) => {
-                setEmbedQueryParam("removeFilters", checked);
-              }}
-              label={t({
-                id: "publication.embed.iframe.remove-filters",
-                message: "Hide filters",
-              })}
-            />
-          </AccordionDetails>
-        </Accordion>
-      </Flex>
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
-          Size Preset
-        </Typography>
-        <ToggleButtonGroup
-          value={sizePreset}
-          exclusive
-          onChange={(_, value) => value && setSizePreset(value)}
-          size="small"
-          sx={{ flexWrap: "wrap", gap: 0.5 }}
-        >
-          {Object.entries(SIZE_PRESETS).map(([key, preset]) => (
-            <ToggleButton
-              key={key}
-              value={key}
-              sx={{ textTransform: "none", px: 2 }}
             >
-              {preset.label}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-      </Box>
-      <FormControlLabel
-        control={
-          <Switch
-            checked={showPreview}
-            onChange={(_, checked) => setShowPreview(checked)}
-          />
-        }
-        label={<Typography variant="body2">Show preview</Typography>}
-        sx={{ mb: 2 }}
-      />
-      {showPreview && (
+              <Typography variant="h6" component="p">
+                <Trans id="publication.embed.advanced-settings">
+                  Advanced settings
+                </Trans>
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ pt: 3 }}>
+              <EmbedToggleSwitch
+                checked={embedParams.removeBorder}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeBorder", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-border",
+                  message: "Remove border",
+                })}
+                infoMessage={t({
+                  id: "publication.embed.iframe.remove-border.warn",
+                  message:
+                    "For embedding visualizations in systems without a border.",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.optimizeSpace}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("optimizeSpace", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.optimize-space",
+                  message: "Optimize white space around and within chart",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeMoreOptionsButton}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeMoreOptionsButton", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-more-options-button",
+                  message:
+                    "Remove options for table view, copy & edit, sharing, and downloading",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeLabelsInteractivity}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeLabelsInteractivity", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-axis-labels-interactivity",
+                  message: "Hide interactive labels",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeFootnotes}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeFootnotes", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-legend",
+                  message: "Hide footnotes",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeFilters}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeFilters", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-filters",
+                  message: "Hide filters",
+                })}
+              />
+            </AccordionDetails>
+          </Accordion>
+        </Flex>
         <Box sx={{ mb: 3 }}>
           <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
-            Preview
+            Size Preset
           </Typography>
-          <Box
-            sx={{
-              border: 1,
-              borderColor: "divider",
-              borderRadius: 2,
-              overflow: "hidden",
-              bgcolor: "grey.50",
-              height:
-                sizePreset === "responsive"
-                  ? 400
-                  : parseInt(SIZE_PRESETS[sizePreset].height),
-            }}
+          <ToggleButtonGroup
+            value={sizePreset}
+            exclusive
+            onChange={(_, value) => value && setSizePreset(value)}
+            size="small"
+            sx={{ flexWrap: "wrap", gap: 0.5 }}
           >
-            <iframe
-              ref={previewRef}
-              src={embedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              title="Embed preview"
-            />
-          </Box>
+            {Object.entries(SIZE_PRESETS).map(([key, preset]) => (
+              <ToggleButton
+                key={key}
+                value={key}
+                sx={{ textTransform: "none", px: 2 }}
+              >
+                {preset.label}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
         </Box>
-      )}
-      <CopyToClipboardTextInput
-        content={`<iframe src="${embedUrl}" width="${SIZE_PRESETS[sizePreset].width}" style="${sizePreset === "responsive" ? "" : `height: ${SIZE_PRESETS[sizePreset].height}; `}border: 0px #ffffff none;" name="visualize.admin.ch"></iframe>${sizePreset === "responsive" ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`}
-      />
-      <Flex sx={{ flexDirection: "column", gap: 2 }}>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
-          <Trans id="publication.embed.external-application">
-            Embed Code for &quot;External Application&quot;
-          </Trans>
-        </Typography>
-        <Typography variant="body2">
-          <Trans id="publication.embed.external-application.caption">
-            Use this link to embed the chart without iframe tags.
-          </Trans>
-        </Typography>
-        <CopyToClipboardTextInput content={embedAEMUrl} />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={showPreview}
+              onChange={(_, checked) => setShowPreview(checked)}
+            />
+          }
+          label={<Typography variant="body2">Show preview</Typography>}
+          sx={{ mb: 2 }}
+        />
+        {showPreview && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
+              Preview
+            </Typography>
+            <Box
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 2,
+                overflow: "hidden",
+                bgcolor: "grey.50",
+                height:
+                  sizePreset === "responsive"
+                    ? 400
+                    : parseInt(SIZE_PRESETS[sizePreset].height),
+              }}
+            >
+              <iframe
+                ref={previewRef}
+                src={embedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                title="Embed preview"
+              />
+            </Box>
+          </Box>
+        )}
+        {(() => {
+          const heightStyle =
+            sizePreset === "responsive"
+              ? ""
+              : `height: ${SIZE_PRESETS[sizePreset].height}; `;
+          const embedCode = `<iframe src="${embedUrl}" width="${SIZE_PRESETS[sizePreset].width}" style="${heightStyle}border: 0px #ffffff none;" name="visualize.admin.ch"></iframe>${sizePreset === "responsive" ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`;
+
+          return (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                startIcon={<Icon name="copy" size={20} />}
+                onClick={() => {
+                  navigator.clipboard.writeText(embedCode);
+                  setCopied(true);
+                }}
+                sx={{ mb: 2, py: 1.5, fontWeight: 700 }}
+              >
+                Copy Embed Code
+              </Button>
+              <CopyToClipboardTextInput content={embedCode} />
+            </>
+          );
+        })()}
+        <Flex sx={{ flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+            <Trans id="publication.embed.external-application">
+              Embed Code for &quot;External Application&quot;
+            </Trans>
+          </Typography>
+          <Typography variant="body2">
+            <Trans id="publication.embed.external-application.caption">
+              Use this link to embed the chart without iframe tags.
+            </Trans>
+          </Typography>
+          <CopyToClipboardTextInput content={embedAEMUrl} />
+        </Flex>
       </Flex>
-    </Flex>
+      <Snackbar
+        open={copied}
+        autoHideDuration={2000}
+        onClose={() => setCopied(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Embed code copied to clipboard!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
