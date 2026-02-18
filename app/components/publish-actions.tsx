@@ -218,11 +218,13 @@ export const EmbedContent = ({
 
   useEffect(() => {
     const { origin } = window.location;
+    const utmParams =
+      "?utm_source=embed&utm_medium=iframe&utm_campaign=vizualni-admin";
     const activeEmbedParams = Object.entries(embedParams)
       .filter(([_, value]) => value)
       .map(([key]) => `${key}=true`)
       .join("&");
-    const embedPath = `${configKey}${activeEmbedParams ? `?${activeEmbedParams}` : ""}`;
+    const embedPath = `${configKey}${utmParams}${activeEmbedParams ? `&${activeEmbedParams}` : ""}`;
     setEmbedUrl(`${origin}/${locale}/embed/${embedPath}`);
     setEmbedAEMUrl(`${origin}/api/embed-aem-ext/${locale}/${embedPath}`);
 
