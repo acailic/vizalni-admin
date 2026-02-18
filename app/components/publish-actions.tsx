@@ -11,6 +11,8 @@ import {
   PopoverProps,
   Stack,
   Switch,
+  ToggleButton,
+  ToggleButtonGroup,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -227,7 +229,7 @@ const Share = ({ configKey, locale }: PublishActionProps) => {
 export const EmbedContent = ({
   locale,
   configKey,
-  iframeHeight,
+  iframeHeight: _iframeHeight,
 }: {
   iframeHeight?: number;
 } & Omit<PublishActionProps, "chartWrapperRef" | "state">) => {
@@ -236,6 +238,20 @@ export const EmbedContent = ({
   const [embedAEMUrl, setEmbedAEMUrl] = useState("");
   const { embedParams, setEmbedQueryParam } = useEmbedQueryParams();
   const [responsive, setResponsive] = useState(true);
+
+  type EmbedSizePreset = "small" | "medium" | "large" | "responsive";
+
+  const SIZE_PRESETS: Record<
+    EmbedSizePreset,
+    { width: string; height: string; label: string }
+  > = {
+    small: { width: "100%", height: "400px", label: "Small (400px)" },
+    medium: { width: "100%", height: "640px", label: "Medium (640px)" },
+    large: { width: "100%", height: "960px", label: "Large (960px)" },
+    responsive: { width: "100%", height: "auto", label: "Responsive" },
+  };
+
+  const [sizePreset, setSizePreset] = useState<EmbedSizePreset>("responsive");
 
   useEffect(() => {
     const { origin } = window.location;
@@ -423,8 +439,30 @@ export const EmbedContent = ({
           </AccordionDetails>
         </Accordion>
       </Flex>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
+          Size Preset
+        </Typography>
+        <ToggleButtonGroup
+          value={sizePreset}
+          exclusive
+          onChange={(_, value) => value && setSizePreset(value)}
+          size="small"
+          sx={{ flexWrap: "wrap", gap: 0.5 }}
+        >
+          {Object.entries(SIZE_PRESETS).map(([key, preset]) => (
+            <ToggleButton
+              key={key}
+              value={key}
+              sx={{ textTransform: "none", px: 2 }}
+            >
+              {preset.label}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Box>
       <CopyToClipboardTextInput
-        content={`<iframe src="${embedUrl}" width="100%" style="${responsive ? "" : `height: ${iframeHeight || 640}px; `}border: 0px #ffffff none;"  name="visualize.admin.ch"></iframe>${responsive ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`}
+        content={`<iframe src="${embedUrl}" width="${SIZE_PRESETS[sizePreset].width}" style="${sizePreset === "responsive" ? "" : `height: ${SIZE_PRESETS[sizePreset].height}; `}border: 0px #ffffff none;" name="visualize.admin.ch"></iframe>${sizePreset === "responsive" ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`}
       />
       <Flex sx={{ flexDirection: "column", gap: 2 }}>
         <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
