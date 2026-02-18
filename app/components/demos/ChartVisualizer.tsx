@@ -14,6 +14,7 @@ import {
 } from "@/lib/demos/schema-profiler";
 
 import { BarChart, ColumnChart, LineChart, PieChart } from "./charts";
+import { CHART_DATA_LIMITS } from "./charts/constants";
 
 export interface ChartVisualizerProps {
   data: any[];
@@ -71,7 +72,10 @@ function detectVisualizationColumns(data: any[]): {
 /**
  * Prepare data for visualization (limit rows if too many)
  */
-function prepareDataForVisualization(data: any[], maxRows: number = 20): any[] {
+function prepareDataForVisualization(
+  data: any[],
+  maxRows: number = CHART_DATA_LIMITS.MAX_VISIBLE_ROWS
+): any[] {
   if (data.length <= maxRows) {
     return data;
   }
@@ -89,7 +93,10 @@ export const ChartVisualizer = ({
 }: ChartVisualizerProps) => {
   const { columns, preparedData, resolvedChartType } = useMemo(() => {
     const columns = detectVisualizationColumns(data);
-    const preparedData = prepareDataForVisualization(data, 25);
+    const preparedData = prepareDataForVisualization(
+      data,
+      CHART_DATA_LIMITS.VISUALIZER_MAX_ROWS
+    );
     const profile = profileData(data);
     const resolvedChartType: ChartKind = isSupportedChartType(chartType)
       ? chartType
@@ -173,7 +180,7 @@ export const ChartVisualizer = ({
 
         {!fallbackChartType && resolvedChartType === "pie" && (
           <PieChart
-            data={preparedData.slice(0, 10)} // Limit pie chart to 10 slices
+            data={preparedData.slice(0, CHART_DATA_LIMITS.MAX_PIE_SLICES)} // Limit pie chart to 10 slices
             labelKey={columns.categoryColumn}
             valueKey={columns.valueColumn}
             width={600}

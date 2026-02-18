@@ -14,6 +14,8 @@ import "d3-transition";
 import { area, curveMonotoneX, line } from "d3-shape";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
+import { CHART_DIMENSIONS, CHART_COLORS, CHART_ANIMATION } from "./constants";
+
 export interface LineChartProps {
   data: Array<Record<string, any>>;
   xKey: string;
@@ -22,7 +24,7 @@ export interface LineChartProps {
   height?: number;
   margin?: { top: number; right: number; bottom: number; left: number };
   color?: string;
-  colors?: string[];
+  colors?: readonly string[];
   xLabel?: string;
   yLabel?: string;
   title?: string;
@@ -43,28 +45,16 @@ interface TooltipData {
   values: Array<{ key: string; value: number; color: string }>;
 }
 
-// Professional color palette
-const professionalColors = [
-  "#6366f1", // Indigo
-  "#10b981", // Emerald
-  "#f59e0b", // Amber
-  "#ef4444", // Red
-  "#8b5cf6", // Violet
-  "#06b6d4", // Cyan
-  "#ec4899", // Pink
-  "#84cc16", // Lime
-];
-
 export const LineChart = memo(
   ({
     data,
     xKey,
     yKey,
-    width = 800,
-    height = 400,
-    margin = { top: 20, right: 30, bottom: 60, left: 80 },
-    color = "#6366f1",
-    colors = professionalColors,
+    width = CHART_DIMENSIONS.DEFAULT_WIDTH,
+    height = CHART_DIMENSIONS.DEFAULT_HEIGHT,
+    margin = CHART_DIMENSIONS.DEFAULT_MARGIN,
+    color = CHART_COLORS.PRIMARY,
+    colors = CHART_COLORS.PROFESSIONAL_PALETTE,
     xLabel = "",
     yLabel = "",
     multiSeries = false,
@@ -72,7 +62,7 @@ export const LineChart = memo(
     showArea = true,
     showTooltip = true,
     showCrosshair = true,
-    animationDuration = 1200,
+    animationDuration = CHART_ANIMATION.DEFAULT_DURATION,
   }: LineChartProps) => {
     const svgRef = useRef<SVGSVGElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -189,7 +179,8 @@ export const LineChart = memo(
 
       // Draw area and lines for each series
       seriesKeys.forEach((key, index) => {
-        const seriesColor = seriesKeys.length > 1 ? colors[index % colors.length] : color;
+        const seriesColor =
+          seriesKeys.length > 1 ? colors[index % colors.length] : color;
         const gradientId = `area-gradient-${index}`;
 
         // Create gradient for area fill
@@ -286,7 +277,10 @@ export const LineChart = memo(
       // Add crosshair and tooltip interaction
       if (showTooltip || showCrosshair) {
         // Create crosshair group
-        const crosshair = g.append("g").attr("class", "crosshair").style("display", "none");
+        const crosshair = g
+          .append("g")
+          .attr("class", "crosshair")
+          .style("display", "none");
 
         if (showCrosshair) {
           crosshair
@@ -302,7 +296,8 @@ export const LineChart = memo(
 
         // Create hover circles for each series
         seriesKeys.forEach((_, index) => {
-          const seriesColor = seriesKeys.length > 1 ? colors[index % colors.length] : color;
+          const seriesColor =
+            seriesKeys.length > 1 ? colors[index % colors.length] : color;
           crosshair
             .append("circle")
             .attr("class", `hover-dot-${index}`)
@@ -341,13 +336,21 @@ export const LineChart = memo(
 
             // Update crosshair position
             crosshair.style("display", null);
-            crosshair.select(".crosshair-line").attr("x1", xPosSnapped).attr("x2", xPosSnapped);
+            crosshair
+              .select(".crosshair-line")
+              .attr("x1", xPosSnapped)
+              .attr("x2", xPosSnapped);
 
             // Update hover dots and collect tooltip data
-            const tooltipValues: Array<{ key: string; value: number; color: string }> = [];
+            const tooltipValues: Array<{
+              key: string;
+              value: number;
+              color: string;
+            }> = [];
             seriesKeys.forEach((key, index) => {
               const value = Number(d[key]) || 0;
-              const seriesColor = seriesKeys.length > 1 ? colors[index % colors.length] : color;
+              const seriesColor =
+                seriesKeys.length > 1 ? colors[index % colors.length] : color;
               crosshair
                 .select(`.hover-dot-${index}`)
                 .attr("cx", xPosSnapped)
@@ -474,7 +477,10 @@ export const LineChart = memo(
     ]);
 
     return (
-      <Box ref={containerRef} sx={{ width: "100%", overflow: "visible", position: "relative" }}>
+      <Box
+        ref={containerRef}
+        sx={{ width: "100%", overflow: "visible", position: "relative" }}
+      >
         <svg
           ref={svgRef}
           width={width}
@@ -514,7 +520,10 @@ export const LineChart = memo(
               {tooltip.xValue}
             </Typography>
             {tooltip.values.map(({ key, value, color }) => (
-              <Box key={key} sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}>
+              <Box
+                key={key}
+                sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}
+              >
                 <Box
                   sx={{
                     width: 10,
@@ -523,9 +532,15 @@ export const LineChart = memo(
                     backgroundColor: color,
                   }}
                 />
-                <Typography variant="body2" sx={{ color: "#4b5563", fontSize: "12px" }}>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "#4b5563", fontSize: "12px" }}
+                >
                   {key}:{" "}
-                  <Box component="span" sx={{ fontWeight: 700, color: "#1f2937" }}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: 700, color: "#1f2937" }}
+                  >
                     {value.toLocaleString()}
                   </Box>
                 </Typography>
