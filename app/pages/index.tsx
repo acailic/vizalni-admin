@@ -17,6 +17,8 @@ import { useRouter } from "next/router";
 import { type ReactNode, useMemo } from "react";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
+import { ShowcaseCard } from "@/components/demos/showcase-card";
+import { FEATURED_CHARTS } from "@/lib/demos/config";
 import { staticPages } from "@/static-pages";
 
 interface ContentPageProps {
@@ -464,6 +466,27 @@ const ctaCopy: Record<
     subheading:
       "Почните да истражујете датасете и направите први графикон данас.",
     button: "Започните бесплатно",
+  },
+};
+
+const featuredCopy: Record<
+  Locale,
+  { label: string; heading: string; cta: string }
+> = {
+  en: {
+    label: "Featured",
+    heading: "Popular visualizations",
+    cta: "View all demos",
+  },
+  sr: {
+    label: "Istaknuto",
+    heading: "Popularne vizualizacije",
+    cta: "Pogledaj sve demo",
+  },
+  "sr-Cyrl": {
+    label: "Истакнуто",
+    heading: "Популарне визуализације",
+    cta: "Погледај све демо",
   },
 };
 
@@ -1079,6 +1102,61 @@ const ResourcesSection = ({ locale }: { locale: Locale }) => {
   );
 };
 
+const FeaturedSection = ({ locale }: { locale: Locale }) => {
+  const copy = featuredCopy[locale];
+  const featured = FEATURED_CHARTS.slice(0, 3);
+
+  return (
+    <SectionShell id="featured">
+      <Box sx={{ textAlign: "center", mb: 4 }}>
+        <Typography
+          variant="overline"
+          sx={{ letterSpacing: 2, color: "primary.main", fontWeight: 700 }}
+        >
+          {copy.label}
+        </Typography>
+        <Typography variant="h3" sx={{ fontWeight: 800, mt: 1.5 }}>
+          {copy.heading}
+        </Typography>
+      </Box>
+      <Grid container spacing={3}>
+        {featured.map((chart) => (
+          <Grid item xs={12} md={4} key={chart.id}>
+            <ShowcaseCard
+              title={
+                chart.title[
+                  locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
+                ]
+              }
+              description={
+                chart.description[
+                  locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
+                ]
+              }
+              demoUrl={`/demos/${chart.demoId}`}
+              embedUrl={`/embed/${chart.demoId}`}
+              shareUrl={`https://acailic.github.io/vizualni-admin/demos/${chart.demoId}`}
+              onEmbed={() => {}}
+              onShare={() => {}}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <Box sx={{ textAlign: "center", mt: 4 }}>
+        <Button
+          variant="outlined"
+          size="large"
+          component={Link}
+          href="/demos"
+          sx={{ fontWeight: 700 }}
+        >
+          {copy.cta}
+        </Button>
+      </Box>
+    </SectionShell>
+  );
+};
+
 const CTASection = ({ locale }: { locale: Locale }) => {
   const copy = ctaCopy[locale];
 
@@ -1138,6 +1216,7 @@ function ContentPage({ staticPage }: ContentPageProps) {
       <ContentMDXProvider>
         <HeroSection locale={locale} />
         <FeaturesSection locale={locale} />
+        <FeaturedSection locale={locale} />
         <HowItWorksSection locale={locale} />
         <UseCasesSection locale={locale} />
         <ResourcesSection locale={locale} />
