@@ -431,7 +431,12 @@ describe("DataGovRsClient", () => {
         json: () => Promise.reject(new Error("Invalid JSON")),
       });
 
-      await expect(client.getDataset("invalid")).rejects.toMatchObject({
+      // Create a client with no retries to avoid timeout
+      const noRetryClient = new DataGovRsClient({
+        retryConfig: { maxRetries: 0 },
+      });
+
+      await expect(noRetryClient.getDataset("invalid")).rejects.toMatchObject({
         message: "API request failed: Internal Server Error",
         status: 500,
       });
@@ -439,6 +444,14 @@ describe("DataGovRsClient", () => {
   });
 
   describe("timeout behavior", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it("should throw timeout error when request exceeds timeout", async () => {
       mockFetch.mockImplementation((_url: string, options: RequestInit) => {
         const signal = options.signal as AbortSignal | undefined;
@@ -456,6 +469,8 @@ describe("DataGovRsClient", () => {
 
       const fastClient = new DataGovRsClient({ timeout: 100 });
       const pending = fastClient.searchDatasets();
+
+      await vi.runAllTimersAsync();
 
       await expect(pending).rejects.toMatchObject({
         message: "Request timeout",
@@ -482,6 +497,8 @@ describe("DataGovRsClient", () => {
 
       const fastClient = new DataGovRsClient({ timeout: 100 });
       const pending = fastClient.searchDatasets();
+
+      await vi.runAllTimersAsync();
 
       await expect(pending).rejects.toMatchObject({
         message: "Request timeout",

@@ -426,7 +426,8 @@ describe("upOrDown version comparison", () => {
   it("should handle multi-digit version numbers correctly", () => {
     expect(upOrDown("1.9.0", "1.10.0")).toBe("up");
     expect(upOrDown("1.10.0", "1.9.0")).toBe("down");
-    expect(upOrDown("10.0.0", "9.99.99")).toBe("up");
+    expect(upOrDown("9.99.99", "10.0.0")).toBe("up");
+    expect(upOrDown("10.0.0", "9.99.99")).toBe("down");
   });
 
   it("should compare major version first, then minor, then patch", () => {
@@ -446,7 +447,11 @@ describe("migration edge cases", () => {
       filters: {},
       interactiveFiltersConfig: {
         legend: { active: false, componentIri: "" },
-        time: { active: false, componentIri: "", presets: { type: "range", from: "", to: "" } },
+        time: {
+          active: false,
+          componentIri: "",
+          presets: { type: "range", from: "", to: "" },
+        },
         dataFilters: { active: false, componentIris: [] },
       },
     };
@@ -470,7 +475,11 @@ describe("migration edge cases", () => {
       filters: {},
       interactiveFiltersConfig: {
         legend: { active: false, componentIri: "" },
-        time: { active: false, componentIri: "", presets: { type: "range", from: "", to: "" } },
+        time: {
+          active: false,
+          componentIri: "",
+          presets: { type: "range", from: "", to: "" },
+        },
         dataFilters: { active: false, componentIris: [] },
       },
     };
@@ -539,7 +548,11 @@ describe("migration edge cases", () => {
       filters: {},
       interactiveFiltersConfig: {
         legend: { active: false, componentIri: "" },
-        time: { active: false, componentIri: "", presets: { type: "range", from: "", to: "" } },
+        time: {
+          active: false,
+          componentIri: "",
+          presets: { type: "range", from: "", to: "" },
+        },
         dataFilters: { active: false, componentIris: [] },
       },
     };
@@ -617,7 +630,11 @@ describe("backward compatibility", () => {
       filters: {},
       interactiveFiltersConfig: {
         legend: { active: false, componentIri: "" },
-        timeRange: { active: false, componentId: "", presets: { type: "range", from: "", to: "" } },
+        timeRange: {
+          active: false,
+          componentId: "",
+          presets: { type: "range", from: "", to: "" },
+        },
         calculation: { type: "identity", active: false },
         dataFilters: { active: false, componentIds: [] },
       },
