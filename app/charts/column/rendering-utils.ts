@@ -14,7 +14,6 @@ import {
   RenderOptions,
   toggleFocusBorder,
 } from "@/charts/shared/rendering-utils";
-import type { ChartThemeVariant } from "@/config-types";
 import { getChartConfig, useDefinitiveFilters } from "@/config-utils";
 import { useConfiguratorState } from "@/configurator/configurator-state";
 import { Observation } from "@/domain/data";
@@ -202,33 +201,8 @@ export const renderColumns = (
     );
 };
 
-/**
- * Determines whether rounded corners should be shown based on theme or explicit override
- * @param theme - The chart theme variant
- * @param explicitOverride - Optional explicit override for rounded corners
- * @returns boolean indicating if rounded corners should be shown
- */
-export function shouldShowRoundedCorners(
-  theme: ChartThemeVariant,
-  explicitOverride?: boolean
-): boolean {
-  if (explicitOverride !== undefined) return explicitOverride;
-  return theme === "modern" || theme === "dark";
-}
-
-/**
- * Calculates the appropriate border radius for a bar based on theme and size
- * @param theme - The chart theme variant
- * @param barHeight - The height of the bar (used to cap radius)
- * @returns The calculated border radius
- */
-export function calculateBarRadius(
-  theme: ChartThemeVariant,
-  barHeight: number
-): number {
-  const baseRadius =
-    theme === "modern" || theme === "dark" ? 4 : theme === "minimal" ? 2 : 0;
-
-  // Cap radius at half the bar height to avoid visual artifacts
-  return Math.min(baseRadius, barHeight / 2);
-}
+// Re-export rounded corners utilities for backwards compatibility
+export {
+  shouldShowRoundedCorners,
+  calculateBarRadius,
+} from "./rounded-corners-utils";
