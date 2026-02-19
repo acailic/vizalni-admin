@@ -7,7 +7,7 @@
   "author": "vizualni",
   "repository": {
     "type": "git",
-    "url": "https://github.com/acailic/vizualni-admin.git",
+    "url": "git+https://github.com/acailic/vizualni-admin.git",
     "directory": "packages/connectors"
   },
   "keywords": [
