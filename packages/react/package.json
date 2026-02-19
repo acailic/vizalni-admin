@@ -1,7 +1,23 @@
 {
   "name": "@vizualni/react",
   "version": "0.1.0-alpha.0",
+  "description": "React bindings for @vizualni/core - chart components and hooks",
   "type": "module",
+  "license": "MIT",
+  "author": "vizualni",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acailic/vizualni-admin.git",
+    "directory": "packages/react"
+  },
+  "keywords": [
+    "react",
+    "visualization",
+    "charts",
+    "d3",
+    "data-viz",
+    "react-components"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

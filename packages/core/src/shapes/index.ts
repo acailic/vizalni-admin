@@ -1,14 +1,8 @@
 import { line, pie, arc } from "d3-shape";
 import type { PieArcDatum } from "d3-shape";
 import type { ScaleBand } from "d3-scale";
-import type {
-  ChartConfig,
-  Datum,
-  Shape,
-  LineShape,
-  BarShape,
-  ArcShape,
-} from "../types";
+import type { ChartConfig } from "../config";
+import type { Datum, Shape, LineShape, BarShape, ArcShape } from "../types";
 import type { Scales } from "../scales";
 import type { Layout } from "../layout";
 import { getDefaultColor } from "../utils/colors";
@@ -110,15 +104,19 @@ function computeLinePath(
     return 0;
   });
 
+  // Cast scales to accept the appropriate value types
+  const xScale = scales.x as (value: unknown) => number;
+  const yScale = scales.y as (value: unknown) => number;
+
   const lineGenerator = line<Datum>()
     .x((d) => {
       const val = d[config.x.field];
-      const scaled = scales.x(val as number);
+      const scaled = xScale(val);
       return chartArea.x + (scaled ?? 0);
     })
     .y((d) => {
       const val = d[config.y.field];
-      const scaled = scales.y(val as number);
+      const scaled = yScale(val);
       return chartArea.y + (scaled ?? 0);
     });
 

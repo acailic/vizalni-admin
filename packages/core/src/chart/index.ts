@@ -1,4 +1,5 @@
-import type { ChartConfig, Datum, Shape } from "../types";
+import type { Datum, Shape, Margins } from "../types";
+import type { ChartConfig } from "../config";
 import type { Scales, ComputeScalesOptions } from "../scales";
 import type { Layout, ComputeLayoutOptions } from "../layout";
 import { computeScales } from "../scales";
@@ -47,11 +48,26 @@ export function computeChart(
   config: ChartConfig,
   options: ChartOptions
 ): ChartResult {
+  // Default margins
+  const defaultMargins: Margins = {
+    top: 30,
+    right: 30,
+    bottom: 50,
+    left: 60,
+  };
+  const margins: Margins = { ...defaultMargins, ...options.margins };
+
   // Compute scales
   const scaleOptions: ComputeScalesOptions = {
     width: options.width,
     height: options.height,
-    margins: options.margins,
+    margins,
+    chartArea: {
+      x: margins.left,
+      y: margins.top,
+      width: options.width - margins.left - margins.right,
+      height: options.height - margins.top - margins.bottom,
+    },
   };
   const scales = computeScales(data, config, scaleOptions);
 

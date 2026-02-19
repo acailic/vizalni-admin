@@ -1,7 +1,22 @@
 {
   "name": "@vizualni/core",
   "version": "0.1.0-alpha.0",
+  "description": "Framework-agnostic visualization library - core scales, layouts, and shapes",
   "type": "module",
+  "license": "MIT",
+  "author": "vizualni",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acailic/vizualni-admin.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "visualization",
+    "charts",
+    "d3",
+    "data-viz",
+    "framework-agnostic"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

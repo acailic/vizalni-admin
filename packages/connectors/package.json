@@ -1,7 +1,22 @@
 {
   "name": "@vizualni/connectors",
   "version": "0.1.0-alpha.0",
+  "description": "Data connectors for @vizualni - CSV, JSON, and custom data sources",
   "type": "module",
+  "license": "MIT",
+  "author": "vizualni",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acailic/vizualni-admin.git",
+    "directory": "packages/connectors"
+  },
+  "keywords": [
+    "data",
+    "connectors",
+    "csv",
+    "json",
+    "visualization"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

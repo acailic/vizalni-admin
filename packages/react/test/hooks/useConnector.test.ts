@@ -27,6 +27,7 @@ Alice,100
 Bob,200`;
 
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       text: () => Promise.resolve(mockCsv),
     });
 
