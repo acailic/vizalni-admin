@@ -9,6 +9,44 @@ import {
 } from "@/charts/shared/rendering-utils";
 import { Observation } from "@/domain/data";
 
+// Pie chart variant types for donut support
+export type PieVariant = "pie" | "donut" | "donut-thin";
+
+/**
+ * Calculate the inner radius for pie/donut chart variants
+ * @param variant - The pie chart variant (pie, donut, or donut-thin)
+ * @param outerRadius - The outer radius of the chart
+ * @returns The inner radius (0 for pie, 50% for donut, 60% for donut-thin)
+ */
+export function calculateDonutInnerRadius(
+  variant: PieVariant,
+  outerRadius: number
+): number {
+  switch (variant) {
+    case "pie":
+      return 0;
+    case "donut":
+      return outerRadius * 0.5;
+    case "donut-thin":
+      return outerRadius * 0.6;
+    default:
+      return 0;
+  }
+}
+
+/**
+ * Determine whether leader lines should be used for label placement
+ * @param sliceAngle - The angle of the pie slice in degrees
+ * @param minAngleForInternalLabel - Minimum angle threshold for internal labels
+ * @returns true if leader lines should be used (small slices), false otherwise
+ */
+export function shouldUseLeaderLines(
+  sliceAngle: number,
+  minAngleForInternalLabel: number
+): boolean {
+  return sliceAngle < minAngleForInternalLabel;
+}
+
 export type RenderDatum = {
   key: string;
   value: number;
