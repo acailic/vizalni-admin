@@ -5,6 +5,7 @@ import { RenderBarDatum, renderBars } from "@/charts/bar/rendering-utils";
 import { useBarValueLabelsData } from "@/charts/bar/show-values-utils";
 import { useGetAnnotationRenderState } from "@/charts/shared/annotation-utils";
 import { useChartState } from "@/charts/shared/chart-state";
+import { D3RenderFn, useD3Render } from "@/charts/shared/d3-boundary";
 import { renderTotalValueLabels } from "@/charts/shared/render-value-labels";
 import {
   renderContainer,
@@ -14,6 +15,17 @@ import {
 } from "@/charts/shared/rendering-utils";
 import { useChartTheme } from "@/charts/shared/use-chart-theme";
 import { useTransitionStore } from "@/stores/transition";
+
+// Module-level pure render function for ErrorWhiskers — no closures over component state.
+// The g received from useD3Render is Selection<SVGGElement, unknown, null, unknown>;
+// renderHorizontalWhisker expects Selection<SVGGElement, null, SVGGElement, unknown>.
+// The types differ only in generic parameters that do not affect runtime behaviour,
+// so we cast via `as any`.
+const renderErrorWhiskers: D3RenderFn<RenderHorizontalWhiskerDatum[]> = (
+  g,
+  data,
+  opts
+) => renderHorizontalWhisker(g as any, data, opts);
 
 export const ErrorWhiskers = () => {
   const {
@@ -63,24 +75,13 @@ export const ErrorWhiskers = () => {
     chartHeight,
   ]);
 
-  useEffect(() => {
-    if (ref.current) {
-      renderContainer(ref.current, {
-        id: "bars-error-whiskers",
-        transform: `translate(${margins.left} ${margins.top})`,
-        transition: { enable: enableTransition, duration: transitionDuration },
-        render: (g, opts) => renderHorizontalWhisker(g, renderData, opts),
-      });
-    }
-  }, [
-    enableTransition,
-    margins.left,
-    margins.top,
-    renderData,
-    transitionDuration,
-  ]);
+  useD3Render(ref, renderErrorWhiskers, renderData, {
+    transition: { enable: enableTransition, duration: transitionDuration },
+  });
 
-  return <g ref={ref} />;
+  return (
+    <g ref={ref} transform={`translate(${margins.left} ${margins.top})`} />
+  );
 };
 
 export const Bars = () => {
