@@ -1,6 +1,6 @@
 // app/charts/shared/interaction/tooltip-rich.tsx
 import { Box, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 export enum TrendDirection {
   Up = "up",

@@ -1,7 +1,7 @@
 // app/charts/shared/legend-interactive.tsx
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState, useCallback, memo } from "react";
+import React, { useState, useCallback, memo } from "react";
 
 export type LegendSymbol =
   | "square"

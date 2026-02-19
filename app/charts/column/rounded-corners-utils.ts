@@ -2,7 +2,7 @@
 // Utility functions for column chart rounded corners
 // Extracted for testability
 
-import type { ChartThemeVariant } from "@/config-types";
+import type { ChartThemeVariant } from "@/charts/shared/use-chart-theme";
 
 /**
  * Determines whether rounded corners should be shown based on theme or explicit override

@@ -1,11 +1,18 @@
+// @vitest-environment jsdom
 // app/charts/shared/__tests__/legend-interactive.spec.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import "@testing-library/jest-dom/vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 
 import {
   InteractiveLegendItem,
   LegendInteractionMode,
 } from "../legend-interactive";
+
+afterEach(() => {
+  cleanup();
+});
 
 describe("InteractiveLegendItem", () => {
   it("should render label and color indicator", () => {

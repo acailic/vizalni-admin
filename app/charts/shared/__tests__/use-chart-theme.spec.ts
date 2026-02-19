@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 // app/charts/shared/__tests__/use-chart-theme.spec.ts
 import { renderHook } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
