@@ -18,10 +18,27 @@ export function BarChart({
   height,
   className,
 }: BarChartProps) {
-  const { scales, layout } = useChart(data, config, {
+  const { scales, layout, error } = useChart(data, config, {
     width,
     height,
   });
+
+  // Render placeholder on error
+  if (error) {
+    return (
+      <svg
+        role="img"
+        width={width}
+        height={height}
+        className={className}
+        aria-label="Bar chart - error"
+      >
+        <text x={width / 2} y={height / 2} textAnchor="middle" fill="#999">
+          {error}
+        </text>
+      </svg>
+    );
+  }
 
   // Bar charts always use a band scale for x-axis (categorical data)
   const xScale = scales.x as ScaleBand<string>;
