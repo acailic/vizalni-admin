@@ -3,15 +3,16 @@ import { fold } from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
 import * as t from "io-ts";
 
+// Import and re-export ChartThemeVariant from use-chart-theme to avoid duplication
+import type { ChartThemeVariant as ChartThemeVariantType } from "./charts/shared/use-chart-theme";
+export type ChartThemeVariant = ChartThemeVariantType;
+
 // Define PALETTE_TYPE locally to avoid Prisma client dependency for static builds
 export enum PALETTE_TYPE {
   SEQUENTIAL = "SEQUENTIAL",
   DIVERGING = "DIVERGING",
   CATEGORICAL = "CATEGORICAL",
 }
-
-// Chart Theme Variants
-export type ChartThemeVariant = "default" | "modern" | "minimal" | "dark";
 
 export const CHART_THEME_VARIANTS: ChartThemeVariant[] = [
   "default",
