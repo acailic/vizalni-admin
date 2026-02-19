@@ -1,8 +1,8 @@
-import React from "react";
 import { pie, arc } from "d3-shape";
 import type { PieArcDatum } from "d3-shape";
 import { useChart } from "../hooks/useChart";
 import type { PieConfig, Datum } from "@vizualni/core";
+import { getDefaultColor } from "@vizualni/core";
 
 export interface PieChartProps {
   data: Datum[];
@@ -67,20 +67,4 @@ export function PieChart({
       </g>
     </svg>
   );
-}
-
-function getDefaultColor(index: number): string {
-  const colors = [
-    "#4e79a7",
-    "#f28e2c",
-    "#e15759",
-    "#76b7b2",
-    "#59a14f",
-    "#edc949",
-    "#af7aa1",
-    "#ff9da7",
-    "#9c755f",
-    "#bab0ab",
-  ];
-  return colors[index % colors.length];
 }

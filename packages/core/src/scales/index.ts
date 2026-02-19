@@ -2,6 +2,7 @@ import { extent, max } from "d3-array";
 import type { ScaleBand } from "d3-scale";
 import type { ChartConfig } from "../config";
 import type { Datum, Dimensions, Margins } from "../types";
+import { getDefaultColors } from "../utils/colors";
 import { createBandScale } from "./band";
 import { createLinearScale } from "./linear";
 import { createTimeScale } from "./time";
@@ -144,22 +145,4 @@ function computePieScales(
   });
 
   return { x: dummyScale, y: dummyScale, color: colorScale };
-}
-
-/**
- * Default color palette (tableau10)
- */
-function getDefaultColors(): string[] {
-  return [
-    "#4e79a7",
-    "#f28e2c",
-    "#e15759",
-    "#76b7b2",
-    "#59a14f",
-    "#edc949",
-    "#af7aa1",
-    "#ff9da7",
-    "#9c755f",
-    "#bab0ab",
-  ];
 }
