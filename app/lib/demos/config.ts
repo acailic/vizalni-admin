@@ -7,6 +7,21 @@ import type { DemoConfig } from "@/types/demos";
 import { getValidatedDatasetIds } from "./validated-datasets";
 
 export const DEMO_CONFIGS: Record<string, DemoConfig> = {
+  "modern-api": {
+    id: "modern-api",
+    title: {
+      sr: "🚀 Moderna API - Novi paketi",
+      en: "🚀 Modern API - New Packages",
+    },
+    description: {
+      sr: "Istražite novu generaciju vizualizacija sa @vizualni/core, @vizualni/react i @vizualni/connectors. Manji bundle, bolja TypeScript podrška.",
+      en: "Explore the next generation with @vizualni/core, @vizualni/react and @vizualni/connectors. Smaller bundle, better TypeScript.",
+    },
+    searchQuery: ["modern api", "vizualni", "packages"],
+    chartType: "line",
+    tags: ["API", "npm", "packages", "modern"],
+    icon: "🚀",
+  },
   "air-quality": {
     id: "air-quality",
     title: {
