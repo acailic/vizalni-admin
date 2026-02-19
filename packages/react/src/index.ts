@@ -21,6 +21,7 @@ export { PieChart, type PieChartProps } from "./charts/PieChart";
 // SVG Components
 export { XAxis, YAxis, type XAxisProps, type YAxisProps } from "./svg/Axes";
 export { LinePath, type LinePathProps } from "./svg/LinePath";
+export { Bar, type BarProps } from "./svg/Bar";
 
 // Re-export types from core for convenience
 export type {
