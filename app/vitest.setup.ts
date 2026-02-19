@@ -176,6 +176,19 @@ vi.mock("next/router", () => {
   };
 });
 
+// Mock deck.gl to avoid version conflicts in tests
+vi.mock("@deck.gl/core", () => ({
+  WebMercatorViewport: class {
+    constructor() {}
+  },
+}));
+
+vi.mock("@deck.gl/mapbox", () => ({
+  MapboxOverlay: class {
+    constructor() {}
+  },
+}));
+
 afterEach(() => {
   cleanup();
   if (typeof __resetQueryCacheForTests === "function") {
