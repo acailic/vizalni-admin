@@ -1,16 +1,22 @@
 import { extent, max } from "d3-array";
+import type { ScaleBand } from "d3-scale";
 import type { ChartConfig } from "../config";
 import type { Datum, Dimensions, Margins } from "../types";
+import { createBandScale } from "./band";
 import { createLinearScale } from "./linear";
 import { createTimeScale } from "./time";
 import { createColorScale } from "./ordinal";
 
+export * from "./band";
 export * from "./linear";
 export * from "./time";
 export * from "./ordinal";
 
 export interface Scales {
-  x: ReturnType<typeof createTimeScale> | ReturnType<typeof createLinearScale>;
+  x:
+    | ReturnType<typeof createTimeScale>
+    | ReturnType<typeof createLinearScale>
+    | ScaleBand<string>;
   y: ReturnType<typeof createLinearScale>;
   color?: ReturnType<typeof createColorScale>;
 }
@@ -90,6 +96,17 @@ function computeBarScales(
   chartWidth: number,
   chartHeight: number
 ): Scales {
+  // Extract categories from x field
+  const categories = [...new Set(data.map((d) => String(d[config.x.field])))];
+
+  // X scale (band for categorical data)
+  const xScale = createBandScale({
+    domain: categories,
+    range: [0, chartWidth],
+    padding: 0.2,
+  });
+
+  // Y scale (linear)
   const yMax = max(data, (d) => d[config.y.field] as number) ?? 0;
   const yScale = createLinearScale({
     domain: [0, yMax],
@@ -97,12 +114,7 @@ function computeBarScales(
     nice: true,
   });
 
-  // For bar charts, x is typically categorical - simplified for now
-  const xScale = createLinearScale({
-    domain: [0, data.length],
-    range: [0, chartWidth],
-  });
-
+  // Color scale (optional)
   let colorScale;
   if (config.segment) {
     colorScale = createColorScale({
