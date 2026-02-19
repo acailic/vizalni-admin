@@ -10,5 +10,11 @@ export * from "./scales";
 // Layout
 export * from "./layout";
 
+// Shapes
+export * from "./shapes";
+
+// Chart (main API)
+export * from "./chart";
+
 // Utils
 export * from "./utils";
