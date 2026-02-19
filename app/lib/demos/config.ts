@@ -22,6 +22,21 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
     tags: ["API", "npm", "packages", "modern"],
     icon: "🚀",
   },
+  "playground-v2": {
+    id: "playground-v2",
+    title: {
+      sr: "🎮 Interaktivni playground",
+      en: "🎮 Interactive Playground",
+    },
+    description: {
+      sr: "Eksperimentišite sa različitim tipovima grafikona i podacima u realnom vremenu. Generišite kod spreman za kopiranje.",
+      en: "Experiment with different chart types and data in real-time. Generate copy-paste ready code.",
+    },
+    searchQuery: ["playground", "interaktivni", "demo", "editor"],
+    chartType: "bar",
+    tags: ["playground", "interaktivno", "demo", "editor"],
+    icon: "🎮",
+  },
   "air-quality": {
     id: "air-quality",
     title: {
