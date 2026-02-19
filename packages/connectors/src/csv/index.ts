@@ -85,6 +85,13 @@ export const csvConnector: DataConnector<CsvConfig> = {
     const { url, delimiter = ",", header = true } = config;
 
     const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch CSV: ${response.status} ${response.statusText}`
+      );
+    }
+
     const text = await response.text();
     const rows = parseCsv(text, delimiter);
 

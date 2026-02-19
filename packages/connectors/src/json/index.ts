@@ -99,6 +99,12 @@ export const jsonConnector: DataConnector<JsonConfig> = {
       },
     });
 
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch JSON: ${response.status} ${response.statusText}`
+      );
+    }
+
     let json = await response.json();
 
     // Extract data from nested path if specified

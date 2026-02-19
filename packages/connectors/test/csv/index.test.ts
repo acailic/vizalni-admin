@@ -14,6 +14,7 @@ Bob,200,B
 Charlie,150,A`;
 
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       text: () => Promise.resolve(mockCsv),
     });
 
@@ -43,6 +44,7 @@ Alice,25,95.5
 Bob,30,87.0`;
 
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       text: () => Promise.resolve(mockCsv),
     });
 
@@ -55,5 +57,17 @@ Bob,30,87.0`;
 
     expect(ageField?.type).toBe("number");
     expect(scoreField?.type).toBe("number");
+  });
+
+  it("should throw on HTTP error", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 404,
+      statusText: "Not Found",
+    });
+
+    await expect(
+      csvConnector.fetch({ url: "https://example.com/missing.csv" })
+    ).rejects.toThrow("Failed to fetch CSV: 404 Not Found");
   });
 });

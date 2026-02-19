@@ -13,6 +13,7 @@ describe("jsonConnector", () => {
     ];
 
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: () => Promise.resolve(mockData),
     });
 
@@ -42,6 +43,7 @@ describe("jsonConnector", () => {
     };
 
     global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: () => Promise.resolve(mockResponse),
     });
 
@@ -54,5 +56,17 @@ describe("jsonConnector", () => {
 
     expect(result.data).toHaveLength(2);
     expect(result.data[0]).toEqual({ id: 1, value: 100 });
+  });
+
+  it("should throw on HTTP error", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: "Internal Server Error",
+    });
+
+    await expect(
+      jsonConnector.fetch({ url: "https://api.example.com/error" })
+    ).rejects.toThrow("Failed to fetch JSON: 500 Internal Server Error");
   });
 });
