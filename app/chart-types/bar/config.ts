@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { createId } from "@/utils/create-id";
+
 const fieldSchema = z.object({
   componentId: z.string(),
 });
@@ -24,7 +26,7 @@ export const barChartSchema = z.object({
 export type BarChartConfig = z.infer<typeof barChartSchema>;
 
 export const getInitialBarConfig = (cubeIri: string): BarChartConfig => ({
-  key: Math.random().toString(36).slice(2),
+  key: createId(),
   chartType: "bar",
   cubeIri,
   fields: {

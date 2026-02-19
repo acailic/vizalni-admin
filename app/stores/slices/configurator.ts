@@ -1,5 +1,7 @@
 import { StateCreator } from "zustand";
 
+import { createId } from "@/utils/create-id";
+
 export type ConfiguratorPhase =
   | "selecting-dataset"
   | "configuring"
@@ -27,8 +29,6 @@ export type ConfiguratorSlice = {
   reset: () => void;
 };
 
-const createKey = () => Math.random().toString(36).slice(2);
-
 export const createConfiguratorSlice: StateCreator<
   ConfiguratorSlice,
   [["zustand/immer", never]],
@@ -41,7 +41,7 @@ export const createConfiguratorSlice: StateCreator<
 
   selectDataset: (cubeIri) =>
     set((draft) => {
-      const key = createKey();
+      const key = createId();
       draft.chartConfigs = [{ key, cubeIri, chartType: "column", fields: {} }];
       draft.activeChartKey = key;
       draft.phase = "configuring";
