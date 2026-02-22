@@ -1,0 +1,65 @@
+{
+  "id": "environment",
+  "title": {
+    "sr": "Животна средина",
+    "sr-Latn": "Životna sredina",
+    "en": "Environment"
+  },
+  "description": {
+    "sr": "Квалитет ваздуха, вода, отпад и заштита животне средине",
+    "en": "Air quality, water, waste and environmental protection"
+  },
+  "datasets": [
+    {
+      "id": "air-quality-index",
+      "title": {
+        "sr": "Индекс квалитета ваздуха",
+        "en": "Air Quality Index"
+      },
+      "description": {
+        "sr": "Мерења квалитета ваздуха по градовима",
+        "en": "Air quality measurements by city"
+      },
+      "dataGovRsId": "kvalitet-vazduha",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/kvalitet-vazduha/",
+      "tags": ["air", "quality", "environment"],
+      "lastUpdated": "2024-02-15",
+      "format": "CSV",
+      "recommendedChart": "line"
+    },
+    {
+      "id": "water-quality",
+      "title": {
+        "sr": "Квалитет воде",
+        "en": "Water Quality"
+      },
+      "description": {
+        "sr": "Квалитет површинских и подземних вода",
+        "en": "Quality of surface and groundwater"
+      },
+      "dataGovRsId": "kvalitet-vode",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/kvalitet-vode/",
+      "tags": ["water", "quality", "environment"],
+      "lastUpdated": "2023-12-31",
+      "format": "CSV",
+      "recommendedChart": "line"
+    },
+    {
+      "id": "waste-management",
+      "title": {
+        "sr": "Управљање отпадом",
+        "en": "Waste Management"
+      },
+      "description": {
+        "sr": "Подаци о прикупљању и рециклажи отпада",
+        "en": "Data on waste collection and recycling"
+      },
+      "dataGovRsId": "upravljanje-otpadom",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/upravljanje-otpadom/",
+      "tags": ["waste", "recycling", "environment"],
+      "lastUpdated": "2023-12-31",
+      "format": "CSV",
+      "recommendedChart": "pie"
+    }
+  ]
+}
