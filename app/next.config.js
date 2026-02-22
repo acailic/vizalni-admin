@@ -3,8 +3,8 @@
  * Focus: Reduce memory usage and complete build successfully
  */
 
-const { defaultLocale, locales } = require("./app/locales/locales.json");
-const pkg = require("./package.json");
+const { defaultLocale, locales } = require("./locales/locales.json");
+const pkg = require("../package.json");
 
 // Populate build-time variables
 process.env.NEXT_PUBLIC_VERSION = `v${pkg.version}`;
