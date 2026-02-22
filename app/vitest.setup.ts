@@ -180,6 +180,9 @@ vi.mock("next/router", () => {
 vi.mock("@deck.gl/core", () => ({
   WebMercatorViewport: class {
     constructor() {}
+    fitBounds(_bbox: unknown) {
+      return { longitude: 8.2275, latitude: 46.8182, zoom: 5 };
+    }
   },
 }));
 
