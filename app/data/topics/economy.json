@@ -1,0 +1,65 @@
+{
+  "id": "economy",
+  "title": {
+    "sr": "Економија и финансије",
+    "sr-Latn": "Ekonomija i finansije",
+    "en": "Economy & Finance"
+  },
+  "description": {
+    "sr": "Буджети, порези, јавни дуг и финансијски показатељи",
+    "en": "Budgets, taxes, public debt and financial indicators"
+  },
+  "datasets": [
+    {
+      "id": "republic-budget-2024",
+      "title": {
+        "sr": "Републички буџет за 2024. годину",
+        "en": "Republic Budget for 2024"
+      },
+      "description": {
+        "sr": "Приходи и расходи Републике Србије по категоријама",
+        "en": "Revenues and expenditures of the Republic of Serbia by category"
+      },
+      "dataGovRsId": "budzet-republike-srbije",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/budzet-republike-srbije/",
+      "tags": ["budget", "annual", "finance"],
+      "lastUpdated": "2024-01-15",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    },
+    {
+      "id": "public-debt",
+      "title": {
+        "sr": "Јавни дуг Републике Србије",
+        "en": "Public Debt of the Republic of Serbia"
+      },
+      "description": {
+        "sr": "Месечни подаци о јавном дугу по врсти и валути",
+        "en": "Monthly public debt data by type and currency"
+      },
+      "dataGovRsId": "javni-dug-srbije",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/javni-dug-srbije/",
+      "tags": ["debt", "monthly", "finance"],
+      "lastUpdated": "2024-01-01",
+      "format": "CSV",
+      "recommendedChart": "line"
+    },
+    {
+      "id": "foreign-trade",
+      "title": {
+        "sr": "Спољна трговина",
+        "en": "Foreign Trade"
+      },
+      "description": {
+        "sr": "Извоз и увоз робе по земљама и категоријама",
+        "en": "Export and import of goods by country and category"
+      },
+      "dataGovRsId": "spoljna-trgovina",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/spoljna-trgovina/",
+      "tags": ["trade", "export", "import"],
+      "lastUpdated": "2024-02-01",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    }
+  ]
+}
