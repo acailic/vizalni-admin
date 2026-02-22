@@ -1246,10 +1246,10 @@ export const getStaticProps: GetStaticProps<ContentPageProps> = async ({
     };
   }
 
-  // Temporary: return notFound to prevent build issues
-  // TODO: Fix MUI error #14 during SSR
   return {
-    notFound: true,
+    props: {
+      staticPage: path,
+    },
   };
 };
 
