@@ -107,20 +107,6 @@ export default function DemosIndex() {
     })
   );
 
-  const chartTypeLabels: Record<string, { sr: string; en: string }> = {
-    line: { sr: "Linijski grafikon", en: "Line chart" },
-    bar: { sr: "Trakasti grafikon", en: "Bar chart" },
-    column: { sr: "Stubičasti grafikon", en: "Column chart" },
-    area: { sr: "Površinski grafikon", en: "Area chart" },
-    pie: { sr: "Kružni grafikon", en: "Pie chart" },
-    map: { sr: "Mapa", en: "Map" },
-    scatterplot: { sr: "Raspršeni grafikon", en: "Scatterplot" },
-    comboLineColumn: { sr: "Kombinovani grafikon", en: "Combo chart" },
-  };
-
-  const getChartTypeLabel = (chartType: string) =>
-    chartTypeLabels[chartType]?.[locale as "sr" | "en"] || chartType;
-
   return (
     <DemoLayout title={pageTitle} description={pageDescription} hideBackButton>
       <Box

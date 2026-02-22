@@ -14,7 +14,7 @@ describe("TooltipRich", () => {
     expect(screen.getByText("1,234")).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.tagName === "SPAN" && element?.textContent === "Population:"
       )
     ).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("TooltipRich", () => {
   it("should show percentage when provided", () => {
     render(<TooltipRich label="2024" value="1,234" percentage="42%" />);
     expect(
-      screen.getByText((content, element) => element?.textContent === "(42%)")
+      screen.getByText((_content, element) => element?.textContent === "(42%)")
     ).toBeInTheDocument();
   });
 });

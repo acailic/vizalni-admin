@@ -71,7 +71,6 @@ describe("ChartErrorBoundary", () => {
 
   it("should provide reset functionality when error occurs", async () => {
     const user = userEvent.setup();
-    const resetMock = vi.fn();
 
     // Verify the mock is properly passing resetErrorBoundary
     render(
