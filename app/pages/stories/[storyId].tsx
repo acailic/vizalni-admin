@@ -6,9 +6,8 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 import { StoryContainer } from "@/components/stories";
+import { StoryLayout } from "@/components/stories/StoryLayout";
 import { ALL_STORIES } from "@/lib/stories";
-
-import { StoryLayout } from "./_components/StoryLayout";
 
 // Create a lookup object for stories
 const stories = Object.fromEntries(

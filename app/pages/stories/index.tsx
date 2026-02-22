@@ -2,10 +2,9 @@ import { useLingui } from "@lingui/react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import Link from "next/link";
 
+import { StoryCard } from "@/components/stories/StoryCard";
+import { StoryLayout } from "@/components/stories/StoryLayout";
 import { ALL_STORIES } from "@/lib/stories";
-
-import { StoryCard } from "./_components/StoryCard";
-import { StoryLayout } from "./_components/StoryLayout";
 
 export default function StoriesIndexPage() {
   const { i18n } = useLingui();
