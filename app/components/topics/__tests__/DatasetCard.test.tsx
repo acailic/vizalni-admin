@@ -41,19 +41,26 @@ describe("DatasetCard", () => {
     expect(screen.getByText("CSV")).toBeInTheDocument();
   });
 
-  it("renders visualize button", () => {
+  it("renders open button", () => {
     render(<DatasetCard dataset={mockDataset} locale="en" />);
     expect(
-      screen.getByRole("link", { name: /visualize/i })
+      screen.getByRole("link", { name: /open on data.gov.rs/i })
     ).toBeInTheDocument();
   });
 
-  it("links to create page with dataset parameter", () => {
+  it("links to data.gov.rs dataset page", () => {
     render(<DatasetCard dataset={mockDataset} locale="en" />);
-    const link = screen.getByRole("link", { name: /visualize/i });
+    const link = screen.getByRole("link", { name: /open on data.gov.rs/i });
     expect(link).toHaveAttribute(
       "href",
-      "/create/new?dataset=budzet-republike-srbije&chart=bar"
+      "https://data.gov.rs/sr/datasets/budzet-republike-srbije/"
     );
+  });
+
+  it("renders open button in Serbian", () => {
+    render(<DatasetCard dataset={mockDataset} locale="sr" />);
+    expect(
+      screen.getByRole("link", { name: /отвори на data.gov.rs/i })
+    ).toBeInTheDocument();
   });
 });

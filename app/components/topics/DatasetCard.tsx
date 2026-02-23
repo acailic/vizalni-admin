@@ -26,22 +26,12 @@ interface DatasetCardProps {
 export function DatasetCard({ dataset, locale }: DatasetCardProps) {
   const title = getLocalizedText(dataset.title, locale);
   const description = getLocalizedText(dataset.description, locale);
-  const visualizeLabel =
+  const openLabel =
     locale === "sr"
-      ? "Визуализуј"
+      ? "Отвори на data.gov.rs"
       : locale === "sr-Latn"
-        ? "Vizualizuj"
-        : "Visualize";
-  const viewOnDataGovLabel =
-    locale === "sr"
-      ? "Погледај на data.gov.rs"
-      : locale === "sr-Latn"
-        ? "Pogledaj na data.gov.rs"
-        : "View on data.gov.rs";
-
-  const visualizeHref = dataset.recommendedChart
-    ? `/create/new?dataset=${dataset.dataGovRsId}&chart=${dataset.recommendedChart}`
-    : `/create/new?dataset=${dataset.dataGovRsId}`;
+        ? "Otvori na data.gov.rs"
+        : "Open on data.gov.rs";
 
   return (
     <Card sx={{ mb: 2 }}>
@@ -73,20 +63,15 @@ export function DatasetCard({ dataset, locale }: DatasetCardProps) {
             </Box>
           </Box>
           <Box sx={{ display: "flex", gap: 1, flexDirection: "column" }}>
-            <Link href={visualizeHref} passHref legacyBehavior>
-              <Button variant="contained" color="primary" component="a">
-                {visualizeLabel}
-              </Button>
-            </Link>
             <Link href={dataset.dataGovRsUrl} passHref legacyBehavior>
               <Button
-                variant="text"
-                size="small"
+                variant="contained"
+                color="primary"
                 component="a"
                 target="_blank"
                 endIcon={<OpenInNewIcon />}
               >
-                {viewOnDataGovLabel}
+                {openLabel}
               </Button>
             </Link>
           </Box>
