@@ -53,6 +53,9 @@ const memoryCache = new Map<
 const MAX_MEMORY_SIZE = 50 * 1024 * 1024;
 let currentMemorySize = 0;
 
+// Track active cache keys for cleanup
+const activeKeys = new Set<string>();
+
 /**
  * Estimate size of data in bytes
  */
@@ -369,6 +372,22 @@ export function useDataCache<T>(
     loadData(forceRefresh);
   }, [key, forceRefresh]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Track this key as active and clean up on unmount
+  useEffect(() => {
+    activeKeys.add(key);
+
+    return () => {
+      // Cleanup: remove from active keys
+      activeKeys.delete(key);
+
+      // Optionally clear cache on unmount (controlled by TTL)
+      // If TTL is short (< 60 seconds), clear immediately to prevent memory bloat
+      if (ttl < 60000) {
+        clearCacheKey(key);
+      }
+    };
+  }, [key, ttl]);
+
   return {
     data,
     loading,
@@ -410,4 +429,25 @@ export function getCacheStats() {
     memoryLimit: MAX_MEMORY_SIZE,
     memoryUsagePercent: (currentMemorySize / MAX_MEMORY_SIZE) * 100,
   };
+}
+
+/**
+ * Clear all memory cache (synchronous, useful for testing and memory management)
+ */
+export function clearAllMemoryCache(): void {
+  memoryCache.clear();
+  currentMemorySize = 0;
+  activeKeys.clear();
+}
+
+/**
+ * Clear a specific cache key
+ */
+export function clearCacheKey(key: string): void {
+  const cached = memoryCache.get(key);
+  if (cached) {
+    currentMemorySize -= estimateSize(cached.data);
+    memoryCache.delete(key);
+  }
+  activeKeys.delete(key);
 }
