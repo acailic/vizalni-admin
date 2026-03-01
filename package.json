@@ -315,7 +315,6 @@
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "glob": "^10.5.0",
-    "minimatch": "^9.0.7",
     "minimist": "^1.2.8",
     "loader-utils": "^3.2.1",
     "debug": "^4.3.4",
