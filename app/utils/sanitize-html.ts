@@ -1,12 +1,13 @@
 /**
  * Sanitize HTML to prevent XSS attacks while preserving safe formatting.
- * Allows only: b, strong, i, em, u, span, mark
+ * Allows only: b, strong, i, em, u, span, mark, a
  */
 
-const ALLOWED_TAGS = ['b', 'strong', 'i', 'em', 'u', 'span', 'mark'];
+const ALLOWED_TAGS = ['b', 'strong', 'i', 'em', 'u', 'span', 'mark', 'a'];
 const ALLOWED_ATTRIBUTES: Record<string, string[]> = {
   span: ['class', 'style'],
   mark: ['class'],
+  a: ['href', 'title', 'target', 'rel'],
 };
 
 // Regex patterns for validation
@@ -17,6 +18,23 @@ const DANGEROUS_PATTERNS = [
   /data:/gi,
   /vbscript:/gi,
 ];
+
+/**
+ * Check if a URL is safe (uses allowed protocols only)
+ */
+function isSafeUrl(url: string): boolean {
+  // Only allow http, https, mailto protocols, and relative URLs
+  const safeProtocols = ['http://', 'https://', 'mailto:', '/', '#'];
+  const lowerUrl = url.toLowerCase().trim();
+
+  // Check for dangerous protocols
+  const dangerousProtocols = ['javascript:', 'vbscript:', 'data:'];
+  if (dangerousProtocols.some((p) => lowerUrl.startsWith(p))) {
+    return false;
+  }
+
+  return safeProtocols.some((p) => lowerUrl.startsWith(p));
+}
 
 export function sanitizeHtml(html: string | null | undefined): string {
   if (!html) return '';
@@ -51,6 +69,17 @@ export function sanitizeHtml(html: string | null | undefined): string {
           }
         });
       }
+    });
+
+    // Additional processing for anchor tags - validate href and force safe attributes
+    temp.querySelectorAll('a').forEach((el) => {
+      const href = el.getAttribute('href');
+      if (href && !isSafeUrl(href)) {
+        el.removeAttribute('href');
+      }
+      // Force safe rel attribute
+      el.setAttribute('rel', 'noopener noreferrer');
+      el.setAttribute('target', '_blank');
     });
 
     return temp.innerHTML;

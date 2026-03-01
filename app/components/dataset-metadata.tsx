@@ -21,6 +21,7 @@ import { useFormatDate } from "@/formatters";
 import { Icon } from "@/icons";
 import { useLocale } from "@/locales/use-locale";
 import { makeOpenDataLink } from "@/utils/opendata";
+import { sanitizeHtml } from "@/utils/sanitize-html";
 
 export const DatasetMetadata = ({
   cube,
@@ -57,7 +58,7 @@ export const DatasetMetadata = ({
                 component="span"
                 sx={{ "> a": { color: "grey.900" } }}
                 dangerouslySetInnerHTML={{
-                  __html: cube.publisher,
+                  __html: sanitizeHtml(cube.publisher),
                 }}
               />
             </DatasetMetadataBody>
