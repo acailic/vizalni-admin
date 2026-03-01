@@ -19,6 +19,7 @@ import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { MotionCard, smoothPresenceProps } from "@/components/presence";
 import { Tag } from "@/components/tag";
 import { DataCubePublicationStatus } from "@/graphql/resolver-types";
+import { sanitizeHtml } from "@/utils/sanitize-html";
 import { useEvent } from "@/utils/use-event";
 
 // Minimal shape used in this component; avoids module resolution issues with generated types
@@ -142,7 +143,7 @@ export const DatasetResult = ({
               className={classes.textWrapper}
               component="span"
               fontWeight={highlightedTitle === title ? 700 : 400}
-              dangerouslySetInnerHTML={{ __html: highlightedTitle }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(highlightedTitle) }}
             />
           ) : (
             title
@@ -158,7 +159,7 @@ export const DatasetResult = ({
             <Box
               className={classes.textWrapper}
               component="span"
-              dangerouslySetInnerHTML={{ __html: highlightedDescription }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(highlightedDescription) }}
             />
           ) : (
             description
