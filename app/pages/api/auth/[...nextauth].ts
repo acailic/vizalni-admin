@@ -1,4 +1,5 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import { ADFS } from "@/auth-providers/adfs";
 import { ensureUserFromSub } from "@/db/user";
@@ -18,8 +19,29 @@ if (!nextAuthSecret && isProduction) {
 // Skip authentication for local development
 const isDevelopment = process.env.NODE_ENV !== "production";
 
+if (isDevelopment && !nextAuthSecret) {
+  console.warn(
+    "WARNING: Running in development mode without NEXTAUTH_SECRET. " +
+      "Authentication will use insecure session handling."
+  );
+}
+
 const providers = isDevelopment
-  ? [] // No providers in development
+  ? [
+      // Development-only credentials provider for testing without auth
+      CredentialsProvider({
+        name: "Development",
+        credentials: {},
+        async authorize() {
+          // Auto-authenticate as dev user in development
+          return {
+            id: "dev-user",
+            name: "Development User",
+            email: "dev@example.com",
+          };
+        },
+      }),
+    ]
   : [
       ADFS_ID && ADFS_ISSUER
         ? ADFS({
@@ -47,7 +69,7 @@ if (!isDevelopment && !providers.length) {
 
 export const nextAuthOptions = {
   providers,
-  secret: nextAuthSecret ?? "development-only-secret",
+  ...(nextAuthSecret ? { secret: nextAuthSecret } : {}),
   callbacks: {
     /** Necessary otherwise we cannot sign out */
     jwt: async ({ token }) => {
