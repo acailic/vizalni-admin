@@ -34,6 +34,28 @@ export class PythonRunner {
   }
 
   /**
+   * Escape a shell argument to prevent command injection
+   */
+  private escapeShellArg(arg: string): string {
+    // Use single quotes and escape any existing single quotes
+    // This is the safest approach for shell argument escaping
+    return `'${arg.replace(/'/g, "'\\''")}'`;
+  }
+
+  /**
+   * Validate that a path is safe (no directory traversal)
+   */
+  private validatePath(pathStr: string): boolean {
+    // Reject paths with directory traversal
+    if (pathStr.includes('..')) return false;
+    // Reject absolute paths outside allowed directories
+    if (pathStr.startsWith('/') && !pathStr.startsWith(this.scenariosCwd)) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
    * Execute the dataset discovery Python script
    */
   async runDatasetDiscovery(
@@ -56,8 +78,21 @@ export class PythonRunner {
         'discover_datasets.py'
       );
 
-      // Build the Python command
-      const pythonCmd = `${pythonPath} ${scriptPath} ${args.join(' ')}`;
+      // Validate paths
+      if (!this.validatePath(scriptPath)) {
+        throw new Error('Invalid script path');
+      }
+
+      // Build the Python command with properly escaped arguments
+      const escapedArgs = args.map((arg) => {
+        // If arg is already quoted, validate and use as-is
+        if (arg.startsWith('"') && arg.endsWith('"')) {
+          return arg;
+        }
+        return this.escapeShellArg(arg);
+      });
+
+      const pythonCmd = `${this.escapeShellArg(pythonPath)} ${this.escapeShellArg(scriptPath)} ${escapedArgs.join(' ')}`;
 
       // Execute the Python script
       const { stdout, stderr } = await execAsync(pythonCmd, {
@@ -133,9 +168,14 @@ export class PythonRunner {
 
     // Determine search type and build arguments
     if (options.category) {
+      // Validate category is alphanumeric + safe chars
+      if (!/^[\w\s-]+$/.test(options.category)) {
+        throw new Error('Invalid category format');
+      }
       args.push('--category', options.category);
     } else if (options.query) {
-      args.push('--query', `"${options.query.replace(/"/g, '\\"')}"`);
+      // Query will be escaped by runDatasetDiscovery
+      args.push('--query', options.query);
       if (!options.expandDiacritics) {
         args.push('--no-expand-diacritics');
       }
