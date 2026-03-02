@@ -47,14 +47,28 @@ export function TopicCard({ topic, locale }: TopicCardProps) {
           cursor: "pointer",
           textDecoration: "none",
           height: "100%",
-          transition: "transform 0.2s, box-shadow 0.2s",
+          borderRadius: 3,
+          overflow: "hidden",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+          position: "relative",
           "&:hover": {
-            transform: "translateY(-4px)",
-            boxShadow: 4,
+            transform: "translateY(-8px)",
+            boxShadow: "0 20px 40px rgba(16, 185, 129, 0.25)",
+          },
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "5px",
+            background: "linear-gradient(90deg, #10b981 0%, #059669 100%)",
+            opacity: 1,
           },
         }}
       >
-        <CardContent>
+        <CardContent sx={{ p: 3 }}>
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <IconComponent
               sx={{ fontSize: 40, color: "primary.main", mr: 2 }}
