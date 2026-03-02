@@ -245,5 +245,24 @@ describe("computeScales", () => {
       expect(typeof yDomain[0]).toBe("number");
       expect(typeof yDomain[1]).toBe("number");
     });
+
+    it("should handle empty data array for bar chart without crashing", () => {
+      const emptyData: Datum[] = [];
+      const config: ChartConfig = {
+        type: "bar",
+        x: { field: "category", type: "string" },
+        y: { field: "value", type: "number" },
+      };
+
+      const scales = computeScales(emptyData, config, {
+        width: 600,
+        height: 400,
+      });
+
+      expect(scales.x).toBeDefined();
+      expect(scales.y).toBeDefined();
+      expect(typeof scales.x).toBe("function");
+      expect(typeof scales.y).toBe("function");
+    });
   });
 });

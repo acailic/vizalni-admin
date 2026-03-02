@@ -119,6 +119,20 @@ function computeBarScales(
   chartWidth: number,
   chartHeight: number
 ): Scales {
+  // Handle empty data - return default scales
+  if (data.length === 0) {
+    return {
+      x: createBandScale({
+        domain: [],
+        range: [0, chartWidth],
+      }),
+      y: createLinearScale({
+        domain: [0, 1],
+        range: [chartHeight, 0],
+      }),
+    };
+  }
+
   // Extract categories from x field
   const categories = [...new Set(data.map((d) => String(d[config.x.field])))];
 
