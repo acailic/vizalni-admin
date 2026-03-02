@@ -6,14 +6,16 @@ import {
   Box,
 } from "@mui/material";
 
+import { Icon, type IconName } from "@/icons";
+
 import type { ChartType } from "../../_types";
 
-const CHART_TYPES: { value: ChartType; label: string; icon: string }[] = [
-  { value: "line", label: "Line", icon: "📈" },
-  { value: "bar", label: "Bar", icon: "📊" },
-  { value: "area", label: "Area", icon: "📉" },
-  { value: "pie", label: "Pie", icon: "🥧" },
-  { value: "scatter", label: "Scatter", icon: "⦿" },
+const CHART_TYPES: { value: ChartType; label: string; icon: IconName }[] = [
+  { value: "line", label: "Line", icon: "lineChart" },
+  { value: "bar", label: "Bar", icon: "chartBar" },
+  { value: "area", label: "Area", icon: "areasChart" },
+  { value: "pie", label: "Pie", icon: "pieChart" },
+  { value: "scatter", label: "Scatter", icon: "scatterplotChart" },
 ];
 
 interface ChartTypeSelectorProps {
@@ -39,7 +41,6 @@ export function ChartTypeSelector({ value, onChange }: ChartTypeSelectorProps) {
             key={type.value}
             value={type.value}
             aria-label={type.label}
-            aria-pressed={value === type.value}
             sx={{
               px: 2,
               py: 1,
@@ -51,7 +52,7 @@ export function ChartTypeSelector({ value, onChange }: ChartTypeSelectorProps) {
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <span>{type.icon}</span>
+              <Icon name={type.icon} size={18} />
               <Typography variant="body2">{type.label}</Typography>
             </Box>
           </ToggleButton>
