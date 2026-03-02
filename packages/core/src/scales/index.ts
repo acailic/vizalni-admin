@@ -62,6 +62,21 @@ function computeLineScales(
   chartWidth: number,
   chartHeight: number
 ): Scales {
+  // Handle empty data - return default scales
+  if (data.length === 0) {
+    const now = new Date();
+    return {
+      x: createTimeScale({
+        domain: [now, now],
+        range: [0, chartWidth],
+      }),
+      y: createLinearScale({
+        domain: [0, 1],
+        range: [chartHeight, 0],
+      }),
+    };
+  }
+
   // X scale (time)
   const xExtent = extent(data, (d) => d[config.x.field] as Date);
   const xScale = createTimeScale({

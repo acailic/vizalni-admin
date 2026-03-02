@@ -211,5 +211,39 @@ describe("computeScales", () => {
       expect(scales.y).toBeDefined();
       expect(scales.y.domain()[1]).toBeGreaterThanOrEqual(2000000000);
     });
+
+    it("should handle empty data array for line chart without crashing", () => {
+      const emptyData: Datum[] = [];
+      const config: ChartConfig = {
+        type: "line",
+        x: { field: "date", type: "date" },
+        y: { field: "value", type: "number" },
+      };
+
+      // Should not throw and return valid scales
+      const scales = computeScales(emptyData, config, {
+        width: 600,
+        height: 400,
+      });
+
+      expect(scales.x).toBeDefined();
+      expect(scales.y).toBeDefined();
+      expect(typeof scales.x).toBe("function");
+      expect(typeof scales.y).toBe("function");
+
+      // Domain should contain valid dates, not Invalid Date
+      const xDomain = scales.x.domain();
+      expect(xDomain.length).toBe(2);
+      expect(xDomain[0] instanceof Date).toBe(true);
+      expect(xDomain[1] instanceof Date).toBe(true);
+      expect(isNaN(xDomain[0].getTime())).toBe(false);
+      expect(isNaN(xDomain[1].getTime())).toBe(false);
+
+      // Y domain should be valid numbers
+      const yDomain = scales.y.domain();
+      expect(yDomain.length).toBe(2);
+      expect(typeof yDomain[0]).toBe("number");
+      expect(typeof yDomain[1]).toBe("number");
+    });
   });
 });
