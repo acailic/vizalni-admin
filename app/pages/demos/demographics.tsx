@@ -6,8 +6,10 @@ import {
   CardContent,
   Chip,
   Grid,
+  LinearProgress,
   Paper,
   Typography,
+  alpha,
 } from "@mui/material";
 
 import { DemoPageTemplate } from "@/components/demo/DemoPageTemplate";
@@ -58,6 +60,57 @@ export default function DemographicsDemo() {
 
   const dashboardContent = (
     <Box>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          mb: 4,
+          p: 4,
+          borderRadius: 3,
+          background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+          color: "white",
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <Box sx={{ flex: 1 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              mb: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            👥 {locale === "sr" ? "Demografija Srbije" : "Serbia Demographics"}
+          </Typography>
+          <Typography variant="body1" sx={{ opacity: 0.95, mb: 2 }}>
+            {locale === "sr"
+              ? "Analiza starosne strukture stanovništva Srbije po polu, sa projekcijama do 2050. godine"
+              : "Analysis of Serbia's population structure by age and gender, with projections to 2050"}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            bgcolor: "rgba(255,255,255,0.2)",
+            borderRadius: 3,
+            p: 3,
+            textAlign: "center",
+            minWidth: 180,
+          }}
+        >
+          <Typography variant="h3" sx={{ fontWeight: 800 }}>
+            {(totalPopulation / 1000000).toFixed(2)}M
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.9 }}>
+            {locale === "sr" ? "Stanovnika (2024)" : "Population (2024)"}
+          </Typography>
+        </Box>
+      </Box>
+
       <LiveDatasetPanel
         demoId="demographics"
         title={
@@ -69,7 +122,8 @@ export default function DemographicsDemo() {
 
       <Alert
         severity="warning"
-        sx={{ mb: 4, fontSize: "1.1rem", fontWeight: 500 }}
+        icon={<span style={{ fontSize: "1.5rem" }}>⚠️</span>}
+        sx={{ mb: 4, fontSize: "1rem", fontWeight: 500 }}
       >
         {locale === "sr" ? (
           <>
@@ -93,17 +147,32 @@ export default function DemographicsDemo() {
         )}
       </Alert>
 
+      {/* Stats Cards Row */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={6} lg={3}>
           <Card
-            sx={{ height: "100%", borderLeft: 4, borderColor: "primary.main" }}
+            sx={{
+              height: "100%",
+              borderLeft: 4,
+              borderColor: "primary.main",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              },
+            }}
           >
             <CardContent>
-              <Typography variant="caption" color="text.secondary">
-                {locale === "sr"
-                  ? "Ukupno stanovnika (2024)"
-                  : "Total Population (2024)"}
-              </Typography>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <Typography sx={{ fontSize: "1.5rem" }}>👥</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {locale === "sr"
+                    ? "Ukupno stanovnika (2024)"
+                    : "Total Population (2024)"}
+                </Typography>
+              </Box>
               <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
                 {(totalPopulation / 1000000).toFixed(2)}M
               </Typography>
@@ -118,12 +187,26 @@ export default function DemographicsDemo() {
 
         <Grid item xs={12} md={6} lg={3}>
           <Card
-            sx={{ height: "100%", borderLeft: 4, borderColor: "error.main" }}
+            sx={{
+              height: "100%",
+              borderLeft: 4,
+              borderColor: "error.main",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              },
+            }}
           >
             <CardContent>
-              <Typography variant="caption" color="text.secondary">
-                {locale === "sr" ? "Promena do 2050." : "Change by 2050"}
-              </Typography>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <Typography sx={{ fontSize: "1.5rem" }}>📉</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {locale === "sr" ? "Promena do 2050." : "Change by 2050"}
+                </Typography>
+              </Box>
               <Typography
                 variant="h4"
                 sx={{ fontWeight: 700, my: 1, color: "error.main" }}
@@ -141,12 +224,26 @@ export default function DemographicsDemo() {
 
         <Grid item xs={12} md={6} lg={3}>
           <Card
-            sx={{ height: "100%", borderLeft: 4, borderColor: "warning.main" }}
+            sx={{
+              height: "100%",
+              borderLeft: 4,
+              borderColor: "warning.main",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              },
+            }}
           >
             <CardContent>
-              <Typography variant="caption" color="text.secondary">
-                {locale === "sr" ? "Medijalna starost" : "Median Age"}
-              </Typography>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <Typography sx={{ fontSize: "1.5rem" }}>🎂</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {locale === "sr" ? "Medijalna starost" : "Median Age"}
+                </Typography>
+              </Box>
               <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
                 {demographicStats.medianAge}
               </Typography>
@@ -159,14 +256,28 @@ export default function DemographicsDemo() {
 
         <Grid item xs={12} md={6} lg={3}>
           <Card
-            sx={{ height: "100%", borderLeft: 4, borderColor: "info.main" }}
+            sx={{
+              height: "100%",
+              borderLeft: 4,
+              borderColor: "info.main",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+              },
+            }}
           >
             <CardContent>
-              <Typography variant="caption" color="text.secondary">
-                {locale === "sr"
-                  ? "Odnos zavisnosti starijih"
-                  : "Elderly Dependency Ratio"}
-              </Typography>
+              <Box
+                sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}
+              >
+                <Typography sx={{ fontSize: "1.5rem" }}>⚖️</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {locale === "sr"
+                    ? "Odnos zavisnosti starijih"
+                    : "Elderly Dependency Ratio"}
+                </Typography>
+              </Box>
               <Typography variant="h4" sx={{ fontWeight: 700, my: 1 }}>
                 {dependencyRatios.elderly}
               </Typography>
@@ -180,12 +291,25 @@ export default function DemographicsDemo() {
         </Grid>
       </Grid>
 
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-          {locale === "sr"
-            ? "Starosna piramida stanovništva (2024)"
-            : "Population Age Pyramid (2024)"}
-        </Typography>
+      {/* Population Age Pyramid */}
+      <Paper
+        elevation={2}
+        sx={{
+          p: 3,
+          mb: 4,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <Typography sx={{ fontSize: "1.5rem" }}>📊</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {locale === "sr"
+              ? "Starosna piramida stanovništva (2024)"
+              : "Population Age Pyramid (2024)"}
+          </Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           {locale === "sr"
             ? "Raspodela stanovništva po starosti i polu pokazuje starenje populacije sa znatno manje mladih u odnosu na starije generacije."
@@ -197,14 +321,44 @@ export default function DemographicsDemo() {
           width={900}
           height={650}
         />
+        <Box
+          sx={{
+            mt: 3,
+            p: 2,
+            bgcolor: alpha("#f59e0b", 0.08),
+            borderRadius: 2,
+            borderLeft: 3,
+            borderColor: "warning.main",
+          }}
+        >
+          <Typography variant="body2" sx={{ fontStyle: "italic" }}>
+            💡{" "}
+            {locale === "sr"
+              ? "Ključni uvid: Oblik piramide pokazuje izraženo starenje populacije, sa najvećim grupama u srednjim i starijim godinama."
+              : "Key insight: The pyramid shape shows pronounced population aging, with largest groups in middle and older ages."}
+          </Typography>
+        </Box>
       </Paper>
 
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-          {locale === "sr"
-            ? "Trendovi stanovništva (1950-2050)"
-            : "Population Trends (1950-2050)"}
-        </Typography>
+      {/* Population Trends */}
+      <Paper
+        elevation={2}
+        sx={{
+          p: 3,
+          mb: 4,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <Typography sx={{ fontSize: "1.5rem" }}>📈</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {locale === "sr"
+              ? "Trendovi stanovništva (1950-2050)"
+              : "Population Trends (1950-2050)"}
+          </Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
           {locale === "sr"
             ? "Istorijski podaci pokazuju konstantan rast do 2000-ih, zatim period stagnacije i opadanja. Projekcije ukazuju na nastavak negativnog trenda."
@@ -216,88 +370,189 @@ export default function DemographicsDemo() {
           width={950}
           height={550}
         />
+        <Box
+          sx={{
+            mt: 3,
+            p: 2,
+            bgcolor: alpha("#ef4444", 0.08),
+            borderRadius: 2,
+            borderLeft: 3,
+            borderColor: "error.main",
+          }}
+        >
+          <Typography variant="body2" sx={{ fontStyle: "italic" }}>
+            💡{" "}
+            {locale === "sr"
+              ? "Ključni uvid: Vrhunac populacije dostignut je oko 1990. godine, od tada prati konstantan pad."
+              : "Key insight: Population peaked around 1990, since then showing constant decline."}
+          </Typography>
+        </Box>
       </Paper>
 
-      <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
-        <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-          {locale === "sr"
-            ? "Regionalna raspodela stanovništva (2024)"
-            : "Regional Population Distribution (2024)"}
-        </Typography>
+      {/* Regional Distribution */}
+      <Paper
+        elevation={2}
+        sx={{
+          p: 3,
+          mb: 4,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <Typography sx={{ fontSize: "1.5rem" }}>🗺️</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {locale === "sr"
+              ? "Regionalna raspodela stanovništva (2024)"
+              : "Regional Population Distribution (2024)"}
+          </Typography>
+        </Box>
         <Grid container spacing={2}>
-          {regionalPopulation.map((region) => (
-            <Grid item xs={12} sm={6} md={3} key={region.region}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                    {locale === "sr" ? region.region : region.regionEn}
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    color="primary.main"
-                    sx={{ fontWeight: 700 }}
-                  >
-                    {(region.population / 1000).toFixed(2)}M
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {locale === "sr"
-                      ? `${((region.population / (totalPopulation / 1000)) * 100).toFixed(1)}% od ukupnog stanovništva`
-                      : `${((region.population / (totalPopulation / 1000)) * 100).toFixed(1)}% of total population`}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+          {regionalPopulation.map((region) => {
+            const percentage =
+              (region.population / (totalPopulation / 1000)) * 100;
+            return (
+              <Grid item xs={12} sm={6} md={3} key={region.region}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    height: "100%",
+                    transition: "transform 0.2s",
+                    "&:hover": { transform: "scale(1.02)" },
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                      {locale === "sr" ? region.region : region.regionEn}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      color="primary.main"
+                      sx={{ fontWeight: 700 }}
+                    >
+                      {(region.population / 1000).toFixed(2)}M
+                    </Typography>
+                    <Box sx={{ mt: 1.5, mb: 0.5 }}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={percentage}
+                        sx={{
+                          height: 6,
+                          borderRadius: 3,
+                          bgcolor: alpha("#f59e0b", 0.2),
+                          "& .MuiLinearProgress-bar": {
+                            bgcolor: "#f59e0b",
+                            borderRadius: 3,
+                          },
+                        }}
+                      />
+                    </Box>
+                    <Typography variant="caption" color="text.secondary">
+                      {percentage.toFixed(1)}%
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
       </Paper>
 
-      <Paper elevation={2} sx={{ p: 3 }}>
-        <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-          {locale === "sr"
-            ? "Ključni demografski izazovi"
-            : "Key Demographic Challenges"}
-        </Typography>
-        <Grid container spacing={2}>
+      {/* Key Challenges */}
+      <Paper
+        elevation={2}
+        sx={{
+          p: 3,
+          borderRadius: 3,
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 3 }}>
+          <Typography sx={{ fontSize: "1.5rem" }}>⚠️</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            {locale === "sr"
+              ? "Ključni demografski izazovi"
+              : "Key Demographic Challenges"}
+          </Typography>
+        </Box>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#ef4444", 0.05),
+                mb: 2,
+              }}
+            >
               <Chip
                 label={
                   locale === "sr"
                     ? "Negativna stopa rasta"
                     : "Negative growth rate"
                 }
-                color="error"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#ef4444",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `Stopa rasta: ${demographicStats.populationGrowthRate}% godišnje`
                   : `Growth rate: ${demographicStats.populationGrowthRate}% annually`}
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#ef4444", 0.05),
+                mb: 2,
+              }}
+            >
               <Chip
                 label={
                   locale === "sr" ? "Niska stopa rađanja" : "Low birth rate"
                 }
-                color="error"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#ef4444",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `Stopa rađanja: ${demographicStats.birthRate} na 1.000 stanovnika`
                   : `Birth rate: ${demographicStats.birthRate} per 1,000 population`}
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#f59e0b", 0.05),
+              }}
+            >
               <Chip
                 label={
                   locale === "sr" ? "Visoka stopa smrtnosti" : "High death rate"
                 }
-                color="warning"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#f59e0b",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `Stopa smrtnosti: ${demographicStats.deathRate} na 1.000 stanovnika`
                   : `Death rate: ${demographicStats.deathRate} per 1,000 population`}
@@ -305,41 +560,76 @@ export default function DemographicsDemo() {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#f59e0b", 0.05),
+                mb: 2,
+              }}
+            >
               <Chip
                 label={
                   locale === "sr" ? "Starenje stanovništva" : "Aging population"
                 }
-                color="warning"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#f59e0b",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `Visok odnos starijih: ${dependencyRatios.elderly} (65+ na 100 radno sposobnih)`
                   : `High elderly ratio: ${dependencyRatios.elderly} (65+ per 100 working-age)`}
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#3b82f6", 0.05),
+                mb: 2,
+              }}
+            >
               <Chip
                 label={
                   locale === "sr" ? "Očekivani životni vek" : "Life expectancy"
                 }
-                color="info"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#3b82f6",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `Muškarci: ${demographicStats.lifeExpectancyMale} god. • Žene: ${demographicStats.lifeExpectancyFemale} god.`
                   : `Males: ${demographicStats.lifeExpectancyMale} yrs • Females: ${demographicStats.lifeExpectancyFemale} yrs`}
               </Typography>
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box
+              sx={{
+                p: 2,
+                borderRadius: 2,
+                bgcolor: alpha("#6b7280", 0.05),
+              }}
+            >
               <Chip
                 label={locale === "sr" ? "Urbanizacija" : "Urbanization"}
-                color="default"
-                sx={{ mr: 1, mb: 1 }}
+                size="small"
+                sx={{
+                  bgcolor: "#6b7280",
+                  color: "white",
+                  fontWeight: 600,
+                  mb: 1,
+                }}
               />
-              <Typography variant="body2" sx={{ mt: 1 }}>
+              <Typography variant="body2">
                 {locale === "sr"
                   ? `${demographicStats.urbanPopulation}% stanovnika živi u gradskim područjima`
                   : `${demographicStats.urbanPopulation}% of population lives in urban areas`}
