@@ -1,8 +1,9 @@
 import { Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
-import { Container, Grid, Box, Typography, Tabs, Tab } from "@mui/material";
-import Head from "next/head";
+import { Grid, Box, Typography, Tabs, Tab } from "@mui/material";
 import { useEffect } from "react";
+
+import { DemoLayout } from "@/components/demos/demo-layout";
 
 import { CodeOutput } from "./_components/CodeOutput";
 import { ConfigPanel } from "./_components/ConfigPanel";
@@ -61,62 +62,64 @@ export default function PlaygroundPage() {
       ? "Eksperimentišite sa konfiguracijom grafikona u realnom vremenu"
       : "Experiment with chart configurations in real-time";
 
-  return (
-    <>
-      <Head>
-        <title>{`Playground - Vizualni Admin`}</title>
-        <meta name="description" content={description} />
-      </Head>
-      <Container maxWidth="xl" sx={{ py: 4 }}>
-        <Box sx={{ mb: 4 }}>
-          <Typography
-            variant="h4"
-            component="h1"
-            gutterBottom
-            fontWeight="bold"
-          >
-            {title}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            {description}
-          </Typography>
-        </Box>
+  const introText =
+    locale === "sr"
+      ? "Eksperimentišite sa različitim tipovima grafikona i podacima u realnom vremenu."
+      : "Experiment with different chart types and data in real-time.";
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
-            <ConfigPanel
+  return (
+    <DemoLayout title={title} description={description}>
+      {/* Intro box */}
+      <Box
+        sx={{
+          mb: 4,
+          p: 3,
+          borderRadius: 3,
+          background:
+            "linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%)",
+          border: "1px solid",
+          borderColor: "divider",
+        }}
+      >
+        <Typography variant="body2" color="text.secondary">
+          {introText}
+        </Typography>
+      </Box>
+
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <ConfigPanel
+            chartType={chartType}
+            data={data}
+            config={config}
+            themeId={themeId}
+            onChartTypeChange={setChartType}
+            onDataChange={setData}
+            onConfigChange={setConfig}
+            onThemeChange={setThemeId}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={8}>
+          <Box sx={{ mb: 2 }}>
+            <Tabs value={ui.activeTab} onChange={(_, v) => setActiveTab(v)}>
+              <Tab label={<Trans>Preview</Trans>} value="preview" />
+              <Tab label={<Trans>Code</Trans>} value="code" />
+            </Tabs>
+          </Box>
+
+          {ui.activeTab === "preview" ? (
+            <PreviewPane
               chartType={chartType}
               data={data}
               config={config}
-              themeId={themeId}
-              onChartTypeChange={setChartType}
-              onDataChange={setData}
-              onConfigChange={setConfig}
-              onThemeChange={setThemeId}
+              height={450}
             />
-          </Grid>
-
-          <Grid item xs={12} md={8}>
-            <Box sx={{ mb: 2 }}>
-              <Tabs value={ui.activeTab} onChange={(_, v) => setActiveTab(v)}>
-                <Tab label={<Trans>Preview</Trans>} value="preview" />
-                <Tab label={<Trans>Code</Trans>} value="code" />
-              </Tabs>
-            </Box>
-
-            {ui.activeTab === "preview" ? (
-              <PreviewPane
-                chartType={chartType}
-                data={data}
-                config={config}
-                height={450}
-              />
-            ) : (
-              <CodeOutput chartType={chartType} data={data} config={config} />
-            )}
-          </Grid>
+          ) : (
+            <CodeOutput chartType={chartType} data={data} config={config} />
+          )}
         </Grid>
-      </Container>
-    </>
+      </Grid>
+    </DemoLayout>
   );
 }
