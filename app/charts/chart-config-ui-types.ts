@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Type definitions for chart configuration UI options.
  *
@@ -126,7 +125,7 @@ type EncodingOptionImputation<T extends ChartConfig = ChartConfig> = {
  * @template T - Chart configuration type
  * @template F - Generic field type
  */
-type OnEncodingChange<
+export type OnEncodingChange<
   T extends ChartConfig = ChartConfig,
   F extends GenericField = GenericField,
 > = (
@@ -299,8 +298,9 @@ type ChartSpec<T extends ChartConfig = ChartConfig> = {
 
 /**
  * All chart specifications indexed by chart type.
+ * Exported for potential future use.
  */
-type ChartSpecs = {
+export type ChartSpecs = {
   area: ChartSpec<AreaConfig>;
   column: ChartSpec<ColumnConfig>;
   bar: ChartSpec<BarConfig>;

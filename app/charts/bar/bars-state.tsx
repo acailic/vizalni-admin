@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { extent, max, rollup, sum } from "d3-array";
 import {
   ScaleBand,

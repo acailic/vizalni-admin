@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ChartType, LayoutDashboard, LayoutType } from "@/config-types";
 import { prisma } from "@/db/client";
 
@@ -227,4 +226,3 @@ export const fetchChartsMetadata = async () => {
     }));
   });
 };
-// @ts-nocheck

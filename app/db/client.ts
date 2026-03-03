@@ -17,6 +17,10 @@ class MockPrismaClient {
   configView = {} as any;
   $disconnect = async () => {};
   $connect = async () => {};
+  $queryRaw = async <T = any>(
+    _query: TemplateStringsArray,
+    ..._values: any[]
+  ): Promise<T> => [] as T;
 }
 
 type PrismaClient = MockPrismaClient;

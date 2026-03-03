@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Helper functions for chart configuration UI options.
  *
@@ -7,7 +6,7 @@
  * different chart types.
  */
 
-import { DEFAULT_SORTING, ChartSegmentField } from "@/charts";
+import { DEFAULT_SORTING } from "@/charts";
 import type {
   AreaConfig,
   BarConfig,
@@ -16,6 +15,7 @@ import type {
   PieConfig,
   ScatterPlotConfig,
   TableConfig,
+  ChartSegmentField,
 } from "@/config-types";
 import { makeMultiFilter } from "@/config-utils";
 import { mapValueIrisToColor } from "@/configurator/components/ui-helpers";
@@ -61,8 +61,9 @@ export const defaultSegmentOnChange: OnEncodingChange<
   | PieConfig
   | TableConfig
 > = (id, { chartConfig, dimensions, measures, selectedValues }) => {
+  const componentId = id as string;
   const components = [...dimensions, ...measures];
-  const component = components.find((d) => d.id === id);
+  const component = components.find((d) => d.id === componentId);
   const paletteId = getDefaultCategoricalPaletteId(
     component,
     chartConfig.fields.color && "paletteId" in chartConfig.fields.color
@@ -75,11 +76,11 @@ export const defaultSegmentOnChange: OnEncodingChange<
   });
 
   if (chartConfig.fields.segment) {
-    (chartConfig.fields.segment as ChartSegmentField).componentId = id;
+    (chartConfig.fields.segment as ChartSegmentField).componentId = componentId;
     (chartConfig.fields.segment as ChartSegmentField).showValuesMapping = {};
   } else {
     chartConfig.fields.segment = {
-      componentId: id,
+      componentId: componentId,
       sorting: DEFAULT_SORTING,
       showValuesMapping: {},
     };
@@ -98,6 +99,6 @@ export const defaultSegmentOnChange: OnEncodingChange<
   const cube = chartConfig.cubes.find((d) => d.iri === component.cubeIri);
 
   if (cube) {
-    cube.filters[id] = multiFilter;
+    cube.filters[componentId] = multiFilter;
   }
 };

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Helper functions for chart configuration UI.
  *

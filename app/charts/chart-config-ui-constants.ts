@@ -1,6 +1,3 @@
-// @ts-nocheck - TODO: Extracted from monolithic chart-config-ui-options.ts. Needs proper
-// TypeScript typing for EncodingSortingOption and getDisabledState signatures.
-// This is a temporary measure to allow the modularization to proceed.
 /**
  * Chart-specific constants and default values for chart configuration UI options.
  *

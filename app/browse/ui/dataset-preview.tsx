@@ -1,4 +1,3 @@
-// @ts-nocheck - Pre-existing type issues with generated GraphQL types
 import { Trans } from "@lingui/macro";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";

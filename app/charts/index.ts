@@ -1,7 +1,3 @@
-// @ts-nocheck - TODO: This file was part of a monolithic refactor. The extracted
-// modules (chart-config-ui-constants, chart-config-ui-helpers, etc.) need proper
-// TypeScript typing. Using ts-nocheck temporarily to allow the refactor to proceed.
-// Target: Remove this and add proper types to the extracted modules.
 import { t } from "@lingui/macro";
 import { ascending, descending, group, rollup, rollups } from "d3-array";
 import { produce } from "immer";
@@ -76,6 +72,7 @@ import type {
   ComboLineSingleFields,
   Cube,
   Filters,
+  FilterValue,
   GenericChartConfig,
   GenericField,
   GenericFields,
@@ -1864,7 +1861,7 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
           ...cube,
           filters: Object.fromEntries(
             Object.entries(cube.filters).filter(
-              ([_, value]) => value.type !== "range"
+              ([_, value]) => (value as FilterValue).type !== "range"
             )
           ),
         }));
@@ -1894,7 +1891,7 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
 
           for (const [id, value] of Object.entries(oldCube.filters)) {
             if (cube.filters[id] === undefined) {
-              cube.filters[id] = value;
+              cube.filters[id] = value as FilterValue;
             }
           }
 
@@ -2153,7 +2150,7 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
           case "table":
             break;
           default:
-            const _exhaustiveCheck: never = oldChartConfig;
+            const _exhaustiveCheck: never = oldChartConfig as never;
             return _exhaustiveCheck;
         }
 
@@ -2277,7 +2274,7 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
           case "table":
             break;
           default:
-            const _exhaustiveCheck: never = oldChartConfig;
+            const _exhaustiveCheck: never = oldChartConfig as never;
             return _exhaustiveCheck;
         }
 

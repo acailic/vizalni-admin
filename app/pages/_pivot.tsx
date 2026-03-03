@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Box,
   Card as MUICard,
@@ -687,4 +686,3 @@ const Page = () => {
 export default dynamic(() => Promise.resolve(Page), {
   ssr: false,
 });
-// @ts-nocheck

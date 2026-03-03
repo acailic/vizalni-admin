@@ -41,7 +41,7 @@ export class CanvasChartRenderer {
 
   constructor(canvas: HTMLCanvasElement, config: CanvasRendererConfig) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d')!;
+    this.ctx = canvas.getContext("2d")!;
     this.config = config;
     this.setupCanvas();
   }
@@ -63,14 +63,17 @@ export class CanvasChartRenderer {
     // Enable optimizations
     if (this.config.enableAntialiasing) {
       this.ctx.imageSmoothingEnabled = true;
-      this.ctx.imageSmoothingQuality = 'high';
+      this.ctx.imageSmoothingQuality = "high";
     }
 
     // Create offscreen canvas for double buffering
-    if (typeof OffscreenCanvas !== 'undefined') {
-      const offscreen = new OffscreenCanvas(width * pixelRatio, height * pixelRatio);
+    if (typeof OffscreenCanvas !== "undefined") {
+      const offscreen = new OffscreenCanvas(
+        width * pixelRatio,
+        height * pixelRatio
+      );
       this.offscreenCanvas = offscreen as any;
-      this.offscreenCtx = offscreen.getContext('2d')! as any;
+      this.offscreenCtx = offscreen.getContext("2d")! as any;
       this.offscreenCtx.scale(pixelRatio, pixelRatio);
     }
   }
@@ -105,10 +108,10 @@ export class CanvasChartRenderer {
   private renderPointsDirect(points: Point[], bounds?: RenderBounds) {
     const ctx = this.getActiveContext();
 
-    points.forEach(point => {
+    points.forEach((point) => {
       if (bounds && !this.isPointInBounds(point, bounds)) return;
 
-      ctx.fillStyle = point.color || '#000';
+      ctx.fillStyle = point.color || "#000";
       ctx.beginPath();
       ctx.arc(point.x, point.y, point.size || 4, 0, Math.PI * 2);
       ctx.fill();
@@ -144,13 +147,16 @@ export class CanvasChartRenderer {
   /**
    * Group points by color to reduce context switches
    */
-  private groupPointsByColor(points: Point[], bounds?: RenderBounds): Map<string, Point[]> {
+  private groupPointsByColor(
+    points: Point[],
+    bounds?: RenderBounds
+  ): Map<string, Point[]> {
     const grouped = new Map<string, Point[]>();
 
     for (const point of points) {
       if (bounds && !this.isPointInBounds(point, bounds)) continue;
 
-      const color = point.color || '#000';
+      const color = point.color || "#000";
       if (!grouped.has(color)) {
         grouped.set(color, []);
       }
@@ -169,7 +175,7 @@ export class CanvasChartRenderer {
     for (let i = 0; i < points.length; i += batchSize) {
       const batch = points.slice(i, i + batchSize);
 
-      batch.forEach(point => {
+      batch.forEach((point) => {
         ctx.beginPath();
         ctx.arc(point.x, point.y, point.size || 4, 0, Math.PI * 2);
         ctx.fill();
@@ -192,15 +198,22 @@ export class CanvasChartRenderer {
     const grid = this.createSpatialGrid(points, gridSize);
 
     // Render one point per grid cell for overview
-    grid.forEach(cellPoints => {
+    grid.forEach((cellPoints) => {
       if (cellPoints.length > 0) {
         // Use alpha blending to show density
         const alpha = Math.min(0.8, 0.1 + cellPoints.length * 0.05);
         ctx.globalAlpha = alpha;
 
-        const representativePoint = cellPoints[Math.floor(cellPoints.length / 2)];
+        const representativePoint =
+          cellPoints[Math.floor(cellPoints.length / 2)];
         ctx.beginPath();
-        ctx.arc(representativePoint.x, representativePoint.y, pointSize, 0, Math.PI * 2);
+        ctx.arc(
+          representativePoint.x,
+          representativePoint.y,
+          pointSize,
+          0,
+          Math.PI * 2
+        );
         ctx.fill();
       }
     });
@@ -211,22 +224,28 @@ export class CanvasChartRenderer {
   /**
    * Pixelated rendering for extremely large datasets (>50k points)
    */
-  private renderPointsAsPixelated(ctx: CanvasRenderingContext2D, points: Point[]) {
-    const imageData = ctx.createImageData(this.config.width * this.config.pixelRatio, this.config.height * this.config.pixelRatio);
+  private renderPointsAsPixelated(
+    ctx: CanvasRenderingContext2D,
+    points: Point[]
+  ) {
+    const imageData = ctx.createImageData(
+      this.config.width * this.config.pixelRatio,
+      this.config.height * this.config.pixelRatio
+    );
     const data = imageData.data;
     const pixelRatio = this.config.pixelRatio;
 
-    points.forEach(point => {
+    points.forEach((point) => {
       const x = Math.floor(point.x * pixelRatio);
       const y = Math.floor(point.y * pixelRatio);
-      const color = this.hexToRgb(point.color || '#000');
+      const color = this.hexToRgb(point.color || "#000");
 
       if (color) {
         const index = (y * imageData.width + x) * 4;
-        data[index] = color.r;     // Red
+        data[index] = color.r; // Red
         data[index + 1] = color.g; // Green
         data[index + 2] = color.b; // Blue
-        data[index + 3] = 255;     // Alpha
+        data[index + 3] = 255; // Alpha
       }
     });
 
@@ -236,10 +255,13 @@ export class CanvasChartRenderer {
   /**
    * Create spatial grid for efficient culling
    */
-  private createSpatialGrid(points: Point[], cellSize: number): Map<string, Point[]> {
+  private createSpatialGrid(
+    points: Point[],
+    cellSize: number
+  ): Map<string, Point[]> {
     const grid = new Map<string, Point[]>();
 
-    points.forEach(point => {
+    points.forEach((point) => {
       const gridX = Math.floor(point.x / cellSize);
       const gridY = Math.floor(point.y / cellSize);
       const key = `${gridX},${gridY}`;
@@ -257,10 +279,12 @@ export class CanvasChartRenderer {
    * Check if point is within visible bounds
    */
   private isPointInBounds(point: Point, bounds: RenderBounds): boolean {
-    return point.x >= bounds.xMin &&
-           point.x <= bounds.xMax &&
-           point.y >= bounds.yMin &&
-           point.y <= bounds.yMax;
+    return (
+      point.x >= bounds.xMin &&
+      point.x <= bounds.xMax &&
+      point.y >= bounds.yMin &&
+      point.y <= bounds.yMax
+    );
   }
 
   /**
@@ -291,11 +315,13 @@ export class CanvasChartRenderer {
    */
   private hexToRgb(hex: string): { r: number; g: number; b: number } | null {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
   }
 
   /**
@@ -319,7 +345,7 @@ export class CanvasChartRenderer {
  * React hook for canvas-based chart rendering
  */
 export function useCanvasRenderer(
-  canvasRef: React.RefObject<HTMLCanvasElement>,
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
   config: Partial<CanvasRendererConfig> = {}
 ) {
   const rendererRef = useRef<CanvasChartRenderer | null>(null);
@@ -332,7 +358,7 @@ export function useCanvasRenderer(
     enableAntialiasing: true,
     enableVertexOptimization: true,
     maxPointsBeforeOptimization: 10000,
-    ...config
+    ...config,
   };
 
   const initializeRenderer = useCallback(() => {
@@ -342,7 +368,10 @@ export function useCanvasRenderer(
       rendererRef.current.dispose();
     }
 
-    rendererRef.current = new CanvasChartRenderer(canvasRef.current, defaultConfig);
+    rendererRef.current = new CanvasChartRenderer(
+      canvasRef.current,
+      defaultConfig
+    );
   }, [canvasRef, defaultConfig]);
 
   const renderPoints = useCallback((points: Point[], bounds?: RenderBounds) => {
@@ -385,19 +414,19 @@ export function useCanvasRenderer(
       if (rendererRef.current && canvasRef.current) {
         const newConfig = {
           ...defaultConfig,
-          pixelRatio: window.devicePixelRatio || 1
+          pixelRatio: window.devicePixelRatio || 1,
         };
         rendererRef.current.updateConfig(newConfig);
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [defaultConfig, canvasRef]);
 
   return {
     renderPoints,
     clear: () => rendererRef.current?.clear(),
-    renderer: rendererRef.current
+    renderer: rendererRef.current,
   };
 }

@@ -210,6 +210,7 @@ declare module "@/config-types" {
   export type FilterValue = any;
   export type TableLinks = any;
   export type Layout = any;
+  export type LayoutType = any;
   export type LayoutDashboard = any;
   export type LayoutTextBlock = any;
   export type Meta = any;
@@ -568,6 +569,10 @@ declare module "@/graphql/query-hooks" {
   export const DataCubePreviewDocument: any;
   export type DataCubePreviewQuery = any;
   export type DataCubePreviewQueryVariables = any;
+  export type DataCubeMetadataQuery = any;
+  export type DataCubeMetadataQueryVariables = any;
+  export const useDataCubePreviewQuery: any;
+  export const DataCubePublicationStatus: any;
 }
 
 declare module "@/intervals" {

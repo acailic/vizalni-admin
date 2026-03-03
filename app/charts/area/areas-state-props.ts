@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ascending } from "d3-array";
 import { useCallback } from "react";
 

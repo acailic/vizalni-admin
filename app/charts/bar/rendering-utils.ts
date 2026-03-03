@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { select, Selection } from "d3-selection";
 import { Series } from "d3-shape";
 import { useCallback } from "react";

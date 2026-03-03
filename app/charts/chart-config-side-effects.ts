@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Side effect handlers for chart field changes in UI.
  *
