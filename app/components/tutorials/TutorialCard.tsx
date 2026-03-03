@@ -6,6 +6,8 @@ import {
   CardContent,
   Chip,
   Typography,
+  useTheme,
+  alpha,
 } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -30,6 +32,7 @@ interface TutorialCardProps {
 }
 
 export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
+  const theme = useTheme();
   const progressApi = useTutorialProgress();
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -93,7 +96,7 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
         position: "relative",
         "&:hover": {
           transform: "translateY(-8px)",
-          boxShadow: "0 20px 40px rgba(102, 126, 234, 0.25)",
+          boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.25)}`,
         },
         "&::before": {
           content: '""',
@@ -102,7 +105,7 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
           left: 0,
           right: 0,
           height: "5px",
-          background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
           opacity: 0,
           transition: "opacity 0.3s ease",
         },
@@ -131,8 +134,7 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
               textAlign: "center",
               p: 2,
               borderRadius: 3,
-              background:
-                "linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)",
+              background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -206,8 +208,8 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
               size="small"
               sx={{
                 fontSize: "0.75rem",
-                borderColor: "#667eea",
-                color: "#667eea",
+                borderColor: theme.palette.primary.main,
+                color: theme.palette.primary.main,
                 fontWeight: 500,
               }}
               variant="outlined"
@@ -219,8 +221,8 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
               size="small"
               sx={{
                 fontSize: "0.75rem",
-                borderColor: "#764ba2",
-                color: "#764ba2",
+                borderColor: theme.palette.secondary.main,
+                color: theme.palette.secondary.main,
                 fontWeight: 500,
               }}
               variant="outlined"
@@ -233,8 +235,8 @@ export default function TutorialCard({ tutorial, locale }: TutorialCardProps) {
                 size="small"
                 sx={{
                   fontSize: "0.75rem",
-                  borderColor: "#f5576c",
-                  color: "#f5576c",
+                  borderColor: theme.palette.error.main,
+                  color: theme.palette.error.main,
                   fontWeight: 500,
                 }}
                 variant="outlined"

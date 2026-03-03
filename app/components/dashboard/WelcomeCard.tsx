@@ -1,5 +1,12 @@
 import { ArrowForward } from "@mui/icons-material";
-import { Button, Card, CardContent, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Link from "next/link";
 
 interface WelcomeCardProps {
@@ -13,11 +20,13 @@ export const WelcomeCard = ({
   headline,
   subhead,
 }: WelcomeCardProps) => {
+  const theme = useTheme();
+
   return (
     <Card
       elevation={2}
       sx={{
-        background: "linear-gradient(135deg, #111827, #0f766e)",
+        background: `linear-gradient(135deg, ${theme.palette.grey[900]}, ${theme.palette.teal?.[700] || theme.palette.success.dark})`,
         color: "common.white",
       }}
     >

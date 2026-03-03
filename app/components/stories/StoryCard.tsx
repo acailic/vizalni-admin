@@ -9,6 +9,8 @@ import {
   Chip,
   Stack,
   Typography,
+  useTheme,
+  alpha,
 } from "@mui/material";
 
 import type { StoryConfig, StoryDifficulty } from "@/types/stories";
@@ -18,15 +20,16 @@ interface StoryCardProps {
   href: string;
 }
 
-const difficultyColors: Record<StoryDifficulty, string> = {
-  beginner: "#22c55e",
-  intermediate: "#f59e0b",
-  advanced: "#ef4444",
-};
-
 export function StoryCard({ story, href }: StoryCardProps) {
   const { i18n } = useLingui();
+  const theme = useTheme();
   const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
+
+  const difficultyColors: Record<StoryDifficulty, string> = {
+    beginner: theme.palette.success.main,
+    intermediate: theme.palette.warning.main,
+    advanced: theme.palette.error.main,
+  };
 
   return (
     <Card
@@ -42,7 +45,7 @@ export function StoryCard({ story, href }: StoryCardProps) {
         overflow: "hidden",
         "&:hover": {
           transform: "translateY(-8px)",
-          boxShadow: "0 20px 40px rgba(14, 165, 233, 0.25)",
+          boxShadow: `0 20px 40px ${alpha(theme.palette.primary.main, 0.25)}`,
         },
       }}
     >
@@ -64,8 +67,7 @@ export function StoryCard({ story, href }: StoryCardProps) {
               textAlign: "center",
               p: 2,
               borderRadius: 3,
-              background:
-                "linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%)",
+              background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.primary.dark, 0.1)} 100%)`,
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
