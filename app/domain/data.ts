@@ -322,7 +322,7 @@ export type TemporalEntityDimension = BaseDimension & {
   timeFormat: string;
 };
 
-// TODO
+// TODO(#issue): Consider refactoring position-based date access
 /** Currently, the formatted date for month- and year-based temporal entities
  * is stored in the `position` field. This will be changed in the future, once
  * there will be datasets with other temporal entity types.

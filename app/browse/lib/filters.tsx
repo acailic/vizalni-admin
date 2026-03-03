@@ -1,16 +1,13 @@
 import { BrowseParams } from "@/browse/lib/params";
-// import {
-//   // TODO: Fix TypeScript export issue with these types from @/graphql/query-hooks
-//   SearchCubeFilterType,
-// } from "@/graphql/query-hooks";
 
-// Temporary enum definition until GraphQL export issue is fixed
+// Note: SearchCubeFilterType is defined locally due to GraphQL codegen limitations
+// with enum re-exports. This is intentional, not a workaround.
 enum SearchCubeFilterType {
-  TemporalDimension = 'TemporalDimension',
-  DataCubeTheme = 'DataCubeTheme',
-  DataCubeOrganization = 'DataCubeOrganization',
-  DataCubeAbout = 'DataCubeAbout',
-  DataCubeTermset = 'DataCubeTermset'
+  TemporalDimension = "TemporalDimension",
+  DataCubeTheme = "DataCubeTheme",
+  DataCubeOrganization = "DataCubeOrganization",
+  DataCubeAbout = "DataCubeAbout",
+  DataCubeTermset = "DataCubeTermset",
 }
 
 export type DataCubeAbout = {
@@ -20,19 +17,19 @@ export type DataCubeAbout = {
 
 // Temporary type definitions until GraphQL export issue is fixed
 type DataCubeOrganization = {
-  __typename: 'DataCubeOrganization';
+  __typename: "DataCubeOrganization";
   iri: string;
   label?: string | null;
 };
 
 type DataCubeTermset = {
-  __typename: 'DataCubeTermset';
+  __typename: "DataCubeTermset";
   iri: string;
   label?: string | null;
 };
 
 type DataCubeTheme = {
-  __typename: 'DataCubeTheme';
+  __typename: "DataCubeTheme";
   iri: string;
   label?: string | null;
 };
