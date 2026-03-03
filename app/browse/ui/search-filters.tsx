@@ -11,7 +11,7 @@ import { useBrowseContext } from "@/browse/model/context";
 import { NavigationSection } from "@/browse/ui/navigation-section";
 import { SubthemeFilters } from "@/browse/ui/subtheme-filters";
 import { Flex } from "@/components/flex";
-import { InfoIconTooltip } from "@/components/info-icon-tooltip";
+import { InfoIconTooltip } from "@/components/ui/tooltips";
 import { truthy } from "@/domain/types";
 import {
   DataCubeOrganization,

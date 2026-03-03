@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { ReactNode } from "react";
 
 import { Flex } from "@/components/flex";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import {
   ChartConfig,
   FieldProps,

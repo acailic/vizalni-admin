@@ -9,8 +9,8 @@ import {
 } from "@/charts";
 import { Flex } from "@/components/flex";
 import { HintError } from "@/components/hint";
-import { InfoIconTooltip } from "@/components/info-icon-tooltip";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
+import { InfoIconTooltip } from "@/components/ui/tooltips";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { ChartType } from "@/config-types";
 import { getChartConfig } from "@/config-utils";
 import { ControlSectionSkeleton } from "@/configurator/components/chart-controls/section";

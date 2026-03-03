@@ -58,13 +58,13 @@ import {
 
 import { useBrowseContext } from "@/browse/model/context";
 import { Flex } from "@/components/flex";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { BlockTypeMenu } from "@/components/mdx-editor/block-type-menu";
 import { BoldItalicUnderlineToggles } from "@/components/mdx-editor/bold-italic-underline-toggles";
 import { linkDialogPlugin } from "@/components/mdx-editor/link-dialog";
 import { LinkDialogToggle } from "@/components/mdx-editor/link-dialog-toggle";
 import { ListToggles } from "@/components/mdx-editor/list-toggles";
 import { maxLengthPlugin } from "@/components/mdx-editor/max-length-plugin";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { VisuallyHidden } from "@/components/visually-hidden";
 import {
   FieldProps,

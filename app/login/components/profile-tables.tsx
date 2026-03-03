@@ -22,7 +22,6 @@ import { ReactNode, useMemo, useState } from "react";
 
 import { InlineMarkdown, Markdown } from "@/components/markdown";
 import { MenuActionProps } from "@/components/menu-action-item";
-import { OverflowTooltip } from "@/components/overflow-tooltip";
 import {
   EmbedContent,
   ShareContent,
@@ -30,6 +29,7 @@ import {
 } from "@/components/publish-actions";
 import { RenameDialog } from "@/components/rename-dialog";
 import { RowActions } from "@/components/row-actions";
+import { OverflowTooltip } from "@/components/ui/tooltips";
 import { useDisclosure } from "@/components/use-disclosure";
 import { CONFIGURATOR_STATE_LAYOUTING } from "@/config-types";
 import { ParsedConfigWithViewCount } from "@/db/config";

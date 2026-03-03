@@ -12,7 +12,7 @@ import {
   TooltipSingle,
 } from "@/charts/shared/interaction/tooltip-content";
 import { Flex } from "@/components/flex";
-import { InfoIconTooltip as InfoIconTooltipComponent } from "@/components/info-icon-tooltip";
+import { InfoIconTooltip as InfoIconTooltipComponent } from "@/components/ui/tooltips";
 import { ReactSpecimen } from "@/docs/catalog";
 import {
   dimensions,

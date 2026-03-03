@@ -14,8 +14,8 @@ import { useMemo, useState } from "react";
 import { useClient } from "urql";
 
 import { Flex } from "@/components/flex";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { useMetadataPanelStoreActions } from "@/components/metadata-panel-store";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { useDisclosure } from "@/components/use-disclosure";
 import { getChartConfig } from "@/config-utils";
 import { AddDatasetDrawer } from "@/configurator/components/add-dataset-drawer/add-dataset-drawer";

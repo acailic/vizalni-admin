@@ -1,6 +1,7 @@
 # UI Components and Utilities
 
-This directory contains reusable UI components and utilities that have been refactored for better modularity and code reuse.
+This directory contains reusable UI components and utilities that have been
+refactored for better modularity and code reuse.
 
 ## Directory Structure
 
@@ -19,12 +20,15 @@ ui/
 
 ### Tooltips (`/ui/tooltips`)
 
-The unified Tooltip component consolidates three previously separate tooltip implementations:
+The unified Tooltip component consolidates three previously separate tooltip
+implementations:
+
 - `MaybeTooltip` → `<Tooltip variant="conditional">`
 - `OverflowTooltip` → `<Tooltip variant="overflow">`
 - `InfoIconTooltip` → `<Tooltip variant="info-icon">`
 
 **Benefits:**
+
 - Reduces code duplication (~86 lines)
 - Single source of truth for tooltip behavior
 - Consistent API across all tooltip types
@@ -56,21 +60,28 @@ import { Tooltip } from '@/components/ui/tooltips';
 For backward compatibility, the old component names are still exported:
 
 ```tsx
-import { MaybeTooltip, OverflowTooltip, InfoIconTooltip } from '@/components/ui/tooltips';
+import {
+  MaybeTooltip,
+  OverflowTooltip,
+  InfoIconTooltip,
+} from "@/components/ui/tooltips";
 ```
 
-These are now thin wrappers around the unified component and will show deprecation warnings in TypeScript.
+These are now thin wrappers around the unified component and will show
+deprecation warnings in TypeScript.
 
 ---
 
 ### Dialogs (`/ui/dialogs`)
 
 Reusable dialog components that consolidate common dialog patterns:
+
 - `DialogBase` - Flexible base component
 - `ConfirmationDialogBase` - Yes/No confirmations
 - `FormDialogBase` - Form submissions
 
 **Benefits:**
+
 - Reduces dialog boilerplate
 - Consistent spacing and styling
 - Built-in loading states
@@ -112,11 +123,13 @@ import { ConfirmationDialogBase, FormDialogBase } from '@/components/ui/dialogs'
 URL building utilities for chart operations:
 
 **Benefits:**
+
 - Eliminates useState/useEffect patterns for URL building
 - Consistent URL structure across the app
 - Type-safe URL generation
 
 **Functions:**
+
 - `buildCopyChartUrl(configKey, locale)` - URL for copying a chart
 - `buildShareChartUrl(configKey, locale)` - URL for sharing a chart
 - `buildViewChartUrl(configKey, locale)` - URL for viewing a chart
@@ -124,23 +137,22 @@ URL building utilities for chart operations:
 - `buildEditChartUrl(configKey, locale)` - URL for editing a chart
 
 **Hook:**
+
 - `useChartUrls(locale)` - Returns URL builders pre-configured with locale
 
 **Usage:**
 
 ```tsx
-import { useChartUrls } from '@/utils/chart-urls';
+import { useChartUrls } from "@/utils/chart-urls";
 
 const MyComponent = () => {
   const locale = useLocale();
   const { getCopyUrl, getShareUrl } = useChartUrls(locale);
 
-  const copyUrl = getCopyUrl('chart-123');
-  const shareUrl = getShareUrl('chart-123');
+  const copyUrl = getCopyUrl("chart-123");
+  const shareUrl = getShareUrl("chart-123");
 
-  return (
-    <a href={shareUrl}>Share Chart</a>
-  );
+  return <a href={shareUrl}>Share Chart</a>;
 };
 ```
 
@@ -151,6 +163,7 @@ const MyComponent = () => {
 Hook for managing anchor-based menus and popovers:
 
 **Benefits:**
+
 - Replaces 9+ instances of manual anchor state management
 - Reduces boilerplate by ~50+ lines
 - Provides ready-to-use props for MUI Menu/Popover
@@ -158,7 +171,7 @@ Hook for managing anchor-based menus and popovers:
 **Usage:**
 
 ```tsx
-import { useAnchorMenu } from '@/utils/use-anchor-menu';
+import { useAnchorMenu } from "@/utils/use-anchor-menu";
 
 const MyComponent = () => {
   const menu = useAnchorMenu();
@@ -198,21 +211,23 @@ const MyPopover = () => {
 ### Migrating Tooltips
 
 **Before:**
-```tsx
-import { MaybeTooltip } from '@/components/maybe-tooltip';
 
-<MaybeTooltip title={title} tooltipProps={{ placement: 'top' }}>
+```tsx
+import { MaybeTooltip } from "@/components/ui/tooltips";
+
+<MaybeTooltip title={title} tooltipProps={{ placement: "top" }}>
   <Button>Click me</Button>
-</MaybeTooltip>
+</MaybeTooltip>;
 ```
 
 **After:**
+
 ```tsx
-import { Tooltip } from '@/components/ui/tooltips';
+import { Tooltip } from "@/components/ui/tooltips";
 
 <Tooltip variant="conditional" title={title} placement="top">
   <Button>Click me</Button>
-</Tooltip>
+</Tooltip>;
 ```
 
 ---
@@ -220,6 +235,7 @@ import { Tooltip } from '@/components/ui/tooltips';
 ### Migrating Menu Anchors
 
 **Before:**
+
 ```tsx
 const [anchor, setAnchor] = useState<HTMLElement | null>(null);
 const handleClick = (e: MouseEvent<HTMLElement>) => setAnchor(e.currentTarget);
@@ -237,8 +253,9 @@ return (
 ```
 
 **After:**
+
 ```tsx
-import { useAnchorMenu } from '@/utils/use-anchor-menu';
+import { useAnchorMenu } from "@/utils/use-anchor-menu";
 
 const menu = useAnchorMenu();
 
@@ -257,16 +274,20 @@ return (
 ### Migrating Chart URLs
 
 **Before:**
+
 ```tsx
 const [copyUrl, setCopyUrl] = useState("");
 useEffect(() => {
-  setCopyUrl(`${window.location.origin}/${locale}/create/new?copy=${configKey}`);
+  setCopyUrl(
+    `${window.location.origin}/${locale}/create/new?copy=${configKey}`
+  );
 }, [configKey, locale]);
 ```
 
 **After:**
+
 ```tsx
-import { useChartUrls } from '@/utils/chart-urls';
+import { useChartUrls } from "@/utils/chart-urls";
 
 const { getCopyUrl } = useChartUrls(locale);
 const copyUrl = getCopyUrl(configKey);
@@ -276,12 +297,12 @@ const copyUrl = getCopyUrl(configKey);
 
 ## Performance Benefits
 
-| Refactoring | Lines Saved | Files Consolidated | Patterns Replaced |
-|-------------|-------------|-------------------|-------------------|
-| Unified Tooltips | ~86 | 3 → 1 | 3 variants |
-| useAnchorMenu | ~50+ | 9 instances | Anchor state |
-| Chart URLs | ~30 | Multiple | useState + useEffect |
-| Dialog Base | TBD | 2+ | Dialog patterns |
+| Refactoring      | Lines Saved | Files Consolidated | Patterns Replaced    |
+| ---------------- | ----------- | ------------------ | -------------------- |
+| Unified Tooltips | ~86         | 3 → 1              | 3 variants           |
+| useAnchorMenu    | ~50+        | 9 instances        | Anchor state         |
+| Chart URLs       | ~30         | Multiple           | useState + useEffect |
+| Dialog Base      | TBD         | 2+                 | Dialog patterns      |
 
 **Total estimated reduction:** ~150-200 lines of duplicated code
 
@@ -300,6 +321,7 @@ const copyUrl = getCopyUrl(configKey);
 ## Future Improvements
 
 Potential areas for further modularization:
+
 - Form field wrapper component
 - Chart actions builder utility
 - Shared styles library
@@ -310,4 +332,5 @@ Potential areas for further modularization:
 
 ## Questions?
 
-For questions or suggestions about these refactorings, please refer to the codebase analysis or open a discussion.
+For questions or suggestions about these refactorings, please refer to the
+codebase analysis or open a discussion.

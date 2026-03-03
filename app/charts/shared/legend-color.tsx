@@ -10,8 +10,8 @@ import { rgbArrayToHex } from "@/charts/shared/colors";
 import { getLegendGroups } from "@/charts/shared/legend-color-helpers";
 import { Flex } from "@/components/flex";
 import { Checkbox, CheckboxProps } from "@/components/form";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { OpenMetadataPanelWrapper } from "@/components/metadata-panel";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { Limit as ConfigLimit } from "@/config-types";
 import { useChartConfigFilters } from "@/config-utils";
 import {

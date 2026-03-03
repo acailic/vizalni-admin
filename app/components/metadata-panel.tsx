@@ -44,13 +44,13 @@ import { DatasetMetadata } from "@/components/dataset-metadata";
 import { useEmbedQueryParams } from "@/components/embed-params";
 import { Flex } from "@/components/flex";
 import { Error, Loading } from "@/components/hint";
-import { InfoIconTooltip } from "@/components/info-icon-tooltip";
 import { JoinByChip } from "@/components/join-by-chip";
 import {
   useMetadataPanelStore,
   useMetadataPanelStoreActions,
 } from "@/components/metadata-panel-store";
 import { MotionBox } from "@/components/presence";
+import { InfoIconTooltip } from "@/components/ui/tooltips";
 import { getChartConfig } from "@/config-utils";
 import {
   BackButton,

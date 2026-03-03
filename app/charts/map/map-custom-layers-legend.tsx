@@ -13,7 +13,7 @@ import {
   RemoteWMTSLayer,
 } from "@/charts/map/wmts-utils";
 import { Error, InlineLoading } from "@/components/hint";
-import { InfoIconTooltip } from "@/components/info-icon-tooltip";
+import { InfoIconTooltip } from "@/components/ui/tooltips";
 import {
   BaseLayer,
   MapConfig,

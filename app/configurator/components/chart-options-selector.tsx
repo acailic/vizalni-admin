@@ -13,7 +13,7 @@ import {
 import { useQueryFilters } from "@/charts/shared/chart-helpers";
 import { Flex } from "@/components/flex";
 import { SelectOption } from "@/components/form";
-import { InfoIconTooltip } from "@/components/info-icon-tooltip";
+import { InfoIconTooltip } from "@/components/ui/tooltips";
 import {
   ChartConfig,
   GenericField,

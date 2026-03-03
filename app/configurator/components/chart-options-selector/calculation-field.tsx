@@ -1,7 +1,7 @@
 import { Trans } from "@lingui/macro";
 
 import { RadioGroup } from "@/components/form";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import {
   ControlSection,
   ControlSectionContent,

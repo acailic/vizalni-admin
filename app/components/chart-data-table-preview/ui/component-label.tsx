@@ -1,8 +1,8 @@
 import { TooltipProps, Typography } from "@mui/material";
 
 import { getLabelWithUnit } from "@/charts/shared/chart-helpers";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { OpenMetadataPanelWrapper } from "@/components/metadata-panel";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { Component } from "@/domain/data";
 
 export const ComponentLabel = ({

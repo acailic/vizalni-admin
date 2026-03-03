@@ -15,9 +15,9 @@ import { ComponentProps, MouseEvent, useMemo } from "react";
 import { getBrowseParamsFromQuery } from "@/browse/lib/params";
 import { DateFormat } from "@/browse/ui/date-format";
 import { Flex } from "@/components/flex";
-import { MaybeTooltip } from "@/components/maybe-tooltip";
 import { MotionCard, smoothPresenceProps } from "@/components/presence";
 import { Tag } from "@/components/tag";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { DataCubePublicationStatus } from "@/graphql/resolver-types";
 import { sanitizeHtml } from "@/utils/sanitize-html";
 import { useEvent } from "@/utils/use-event";
@@ -143,7 +143,9 @@ export const DatasetResult = ({
               className={classes.textWrapper}
               component="span"
               fontWeight={highlightedTitle === title ? 700 : 400}
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(highlightedTitle) }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(highlightedTitle),
+              }}
             />
           ) : (
             title
@@ -159,7 +161,9 @@ export const DatasetResult = ({
             <Box
               className={classes.textWrapper}
               component="span"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(highlightedDescription) }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(highlightedDescription),
+              }}
             />
           ) : (
             description
@@ -256,7 +260,9 @@ export const DatasetResult = ({
                                     {termsets.map((termset, idx) => {
                                       return (
                                         <Tag
-                                          key={termset.iri ?? termset.label ?? idx}
+                                          key={
+                                            termset.iri ?? termset.label ?? idx
+                                          }
                                           type="termset"
                                           style={{ flexShrink: 0 }}
                                         >

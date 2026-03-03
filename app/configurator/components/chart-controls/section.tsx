@@ -20,7 +20,7 @@ import {
   useMemo,
 } from "react";
 
-import { MaybeTooltip } from "@/components/maybe-tooltip";
+import { MaybeTooltip } from "@/components/ui/tooltips";
 import { useDisclosure } from "@/components/use-disclosure";
 import { isConfiguring, isLayouting } from "@/configurator/configurator-state";
 import { Icon, IconName } from "@/icons";
