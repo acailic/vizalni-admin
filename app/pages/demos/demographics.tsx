@@ -10,7 +10,10 @@ import {
   Paper,
   Typography,
   alpha,
+  useTheme,
+  Skeleton,
 } from "@mui/material";
+import React from "react";
 
 import { DemoPageTemplate } from "@/components/demo/DemoPageTemplate";
 import { PopulationPyramid, PopulationTrends } from "@/components/demos/charts";
@@ -25,7 +28,15 @@ import {
 
 export default function DemographicsDemo() {
   const { i18n } = useLingui();
+  const theme = useTheme();
   const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  // Simulate loading for data fetch
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const totalMale = agePopulationData.reduce((sum, age) => sum + age.male, 0);
   const totalFemale = agePopulationData.reduce(
@@ -66,13 +77,17 @@ export default function DemographicsDemo() {
           mb: 4,
           p: 4,
           borderRadius: 3,
-          background: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+          background: `linear-gradient(135deg, ${theme.palette.warning.main} 0%, ${theme.palette.warning.dark} 100%)`,
           color: "white",
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
           alignItems: "center",
           gap: 4,
         }}
+        role="banner"
+        aria-label={
+          locale === "sr" ? "Demografija Srbije" : "Serbia Demographics"
+        }
       >
         <Box sx={{ flex: 1 }}>
           <Typography
@@ -315,17 +330,43 @@ export default function DemographicsDemo() {
             ? "Raspodela stanovništva po starosti i polu pokazuje starenje populacije sa znatno manje mladih u odnosu na starije generacije."
             : "Population distribution by age and gender shows an aging population with significantly fewer young people compared to older generations."}
         </Typography>
-        <PopulationPyramid
-          data={agePopulationData}
-          title=""
-          width={900}
-          height={650}
-        />
+        {isLoading ? (
+          <Box
+            sx={{
+              width: "100%",
+              height: 650,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box sx={{ width: "100%", maxWidth: 900 }}>
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height={400}
+                sx={{ borderRadius: 2, mb: 2 }}
+              />
+              <Skeleton variant="text" width="60%" height={40} />
+              <Skeleton variant="text" width="80%" height={30} />
+            </Box>
+          </Box>
+        ) : (
+          <PopulationPyramid
+            data={agePopulationData}
+            title=""
+            width={900}
+            height={650}
+            aria-label={
+              locale === "sr" ? "Starosna piramida" : "Age pyramid chart"
+            }
+          />
+        )}
         <Box
           sx={{
             mt: 3,
             p: 2,
-            bgcolor: alpha("#f59e0b", 0.08),
+            bgcolor: alpha(theme.palette.warning.main, 0.08),
             borderRadius: 2,
             borderLeft: 3,
             borderColor: "warning.main",
@@ -374,7 +415,7 @@ export default function DemographicsDemo() {
           sx={{
             mt: 3,
             p: 2,
-            bgcolor: alpha("#ef4444", 0.08),
+            bgcolor: alpha(theme.palette.error.main, 0.08),
             borderRadius: 2,
             borderLeft: 3,
             borderColor: "error.main",
@@ -440,9 +481,9 @@ export default function DemographicsDemo() {
                         sx={{
                           height: 6,
                           borderRadius: 3,
-                          bgcolor: alpha("#f59e0b", 0.2),
+                          bgcolor: alpha(theme.palette.warning.main, 0.2),
                           "& .MuiLinearProgress-bar": {
-                            bgcolor: "#f59e0b",
+                            bgcolor: theme.palette.warning.main,
                             borderRadius: 3,
                           },
                         }}
@@ -483,7 +524,7 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#ef4444", 0.05),
+                bgcolor: alpha(theme.palette.error.main, 0.05),
                 mb: 2,
               }}
             >
@@ -495,7 +536,7 @@ export default function DemographicsDemo() {
                 }
                 size="small"
                 sx={{
-                  bgcolor: "#ef4444",
+                  bgcolor: theme.palette.error.main,
                   color: "white",
                   fontWeight: 600,
                   mb: 1,
@@ -511,7 +552,7 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#ef4444", 0.05),
+                bgcolor: alpha(theme.palette.error.main, 0.05),
                 mb: 2,
               }}
             >
@@ -521,7 +562,7 @@ export default function DemographicsDemo() {
                 }
                 size="small"
                 sx={{
-                  bgcolor: "#ef4444",
+                  bgcolor: theme.palette.error.main,
                   color: "white",
                   fontWeight: 600,
                   mb: 1,
@@ -537,7 +578,7 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#f59e0b", 0.05),
+                bgcolor: alpha(theme.palette.warning.main, 0.05),
               }}
             >
               <Chip
@@ -546,7 +587,7 @@ export default function DemographicsDemo() {
                 }
                 size="small"
                 sx={{
-                  bgcolor: "#f59e0b",
+                  bgcolor: theme.palette.warning.main,
                   color: "white",
                   fontWeight: 600,
                   mb: 1,
@@ -564,7 +605,7 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#f59e0b", 0.05),
+                bgcolor: alpha(theme.palette.warning.main, 0.05),
                 mb: 2,
               }}
             >
@@ -574,7 +615,7 @@ export default function DemographicsDemo() {
                 }
                 size="small"
                 sx={{
-                  bgcolor: "#f59e0b",
+                  bgcolor: theme.palette.warning.main,
                   color: "white",
                   fontWeight: 600,
                   mb: 1,
@@ -590,7 +631,7 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#3b82f6", 0.05),
+                bgcolor: alpha(theme.palette.info.main, 0.05),
                 mb: 2,
               }}
             >
@@ -600,7 +641,7 @@ export default function DemographicsDemo() {
                 }
                 size="small"
                 sx={{
-                  bgcolor: "#3b82f6",
+                  bgcolor: theme.palette.info.main,
                   color: "white",
                   fontWeight: 600,
                   mb: 1,
@@ -616,14 +657,14 @@ export default function DemographicsDemo() {
               sx={{
                 p: 2,
                 borderRadius: 2,
-                bgcolor: alpha("#6b7280", 0.05),
+                bgcolor: alpha(theme.palette.grey[500], 0.05),
               }}
             >
               <Chip
                 label={locale === "sr" ? "Urbanizacija" : "Urbanization"}
                 size="small"
                 sx={{
-                  bgcolor: "#6b7280",
+                  bgcolor: theme.palette.grey[500],
                   color: "white",
                   fontWeight: 600,
                   mb: 1,

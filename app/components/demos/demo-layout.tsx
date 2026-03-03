@@ -1,4 +1,4 @@
-import { t, useLingui } from "@lingui/macro";
+import { t } from "@lingui/macro";
 import { Trans } from "@lingui/react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import Link from "next/link";

@@ -63,10 +63,10 @@ function VisualizationCard({
         flexDirection: "column",
         borderRadius: 3,
         boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-        transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        transition: "all 0.3s ease",
         "&:hover": {
-          transform: "translateY(-8px)",
-          boxShadow: "0 20px 40px rgba(14, 165, 233, 0.25)",
+          transform: "translateY(-4px)",
+          boxShadow: "0 12px 40px rgba(14, 165, 233, 0.2)",
         },
       }}
     >
@@ -166,20 +166,11 @@ export default function TopicPage({ topic }: TopicPageProps) {
             <Typography color="text.primary">{title}</Typography>
           </Breadcrumbs>
 
-          {/* Hero Section */}
-          <Box
-            sx={{
-              mb: 4,
-              p: 4,
-              borderRadius: 3,
-              background: "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
-              color: "white",
-            }}
-          >
-            <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h3" component="h1" gutterBottom>
               {title}
             </Typography>
-            <Typography variant="body1" sx={{ opacity: 0.95 }}>
+            <Typography variant="h6" color="text.secondary">
               {description}
             </Typography>
           </Box>
@@ -221,16 +212,6 @@ export default function TopicPage({ topic }: TopicPageProps) {
               </Grid>
             </Box>
           )}
-
-          {/* Visual separator */}
-          <Box
-            sx={{
-              mt: 4,
-              mb: 3,
-              borderBottom: "1px solid",
-              borderColor: "divider",
-            }}
-          />
 
           {/* Datasets Section */}
           <Box sx={{ mb: 3 }}>
