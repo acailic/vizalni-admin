@@ -5,19 +5,13 @@
  * Each chart type (area, bar, column, line, map, pie, etc.) has
  * its own specification with encodings, filters, and options.
  *
- * Note: @ts-nocheck is used here because this is a complex specification object
- * with embedded functions that were originally in JavaScript. The typing is intentionally
- * loose to match the original implementation while still allowing TypeScript exports.
- *
  * @module chart-config-spec
  */
-
-// @ts-nocheck
 
 import { t } from "@lingui/macro";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import lodashGet from "lodash/get";
-import { setWith } from "lodash/setWith";
+import setWith from "lodash/setWith";
 
 import { DEFAULT_SORTING } from "@/charts";
 import {
@@ -54,7 +48,20 @@ import {
 const get = <T>(object: Record<string, T>, path: string): T | undefined =>
   lodashGet(object, path) as T;
 
-const onMapFieldChange = (id, { chartConfig, dimensions, measures, field }) => {
+const onMapFieldChange = (
+  id: string,
+  {
+    chartConfig,
+    dimensions,
+    measures,
+    field,
+  }: {
+    chartConfig: any;
+    dimensions: any[];
+    measures: any[];
+    field: string;
+  }
+) => {
   const fieldConfig = chartConfig.fields[field];
   const components = [...dimensions, ...measures];
 
@@ -130,13 +137,19 @@ export const chartConfigOptionsUISpec = {
             },
           },
           adjustScaleDomain: {
-            getDefaultDomain: ({ chartConfig, observations }) => {
+            getDefaultDomain: ({
+              chartConfig,
+              observations,
+            }: {
+              chartConfig: any;
+              observations: any[];
+            }) => {
               const { segment } = chartConfig.fields;
-              const getX = (o) => {
+              const getX = (o: any) => {
                 const x = o[chartConfig.fields.x.componentId];
                 return parseStringVariable(x);
               };
-              const getY = (o) => {
+              const getY = (o: any) => {
                 const y = o[chartConfig.fields.y.componentId] ?? null;
                 return parseOptionalNumericVariable(y) ?? 0;
               };
@@ -152,7 +165,7 @@ export const chartConfigOptionsUISpec = {
                 return yScale.domain() as [number, number];
               }
 
-              return getNonStackedDomain(observations, getX);
+              return getNonStackedDomain(observations, getY);
             },
           },
           convertUnit: {},
@@ -172,10 +185,10 @@ export const chartConfigOptionsUISpec = {
         componentTypes: SEGMENT_ENABLED_COMPONENTS,
         filters: true,
         sorting: AREA_SEGMENT_SORTING,
-        onChange: (id, options) => {
+        onChange: (id: string, options: any) => {
           const { chartConfig, dimensions, measures, selectedValues } = options;
           const components = [...dimensions, ...measures];
-          const component = components.find((d) => d.id === id);
+          const component = components.find((d: any) => d.id === id);
           const paletteId = getDefaultCategoricalPaletteId(
             component,
             chartConfig.fields.color && "paletteId" in chartConfig.fields.color
@@ -213,22 +226,22 @@ export const chartConfigOptionsUISpec = {
           }
 
           const multiFilter = makeMultiFilter(
-            selectedValues.map((d) => d.value)
+            selectedValues.map((d: any) => d.value)
           );
           const cube = chartConfig.cubes.find(
-            (d) => d.iri === component.cubeIri
+            (d: any) => d.iri === component.cubeIri
           );
 
           if (cube) {
             cube.filters[id] = multiFilter;
           }
         },
-        onDelete: ({ chartConfig }) => {
+        onDelete: ({ chartConfig }: { chartConfig: any }) => {
           delete chartConfig.fields.y.customDomain;
         },
-        getDisabledState: (chartConfig, components, data) => {
+        getDisabledState: (chartConfig: any, components: any[], data: any) => {
           const yId = chartConfig.fields.y.componentId;
-          const yDimension = components.find((d) => d.id === yId);
+          const yDimension = components.find((d: any) => d.id === yId);
           const disabledStacked = disableStacked(yDimension);
 
           if (disabledStacked) {
@@ -242,10 +255,7 @@ export const chartConfigOptionsUISpec = {
             };
           }
 
-          const missingDataPresent = isMissingDataPresent(
-            chartConfig.fields.segment,
-            data
-          );
+          const missingDataPresent = isMissingDataPresent(chartConfig);
           const imputationType = chartConfig.fields.y.imputationType;
           const disabled = false;
           const warnMessage =
@@ -270,8 +280,8 @@ export const chartConfigOptionsUISpec = {
             color: schemeCategory10[0],
           },
           imputation: {
-            shouldShow: (chartConfig, data) => {
-              return isMissingDataPresent(chartConfig.fields.segment, data);
+            shouldShow: (chartConfig: any) => {
+              return isMissingDataPresent(chartConfig);
             },
           },
           useAbbreviations: {},
@@ -327,13 +337,19 @@ export const chartConfigOptionsUISpec = {
             },
           },
           adjustScaleDomain: {
-            getDefaultDomain: ({ chartConfig, observations }) => {
+            getDefaultDomain: ({
+              chartConfig,
+              observations,
+            }: {
+              chartConfig: any;
+              observations: any[];
+            }) => {
               const { segment } = chartConfig.fields;
-              const getX = (o) => {
+              const getX = (o: any) => {
                 const x = o[chartConfig.fields.x.componentId];
                 return parseStringVariable(x);
               };
-              const getY = (o) => {
+              const getY = (o: any) => {
                 const y = o[chartConfig.fields.y.componentId] ?? null;
                 return parseOptionalNumericVariable(y) ?? 0;
               };
@@ -343,13 +359,13 @@ export const chartConfigOptionsUISpec = {
                   normalize:
                     chartConfig.interactiveFiltersConfig.calculation.type ===
                     "percent",
-                  getX,
-                  getY,
+                  getX: getY,
+                  getY: getX,
                 });
                 return xScale.domain();
               }
 
-              return getNonStackedDomain(observations, getX);
+              return getNonStackedDomain(observations, getY);
             },
           },
           convertUnit: {},
@@ -395,13 +411,19 @@ export const chartConfigOptionsUISpec = {
             },
           },
           adjustScaleDomain: {
-            getDefaultDomain: ({ chartConfig, observations }) => {
+            getDefaultDomain: ({
+              chartConfig,
+              observations,
+            }: {
+              chartConfig: any;
+              observations: any[];
+            }) => {
               const { segment } = chartConfig.fields;
-              const getX = (o) => {
+              const getX = (o: any) => {
                 const x = o[chartConfig.fields.x.componentId];
                 return parseStringVariable(x);
               };
-              const getY = (o) => {
+              const getY = (o: any) => {
                 const y = o[chartConfig.fields.y.componentId] ?? null;
                 return parseOptionalNumericVariable(y) ?? 0;
               };
@@ -417,7 +439,7 @@ export const chartConfigOptionsUISpec = {
                 return yScale.domain() as [number, number];
               }
 
-              return getNonStackedDomain(observations, getX);
+              return getNonStackedDomain(observations, getY);
             },
           },
           convertUnit: {},
@@ -441,8 +463,11 @@ export const chartConfigOptionsUISpec = {
           { sortingType: "byMeasure", sortingOrder: ["asc", "desc"] },
           { sortingType: "byDimensionLabel", sortingOrder: ["asc", "desc"] },
         ],
-        onChange: (id, { chartConfig, dimensions }) => {
-          const component = dimensions.find((d) => d.id === id);
+        onChange: (
+          id: string,
+          { chartConfig, dimensions }: { chartConfig: any; dimensions: any[] }
+        ) => {
+          const component = dimensions.find((d: any) => d.id === id);
           if (!isTemporalDimension(component)) {
             setWith(
               chartConfig,
@@ -463,15 +488,15 @@ export const chartConfigOptionsUISpec = {
         componentTypes: SEGMENT_ENABLED_COMPONENTS,
         filters: true,
         sorting: COLUMN_SEGMENT_SORTING,
-        onChange: (id, options) => {
+        onChange: (id: string, options: any) => {
           const { chartConfig, dimensions, measures } = options;
           defaultSegmentOnChange(id, options);
           chartConfig.fields.y.showValues = false;
           delete chartConfig.fields.y.customDomain;
           const components = [...dimensions, ...measures];
-          const segment = get(chartConfig, "fields.segment");
+          const segment = get(chartConfig, "fields.segment") as any;
           const yComponent = components.find(
-            (d) => d.id === chartConfig.fields.y.componentId
+            (d: any) => d.id === chartConfig.fields.y.componentId
           );
           setWith(
             chartConfig,
@@ -483,7 +508,7 @@ export const chartConfigOptionsUISpec = {
             Object
           );
         },
-        onDelete: ({ chartConfig }) => {
+        onDelete: ({ chartConfig }: { chartConfig: any }) => {
           delete chartConfig.fields.y.customDomain;
         },
         options: {
@@ -505,9 +530,9 @@ export const chartConfigOptionsUISpec = {
             },
           },
           chartSubType: {
-            getValues: (chartConfig, dimensions) => {
+            getValues: (chartConfig: any, dimensions: any[]) => {
               const yId = chartConfig.fields.y.componentId;
-              const yDimension = dimensions.find((d) => d.id === yId);
+              const yDimension = dimensions.find((d: any) => d.id === yId);
               const disabledStacked = disableStacked(yDimension);
               return [
                 {
@@ -528,7 +553,7 @@ export const chartConfigOptionsUISpec = {
               ];
             },
           },
-          onChange: (d, { chartConfig }) => {
+          onChange: (d: string, { chartConfig }: { chartConfig: any }) => {
             if (chartConfig.interactiveFiltersConfig && d === "grouped") {
               const path = "interactiveFiltersConfig.calculation";
               setWith(chartConfig, path, { active: false, type: "identity" });
@@ -569,10 +594,16 @@ export const chartConfigOptionsUISpec = {
             },
           },
           adjustScaleDomain: {
-            getDefaultDomain: ({ chartConfig, observations }) => {
-              const getY = (o) => {
+            getDefaultDomain: ({
+              chartConfig,
+              observations,
+            }: {
+              chartConfig: any;
+              observations: any[];
+            }) => {
+              const getY = (o: any) => {
                 const y = o[chartConfig.fields.y.componentId];
-                return parseStringVariable(y);
+                return parseOptionalNumericVariable(y) ?? 0;
               };
               return getNonStackedDomain(observations, getY);
             },
@@ -596,12 +627,12 @@ export const chartConfigOptionsUISpec = {
         componentTypes: SEGMENT_ENABLED_COMPONENTS,
         filters: true,
         sorting: LINE_SEGMENT_SORTING,
-        onChange: (id, options) => {
+        onChange: (id: string, options: any) => {
           const { chartConfig, dimensions, measures, selectedValues } = options;
           defaultSegmentOnChange(id, options);
           delete options.chartConfig.fields.y.customDomain;
         },
-        onDelete: ({ chartConfig }) => {
+        onDelete: ({ chartConfig }: { chartConfig: any }) => {
           delete chartConfig.fields.y.customDomain;
         },
         options: {
@@ -792,12 +823,18 @@ export const chartConfigOptionsUISpec = {
         filters: false,
         options: {
           componentIds: {
-            onChange: (ids, { chartConfig }) => {
+            onChange: (
+              ids: string[],
+              { chartConfig }: { chartConfig: any }
+            ) => {
               const { fields } = chartConfig;
               const { color } = fields;
               const palette = getPalette({ paletteId: color.paletteId });
               const newColorMapping = Object.fromEntries(
-                ids.map((id, i) => [id, color.colorMapping?.[id] ?? palette[i]])
+                ids.map((id: string, i: number) => [
+                  id,
+                  color.colorMapping?.[id] ?? palette[i],
+                ])
               );
               chartConfig.fields.color.colorMapping = newColorMapping;
             },
@@ -822,8 +859,11 @@ export const chartConfigOptionsUISpec = {
           { sortingType: "byMeasure", sortingOrder: ["asc", "desc"] },
           { sortingType: "byDimensionLabel", sortingOrder: ["asc", "desc"] },
         ],
-        onChange: (id, { chartConfig, dimensions }) => {
-          const component = dimensions.find((d) => d.id === id);
+        onChange: (
+          id: string,
+          { chartConfig, dimensions }: { chartConfig: any; dimensions: any[] }
+        ) => {
+          const component = dimensions.find((d: any) => d.id === id);
           if (!isTemporalDimension(component)) {
             setWith(
               chartConfig,
@@ -853,7 +893,7 @@ export const chartConfigOptionsUISpec = {
         filters: false,
         options: {
           leftAxisComponentId: {
-            onChange: (id, { chartConfig }) => {
+            onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
               const { y, color } = fields;
               chartConfig.fields.color.colorMapping = {
@@ -864,7 +904,7 @@ export const chartConfigOptionsUISpec = {
             },
           },
           rightAxisComponentId: {
-            onChange: (id, { chartConfig }) => {
+            onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
               const { y, color } = fields;
               chartConfig.fields.color.colorMapping = {
@@ -919,7 +959,7 @@ export const chartConfigOptionsUISpec = {
         filters: false,
         options: {
           lineComponentId: {
-            onChange: (id, { chartConfig }) => {
+            onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
               const { y, color } = fields;
               const lineColor = color.colorMapping?.[id];
@@ -937,7 +977,7 @@ export const chartConfigOptionsUISpec = {
             },
           },
           columnComponentId: {
-            onChange: (id, { chartConfig }) => {
+            onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
               const { y, color } = fields;
               const lineColor = color.colorMapping?.[id];
@@ -956,7 +996,7 @@ export const chartConfigOptionsUISpec = {
             },
           },
           lineAxisOrientation: {
-            onChange: (_, { chartConfig }) => {
+            onChange: (_: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
               const { y, color } = fields;
               const lineAxisLeft = fields.y.lineAxisOrientation === "left";
