@@ -589,19 +589,19 @@ describe("deriveFiltersFromFields", () => {
         "limits": {},
         "meta": {
           "description": {
+            "en": "",
             "sr-Cyrl": "",
             "sr-Latn": "",
-            "en": "",
           },
           "label": {
+            "en": "",
             "sr-Cyrl": "",
             "sr-Latn": "",
-            "en": "",
           },
           "title": {
+            "en": "",
             "sr-Cyrl": "",
             "sr-Latn": "",
-            "en": "",
           },
         },
         "version": "5.1.0",
@@ -686,7 +686,7 @@ describe("CHART_FIELD_DELETED", () => {
     expect(newState.chartConfigs[0].fields.color).toStrictEqual({
       type: "single",
       paletteId: "category10",
-      color: "#1D4ED8",
+      color: "#0C4076",
     });
   });
 
@@ -754,7 +754,7 @@ describe("CHART_FIELD_DELETED", () => {
     expect(chartConfig.fields.color).toEqual({
       type: "single",
       paletteId: "category10",
-      color: "#1D4ED8",
+      color: "#0C4076",
     });
   });
 });

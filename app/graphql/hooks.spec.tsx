@@ -1,5 +1,10 @@
-import { act, cleanup, render, waitFor } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
+import {
+  act,
+  cleanup,
+  render,
+  renderHook,
+  waitFor,
+} from "@testing-library/react";
 import { useMemo } from "react";
 import { Client, Provider } from "urql";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

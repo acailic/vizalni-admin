@@ -23057,7 +23057,7 @@ vitepress@^1.6.4:
     vite "^5.4.14"
     vue "^3.5.13"
 
-vitest@^3.2.4:
+vitest@^3.2.4, vitest@^4.0.0:
   version "3.2.4"
   resolved "https://registry.npmjs.org/vitest/-/vitest-3.2.4.tgz"
   integrity sha512-LUCP5ev3GURDysTWiP47wRRUpLKMOfPh+yKTx3kVIEiu5KOMeqzpnYNsKyOoVrULivR8tLcks4+lga33Whn90A==
@@ -23084,32 +23084,6 @@ vitest@^3.2.4:
     tinyrainbow "^2.0.0"
     vite "^5.0.0 || ^6.0.0 || ^7.0.0-0"
     vite-node "3.2.4"
-    why-is-node-running "^2.3.0"
-
-vitest@^4.0.0:
-  version "4.0.18"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-4.0.18.tgz#56f966353eca0b50f4df7540cd4350ca6d454a05"
-  integrity sha512-hOQuK7h0FGKgBAas7v0mSAsnvrIgAvWmRFjmzpJ7SwFHH3g1k2u37JtYwOwmEKhK6ZO3v9ggDBBm0La1LCK4uQ==
-  dependencies:
-    "@vitest/expect" "4.0.18"
-    "@vitest/mocker" "4.0.18"
-    "@vitest/pretty-format" "4.0.18"
-    "@vitest/runner" "4.0.18"
-    "@vitest/snapshot" "4.0.18"
-    "@vitest/spy" "4.0.18"
-    "@vitest/utils" "4.0.18"
-    es-module-lexer "^1.7.0"
-    expect-type "^1.2.2"
-    magic-string "^0.30.21"
-    obug "^2.1.1"
-    pathe "^2.0.3"
-    picomatch "^4.0.3"
-    std-env "^3.10.0"
-    tinybench "^2.9.0"
-    tinyexec "^1.0.2"
-    tinyglobby "^0.2.15"
-    tinyrainbow "^3.0.3"
-    vite "^6.0.0 || ^7.0.0"
     why-is-node-running "^2.3.0"
 
 vm-browserify@^1.1.2:
