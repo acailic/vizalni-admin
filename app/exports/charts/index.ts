@@ -26,6 +26,15 @@ export { PieChart } from "./PieChart";
 export { AreaChart } from "./AreaChart";
 export { MapChart } from "./MapChart";
 
+// Export zero-config chart components (shorter names, smart defaults)
+export { Line, LineChart as ZeroConfigLineChart } from "./Line";
+export { Bar, BarChart as ZeroConfigBarChart } from "./Bar";
+export { Column, ColumnChart as ZeroConfigColumnChart } from "./Column";
+export { Pie, PieChart as ZeroConfigPieChart } from "./Pie";
+
+// Export zero-config utilities
+export * from "./utils";
+
 // Export plugin system (tree-shakeable - only included when used)
 export {
   // Plugin registry and functions

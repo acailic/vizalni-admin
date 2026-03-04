@@ -7,19 +7,23 @@
 
 ## Why This Package
 
-- Ready-to-use chart components backed by D3
+- **Zero-config charts**: Just pass `data`, everything else is auto-detected
+- **Smart defaults**: Auto-detects axes, formats, and multiple series
+- **Short imports**: Use `Line`, `Bar`, `Column`, `Pie` - less typing
+- **Full control**: All classic components still available for power users
 - `data.gov.rs` API client and React hooks
 - Locale helpers and Serbian-friendly formatters
-- Utilities for transforming data before charting
 
-## Quick Start (Charts)
+## Quick Start (Zero-Config Charts)
 
 ```bash
 npm install @acailic/vizualni-admin
 ```
 
+### Level 1: Just Data (Zero Config)
+
 ```tsx
-import { LineChart } from "@acailic/vizualni-admin/charts";
+import { Line } from "@acailic/vizualni-admin";
 
 const data = [
   { year: "2019", value: 72 },
@@ -29,35 +33,80 @@ const data = [
 ];
 
 export function MyChart() {
-  return (
-    <LineChart
-      data={data}
-      config={{ xAxis: "year", yAxis: "value", title: "Employment Recovery" }}
-      height={360}
-      width="100%"
-    />
-  );
+  return <Line data={data} />;
 }
 ```
 
-## Entry Points (Cheat Sheet)
+The chart **automatically**:
 
-| Import                               | What You Get                         |
-| ------------------------------------ | ------------------------------------ |
-| `@acailic/vizualni-admin/charts`     | Chart components + chart types       |
-| `@acailic/vizualni-admin/hooks`      | React hooks like `useDataGovRs`      |
-| `@acailic/vizualni-admin/client`     | Data.gov.rs client + types           |
-| `@acailic/vizualni-admin/core`       | Locale helpers + config validation   |
-| `@acailic/vizualni-admin/utils`      | Formatters + data transforms         |
-| `@acailic/vizualni-admin/connectors` | CSV connector + registry             |
-| `@acailic/vizualni-admin`            | Core exports + client + config types |
+- Detects `year` as x-axis (first string or matches "year"/"date"/"time")
+- Detects `value` as y-axis (first numeric column)
+- Formats labels and values
+- Applies sensible defaults for colors, spacing, and interaction
 
-## Charts
+### Level 2: Semantic Hints
 
-### Multi-series Line Chart
+```tsx
+import { Line, Bar, Pie } from "@acailic/vizualni-admin";
+
+<Line data={data} title="Employment Recovery" />
+<Bar data={data} title="Jobs by Year" color="warm" />
+<Pie data={data} showLegend />
+```
+
+### Level 3: Explicit Axis Selection
+
+```tsx
+<Line data={data} xKey="year" yKey="value" />
+```
+
+### Level 4: Full Customization (When Needed)
 
 ```tsx
 import { LineChart } from "@acailic/vizualni-admin/charts";
+
+<LineChart
+  data={data}
+  config={{
+    xAxis: "year",
+    yAxis: "value",
+    color: "#6366f1",
+    showArea: true,
+    showCrosshair: true,
+    animationDuration: 800,
+  }}
+  height={400}
+  width="100%"
+/>;
+```
+
+## Available Charts
+
+| Zero-Config | Classic       | Use For                      |
+| ----------- | ------------- | ---------------------------- |
+| `Line`      | `LineChart`   | Trends over time             |
+| `Bar`       | `BarChart`    | Horizontal bars (categories) |
+| `Column`    | `ColumnChart` | Vertical bars (comparisons)  |
+| `Pie`       | `PieChart`    | Parts of a whole             |
+
+## Entry Points (Cheat Sheet)
+
+| Import                               | What You Get                                   |
+| ------------------------------------ | ---------------------------------------------- |
+| `@acailic/vizualni-admin`            | **Zero-config charts** (Line, Bar, etc.) + all |
+| `@acailic/vizualni-admin/charts`     | All charts (zero-config + classic) + types     |
+| `@acailic/vizualni-admin/hooks`      | React hooks like `useDataGovRs`                |
+| `@acailic/vizualni-admin/client`     | Data.gov.rs client + types                     |
+| `@acailic/vizualni-admin/core`       | Locale helpers + config validation             |
+| `@acailic/vizualni-admin/utils`      | Formatters + data transforms                   |
+| `@acailic/vizualni-admin/connectors` | CSV connector + registry                       |
+
+## Charts
+
+### Multi-Series (Auto-Detected)
+
+```tsx
+import { Line } from "@acailic/vizualni-admin";
 
 const data = [
   { year: "2020", revenue: 120, profit: 40 },
@@ -65,40 +114,31 @@ const data = [
   { year: "2022", revenue: 160, profit: 55 },
 ];
 
-<LineChart
-  data={data}
-  config={{
-    xAxis: "year",
-    yAxis: ["revenue", "profit"],
-    title: "Revenue vs Profit",
-  }}
-  height={360}
-  showTooltip
-/>;
+// Automatically detects both revenue and profit as series
+<Line data={data} title="Revenue vs Profit" />;
 ```
 
 ### Bar and Pie Charts
 
 ```tsx
-import { BarChart, PieChart } from "@acailic/vizualni-admin/charts";
+import { Bar, Pie } from "@acailic/vizualni-admin";
 
-<BarChart
+<Bar
   data={[
     { label: "2019", value: 180 },
     { label: "2020", value: 140 },
   ]}
-  config={{ xAxis: "label", yAxis: "value", title: "New Jobs" }}
-  height={320}
-/>;
+  title="New Jobs"
+/>
 
-<PieChart
+<Pie
   data={[
     { label: "Solar", value: 18 },
     { label: "Wind", value: 22 },
   ]}
-  config={{ xAxis: "label", yAxis: "value", title: "Energy Mix" }}
-  height={320}
-/>;
+  title="Energy Mix"
+  showLegend
+/>
 ```
 
 ## Data.gov.rs

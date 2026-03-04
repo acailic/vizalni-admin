@@ -171,3 +171,45 @@ export {
 // are not exported in this release as they have deep dependencies on the
 // Next.js app structure. They will be refactored for standalone use
 // in a future release.
+
+// Export chart components (both classic and zero-config)
+/**
+ * Chart components for data visualization.
+ *
+ * Zero-config components (recommended):
+ * - Line, Bar, Column, Pie - Work with just `data` prop
+ *
+ * Classic components (full config control):
+ * - LineChart, BarChart, ColumnChart, PieChart, AreaChart, MapChart
+ *
+ * @example
+ * ```tsx
+ * import { Line } from '@acailic/vizualni-admin';
+ *
+ * <Line data={[{ year: '2020', value: 100 }]} />
+ * ```
+ */
+export {
+  // Zero-config components (shorter names)
+  Line,
+  Bar,
+  Column,
+  Pie,
+  // Classic components
+  LineChart,
+  BarChart,
+  ColumnChart,
+  PieChart,
+  AreaChart,
+  MapChart,
+} from "./exports/charts";
+
+// Export chart types
+export type {
+  ChartProps,
+  BaseChartConfig,
+  LineChartProps,
+  BarChartProps,
+  ColumnChartProps,
+  PieChartProps,
+} from "./exports/charts";
