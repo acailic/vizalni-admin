@@ -25,6 +25,9 @@ import {
 } from "@/lib/embed-url";
 import { useLocale } from "@/locales/use-locale";
 
+// Params that are UI-only and should not be passed through to embed
+const EXCLUDED_PARAMS = new Set(["theme", "lang", "width", "height"]);
+
 export default function EmbedGeneratorPage() {
   const router = useRouter();
   const locale = useLocale();
@@ -48,10 +51,9 @@ export default function EmbedGeneratorPage() {
 
   const passthroughParams = useMemo(() => {
     // Exclude UI-only params, pass through chart params (type, dataset, dataSource, etc.)
-    const excluded = new Set(["theme", "lang", "width", "height"]);
     return Object.fromEntries(
       Object.entries(router.query)
-        .filter(([key]) => !excluded.has(key))
+        .filter(([key]) => !EXCLUDED_PARAMS.has(key))
         .map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])
         .filter(
           ([, value]) => value !== undefined && value !== null && value !== ""
