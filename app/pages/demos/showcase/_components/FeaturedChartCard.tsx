@@ -62,7 +62,15 @@ export function FeaturedChartCard({
         },
       }}
     >
-      <CardActionArea onClick={onClick} sx={{ display: "block" }}>
+      <CardActionArea
+        onClick={onClick}
+        sx={{ display: "block" }}
+        aria-label={
+          locale === "sr"
+            ? `Brzi pregled grafikona: ${chart.title[locale]}`
+            : `Quick preview chart: ${chart.title[locale]}`
+        }
+      >
         {/* Thumbnail area with gradient */}
         <Box
           sx={{
@@ -113,7 +121,18 @@ export function FeaturedChartCard({
         />
       </CardContent>
       <Box sx={{ px: 3, pb: 3 }}>
-        <Button component={Link} href={href} size="small" variant="outlined">
+        <Button
+          component={Link}
+          href={href}
+          size="small"
+          variant="outlined"
+          fullWidth
+          aria-label={
+            locale === "sr"
+              ? `Otvori stranicu: ${chart.title[locale]}`
+              : `Open page: ${chart.title[locale]}`
+          }
+        >
           {locale === "sr" ? "Otvori stranicu" : "Open page"}
         </Button>
       </Box>

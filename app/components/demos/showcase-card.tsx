@@ -17,8 +17,8 @@ type ShowcaseCardProps = {
   demoUrl: string;
   embedUrl: string;
   shareUrl: string;
-  onEmbed: () => void;
-  onShare: () => void;
+  onEmbed?: () => void;
+  onShare?: () => void;
   thumbnail?: string;
 };
 
@@ -26,10 +26,47 @@ export const ShowcaseCard = ({
   title,
   description,
   demoUrl,
+  embedUrl,
+  shareUrl,
   onEmbed,
   onShare,
   thumbnail,
 }: ShowcaseCardProps) => {
+  const handleEmbed = () => {
+    if (onEmbed) {
+      onEmbed();
+      return;
+    }
+    if (typeof window !== "undefined") {
+      window.open(embedUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const handleShare = async () => {
+    if (onShare) {
+      onShare();
+      return;
+    }
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url: shareUrl });
+        return;
+      } catch {
+        // Fall through to clipboard/open behavior.
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+    } catch {
+      window.open(shareUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
     <Card
       sx={{
@@ -79,7 +116,8 @@ export const ShowcaseCard = ({
             size="small"
             variant="outlined"
             startIcon={<Icon name="embed" size={16} />}
-            onClick={onEmbed}
+            onClick={handleEmbed}
+            aria-label={`Embed ${title}`}
             sx={{ textTransform: "none" }}
           >
             Embed
@@ -88,7 +126,8 @@ export const ShowcaseCard = ({
             size="small"
             variant="outlined"
             startIcon={<Icon name="share" size={16} />}
-            onClick={onShare}
+            onClick={handleShare}
+            aria-label={`Share ${title}`}
             sx={{ textTransform: "none" }}
           >
             Share

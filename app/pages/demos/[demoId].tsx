@@ -1,8 +1,8 @@
 /**
  * Dynamic Demo Page
  *
- * A dynamic route that renders any configured demo based on the demoId parameter.
- * Uses getStaticPaths to pre-render all demo IDs from DEMO_CONFIGS.
+ * Renders demo charts using live data from data.gov.rs with resilient fallback
+ * datasets, so demo routes remain functional on static deployments.
  *
  * @route /demos/[demoId]
  */
@@ -10,20 +10,23 @@
 import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
+  Alert,
   Box,
   Button,
   Card,
   CardContent,
   Chip,
   Container,
+  Stack,
   Typography,
   alpha,
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import { ChartVisualizer } from "@/components/demos/ChartVisualizer";
 import {
   DemoError,
   DemoLayout,
@@ -32,7 +35,10 @@ import {
 import { DemoErrorBoundary } from "@/components/demos/DemoErrorBoundary";
 import DemoSkeleton from "@/components/demos/DemoSkeleton";
 import { Header } from "@/components/header";
+import { useDataGovRs } from "@/hooks/use-data-gov-rs";
 import { getDemoConfig, getAllDemoIds } from "@/lib/demos/config";
+import { DEMO_FALLBACKS } from "@/lib/demos/fallbacks";
+import { getValidatedDatasetIds } from "@/lib/demos/validated-datasets";
 import type { DemoConfig } from "@/types/demos";
 
 interface DemoPageProps {
@@ -46,13 +52,57 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
   const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading for demo content
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 300);
+    const timer = setTimeout(() => setIsLoading(false), 250);
     return () => clearTimeout(timer);
   }, []);
 
-  // Show loading spinner during fallback
+  const fallbackInfo = useMemo(() => {
+    const demoId = demoConfig?.id;
+    if (!demoId) return undefined;
+
+    const fallbackDatasetInfo = DEMO_FALLBACKS[demoId]?.fallbackDatasetInfo;
+    if (!fallbackDatasetInfo) return undefined;
+
+    return {
+      title: fallbackDatasetInfo.title,
+      organization: {
+        id: "demo-org",
+        name: fallbackDatasetInfo.organization ?? "Demo data.gov.rs",
+        title: fallbackDatasetInfo.organization ?? "Demo data.gov.rs",
+      },
+    };
+  }, [demoConfig?.id]);
+
+  const {
+    data,
+    dataset,
+    loading: dataLoading,
+    error,
+    usingFallback,
+    refetch,
+  } = useDataGovRs({
+    searchQuery: demoConfig?.searchQuery,
+    preferredDatasetIds: demoConfig
+      ? getValidatedDatasetIds(demoConfig.id)
+      : [],
+    preferredTags: demoConfig?.preferredTags,
+    slugKeywords: demoConfig?.slugKeywords,
+    fallbackData: demoConfig
+      ? DEMO_FALLBACKS[demoConfig.id]?.fallbackData
+      : undefined,
+    fallbackDatasetInfo: fallbackInfo,
+    autoFetch: Boolean(demoConfig),
+  });
+
+  const chartData = useMemo(
+    () =>
+      Array.isArray(data)
+        ? data.filter((row) => row && typeof row === "object")
+        : [],
+    [data]
+  );
+
   if (router.isFallback) {
     return (
       <Box
@@ -78,7 +128,6 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
     );
   }
 
-  // Show error message if demo config not found
   if (!demoConfig) {
     return (
       <Box
@@ -113,7 +162,6 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
     : title;
   const displayTitle = `${demoConfig.icon} ${normalizedTitle}`;
 
-  // Show skeleton while loading
   if (isLoading) {
     return (
       <DemoLayout title={displayTitle} description={description}>
@@ -125,7 +173,6 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
   return (
     <DemoLayout title={displayTitle} description={description}>
       <DemoErrorBoundary>
-        {/* Coming Soon Banner */}
         <Card
           sx={{
             mb: 4,
@@ -135,157 +182,112 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
             border: `1px solid ${alpha(theme.palette.info.main, 0.2)}`,
           }}
         >
-          <CardContent
-            sx={{
-              p: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-            }}
-          >
-            <Chip
-              label={locale === "sr" ? "Uskoro dostupno" : "Coming Soon"}
-              color="info"
-              size="small"
-              sx={{ mb: 2, fontWeight: 600 }}
-            />
-
-            <Box
-              sx={{ fontSize: "3rem", mb: 1, opacity: 0.7 }}
-              role="img"
-              aria-label={
-                locale === "sr"
-                  ? "Ikonica demo kategorije"
-                  : "Demo category icon"
-              }
-            >
-              {demoConfig.icon}
-            </Box>
-
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
-              {normalizedTitle}
-            </Typography>
-
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ maxWidth: 480, mb: 2 }}
-            >
-              {locale === "sr"
-                ? "Ova stranica je placeholder i još je u razvoju. Za funkcionalne interaktivne primere koristite galeriju, showcase ili playground."
-                : "This page is a placeholder and still under development. For fully interactive examples, use the gallery, showcase, or playground."}
-            </Typography>
-
-            {/* Tags */}
-            {demoConfig.tags && demoConfig.tags.length > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 1,
-                  justifyContent: "center",
-                  mb: 2,
-                }}
+          <CardContent sx={{ p: 3 }}>
+            <Stack spacing={2}>
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                alignItems={{ xs: "flex-start", md: "center" }}
+                justifyContent="space-between"
+                gap={2}
               >
-                {demoConfig.tags.map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
+                <Box>
+                  <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                    {normalizedTitle}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {description}
+                  </Typography>
+                </Box>
+                <Chip
+                  size="small"
+                  color={usingFallback ? "warning" : "success"}
+                  label={
+                    usingFallback
+                      ? locale === "sr"
+                        ? "Fallback podaci"
+                        : "Fallback data"
+                      : locale === "sr"
+                        ? "Živi podaci"
+                        : "Live data"
+                  }
+                />
+              </Stack>
+
+              <Stack direction="row" gap={1} flexWrap="wrap">
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={() => refetch()}
+                >
+                  {locale === "sr" ? "Osveži podatke" : "Refresh data"}
+                </Button>
+                {dataset?.page ? (
+                  <Button
                     size="small"
-                    sx={{
-                      backgroundColor: alpha(theme.palette.info.main, 0.1),
-                      color: theme.palette.info.main,
-                      fontWeight: 600,
-                      fontSize: "0.75rem",
-                    }}
-                  />
-                ))}
-              </Box>
-            )}
+                    variant="outlined"
+                    component="a"
+                    href={dataset.page}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {locale === "sr"
+                      ? "Dataset na data.gov.rs"
+                      : "Dataset on data.gov.rs"}
+                  </Button>
+                ) : null}
+                <Button
+                  size="small"
+                  component={Link}
+                  href="/demos"
+                  variant="text"
+                >
+                  {locale === "sr" ? "Nazad u galeriju" : "Back to gallery"}
+                </Button>
+              </Stack>
 
-            {/* Chart Type */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                flexWrap: "wrap",
-              }}
-            >
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                fontWeight={600}
-                component="span"
-              >
-                {locale === "sr" ? "Tip grafikona" : "Chart type"}:
-              </Typography>
-              <Chip
-                label={demoConfig.chartType}
-                size="small"
-                sx={{
-                  backgroundColor: alpha(theme.palette.success.main, 0.1),
-                  color: theme.palette.success.main,
-                  fontWeight: 600,
-                  fontSize: "0.75rem",
-                  textTransform: "capitalize",
-                }}
+              {dataset ? (
+                <Typography variant="caption" color="text.secondary">
+                  {dataset.title}
+                  {dataset.organization?.title || dataset.organization?.name
+                    ? ` - ${dataset.organization?.title || dataset.organization?.name}`
+                    : ""}
+                </Typography>
+              ) : null}
+            </Stack>
+          </CardContent>
+        </Card>
+
+        {dataLoading && chartData.length === 0 ? (
+          <DemoLoading
+            message={
+              locale === "sr"
+                ? "Učitavanje podataka i grafikona..."
+                : "Loading data and chart..."
+            }
+          />
+        ) : error && chartData.length === 0 ? (
+          <DemoError error={error.message} />
+        ) : chartData.length > 0 ? (
+          <Card variant="outlined" sx={{ borderRadius: 3 }}>
+            <CardContent>
+              <ChartVisualizer
+                data={chartData}
+                chartType={demoConfig.chartType}
+                title={
+                  locale === "sr"
+                    ? "Interaktivna vizualizacija"
+                    : "Interactive visualization"
+                }
               />
-            </Box>
-          </CardContent>
-        </Card>
-
-        {/* Explore Interactive Pages */}
-        <Card
-          sx={{
-            borderRadius: 3,
-            overflow: "hidden",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-          }}
-        >
-          <CardContent
-            sx={{
-              p: 4,
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 700 }}>
-              {locale === "sr"
-                ? "Istražite interaktivne stranice"
-                : "Explore interactive pages"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {locale === "sr"
-                ? "Koristite sledeće stranice za funkcionalne grafikone i ugrađivanje:"
-                : "Use these pages for fully functional charts and embedding:"}
-            </Typography>
-            <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
-              <Button
-                component={Link}
-                href="/demos/showcase"
-                variant="contained"
-                startIcon={<span>←</span>}
-              >
-                {locale === "sr" ? "Demo showcase" : "Demo showcase"}
-              </Button>
-              <Button
-                component={Link}
-                href="/demos/playground"
-                variant="outlined"
-              >
-                {locale === "sr"
-                  ? "Interaktivni playground"
-                  : "Interactive playground"}
-              </Button>
-              <Button component={Link} href="/topics" variant="outlined">
-                {locale === "sr" ? "Teme i dataseti" : "Topics and datasets"}
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ) : (
+          <Alert severity="info">
+            {locale === "sr"
+              ? "Nema dostupnih podataka za prikaz za ovu vizualizaciju."
+              : "No data is currently available for this visualization."}
+          </Alert>
+        )}
       </DemoErrorBoundary>
     </DemoLayout>
   );
@@ -303,7 +305,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true, // Enable fallback for future demos
+    fallback: true,
   };
 }
 
@@ -317,7 +319,6 @@ export async function getStaticProps({
 }) {
   const demoConfig = getDemoConfig(params.demoId);
 
-  // Return 404 if demo doesn't exist
   if (!demoConfig) {
     return {
       notFound: true,

@@ -19,7 +19,7 @@ import { type ReactNode, useMemo } from "react";
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import { ShowcaseCard } from "@/components/demos/showcase-card";
 import { PUBLIC_URL } from "@/domain/env";
-import { FEATURED_CHARTS } from "@/lib/demos/config";
+import { DEMO_CONFIGS, FEATURED_CHARTS } from "@/lib/demos/config";
 import { staticPages } from "@/static-pages";
 
 interface ContentPageProps {
@@ -370,21 +370,22 @@ const resourcesCopy: Record<
     cards: [
       {
         title: "Getting started",
-        description: "Explore the demo gallery to see what's possible",
-        link: "/demos",
-        cta: "Open gallery",
+        description: "Quick onboarding for browse, demos, topics, and embed",
+        link: "/docs/getting-started",
+        cta: "Read guide",
       },
       {
-        title: "Featured charts",
-        description: "See curated visualizations and examples",
-        link: "/demos/showcase",
-        cta: "View showcase",
+        title: "Chart types",
+        description:
+          "Choose the right chart for trends, comparisons, and shares",
+        link: "/docs/chart-types-guide",
+        cta: "Read guide",
       },
       {
-        title: "Embed charts",
-        description: "Generate embed code for your website",
-        link: "/embed",
-        cta: "Open generator",
+        title: "Embedding guide",
+        description: "Generate iframe code and include chart parameters",
+        link: "/docs/embedding-guide",
+        cta: "Read guide",
       },
       {
         title: "Browse datasets",
@@ -402,21 +403,21 @@ const resourcesCopy: Record<
     cards: [
       {
         title: "Prvi koraci",
-        description: "Istražite galeriju demo-a da vidite šta je moguće",
-        link: "/demos",
-        cta: "Otvori galeriju",
+        description: "Brzi uvod u browse, demo, topics i embed tokove",
+        link: "/docs/getting-started",
+        cta: "Pročitaj vodič",
       },
       {
-        title: "Istaknuti grafikoni",
-        description: "Pogledajte kurirane vizualizacije i primere",
-        link: "/demos/showcase",
-        cta: "Pogledaj showcase",
+        title: "Tipovi grafikona",
+        description: "Kako odabrati pravi prikaz za trendove i poređenja",
+        link: "/docs/chart-types-guide",
+        cta: "Pogledaj vodič",
       },
       {
         title: "Ugradnja grafikona",
-        description: "Generišite kod za ugradnju na vaš sajt",
-        link: "/embed",
-        cta: "Otvori generator",
+        description: "Generišite iframe kod i prosledite parametre grafikona",
+        link: "/docs/embedding-guide",
+        cta: "Pročitaj vodič",
       },
       {
         title: "Pregled podataka",
@@ -434,21 +435,21 @@ const resourcesCopy: Record<
     cards: [
       {
         title: "Први кораци",
-        description: "Истражите галерију демо-а да видите шта је могуће",
-        link: "/demos",
-        cta: "Отвори галерију",
+        description: "Брз увод у browse, demo, topics и embed токове",
+        link: "/docs/getting-started",
+        cta: "Прочитај водич",
       },
       {
-        title: "Истакнути графикони",
-        description: "Погледајте кулиране визуализације и примере",
-        link: "/demos/showcase",
-        cta: "Погледај showcase",
+        title: "Типови графикона",
+        description: "Како одабрати прави приказ за трендове и поређења",
+        link: "/docs/chart-types-guide",
+        cta: "Погледај водич",
       },
       {
         title: "Уградња графикона",
-        description: "Генеришите код за уградњу на ваш сајт",
-        link: "/embed",
-        cta: "Отвори генератор",
+        description: "Генеришите iframe код и проследите параметре графикона",
+        link: "/docs/embedding-guide",
+        cta: "Прочитај водич",
       },
       {
         title: "Преглед података",
@@ -1145,31 +1146,46 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
         </Typography>
       </Box>
       <Grid container spacing={3}>
-        {featured.map((chart) => (
-          <Grid item xs={12} md={4} key={chart.id}>
-            <ShowcaseCard
-              title={
-                chart.title[
-                  locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
-                ]
-              }
-              description={
-                chart.description[
-                  locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
-                ]
-              }
-              demoUrl={
-                HOME_TOPIC_ROUTE_IDS.has(chart.demoId)
-                  ? `/topics/${chart.demoId}`
-                  : `/demos/${chart.demoId}`
-              }
-              embedUrl={`/embed/${chart.demoId}`}
-              shareUrl={`${PUBLIC_URL}/demos/${chart.demoId}`}
-              onEmbed={() => {}}
-              onShare={() => {}}
-            />
-          </Grid>
-        ))}
+        {featured.map((chart) => {
+          const chartPath = HOME_TOPIC_ROUTE_IDS.has(chart.demoId)
+            ? `/topics/${chart.demoId}`
+            : `/demos/${chart.demoId}`;
+          const chartConfig = DEMO_CONFIGS[chart.demoId];
+          const embedUrl = `/embed?type=${encodeURIComponent(
+            chartConfig?.chartType || "bar"
+          )}`;
+          const shareUrl = `${PUBLIC_URL}${chartPath}`;
+
+          return (
+            <Grid item xs={12} md={4} key={chart.id}>
+              <ShowcaseCard
+                title={
+                  chart.title[
+                    locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
+                  ]
+                }
+                description={
+                  chart.description[
+                    locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
+                  ]
+                }
+                demoUrl={chartPath}
+                embedUrl={embedUrl}
+                shareUrl={shareUrl}
+                onEmbed={() => {
+                  if (typeof window !== "undefined") {
+                    window.open(embedUrl, "_blank", "noopener,noreferrer");
+                  }
+                }}
+                onShare={() => {
+                  if (typeof window !== "undefined") {
+                    window.open(shareUrl, "_blank", "noopener,noreferrer");
+                  }
+                }}
+              />
+            </Grid>
+          );
+        })}
       </Grid>
       <Box sx={{ textAlign: "center", mt: 4 }}>
         <Button
