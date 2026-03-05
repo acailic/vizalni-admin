@@ -1,39 +1,16 @@
-<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1976d2;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0C3B7A;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#E10600;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#C41E3A;stop-opacity:1" />
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vizualni Admin Serbian flag icon">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <rect x="0" y="0" width="64" height="21.34" rx="14" ry="14" fill="#C6363C"/>
+  <rect x="0" y="21.33" width="64" height="21.34" fill="#0C4076"/>
+  <rect x="0" y="42.66" width="64" height="21.34" fill="#ffffff"/>
 
-  <!-- Main circle with professional gradient -->
-  <circle cx="32" cy="32" r="30" fill="url(#blueGradient)"/>
+  <path d="M21 15h8v7h7v8h-7v7h-8v-7h-7v-8h7z" fill="#F5D06F"/>
 
-  <!-- Clean bar chart -->
-  <rect x="14" y="38" width="6" height="10" fill="#ffffff" rx="1"/>
-  <rect x="22" y="30" width="6" height="18" fill="#ffffff" rx="1"/>
-  <rect x="30" y="24" width="6" height="24" fill="#ffffff" rx="1"/>
-  <rect x="38" y="28" width="6" height="20" fill="#ffffff" rx="1"/>
-  <rect x="46" y="34" width="6" height="14" fill="#ffffff" rx="1"/>
+  <polyline points="40,44 45,38 50,41 55,34" fill="none" stroke="#C6363C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="40" cy="44" r="2" fill="#C6363C"/>
+  <circle cx="45" cy="38" r="2" fill="#C6363C"/>
+  <circle cx="50" cy="41" r="2" fill="#C6363C"/>
+  <circle cx="55" cy="34" r="2" fill="#C6363C"/>
 
-  <!-- Trending line with accent color -->
-  <polyline points="17,36 23,30 29,26 35,28 41,24 47,30"
-            fill="none" stroke="url(#redGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Data points -->
-  <circle cx="17" cy="36" r="2" fill="#E10600"/>
-  <circle cx="23" cy="30" r="2" fill="#E10600"/>
-  <circle cx="29" cy="26" r="2" fill="#E10600"/>
-  <circle cx="35" cy="28" r="2" fill="#E10600"/>
-  <circle cx="41" cy="24" r="2" fill="#E10600"/>
-  <circle cx="47" cy="30" r="2" fill="#E10600"/>
-
-  <!-- Serbian flag tricolor - horizontal stripes -->
-  <rect x="26" y="13" width="12" height="2.5" fill="#C6363C" opacity="1" rx="0.3"/>
-  <rect x="26" y="15.5" width="12" height="2.5" fill="#0C4076" opacity="1" rx="0.3"/>
-  <rect x="26" y="18" width="12" height="2.5" fill="#ffffff" opacity="1" rx="0.3"/>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#D9DDE7" stroke-width="2"/>
 </svg>
