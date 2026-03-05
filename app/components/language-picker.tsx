@@ -65,7 +65,8 @@ export const LanguagePicker = () => {
     handleClose();
   };
 
-  const currentLocaleInfo = LOCALE_INFO[currentLocale] || LOCALE_INFO["sr-Latn"];
+  const currentLocaleInfo =
+    LOCALE_INFO[currentLocale] || LOCALE_INFO["sr-Latn"];
 
   return (
     <Box>
@@ -74,6 +75,7 @@ export const LanguagePicker = () => {
         aria-controls={open ? "language-picker-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
+        aria-label={`Language selector. Current language: ${currentLocaleInfo.label}`}
         onClick={handleClick}
         startIcon={<LanguageIcon />}
         endIcon={<Icon name="chevronDown" size={20} />}
@@ -86,7 +88,7 @@ export const LanguagePicker = () => {
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <span>{currentLocaleInfo.flag}</span>
+          <span aria-hidden="true">{currentLocaleInfo.flag}</span>
           <Typography variant="body2" sx={{ fontWeight: 500 }}>
             {currentLocaleInfo.label}
           </Typography>
@@ -123,7 +125,9 @@ export const LanguagePicker = () => {
                 gap: 1.5,
               }}
             >
-              <span style={{ fontSize: "1.2rem" }}>{localeInfo.flag}</span>
+              <span aria-hidden="true" style={{ fontSize: "1.2rem" }}>
+                {localeInfo.flag}
+              </span>
               <Typography variant="body2">{localeInfo.label}</Typography>
             </MenuItem>
           );

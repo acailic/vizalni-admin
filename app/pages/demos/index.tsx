@@ -1,4 +1,3 @@
-import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Box,
@@ -13,7 +12,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { DemoLayout } from "@/components/demos/demo-layout";
 import { DemoErrorBoundary } from "@/components/demos/DemoErrorBoundary";
@@ -32,89 +31,134 @@ export default function DemosIndex() {
     return () => clearTimeout(timer);
   }, []);
 
-  const pageTitle = i18n._(
-    defineMessage({ id: "demos.index.title", message: "Demo Visualizations" })
-  );
-  const pageDescription = i18n._(
-    defineMessage({
-      id: "demos.index.description",
-      message: "Explore different visualizations of Serbian open data",
-    })
-  );
+  const pageTitle =
+    locale === "sr" ? "Demo vizualizacije" : "Demo Visualizations";
+  const pageDescription =
+    locale === "sr"
+      ? "Istražite dostupne i najavljene vizualizacije otvorenih podataka Srbije"
+      : "Explore live and upcoming visualizations of Serbian open data";
   const heroTitle =
     locale === "sr"
-      ? "Galerija demo vizualizacija"
-      : "Demo Visualization Gallery";
-  const heroIntro = i18n._(
-    defineMessage({
-      id: "demos.index.hero.intro",
-      message:
-        "Welcome to the demo visualization gallery using data from data.gov.rs. Each demo showcases different ways to visualize open data from the Republic of Serbia.",
-    })
-  );
-  const heroBody = i18n._(
-    defineMessage({
-      id: "demos.index.hero.body",
-      message:
-        "Click on any demo below to see an interactive visualization with real data.",
-    })
-  );
-  const showcaseTitle = i18n._(
-    defineMessage({
-      id: "demos.index.showcase.title",
-      message: "New Demo Showcase",
-    })
-  );
-  const showcaseDesc = i18n._(
-    defineMessage({
-      id: "demos.index.showcase.description",
-      message:
-        "A compact set of highlight charts across economy, transport, energy, and digitalization.",
-    })
-  );
-  const showcaseCta = i18n._(
-    defineMessage({ id: "demos.index.showcase.cta", message: "Open showcase" })
-  );
-  const aboutTitle =
-    locale === "sr" ? "O demo vizualizacijama" : "About Demo Visualizations";
-  const topicsTitle =
+      ? "Vizualizacije otvorenih podataka Srbije"
+      : "Serbian Open Data Visualizations";
+  const heroIntro =
     locale === "sr"
-      ? "Istražite otvorene podatke po temama"
-      : "Explore Open Data by Topics";
+      ? "Istražite kurirane interaktivne primere zasnovane na otvorenim podacima Republike Srbije."
+      : "Explore curated, interactive examples powered by Republic of Serbia open data.";
+  const heroBody =
+    locale === "sr"
+      ? "Počnite od showcase strane, zatim nastavite kroz teme, datasete i interaktivni playground."
+      : "Start with the showcase, then continue through topics, datasets, and the interactive playground.";
+  const primaryCta = locale === "sr" ? "Otvori Showcase" : "Open Showcase";
+  const topicsCta = locale === "sr" ? "Istraži Teme" : "Explore Topics";
+  const browseCta = locale === "sr" ? "Pregledaj Datasete" : "Browse Datasets";
+  const playgroundCta =
+    locale === "sr" ? "Otvori Playground" : "Open Playground";
   const toolsTitle =
     locale === "sr" ? "Interaktivni alati" : "Interactive Tools";
-  const aboutParagraph1 = i18n._(
-    defineMessage({
-      id: "demos.index.about.paragraph1",
-      message:
-        "These visualizations use real data from the Republic of Serbia open data portal (data.gov.rs). Data is loaded in real-time directly from the API.",
-    })
-  );
-  const aboutParagraph2 = i18n._(
-    defineMessage({
-      id: "demos.index.about.paragraph2",
-      message:
-        "The project is built with Next.js and optimized for GitHub Pages deployment with static export.",
-    })
-  );
-  const statsAvailable = i18n._(
-    defineMessage({
-      id: "demos.index.stats.available",
-      message: "Available Demos",
-    })
-  );
-  const statsResources = i18n._(
-    defineMessage({
-      id: "demos.index.stats.resources",
-      message: "Resources on data.gov.rs",
-    })
-  );
-  const statsOrganizations = i18n._(
-    defineMessage({
-      id: "demos.index.stats.organizations",
-      message: "Organizations",
-    })
-  );
+  const atGlanceTitle = locale === "sr" ? "Na prvi pogled" : "At a glance";
+  const comingSoonTitle = locale === "sr" ? "Uskoro" : "Coming Soon";
+  const comingSoonDescription =
+    locale === "sr"
+      ? "Naredne demonstracije su planirane i biće objavljene čim budu spremne."
+      : "The next demo categories are planned and will be released when ready.";
+  const liveStatusLabel = locale === "sr" ? "Uživo" : "Live";
+  const comingSoonStatusLabel = locale === "sr" ? "Uskoro" : "Coming soon";
+  const aboutTitle = locale === "sr" ? "O ovoj stranici" : "About this page";
+  const aboutParagraph1 =
+    locale === "sr"
+      ? "Ove vizualizacije koriste podatke sa zvaničnog portala otvorenih podataka Republike Srbije (data.gov.rs). Podaci se učitavaju direktno kroz API."
+      : "These visualizations use real data from the Republic of Serbia open data portal (data.gov.rs). Data is loaded in real-time directly from the API.";
+  const aboutParagraph2 =
+    locale === "sr"
+      ? "Projekat je razvijen u Next.js okruženju i optimizovan za statičku isporuku na GitHub Pages."
+      : "The project is built with Next.js and optimized for GitHub Pages deployment with static export.";
+  const statsAvailable =
+    locale === "sr" ? "Dostupni demo primeri" : "Available Demos";
+  const statsResources =
+    locale === "sr" ? "Resursi na data.gov.rs" : "Resources on data.gov.rs";
+  const statsOrganizations = locale === "sr" ? "Organizacije" : "Organizations";
+
+  const comingSoonItems =
+    locale === "sr"
+      ? [
+          {
+            id: "air",
+            icon: "🌍",
+            title: "Kvalitet vazduha",
+            description: "Praćenje zagađenja i trendova po regionima.",
+          },
+          {
+            id: "budget",
+            icon: "💰",
+            title: "Budžet Republike Srbije",
+            description:
+              "Poređenje rashoda i prihoda kroz institucije i godine.",
+          },
+          {
+            id: "environment",
+            icon: "🌿",
+            title: "Zaštita životne sredine",
+            description: "Indikatori otpada, vode i ekologije.",
+          },
+          {
+            id: "demographics",
+            icon: "👥",
+            title: "Demografija",
+            description: "Kretanje stanovništva po opštinama i starosti.",
+          },
+          {
+            id: "education",
+            icon: "🎓",
+            title: "Obrazovanje",
+            description: "Upis, ishodi i raspodela obrazovnih ustanova.",
+          },
+          {
+            id: "traffic",
+            icon: "🚦",
+            title: "Bezbednost saobraćaja",
+            description: "Nezgode, učesnici i trendovi kroz vreme.",
+          },
+        ]
+      : [
+          {
+            id: "air",
+            icon: "🌍",
+            title: "Air Quality",
+            description: "Pollution levels and trend monitoring by region.",
+          },
+          {
+            id: "budget",
+            icon: "💰",
+            title: "Republic of Serbia Budget",
+            description:
+              "Spending and revenue comparisons across institutions.",
+          },
+          {
+            id: "environment",
+            icon: "🌿",
+            title: "Environment",
+            description: "Waste, water, and sustainability indicators.",
+          },
+          {
+            id: "demographics",
+            icon: "👥",
+            title: "Demographics",
+            description: "Population movement by municipality and age.",
+          },
+          {
+            id: "education",
+            icon: "🎓",
+            title: "Education Outcomes",
+            description: "Enrollment, outcomes, and school distribution.",
+          },
+          {
+            id: "traffic",
+            icon: "🚦",
+            title: "Traffic Safety",
+            description: "Incidents, participants, and historical trends.",
+          },
+        ];
 
   // Show skeleton while loading
   if (isLoading) {
@@ -160,7 +204,7 @@ export default function DemosIndex() {
           <Box sx={{ position: "relative", zIndex: 1 }}>
             <Typography
               variant="h4"
-              component="h1"
+              component="h2"
               sx={{ fontWeight: 700, mb: 2, textAlign: "center" }}
             >
               {heroTitle}
@@ -178,265 +222,109 @@ export default function DemosIndex() {
             >
               {heroBody}
             </Typography>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            mb: 5,
-            p: 4,
-            borderRadius: 3,
-            background:
-              "linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)",
-            color: "white",
-            boxShadow: "0 10px 40px rgba(16, 185, 129, 0.3)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{
-              fontWeight: 700,
-              mb: 2,
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            {topicsTitle}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 3, opacity: 0.95 }}>
-            {i18n._(
-              defineMessage({
-                id: "demos.index.topics.description",
-                message:
-                  'The new "Explore by Topics" feature offers a curated list of datasets from economy, health, education, demographics, environment, and transport.',
-              })
-            )}
-          </Typography>
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-            <Link href="/topics" passHref legacyBehavior>
-              <Button
-                component="a"
-                variant="contained"
-                sx={{
-                  bgcolor: "white",
-                  color: theme.palette.success.main,
-                  fontWeight: 700,
-                  "&:hover": { bgcolor: alpha("#fff", 0.9) },
-                }}
-              >
-                {i18n._(
-                  defineMessage({
-                    id: "demos.index.topics.cta",
-                    message: "Open Topics",
-                  })
-                )}
-              </Button>
-            </Link>
-            <Link href="/browse" passHref legacyBehavior>
-              <Button
-                component="a"
-                variant="outlined"
-                sx={{
-                  borderColor: "white",
-                  color: "white",
-                  fontWeight: 700,
-                  "&:hover": {
-                    borderColor: "white",
-                    bgcolor: alpha("#fff", 0.1),
-                  },
-                }}
-              >
-                {i18n._(
-                  defineMessage({
-                    id: "demos.index.topics.browse",
-                    message: "Browse All Datasets",
-                  })
-                )}
-              </Button>
-            </Link>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            mb: 5,
-            p: 3,
-            borderRadius: 3,
-            border: "1px solid",
-            borderColor: "divider",
-            background:
-              "linear-gradient(115deg, rgba(14,165,233,0.08), rgba(37,99,235,0.06))",
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            alignItems: { xs: "flex-start", md: "center" },
-            gap: 2,
-          }}
-        >
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.5 }}>
-              {showcaseTitle}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {showcaseDesc}
-            </Typography>
-          </Box>
-          <Link href="/demos/showcase" passHref legacyBehavior>
-            <Button
-              component="a"
-              variant="contained"
-              color="primary"
-              sx={{ textTransform: "none", fontWeight: 700, px: 2.5 }}
+            <Box
+              sx={{
+                mt: 4,
+                display: "flex",
+                gap: 1.5,
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
             >
-              {showcaseCta}
-            </Button>
-          </Link>
+              <Link href="/demos/showcase" passHref legacyBehavior>
+                <Button
+                  component="a"
+                  variant="contained"
+                  sx={{
+                    bgcolor: "white",
+                    color: "#0f172a",
+                    fontWeight: 700,
+                    px: 2.5,
+                    "&:hover": { bgcolor: alpha("#fff", 0.9) },
+                    "&:focus-visible": {
+                      outline: "3px solid rgba(255,255,255,0.7)",
+                      outlineOffset: 2,
+                    },
+                  }}
+                >
+                  {primaryCta}
+                </Button>
+              </Link>
+              <Link href="/topics" passHref legacyBehavior>
+                <Button
+                  component="a"
+                  variant="outlined"
+                  sx={{
+                    borderColor: "white",
+                    color: "white",
+                    fontWeight: 700,
+                    "&:hover": {
+                      borderColor: "white",
+                      bgcolor: alpha("#fff", 0.1),
+                    },
+                    "&:focus-visible": {
+                      outline: "3px solid rgba(255,255,255,0.7)",
+                      outlineOffset: 2,
+                    },
+                  }}
+                >
+                  {topicsCta}
+                </Button>
+              </Link>
+              <Link href="/browse" passHref legacyBehavior>
+                <Button
+                  component="a"
+                  variant="outlined"
+                  sx={{
+                    borderColor: "white",
+                    color: "white",
+                    fontWeight: 700,
+                    "&:hover": {
+                      borderColor: "white",
+                      bgcolor: alpha("#fff", 0.1),
+                    },
+                    "&:focus-visible": {
+                      outline: "3px solid rgba(255,255,255,0.7)",
+                      outlineOffset: 2,
+                    },
+                  }}
+                >
+                  {browseCta}
+                </Button>
+              </Link>
+              <Link href="/demos/playground" passHref legacyBehavior>
+                <Button
+                  component="a"
+                  variant="outlined"
+                  sx={{
+                    borderColor: "white",
+                    color: "white",
+                    fontWeight: 700,
+                    "&:hover": {
+                      borderColor: "white",
+                      bgcolor: alpha("#fff", 0.1),
+                    },
+                    "&:focus-visible": {
+                      outline: "3px solid rgba(255,255,255,0.7)",
+                      outlineOffset: 2,
+                    },
+                  }}
+                >
+                  {playgroundCta}
+                </Button>
+              </Link>
+            </Box>
+          </Box>
         </Box>
 
-        {/* Working Demos */}
-        <Typography variant="h5" component="h2" sx={{ mb: 3, fontWeight: 700 }}>
-          {toolsTitle}
-        </Typography>
-        <Grid container spacing={3} sx={{ mb: 5 }}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Link href="/demos/playground" passHref legacyBehavior>
-              <Card
-                component="a"
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  textDecoration: "none",
-                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  borderRadius: 3,
-                  overflow: "hidden",
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-                  position: "relative",
-                  "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: "0 20px 40px rgba(14, 165, 233, 0.25)",
-                  },
-                  "&::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: "5px",
-                    background: `linear-gradient(90deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
-                    opacity: 1,
-                  },
-                }}
-              >
-                <CardActionArea sx={{ height: "100%" }}>
-                  <CardContent sx={{ p: 3 }}>
-                    <Box
-                      sx={{
-                        fontSize: "3rem",
-                        mb: 2,
-                        textAlign: "center",
-                        p: 2,
-                        borderRadius: 3,
-                        background: `linear-gradient(135deg, ${alpha(theme.palette.success.main, 0.1)} 0%, ${alpha(theme.palette.success.dark, 0.1)} 100%)`,
-                      }}
-                    >
-                      🎮
-                    </Box>
-                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
-                      {i18n._(
-                        defineMessage({
-                          id: "demos.index.playground.title",
-                          message: "Interactive Playground",
-                        })
-                      )}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {i18n._(
-                        defineMessage({
-                          id: "demos.index.playground.description",
-                          message:
-                            "Experiment with different chart types and data in real-time.",
-                        })
-                      )}
-                    </Typography>
-                    <Chip
-                      label={i18n._(
-                        defineMessage({
-                          id: "demos.index.playground.status",
-                          message: "Working",
-                        })
-                      )}
-                      size="small"
-                      sx={{
-                        mt: 2,
-                        background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
-                        color: "white",
-                        fontWeight: 600,
-                      }}
-                    />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Link>
-          </Grid>
-        </Grid>
-
-        <Box sx={{ mb: 5 }}>
+        <Box sx={{ mt: 1, mb: 6 }}>
           <Typography
             variant="h6"
             component="h2"
-            sx={{ mb: 1, fontWeight: 700, color: "text.primary" }}
+            sx={{ mb: 2, fontWeight: 700, color: "text.primary" }}
           >
-            {locale === "sr"
-              ? "Više kategorija je dostupno kroz Topics i Showcase stranice"
-              : "More categories are available through Topics and Showcase"}
+            {atGlanceTitle}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {locale === "sr"
-              ? "Za stabilne primere i dataset putanje koristite Explore by Topics, Demo Showcase i Embed generator."
-              : "For stable examples and dataset-oriented flows, use Explore by Topics, Demo Showcase, and the Embed generator."}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            mt: 8,
-            p: 5,
-            background:
-              "linear-gradient(135deg, rgba(67, 233, 123, 0.1) 0%, rgba(56, 249, 215, 0.1) 100%)",
-            borderRadius: 4,
-            textAlign: "center",
-            border: "2px solid",
-            borderColor: "rgba(67, 233, 123, 0.2)",
-            boxShadow: "0 10px 40px rgba(67, 233, 123, 0.1)",
-          }}
-        >
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{ mb: 3, fontWeight: 700, color: "text.primary" }}
-          >
-            {aboutTitle}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            paragraph
-            sx={{ maxWidth: 800, mx: "auto", lineHeight: 1.8 }}
-          >
-            {aboutParagraph1}
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            sx={{ maxWidth: 800, mx: "auto", lineHeight: 1.8 }}
-          >
-            {aboutParagraph2}
-          </Typography>
-        </Box>
-
-        <Box sx={{ mt: 6 }}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={4}>
               <Box
@@ -520,6 +408,191 @@ export default function DemosIndex() {
               </Box>
             </Grid>
           </Grid>
+        </Box>
+
+        <Typography variant="h5" component="h2" sx={{ mb: 3, fontWeight: 700 }}>
+          {toolsTitle}
+        </Typography>
+        <Grid container spacing={3} sx={{ mb: 5 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <Link href="/demos/playground" passHref legacyBehavior>
+              <Card
+                component="a"
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  textDecoration: "none",
+                  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  borderRadius: 3,
+                  overflow: "hidden",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+                  position: "relative",
+                  "&:hover": {
+                    transform: "translateY(-8px)",
+                    boxShadow: "0 20px 40px rgba(14, 165, 233, 0.25)",
+                  },
+                  "&:focus-visible": {
+                    outline: `3px solid ${alpha(theme.palette.primary.main, 0.45)}`,
+                    outlineOffset: 2,
+                  },
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "5px",
+                    background: `linear-gradient(90deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
+                    opacity: 1,
+                  },
+                }}
+              >
+                <CardActionArea sx={{ height: "100%" }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Box
+                      component="span"
+                      aria-hidden="true"
+                      sx={{
+                        display: "block",
+                        fontSize: "3rem",
+                        mb: 2,
+                        textAlign: "center",
+                        p: 2,
+                        borderRadius: 3,
+                        background: `linear-gradient(135deg, ${alpha(theme.palette.success.main, 0.1)} 0%, ${alpha(theme.palette.success.dark, 0.1)} 100%)`,
+                      }}
+                    >
+                      🎮
+                    </Box>
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 1.5 }}>
+                      {locale === "sr"
+                        ? "Interaktivni playground"
+                        : "Interactive Playground"}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {locale === "sr"
+                        ? "Eksperimentišite sa različitim tipovima grafikona i podacima u realnom vremenu."
+                        : "Experiment with different chart types and data in real-time."}
+                    </Typography>
+                    <Chip
+                      label={liveStatusLabel}
+                      size="small"
+                      sx={{
+                        mt: 2,
+                        background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${theme.palette.success.dark} 100%)`,
+                        color: "white",
+                        fontWeight: 600,
+                      }}
+                    />
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Link>
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            mb: 6,
+            p: 4,
+            borderRadius: 4,
+            border: "1px solid",
+            borderColor: "divider",
+            background:
+              "linear-gradient(115deg, rgba(15,23,42,0.03), rgba(14,165,233,0.08))",
+          }}
+        >
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ mb: 1.5, fontWeight: 700, color: "text.primary" }}
+          >
+            {comingSoonTitle}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            {comingSoonDescription}
+          </Typography>
+          <Grid container spacing={2.5}>
+            {comingSoonItems.map((item) => (
+              <Grid key={item.id} item xs={12} sm={6} md={4}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    height: "100%",
+                    borderRadius: 3,
+                    borderStyle: "dashed",
+                    borderColor: alpha(theme.palette.text.primary, 0.2),
+                    backgroundColor: alpha(theme.palette.background.paper, 0.8),
+                  }}
+                >
+                  <CardContent sx={{ p: 2.5 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        component="span"
+                        aria-hidden="true"
+                        sx={{ fontSize: "1.25rem", lineHeight: 1 }}
+                      >
+                        {item.icon}
+                      </Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                        {item.title}
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mt: 1.2, minHeight: 42 }}
+                    >
+                      {item.description}
+                    </Typography>
+                    <Chip
+                      label={comingSoonStatusLabel}
+                      size="small"
+                      sx={{ mt: 2, fontWeight: 600 }}
+                    />
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+
+        <Box
+          sx={{
+            mt: 2,
+            p: 5,
+            background:
+              "linear-gradient(135deg, rgba(67, 233, 123, 0.1) 0%, rgba(56, 249, 215, 0.1) 100%)",
+            borderRadius: 4,
+            textAlign: "center",
+            border: "2px solid",
+            borderColor: "rgba(67, 233, 123, 0.2)",
+            boxShadow: "0 10px 40px rgba(67, 233, 123, 0.1)",
+          }}
+        >
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ mb: 3, fontWeight: 700, color: "text.primary" }}
+          >
+            {aboutTitle}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            paragraph
+            sx={{ maxWidth: 800, mx: "auto", lineHeight: 1.8 }}
+          >
+            {aboutParagraph1}
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            sx={{ maxWidth: 800, mx: "auto", lineHeight: 1.8 }}
+          >
+            {aboutParagraph2}
+          </Typography>
         </Box>
       </DemoErrorBoundary>
     </DemoLayout>
