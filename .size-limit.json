@@ -1,0 +1,20 @@
+[
+  {
+    "name": "App Bundle (JS)",
+    "path": "app/.next/static/chunks/**/*.js",
+    "limit": "500 KB",
+    "gzip": true
+  },
+  {
+    "name": "App Bundle (CSS)",
+    "path": "app/.next/static/css/**/*.css",
+    "limit": "100 KB",
+    "gzip": true
+  },
+  {
+    "name": "Embed Bundle",
+    "path": "app/dist/**/*.js",
+    "limit": "200 KB",
+    "gzip": true
+  }
+]
