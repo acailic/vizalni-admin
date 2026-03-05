@@ -38,6 +38,32 @@ export default function EmbedGeneratorPage() {
   const [theme, setTheme] = useState<EmbedTheme>("light");
   const [lang, setLang] = useState<EmbedLang>(defaultLang);
 
+  const resolvedQuery = useMemo<Record<string, string>>(() => {
+    const queryFromRouter = Object.fromEntries(
+      Object.entries(router.query)
+        .map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])
+        .filter(
+          (entry): entry is [string, string] =>
+            typeof entry[1] === "string" && entry[1].trim() !== ""
+        )
+    );
+
+    if (typeof window === "undefined") {
+      return queryFromRouter;
+    }
+
+    const [, rawSearch = ""] = router.asPath.split("?");
+    const search =
+      rawSearch.trim() !== "" ? rawSearch : window.location.search.slice(1);
+    const queryFromSearch = Object.fromEntries(
+      Array.from(new URLSearchParams(search).entries()).filter(
+        ([, value]) => value.trim() !== ""
+      )
+    );
+
+    return { ...queryFromSearch, ...queryFromRouter };
+  }, [router.asPath, router.query]);
+
   // Update lang when locale changes
   useEffect(() => {
     setLang(defaultLang);
@@ -45,10 +71,10 @@ export default function EmbedGeneratorPage() {
 
   // Respect UI params from URL when available.
   useEffect(() => {
-    const urlLang = router.query.lang as string | undefined;
-    const urlTheme = router.query.theme as string | undefined;
-    const urlWidth = router.query.width as string | undefined;
-    const urlHeight = router.query.height as string | undefined;
+    const urlLang = resolvedQuery.lang;
+    const urlTheme = resolvedQuery.theme;
+    const urlWidth = resolvedQuery.width;
+    const urlHeight = resolvedQuery.height;
 
     if (urlLang === "en" || urlLang === "sr") {
       setLang(urlLang);
@@ -63,24 +89,19 @@ export default function EmbedGeneratorPage() {
       setHeight(urlHeight);
     }
   }, [
-    router.query.height,
-    router.query.lang,
-    router.query.theme,
-    router.query.width,
+    resolvedQuery.height,
+    resolvedQuery.lang,
+    resolvedQuery.theme,
+    resolvedQuery.width,
   ]);
 
-  // Wait for router to be ready before computing passthrough params
-  // to avoid SSR/client hydration mismatch
-  const isRouterReady = router.isReady;
-
   const embedPreviewPath = useMemo(() => {
-    const chartId = router.query.chartId;
-    const resolvedChartId = Array.isArray(chartId) ? chartId[0] : chartId;
+    const resolvedChartId = resolvedQuery.chartId;
     if (resolvedChartId) {
       return `${PUBLIC_URL}/embed/${resolvedChartId}`.replace(/\/{2,}/g, "/");
     }
     return `${PUBLIC_URL}/embed/demo`.replace(/\/{2,}/g, "/");
-  }, [router.query.chartId]);
+  }, [resolvedQuery.chartId]);
 
   const baseEmbedUrl = useMemo(() => {
     const embedPath = embedPreviewPath;
@@ -91,19 +112,15 @@ export default function EmbedGeneratorPage() {
   }, [embedPreviewPath]);
 
   const passthroughParams = useMemo(() => {
-    // Wait for router to be ready to avoid empty params on SSR
-    if (!isRouterReady) return {};
-
     // Exclude UI-only params, pass through chart params (type, dataset, dataSource, etc.)
     return Object.fromEntries(
-      Object.entries(router.query)
+      Object.entries(resolvedQuery)
         .filter(([key]) => !EXCLUDED_PARAMS.has(key))
-        .map(([key, value]) => [key, Array.isArray(value) ? value[0] : value])
         .filter(
           ([, value]) => value !== undefined && value !== null && value !== ""
         )
     );
-  }, [isRouterReady, router.query]);
+  }, [resolvedQuery]);
 
   const iframeSrc = useMemo(() => {
     return buildEmbedUrl(baseEmbedUrl, {
@@ -259,6 +276,7 @@ export default function EmbedGeneratorPage() {
                   language="html"
                   fileName="embed.html"
                   maxLines={10}
+                  copyLabel="Copy embed code"
                 />
 
                 <Box sx={{ mt: 3 }}>

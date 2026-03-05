@@ -52,14 +52,23 @@ const chartTypeIcons: Record<string, string> = {
   column: "📊",
 };
 
-function resolveVisualizationHref(viz: Visualization): string {
+function resolveVisualizationHref(viz: Visualization, locale: string): string {
   if (!viz.embedUrl) {
     return `/playground?type=${viz.chartType}`;
   }
 
-  // Topic cards should open the live embeddable preview, not the generator UI.
-  if (viz.embedUrl.startsWith("/embed?")) {
-    return viz.embedUrl.replace(/^\/embed\?/, "/embed/demo?");
+  // Topic cards should open embed generator with prefilled params.
+  if (viz.embedUrl.startsWith("/embed")) {
+    const [, rawQuery = ""] = viz.embedUrl.split("?");
+    const params = new URLSearchParams(rawQuery);
+    const embedLang = locale === "en" ? "en" : "sr";
+
+    if (!params.has("lang")) {
+      params.set("lang", embedLang);
+    }
+
+    const serialized = params.toString();
+    return serialized ? `/embed?${serialized}` : "/embed";
   }
 
   return viz.embedUrl;
@@ -115,7 +124,11 @@ function VisualizationCard({
         </Box>
       </CardContent>
       <Box sx={{ p: 2, pt: 0 }}>
-        <Link href={resolveVisualizationHref(viz)} passHref legacyBehavior>
+        <Link
+          href={resolveVisualizationHref(viz, locale)}
+          passHref
+          legacyBehavior
+        >
           <Button
             component="a"
             variant="outlined"

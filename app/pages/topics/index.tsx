@@ -1,4 +1,7 @@
 // app/pages/topics/index.tsx
+import { promises as fs } from "fs";
+import path from "path";
+
 import { Container, Typography, Grid, Box } from "@mui/material";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -100,10 +103,28 @@ export const getStaticProps: GetStaticProps<TopicsPageProps> = async ({
   locale: _locale,
 }) => {
   const data = topicIndex as TopicIndex;
+  const topicDataDir = path.join(process.cwd(), "app", "data", "topics");
+
+  const topicsWithDatasetCounts = await Promise.all(
+    data.topics.map(async (topic) => {
+      try {
+        const topicFile = path.join(topicDataDir, `${topic.id}.json`);
+        const raw = await fs.readFile(topicFile, "utf8");
+        const parsed = JSON.parse(raw) as { datasets?: unknown[] };
+        const datasetCount = Array.isArray(parsed.datasets)
+          ? parsed.datasets.length
+          : topic.datasetCount;
+
+        return { ...topic, datasetCount };
+      } catch {
+        return topic;
+      }
+    })
+  );
 
   return {
     props: {
-      topics: data.topics,
+      topics: topicsWithDatasetCounts,
     },
   };
 };

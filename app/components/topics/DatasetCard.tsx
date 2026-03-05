@@ -66,9 +66,18 @@ export function DatasetCard({ dataset, locale }: DatasetCardProps) {
               <Typography
                 variant="caption"
                 color="text.secondary"
-                sx={{ whiteSpace: "nowrap" }}
+                component="span"
+                data-testid="dataset-updated"
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "baseline",
+                  gap: 0.5,
+                  flexWrap: "nowrap",
+                  whiteSpace: "nowrap",
+                }}
               >
-                {updatedLabel}: {dataset.lastUpdated}
+                <Box component="span">{`${updatedLabel}:`}</Box>
+                <Box component="span">{dataset.lastUpdated}</Box>
               </Typography>
             </Box>
           </Box>

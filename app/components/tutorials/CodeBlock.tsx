@@ -1,7 +1,7 @@
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Button, IconButton, Typography, Chip } from "@mui/material";
+import { Box, Button, Typography, Chip } from "@mui/material";
 import { Highlight, themes } from "prism-react-renderer";
 import React, { useState } from "react";
 
@@ -11,6 +11,7 @@ interface CodeBlockProps {
   fileName?: string;
   maxLines?: number;
   showLineNumbers?: boolean;
+  copyLabel?: string;
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = ({
@@ -19,6 +20,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   fileName,
   maxLines = 20,
   showLineNumbers = true,
+  copyLabel = "Copy code",
 }) => {
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -87,19 +89,20 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
             fontSize: "0.75rem",
           }}
         />
-        <Box>
-          <IconButton
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Button
             size="small"
             onClick={handleCopy}
-            sx={{ color: "#666" }}
+            sx={{ color: "#666", textTransform: "none", minWidth: "auto" }}
             disabled={typeof navigator === "undefined"}
-            aria-label={copied ? "Code copied" : "Copy code to clipboard"}
-            title="Copy code"
+            aria-label={copied ? "Code copied" : `${copyLabel} to clipboard`}
+            title={copyLabel}
+            startIcon={<ContentCopyIcon fontSize="small" />}
           >
-            <ContentCopyIcon fontSize="small" />
-          </IconButton>
+            {copied ? "Copied" : copyLabel}
+          </Button>
           {copied && (
-            <Typography variant="caption" sx={{ ml: 1, color: "#007acc" }}>
+            <Typography variant="caption" sx={{ color: "#007acc" }}>
               Copied!
             </Typography>
           )}

@@ -11,6 +11,7 @@ import {
   ComponentProps,
   type MouseEvent,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -306,7 +307,7 @@ const SelectDatasetStepInner = ({
     setIsScrolled(window.scrollY > 50);
   }, []);
 
-  useMemo(() => {
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
