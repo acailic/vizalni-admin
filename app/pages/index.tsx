@@ -18,6 +18,7 @@ import { type ReactNode, useMemo } from "react";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import { ShowcaseCard } from "@/components/demos/showcase-card";
+import { PUBLIC_URL } from "@/domain/env";
 import { FEATURED_CHARTS } from "@/lib/demos/config";
 import { staticPages } from "@/static-pages";
 
@@ -354,35 +355,42 @@ const resourcesCopy: Record<
     label: string;
     heading: string;
     subheading: string;
-    learnMore: string;
-    cards: Array<{ title: string; description: string; link: string }>;
+    cards: Array<{
+      title: string;
+      description: string;
+      link: string;
+      cta: string;
+    }>;
   }
 > = {
   en: {
     label: "Resources",
     heading: "Learn and explore",
     subheading: "Guides to help you get the most out of Vizualni Admin",
-    learnMore: "Read guide",
     cards: [
       {
         title: "Getting started",
-        description: "Create your first visualization in minutes",
-        link: "/docs/getting-started",
-      },
-      {
-        title: "Chart types guide",
-        description: "Choose the right chart for your data",
-        link: "/docs/chart-types-guide",
-      },
-      {
-        title: "Embedding guide",
-        description: "Add charts to your website or app",
-        link: "/docs/embedding-guide",
-      },
-      {
-        title: "Demo gallery",
-        description: "Explore example visualizations",
+        description: "Explore the demo gallery to see what's possible",
         link: "/demos",
+        cta: "Open gallery",
+      },
+      {
+        title: "Featured charts",
+        description: "See curated visualizations and examples",
+        link: "/demos/showcase",
+        cta: "View showcase",
+      },
+      {
+        title: "Embed charts",
+        description: "Generate embed code for your website",
+        link: "/embed",
+        cta: "Open generator",
+      },
+      {
+        title: "Browse datasets",
+        description: "Find data from data.gov.rs",
+        link: "/browse",
+        cta: "Browse data",
       },
     ],
   },
@@ -391,27 +399,30 @@ const resourcesCopy: Record<
     heading: "Naučite i istražite",
     subheading:
       "Vodiči koji vam pomažu da izvučete maksimum iz Vizualni Admin-a",
-    learnMore: "Pročitaj vodič",
     cards: [
       {
         title: "Prvi koraci",
-        description: "Napravite prvu vizualizaciju za nekoliko minuta",
-        link: "/docs/getting-started",
-      },
-      {
-        title: "Vodič za grafikone",
-        description: "Izaberite pravi grafikon za vaše podatke",
-        link: "/docs/chart-types-guide",
-      },
-      {
-        title: "Vodič za ugradnju",
-        description: "Dodajte grafikone na svoj sajt ili aplikaciju",
-        link: "/docs/embedding-guide",
-      },
-      {
-        title: "Galerija primera",
-        description: "Istražite primere vizualizacija",
+        description: "Istražite galeriju demo-a da vidite šta je moguće",
         link: "/demos",
+        cta: "Otvori galeriju",
+      },
+      {
+        title: "Istaknuti grafikoni",
+        description: "Pogledajte kurirane vizualizacije i primere",
+        link: "/demos/showcase",
+        cta: "Pogledaj showcase",
+      },
+      {
+        title: "Ugradnja grafikona",
+        description: "Generišite kod za ugradnju na vaš sajt",
+        link: "/embed",
+        cta: "Otvori generator",
+      },
+      {
+        title: "Pregled podataka",
+        description: "Pronađite podatke sa data.gov.rs",
+        link: "/browse",
+        cta: "Pregledaj podatke",
       },
     ],
   },
@@ -420,27 +431,30 @@ const resourcesCopy: Record<
     heading: "Научите и истражите",
     subheading:
       "Водичи који вам помажу да извучете максимум из Визуелни Админ-а",
-    learnMore: "Прочитај водич",
     cards: [
       {
         title: "Први кораци",
-        description: "Направите прву визуализацију за неколико минута",
-        link: "/docs/getting-started",
-      },
-      {
-        title: "Водич за графиконе",
-        description: "Изаберите прави графикон за ваше податке",
-        link: "/docs/chart-types-guide",
-      },
-      {
-        title: "Водич за уградњу",
-        description: "Додајте графиконе на свој сајт или апликацију",
-        link: "/docs/embedding-guide",
-      },
-      {
-        title: "Галерија примера",
-        description: "Истражите примере визуализација",
+        description: "Истражите галерију демо-а да видите шта је могуће",
         link: "/demos",
+        cta: "Отвори галерију",
+      },
+      {
+        title: "Истакнути графикони",
+        description: "Погледајте кулиране визуализације и примере",
+        link: "/demos/showcase",
+        cta: "Погледај showcase",
+      },
+      {
+        title: "Уградња графикона",
+        description: "Генеришите код за уградњу на ваш сајт",
+        link: "/embed",
+        cta: "Отвори генератор",
+      },
+      {
+        title: "Преглед података",
+        description: "Пронађите податке са data.gov.rs",
+        link: "/browse",
+        cta: "Прегледај податке",
       },
     ],
   },
@@ -722,7 +736,7 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
                 },
               }}
             >
-              Анализа цена
+              {locale === "sr-Cyrl" ? "Анализа цена" : "Analiza cena"}
             </Button>
             <Button
               variant="outlined"
@@ -1091,7 +1105,7 @@ const ResourcesSection = ({ locale }: { locale: Locale }) => {
                   href={card.link}
                   sx={{ fontWeight: 600, textTransform: "none" }}
                 >
-                  {copy.learnMore}
+                  {card.cta}
                 </Button>
               </CardActions>
             </Card>
@@ -1135,7 +1149,7 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
               }
               demoUrl={`/demos/${chart.demoId}`}
               embedUrl={`/embed/${chart.demoId}`}
-              shareUrl={`https://acailic.github.io/vizualni-admin/demos/${chart.demoId}`}
+              shareUrl={`${PUBLIC_URL}/demos/${chart.demoId}`}
               onEmbed={() => {}}
               onShare={() => {}}
             />

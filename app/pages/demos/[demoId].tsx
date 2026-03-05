@@ -11,15 +11,16 @@ import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
   Container,
-  Grid,
   Typography,
   alpha,
   useTheme,
 } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
@@ -123,39 +124,49 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
   return (
     <DemoLayout title={`${demoConfig.icon} ${title}`} description={description}>
       <DemoErrorBoundary>
-        {/* Demo Info Card */}
+        {/* Coming Soon Banner */}
         <Card
           sx={{
             mb: 4,
             borderRadius: 3,
             overflow: "hidden",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
+            background: `linear-gradient(135deg, ${alpha(theme.palette.info.main, 0.05)} 0%, ${alpha(theme.palette.primary.main, 0.1)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.info.main, 0.2)}`,
           }}
         >
-          <CardContent sx={{ p: 3 }}>
-            <Grid container spacing={2} alignItems="center">
-              {/* Icon */}
-              <Grid item>
-                <Box
-                  sx={{
-                    fontSize: "3rem",
-                    lineHeight: 1,
-                  }}
-                >
-                  {demoConfig.icon}
-                </Box>
-              </Grid>
+          <CardContent
+            sx={{
+              p: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <Chip
+              label={locale === "sr" ? "Uskoro dostupno" : "Coming Soon"}
+              color="info"
+              size="small"
+              sx={{ mb: 2, fontWeight: 600 }}
+            />
 
-              {/* Title and Description */}
-              <Grid item xs>
-                <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
-                  {title}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {description}
-                </Typography>
-              </Grid>
-            </Grid>
+            <Box sx={{ fontSize: "3rem", mb: 1, opacity: 0.7 }}>
+              {demoConfig.icon}
+            </Box>
+
+            <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
+              {title}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ maxWidth: 480, mb: 2 }}
+            >
+              {locale === "sr"
+                ? "Ova vizualizacija je u razvoju. Za kompletne interaktivne primere koristite galeriju, showcase ili playground."
+                : "This visualization is under development. For complete interactive examples, use the gallery, showcase, or playground."}
+            </Typography>
 
             {/* Tags */}
             {demoConfig.tags && demoConfig.tags.length > 0 && (
@@ -164,7 +175,8 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
                   display: "flex",
                   flexWrap: "wrap",
                   gap: 1,
-                  mt: 2,
+                  justifyContent: "center",
+                  mb: 2,
                 }}
               >
                 {demoConfig.tags.map((tag) => (
@@ -184,14 +196,7 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
             )}
 
             {/* Chart Type */}
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                mt: 2,
-              }}
-            >
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -214,52 +219,54 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
           </CardContent>
         </Card>
 
-        {/* Visualization Placeholder */}
+        {/* Explore Interactive Pages */}
         <Card
           sx={{
             borderRadius: 3,
             overflow: "hidden",
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-            backgroundColor: alpha("#f8fafc", 0.5),
           }}
         >
           <CardContent
             sx={{
-              p: 6,
+              p: 4,
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: 400,
+              gap: 2,
             }}
           >
-            <Box
-              sx={{
-                fontSize: "4rem",
-                mb: 3,
-                opacity: 0.5,
-              }}
-            >
-              {demoConfig.icon}
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+              {locale === "sr"
+                ? "Istražite interaktivne stranice"
+                : "Explore interactive pages"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {locale === "sr"
+                ? "Koristite sledeće stranice za funkcionalne grafikone i ugrađivanje:"
+                : "Use these pages for fully functional charts and embedding:"}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
+              <Button
+                component={Link}
+                href="/demos/showcase"
+                variant="contained"
+                startIcon={<span>←</span>}
+              >
+                {locale === "sr" ? "Demo showcase" : "Demo showcase"}
+              </Button>
+              <Button
+                component={Link}
+                href="/demos/playground"
+                variant="outlined"
+              >
+                {locale === "sr"
+                  ? "Interaktivni playground"
+                  : "Interactive playground"}
+              </Button>
+              <Button component={Link} href="/topics" variant="outlined">
+                {locale === "sr" ? "Teme i dataseti" : "Topics and datasets"}
+              </Button>
             </Box>
-            <Typography
-              variant="h6"
-              color="text.secondary"
-              sx={{ textAlign: "center", mb: 2 }}
-            >
-              {locale === "sr"
-                ? "Vizualizacija će biti prikazana ovde"
-                : "Visualization component will render here"}
-            </Typography>
-            <Typography
-              variant="body2"
-              color="text.disabled"
-              sx={{ textAlign: "center" }}
-            >
-              {locale === "sr"
-                ? "Komponenta za vizualizaciju podataka će biti implementirana u sledećoj fazi."
-                : "The data visualization component will be implemented in the next phase."}
-            </Typography>
           </CardContent>
         </Card>
       </DemoErrorBoundary>

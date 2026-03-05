@@ -99,8 +99,8 @@ export const Header = ({
       </Box>
       {hideLogo ? null : (
         <SimpleHeader
-          longTitle="data.gov.rs"
-          shortTitle="data"
+          longTitle="Vizualni Admin"
+          shortTitle="VA"
           rootHref="/"
           sx={{ backgroundColor: "white" }}
         />
