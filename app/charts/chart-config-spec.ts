@@ -13,7 +13,6 @@ import { schemeCategory10 } from "d3-scale-chromatic";
 import lodashGet from "lodash/get";
 import setWith from "lodash/setWith";
 
-import { DEFAULT_SORTING } from "@/charts";
 import {
   parseOptionalNumericVariable,
   parseStringVariable,
@@ -23,7 +22,6 @@ import {
   getStackedYScale,
 } from "@/charts/shared/stacked-helpers";
 import type { ChartSegmentField } from "@/config-types";
-import { makeMultiFilter } from "@/config-utils";
 import { mapValueIrisToColor } from "@/configurator/components/ui-helpers";
 import { isTemporalDimension } from "@/domain/data";
 import { SEGMENT_ENABLED_COMPONENTS } from "@/domain/data";
@@ -41,12 +39,20 @@ import {
 import {
   AREA_SEGMENT_SORTING,
   COLUMN_SEGMENT_SORTING,
+  DEFAULT_SORTING,
   LINE_SEGMENT_SORTING,
   PIE_SEGMENT_SORTING,
 } from "./chart-config-ui-constants";
 
 const get = <T>(object: Record<string, T>, path: string): T | undefined =>
   lodashGet(object, path) as T;
+
+const makeMultiFilter = (values: Array<string | number>) => {
+  return {
+    type: "multi" as const,
+    values: Object.fromEntries(values.map((value) => [value, true])),
+  };
+};
 
 const onMapFieldChange = (
   id: string,
@@ -239,7 +245,7 @@ export const chartConfigOptionsUISpec = {
         onDelete: ({ chartConfig }: { chartConfig: any }) => {
           delete chartConfig.fields.y.customDomain;
         },
-        getDisabledState: (chartConfig: any, components: any[], data: any) => {
+        getDisabledState: (chartConfig: any, components: any[], _data: any) => {
           const yId = chartConfig.fields.y.componentId;
           const yDimension = components.find((d: any) => d.id === yId);
           const disabledStacked = disableStacked(yDimension);
@@ -309,7 +315,6 @@ export const chartConfigOptionsUISpec = {
             (chartConfig.fields.segment as ChartSegmentField | null)?.type ===
             "stacked"
           ) {
-            const xMeasure = measures.find((d) => d.id === id);
             if (disableStacked(xMeasure)) {
               setWith(chartConfig, "fields.segment.type", "grouped", Object);
               if (chartConfig.interactiveFiltersConfig) {
@@ -383,7 +388,6 @@ export const chartConfigOptionsUISpec = {
         ) => {
           const yMeasure = measures.find((d) => d.id === id);
           if (chartConfig.fields.segment?.type === "stacked") {
-            const yMeasure = measures.find((d) => d.id === id);
             if (disableStacked(yMeasure)) {
               setWith(chartConfig, "fields.segment.type", "grouped", Object);
               if (chartConfig.interactiveFiltersConfig) {
@@ -628,7 +632,6 @@ export const chartConfigOptionsUISpec = {
         filters: true,
         sorting: LINE_SEGMENT_SORTING,
         onChange: (id: string, options: any) => {
-          const { chartConfig, dimensions, measures, selectedValues } = options;
           defaultSegmentOnChange(id, options);
           delete options.chartConfig.fields.y.customDomain;
         },
@@ -961,7 +964,7 @@ export const chartConfigOptionsUISpec = {
           lineComponentId: {
             onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
-              const { y, color } = fields;
+              const { color } = fields;
               const lineColor = color.colorMapping?.[id];
               const columnColor = color.colorMapping?.[id];
               chartConfig.fields.color.colorMapping =
@@ -979,7 +982,7 @@ export const chartConfigOptionsUISpec = {
           columnComponentId: {
             onChange: (id: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
-              const { y, color } = fields;
+              const { color } = fields;
               const lineColor = color.colorMapping?.[id];
               const columnColor =
                 color.colorMapping?.[fields.y.columnComponentId];
@@ -998,7 +1001,7 @@ export const chartConfigOptionsUISpec = {
           lineAxisOrientation: {
             onChange: (_: string, { chartConfig }: { chartConfig: any }) => {
               const { fields } = chartConfig;
-              const { y, color } = fields;
+              const { color } = fields;
               const lineAxisLeft = fields.y.lineAxisOrientation === "left";
               const firstId = lineAxisLeft
                 ? fields.y.columnComponentId

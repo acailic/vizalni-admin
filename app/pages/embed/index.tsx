@@ -31,25 +31,69 @@ const EXCLUDED_PARAMS = new Set(["theme", "lang", "width", "height"]);
 export default function EmbedGeneratorPage() {
   const router = useRouter();
   const locale = useLocale();
+  // Default to Serbian if locale is any Serbian variant, otherwise English
   const defaultLang: EmbedLang = locale === "en" ? "en" : "sr";
   const [width, setWidth] = useState("100%");
   const [height, setHeight] = useState("520px");
   const [theme, setTheme] = useState<EmbedTheme>("light");
   const [lang, setLang] = useState<EmbedLang>(defaultLang);
 
+  // Update lang when locale changes
   useEffect(() => {
     setLang(defaultLang);
   }, [defaultLang]);
 
+  // Respect UI params from URL when available.
+  useEffect(() => {
+    const urlLang = router.query.lang as string | undefined;
+    const urlTheme = router.query.theme as string | undefined;
+    const urlWidth = router.query.width as string | undefined;
+    const urlHeight = router.query.height as string | undefined;
+
+    if (urlLang === "en" || urlLang === "sr") {
+      setLang(urlLang);
+    }
+    if (urlTheme === "light" || urlTheme === "dark") {
+      setTheme(urlTheme);
+    }
+    if (urlWidth && urlWidth.trim() !== "") {
+      setWidth(urlWidth);
+    }
+    if (urlHeight && urlHeight.trim() !== "") {
+      setHeight(urlHeight);
+    }
+  }, [
+    router.query.height,
+    router.query.lang,
+    router.query.theme,
+    router.query.width,
+  ]);
+
+  // Wait for router to be ready before computing passthrough params
+  // to avoid SSR/client hydration mismatch
+  const isRouterReady = router.isReady;
+
+  const embedPreviewPath = useMemo(() => {
+    const chartId = router.query.chartId;
+    const resolvedChartId = Array.isArray(chartId) ? chartId[0] : chartId;
+    if (resolvedChartId) {
+      return `${PUBLIC_URL}/embed/${resolvedChartId}`.replace(/\/{2,}/g, "/");
+    }
+    return `${PUBLIC_URL}/embed/demo`.replace(/\/{2,}/g, "/");
+  }, [router.query.chartId]);
+
   const baseEmbedUrl = useMemo(() => {
-    const embedPath = `${PUBLIC_URL}/embed/demo`.replace(/\/{2,}/g, "/");
+    const embedPath = embedPreviewPath;
     if (typeof window === "undefined") {
       return embedPath;
     }
     return `${window.location.origin}${embedPath.startsWith("/") ? embedPath : `/${embedPath}`}`;
-  }, []);
+  }, [embedPreviewPath]);
 
   const passthroughParams = useMemo(() => {
+    // Wait for router to be ready to avoid empty params on SSR
+    if (!isRouterReady) return {};
+
     // Exclude UI-only params, pass through chart params (type, dataset, dataSource, etc.)
     return Object.fromEntries(
       Object.entries(router.query)
@@ -59,7 +103,7 @@ export default function EmbedGeneratorPage() {
           ([, value]) => value !== undefined && value !== null && value !== ""
         )
     );
-  }, [router.query]);
+  }, [isRouterReady, router.query]);
 
   const iframeSrc = useMemo(() => {
     return buildEmbedUrl(baseEmbedUrl, {
@@ -172,7 +216,7 @@ export default function EmbedGeneratorPage() {
                         {Object.entries(passthroughParams).map(
                           ([key, value]) => (
                             <Box key={key}>
-                              {key}: {value}
+                              {key}: {String(value)}
                             </Box>
                           )
                         )}
@@ -206,6 +250,9 @@ export default function EmbedGeneratorPage() {
                   Paste this iframe into any site or CMS. The generated `src`
                   mirrors the selected chart parameters and locale/theme
                   options.
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Target route: <code>{embedPreviewPath}</code>
                 </Typography>
                 <CodeBlock
                   code={iframeSnippet}
