@@ -1,7 +1,7 @@
 import { t } from "@lingui/macro";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, Icon } from "@mui/material";
-import { KeyboardEvent, useEffect, useState } from "react";
+import { KeyboardEvent, useState } from "react";
 
 import { BrowseState } from "@/browse/model/context";
 import { Flex } from "@/components/flex";
@@ -15,31 +15,14 @@ export const SearchDatasetInput = ({
   searchFieldProps?: Partial<SearchFieldProps>;
 }) => {
   const [_, setShowDraftCheckbox] = useState(false);
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const searchLabel = t({
     id: "dataset.search.label",
     message: "Search",
   });
-  const placeholders = [
-    t({
-      id: "dataset.search.placeholder",
-      message: "Name, description, organization, theme, keyword",
-    }),
-    t({
-      id: "dataset.search.placeholder2",
-      message: "Search by dataset name",
-    }),
-    t({
-      id: "dataset.search.placeholder3",
-      message: "Find by organization or theme",
-    }),
-  ];
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [placeholders.length]);
+  const placeholder = t({
+    id: "dataset.search.placeholder",
+    message: "Name, description, organization, theme, keyword",
+  });
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && inputRef.current) {
       onSubmitSearch(inputRef.current.value);
@@ -71,7 +54,7 @@ export const SearchDatasetInput = ({
           onReset,
           onFocus: () => setShowDraftCheckbox(true),
         }}
-        placeholder={placeholders[placeholderIndex]}
+        placeholder={placeholder}
         {...searchFieldProps}
         sx={{
           ...searchFieldProps?.sx,

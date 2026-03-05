@@ -41,12 +41,10 @@ export default function DemosIndex() {
       message: "Explore different visualizations of Serbian open data",
     })
   );
-  const heroTitle = i18n._(
-    defineMessage({
-      id: "demos.index.hero.title",
-      message: "📊 Demo Visualization Gallery",
-    })
-  );
+  const heroTitle =
+    locale === "sr"
+      ? "Galerija demo vizualizacija"
+      : "Demo Visualization Gallery";
   const heroIntro = i18n._(
     defineMessage({
       id: "demos.index.hero.intro",
@@ -77,12 +75,14 @@ export default function DemosIndex() {
   const showcaseCta = i18n._(
     defineMessage({ id: "demos.index.showcase.cta", message: "Open showcase" })
   );
-  const aboutTitle = i18n._(
-    defineMessage({
-      id: "demos.index.about.title",
-      message: "💡 About Demo Visualizations",
-    })
-  );
+  const aboutTitle =
+    locale === "sr" ? "O demo vizualizacijama" : "About Demo Visualizations";
+  const topicsTitle =
+    locale === "sr"
+      ? "Istražite otvorene podatke po temama"
+      : "Explore Open Data by Topics";
+  const toolsTitle =
+    locale === "sr" ? "Interaktivni alati" : "Interactive Tools";
   const aboutParagraph1 = i18n._(
     defineMessage({
       id: "demos.index.about.paragraph1",
@@ -203,12 +203,7 @@ export default function DemosIndex() {
               gap: 1,
             }}
           >
-            {i18n._(
-              defineMessage({
-                id: "demos.index.topics.title",
-                message: "📊 Explore Open Data by Topics",
-              })
-            )}
+            {topicsTitle}
           </Typography>
           <Typography variant="body1" sx={{ mb: 3, opacity: 0.95 }}>
             {i18n._(
@@ -301,12 +296,7 @@ export default function DemosIndex() {
 
         {/* Working Demos */}
         <Typography variant="h5" component="h2" sx={{ mb: 3, fontWeight: 700 }}>
-          {i18n._(
-            defineMessage({
-              id: "demos.index.tools.title",
-              message: "🎮 Interactive Tools",
-            })
-          )}
+          {toolsTitle}
         </Typography>
         <Grid container spacing={3} sx={{ mb: 5 }}>
           <Grid item xs={12} sm={6} md={4}>

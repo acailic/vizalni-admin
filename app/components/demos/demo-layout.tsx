@@ -53,7 +53,6 @@ export function DemoLayout({
               <Button
                 component={Link}
                 href="/demos"
-                startIcon={<span>←</span>}
                 sx={{
                   textTransform: "none",
                   fontWeight: 600,
@@ -67,10 +66,7 @@ export function DemoLayout({
                   pl: 0,
                 }}
               >
-                <Trans
-                  id="demos.layout.backLabel"
-                  message="Back to demo gallery"
-                />
+                <Trans id="demos.layout.back" message="Back to demo gallery" />
               </Button>
             </Box>
           )}
@@ -205,7 +201,9 @@ export function DemoLayout({
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              {locale === "sr" ? "Izvor podataka" : "Data source"}:{" "}
+              <Box component="span" sx={{ whiteSpace: "nowrap" }}>
+                {locale === "sr" ? "Izvor podataka" : "Data source"}:
+              </Box>{" "}
               <Link href="https://data.gov.rs" passHref legacyBehavior>
                 <a
                   target="_blank"

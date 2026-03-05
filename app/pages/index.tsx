@@ -504,6 +504,15 @@ const featuredCopy: Record<
   },
 };
 
+const HOME_TOPIC_ROUTE_IDS = new Set([
+  "economy",
+  "health",
+  "education",
+  "demographics",
+  "environment",
+  "transport",
+]);
+
 // ============================================================================
 // SVG ICONS
 // ============================================================================
@@ -736,7 +745,7 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
                 },
               }}
             >
-              {locale === "sr-Cyrl" ? "Анализа цена" : "Analiza cena"}
+              Analiza cena
             </Button>
             <Button
               variant="outlined"
@@ -1118,7 +1127,9 @@ const ResourcesSection = ({ locale }: { locale: Locale }) => {
 
 const FeaturedSection = ({ locale }: { locale: Locale }) => {
   const copy = featuredCopy[locale];
-  const featured = FEATURED_CHARTS.slice(0, 3);
+  const featured = FEATURED_CHARTS.filter((chart) =>
+    HOME_TOPIC_ROUTE_IDS.has(chart.demoId)
+  ).slice(0, 3);
 
   return (
     <SectionShell id="featured">
@@ -1147,7 +1158,11 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
                   locale === "sr-Cyrl" ? "sr" : (locale as "sr" | "en")
                 ]
               }
-              demoUrl={`/demos/${chart.demoId}`}
+              demoUrl={
+                HOME_TOPIC_ROUTE_IDS.has(chart.demoId)
+                  ? `/topics/${chart.demoId}`
+                  : `/demos/${chart.demoId}`
+              }
               embedUrl={`/embed/${chart.demoId}`}
               shareUrl={`${PUBLIC_URL}/demos/${chart.demoId}`}
               onEmbed={() => {}}

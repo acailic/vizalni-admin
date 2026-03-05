@@ -38,7 +38,9 @@ interface TopicPageProps {
 
 function getLocalizedText(text: LocalizedString, locale: string): string {
   if (locale === "sr-Cyrl") return text.sr;
-  if (locale === "sr-Latn") return text["sr-Latn"] || cyrillicToLatin(text.sr);
+  if (locale.startsWith("sr")) {
+    return text["sr-Latn"] || cyrillicToLatin(text.sr);
+  }
   return text.en;
 }
 
@@ -49,6 +51,19 @@ const chartTypeIcons: Record<string, string> = {
   area: "📉",
   column: "📊",
 };
+
+function resolveVisualizationHref(viz: Visualization): string {
+  if (!viz.embedUrl) {
+    return `/playground?type=${viz.chartType}`;
+  }
+
+  // Topic cards should open the live embeddable preview, not the generator UI.
+  if (viz.embedUrl.startsWith("/embed?")) {
+    return viz.embedUrl.replace(/^\/embed\?/, "/embed/demo?");
+  }
+
+  return viz.embedUrl;
+}
 
 function VisualizationCard({
   viz,
@@ -100,11 +115,7 @@ function VisualizationCard({
         </Box>
       </CardContent>
       <Box sx={{ p: 2, pt: 0 }}>
-        <Link
-          href={viz.embedUrl || `/playground?type=${viz.chartType}`}
-          passHref
-          legacyBehavior
-        >
+        <Link href={resolveVisualizationHref(viz)} passHref legacyBehavior>
           <Button
             component="a"
             variant="outlined"
@@ -113,7 +124,7 @@ function VisualizationCard({
           >
             {locale === "sr-Cyrl"
               ? "Отвори визуализацију"
-              : locale === "sr-Latn"
+              : locale.startsWith("sr")
                 ? "Otvori vizualizaciju"
                 : "Open Visualization"}
           </Button>
@@ -140,26 +151,26 @@ export default function TopicPage({ topic }: TopicPageProps) {
   const pageTitle = `${title} | Vizualni Admin`;
 
   const backLabel =
-    locale === "sr-Cyrl" ? "Теме" : locale === "sr-Latn" ? "Teme" : "Topics";
+    locale === "sr-Cyrl" ? "Теме" : locale.startsWith("sr") ? "Teme" : "Topics";
 
   const datasetsLabel =
     locale === "sr-Cyrl"
       ? "Скупови података"
-      : locale === "sr-Latn"
+      : locale.startsWith("sr")
         ? "Skupovi podataka"
         : "Datasets";
 
   const visualizationsLabel =
     locale === "sr-Cyrl"
       ? "Визуализације"
-      : locale === "sr-Latn"
+      : locale.startsWith("sr")
         ? "Vizualizacije"
         : "Visualizations";
 
   const exploreAllLabel =
     locale === "sr-Cyrl"
       ? "Истражите све скупове података"
-      : locale === "sr-Latn"
+      : locale.startsWith("sr")
         ? "Istražite sve skupove podataka"
         : "Explore all datasets";
 
@@ -235,7 +246,7 @@ export default function TopicPage({ topic }: TopicPageProps) {
                       🎮{" "}
                       {locale === "sr-Cyrl"
                         ? "Интерактивни playground"
-                        : locale === "sr-Latn"
+                        : locale.startsWith("sr")
                           ? "Interaktivni playground"
                           : "Interactive Playground"}
                     </Button>
@@ -281,7 +292,7 @@ export default function TopicPage({ topic }: TopicPageProps) {
               <Typography variant="h6" sx={{ mb: 2 }}>
                 {locale === "sr-Cyrl"
                   ? "Желите да видите више скупова података?"
-                  : locale === "sr-Latn"
+                  : locale.startsWith("sr")
                     ? "Želite da vidite više skupova podataka?"
                     : "Want to see more datasets?"}
               </Typography>

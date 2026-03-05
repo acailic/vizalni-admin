@@ -341,7 +341,11 @@ const SelectDatasetStepInner = ({
                     ključne reči, a izbor dataset-a vodi direktno na portal.
                   </Trans>
                 </Typography>
-                <SearchDatasetControls browseState={browseState} cubes={[]} />
+                <Typography variant="body2" sx={{ mb: 2 }} color="grey.700">
+                  {locale === "en"
+                    ? "Search below queries data.gov.rs datasets directly."
+                    : "Pretraga ispod direktno pretražuje data.gov.rs datasete."}
+                </Typography>
                 <DataGovDatasetResults
                   results={dataGovSearch?.results ?? []}
                   fetching={dataGovSearch?.fetching ?? false}

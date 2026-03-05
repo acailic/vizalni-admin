@@ -108,21 +108,22 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
   const title = demoConfig.title[locale] || demoConfig.title.en;
   const description =
     demoConfig.description[locale] || demoConfig.description.en;
+  const normalizedTitle = title.startsWith(demoConfig.icon)
+    ? title.slice(demoConfig.icon.length).trimStart()
+    : title;
+  const displayTitle = `${demoConfig.icon} ${normalizedTitle}`;
 
   // Show skeleton while loading
   if (isLoading) {
     return (
-      <DemoLayout
-        title={`${demoConfig.icon} ${title}`}
-        description={description}
-      >
+      <DemoLayout title={displayTitle} description={description}>
         <DemoSkeleton variant="chart" chartHeight={400} />
       </DemoLayout>
     );
   }
 
   return (
-    <DemoLayout title={`${demoConfig.icon} ${title}`} description={description}>
+    <DemoLayout title={displayTitle} description={description}>
       <DemoErrorBoundary>
         {/* Coming Soon Banner */}
         <Card
@@ -150,12 +151,20 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
               sx={{ mb: 2, fontWeight: 600 }}
             />
 
-            <Box sx={{ fontSize: "3rem", mb: 1, opacity: 0.7 }}>
+            <Box
+              sx={{ fontSize: "3rem", mb: 1, opacity: 0.7 }}
+              role="img"
+              aria-label={
+                locale === "sr"
+                  ? "Ikonica demo kategorije"
+                  : "Demo category icon"
+              }
+            >
               {demoConfig.icon}
             </Box>
 
             <Typography variant="h5" sx={{ fontWeight: 700, mb: 1 }}>
-              {title}
+              {normalizedTitle}
             </Typography>
 
             <Typography
@@ -164,8 +173,8 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
               sx={{ maxWidth: 480, mb: 2 }}
             >
               {locale === "sr"
-                ? "Ova vizualizacija je u razvoju. Za kompletne interaktivne primere koristite galeriju, showcase ili playground."
-                : "This visualization is under development. For complete interactive examples, use the gallery, showcase, or playground."}
+                ? "Ova stranica je placeholder i još je u razvoju. Za funkcionalne interaktivne primere koristite galeriju, showcase ili playground."
+                : "This page is a placeholder and still under development. For fully interactive examples, use the gallery, showcase, or playground."}
             </Typography>
 
             {/* Tags */}
@@ -196,11 +205,19 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
             )}
 
             {/* Chart Type */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                flexWrap: "wrap",
+              }}
+            >
               <Typography
                 variant="body2"
                 color="text.secondary"
                 fontWeight={600}
+                component="span"
               >
                 {locale === "sr" ? "Tip grafikona" : "Chart type"}:
               </Typography>

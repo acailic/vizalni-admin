@@ -1,9 +1,8 @@
+import { Trans } from "@lingui/macro";
 import {
   Divider,
   Card,
-  Button,
   CircularProgress,
-  IconButton,
   Typography,
   Switch,
 } from "@mui/material";
@@ -15,7 +14,6 @@ import { SearchDatasetResultsCount } from "@/browse/ui/search-dataset-results-co
 import { SearchDatasetSortControl } from "@/browse/ui/search-dataset-sort-control";
 import { Flex } from "@/components/flex";
 import { SearchCubeResultOrder } from "@/graphql/resolver-types";
-import { Icon } from "@/icons";
 import { sleep } from "@/utils/sleep";
 import { useEvent } from "@/utils/use-event";
 
@@ -40,19 +38,6 @@ export const SearchDatasetControls = ({
   browseState: BrowseState;
   cubes: SearchCubeResult[];
 }) => {
-  const prefillEducation = useEvent(() => {
-    const educationTerms = [
-      "obrazovanje",
-      "ucenici",
-      "studenti",
-      "skola",
-      "nastava",
-      "osnovno obrazovanje",
-      "srednje obrazovanje",
-      "visoko obrazovanje",
-    ];
-    onSubmitSearch(educationTerms.join(" OR "));
-  });
   const isSearching = search !== "" && search !== undefined;
 
   const onToggleIncludeDrafts = useEvent(async () => {
@@ -75,35 +60,8 @@ export const SearchDatasetControls = ({
           <SearchDatasetResultsCount cubes={cubes} />
         )}
         <Flex sx={{ alignItems: "center", gap: 3 }}>
-          {/* Quick actions for common searches */}
-          <Flex sx={{ gap: 1, mr: 2 }}>
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => onSubmitSearch("recent")}
-            >
-              Recent
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={() => onSubmitSearch("popular")}
-            >
-              Popular
-            </Button>
-          </Flex>
-          <IconButton
-            size="small"
-            aria-label="Pretraži obrazovanje"
-            onClick={prefillEducation}
-            sx={{
-              color: isSearching ? "primary.main" : "monochrome.700",
-            }}
-          >
-            <Icon name="search" size={20} />
-          </IconButton>
           <Typography variant="body2" sx={{ mr: 1 }}>
-            Include drafts
+            <Trans id="dataset.includeDrafts">Include draft datasets</Trans>
           </Typography>
           <Switch
             checked={includeDrafts}

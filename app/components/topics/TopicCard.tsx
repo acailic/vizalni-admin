@@ -24,7 +24,9 @@ const iconMap: Record<string, React.ComponentType<SvgIconProps>> = {
 
 function getLocalizedText(text: LocalizedString, locale: string): string {
   if (locale === "sr-Cyrl") return text.sr;
-  if (locale === "sr-Latn") return text["sr-Latn"] || cyrillicToLatin(text.sr);
+  if (locale.startsWith("sr")) {
+    return text["sr-Latn"] || cyrillicToLatin(text.sr);
+  }
   return text.en;
 }
 
@@ -40,7 +42,7 @@ export function TopicCard({ topic, locale }: TopicCardProps) {
   const datasetLabel =
     locale === "sr-Cyrl"
       ? "скупова података"
-      : locale === "sr-Latn"
+      : locale.startsWith("sr")
         ? "skupova podataka"
         : "datasets";
 
