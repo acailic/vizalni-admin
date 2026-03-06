@@ -25,6 +25,10 @@ export { ColumnChart } from "./ColumnChart";
 export { PieChart } from "./PieChart";
 export { AreaChart } from "./AreaChart";
 export { MapChart } from "./MapChart";
+export type { LineChartProps } from "./LineChart";
+export type { BarChartProps } from "./BarChart";
+export type { ColumnChartProps } from "./ColumnChart";
+export type { PieChartProps } from "./PieChart";
 
 // Export zero-config chart components (shorter names, smart defaults)
 export { Line, LineChart as ZeroConfigLineChart } from "./Line";

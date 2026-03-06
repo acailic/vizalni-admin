@@ -35,6 +35,8 @@ export function ChartRenderer({
   config,
   height = 400,
 }: ChartRendererProps) {
+  const pieYAxis = Array.isArray(config.yAxis) ? config.yAxis[0] : config.yAxis;
+
   if (!data || data.length === 0) {
     return (
       <Box
@@ -82,7 +84,7 @@ export function ChartRenderer({
           data={data}
           config={{
             xAxis: config.xAxis,
-            yAxis: config.yAxis,
+            yAxis: pieYAxis,
             color: config.color,
           }}
           height={height}

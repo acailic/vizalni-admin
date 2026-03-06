@@ -64,8 +64,8 @@ export const Column = memo(
     yKey: yKeyProp,
     title,
     color,
-    showArea,
-    showCrosshair,
+    showArea: _showArea,
+    showCrosshair: _showCrosshair,
     ...restProps
   }: ColumnProps) => {
     let detection;
@@ -96,8 +96,6 @@ export const Column = memo(
       xAxis: xKey as string,
       yAxis: yKey as string | string[],
       color,
-      showArea,
-      showCrosshair,
       title,
       seriesKeys: isMultiSeries
         ? Array.isArray(yKey)

@@ -8,7 +8,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, type ComponentProps } from "react";
 
 import PerformanceInitializer from "@/components/app/PerformanceInitializer";
 import { AppErrorBoundary } from "@/components/app-error-boundary";
@@ -56,6 +56,10 @@ export default function App({
 }: AppProps<{ session: Session }>) {
   const { events: routerEvents, asPath, locale: routerLocale } = useRouter();
   const locale = parseLocaleString(routerLocale ?? "");
+  // Bridge duplicate @lingui/core type instances (hoisted + nested) in workspace builds.
+  const providerI18n = i18n as unknown as ComponentProps<
+    typeof I18nProvider
+  >["i18n"];
   const isVisualTesting = process.env.NEXT_PUBLIC_VISUAL_TESTING === "true";
   const canonicalPath =
     BASE_PATH && asPath.startsWith(BASE_PATH)
@@ -108,7 +112,7 @@ export default function App({
           <title key="title">{pageTitleByLocale[locale]}</title>
         </Head>
         <LocaleProvider value={locale}>
-          <I18nProvider i18n={i18n}>
+          <I18nProvider i18n={providerI18n}>
             <ThemeProvider theme={federalTheme.theme}>
               <CssBaseline />
               <Component {...pageProps} />
@@ -269,7 +273,7 @@ export default function App({
           refetchInterval={0}
         >
           <LocaleProvider value={locale}>
-            <I18nProvider i18n={i18n}>
+            <I18nProvider i18n={providerI18n}>
               <GraphqlProvider>
                 <ThemeProvider theme={federalTheme.theme}>
                   <EventEmitterProvider>
