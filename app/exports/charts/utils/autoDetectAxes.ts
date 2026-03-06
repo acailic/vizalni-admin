@@ -6,7 +6,7 @@
  */
 
 export interface DataPoint {
-  [key: string]: string | number | boolean | null | undefined;
+  [key: string]: string | number | null | undefined;
 }
 
 export interface DetectionResult {
