@@ -25,36 +25,38 @@ visualization, data availability, and working state
 
 ## Disabled Demo Pages
 
-| Page Name             | File                                 | Has Visualization    | Has Data              | Status                   |
-| --------------------- | ------------------------------------ | -------------------- | --------------------- | ------------------------ |
-| Air Quality           | `air-quality.tsx.disabled`           | ✅ Yes (multi-chart) | ✅ Yes (useDataGovRs) | 🔸 Disabled              |
-| Climate               | `climate.tsx.disabled`               | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Digital               | `digital.tsx.disabled`               | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Economy               | `economy.tsx.disabled`               | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Education Trends      | `education-trends.tsx.disabled`      | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Employment            | `employment.tsx.disabled`            | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Energy                | `energy.tsx.disabled`                | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Getting Started       | `getting-started.tsx.disabled`       | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Healthcare            | `healthcare.tsx.disabled`            | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| MapChart Demo         | `mapchart-demo.tsx.disabled`         | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Modern API            | `modern-api.tsx.disabled`            | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Pitch (old)           | `pitch.tsx.disabled`                 | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled (superseded) |
-| Playground V2         | `playground-v2.tsx.disabled`         | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Plugin System         | `plugin-system.tsx.disabled`         | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Presentation          | `presentation.tsx.disabled`          | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Presentation Enhanced | `presentation-enhanced.tsx.disabled` | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Public Health Crisis  | `public-health-crisis.tsx.disabled`  | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Regional Development  | `regional-development.tsx.disabled`  | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Social Media Sharing  | `social-media-sharing.tsx.disabled`  | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Transport             | `transport.tsx.disabled`             | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Category (dynamic)    | `[category].tsx.disabled`            | ❓ Unknown           | ❓ Unknown            | 🔸 Disabled              |
-| Lazy Demo Wrapper     | `_lazy-demo-wrapper.tsx.disabled`    | N/A (utility)        | N/A                   | 🔸 Disabled              |
+| Page Name             | File                                 | Has Visualization            | Has Data                            | Status                   |
+| --------------------- | ------------------------------------ | ---------------------------- | ----------------------------------- | ------------------------ |
+| Air Quality           | `air-quality.tsx.disabled`           | ✅ Yes (multi-chart)         | ✅ Yes (useDataGovRs)               | 🔸 Disabled              |
+| Climate               | `climate.tsx.disabled`               | ✅ Yes (Column/Line/Pie)     | ✅ Yes (serbia-climate static)      | 🔸 Disabled              |
+| Digital               | `digital.tsx.disabled`               | ✅ Yes (Bar/Column/Line)     | ✅ Yes (serbia-digital + LivePanel) | 🔸 Disabled              |
+| Economy               | `economy.tsx.disabled`               | ✅ Yes (Column/Line/Pie)     | ✅ Yes (serbia-economy + LivePanel) | 🔸 Disabled              |
+| Education Trends      | `education-trends.tsx.disabled`      | ✅ Yes (Column/Line)         | ✅ Yes (inline static + LivePanel)  | 🔸 Disabled              |
+| Employment            | `employment.tsx.disabled`            | ✅ Yes (LineChart)           | ✅ Yes (serbia-employment + Live)   | 🔸 Disabled              |
+| Energy                | `energy.tsx.disabled`                | ✅ Yes (Bar/Line/Pie)        | ✅ Yes (serbia-energy + LivePanel)  | 🔸 Disabled              |
+| Getting Started       | `getting-started.tsx.disabled`       | ✅ Yes (Bar/Column/Line/Pie) | ✅ Yes (sample inline)              | 🔸 Disabled              |
+| Healthcare            | `healthcare.tsx.disabled`            | ✅ Yes (LineChart)           | ✅ Yes (serbia-healthcare + Live)   | 🔸 Disabled              |
+| MapChart Demo         | `mapchart-demo.tsx.disabled`         | ✅ Yes (MapChart)            | ✅ Yes (inline GeoJSON)             | 🔸 Disabled              |
+| Modern API            | `modern-api.tsx.disabled`            | ✅ Yes (@vizualni/react)     | ✅ Yes (inline sample)              | 🔸 Disabled              |
+| Pitch (old)           | `pitch.tsx.disabled`                 | ✅ Yes (Column/Line)         | ✅ Yes (serbia-digital/energy)      | 🔸 Disabled (superseded) |
+| Playground V2         | `playground-v2.tsx.disabled`         | ✅ Yes (@vizualni/react)     | ✅ Yes (inline sample)              | 🔸 Disabled              |
+| Plugin System         | `plugin-system.tsx.disabled`         | ✅ Yes (RadarChart plugin)   | ✅ Yes (inline sample)              | 🔸 Disabled              |
+| Presentation          | `presentation.tsx.disabled`          | ✅ Yes (Column/Line)         | ✅ Yes (serbia-digital/economy)     | 🔸 Disabled              |
+| Presentation Enhanced | `presentation-enhanced.tsx.disabled` | ✅ Yes (Column/Line)         | ✅ Yes (serbia-digital/economy/ene) | 🔸 Disabled              |
+| Public Health Crisis  | `public-health-crisis.tsx.disabled`  | ✅ Yes (Column/Line)         | ✅ Yes (serbia-healthcare + Live)   | 🔸 Disabled              |
+| Regional Development  | `regional-development.tsx.disabled`  | ✅ Yes (Column/Bar)          | ✅ Yes (inline static + LivePanel)  | 🔸 Disabled              |
+| Social Media Sharing  | `social-media-sharing.tsx.disabled`  | ❌ No (placeholder)          | ❌ No (placeholder)                 | 🔸 Disabled (incomplete) |
+| Transport             | `transport.tsx.disabled`             | ✅ Yes (Bar/Line)            | ✅ Yes (serbia-traffic + LivePanel) | 🔸 Disabled              |
+| Category (dynamic)    | `[category].tsx.disabled`            | ✅ Yes (ChartVisualizer)     | ✅ Yes (useDataGovRs + fallbacks)   | 🔸 Disabled              |
+| Lazy Demo Wrapper     | `_lazy-demo-wrapper.tsx.disabled`    | N/A (utility)                | N/A                                 | 🔸 Disabled              |
 
 ### Summary: Disabled Pages
 
 - **Total:** 22 files
-- **Verified with Visualization:** 1 (Air Quality)
-- **Needs Audit:** 20 (marked with ❓)
+- **With Visualization:** 20 (all complete except Social Media Sharing)
+- **With Data:** 20 (all complete except Social Media Sharing)
+- **Incomplete/Placeholder:** 1 (Social Media Sharing)
+- **Superseded:** 1 (old Pitch - new version active)
 
 ---
 
@@ -73,13 +75,14 @@ visualization, data availability, and working state
 
 ## Next Steps
 
-1. **Audit disabled pages** - Enable each `.disabled` file temporarily to verify
-   visualization and data status
+1. ~~**Audit disabled pages**~~ - ✅ Complete (all 22 files reviewed)
 2. **Test active pages** - Run E2E tests to confirm all active pages render
    correctly
-3. **Update matrix** - Fill in ❓ entries as pages are audited
-4. **Prioritize re-enabling** - Based on business value, determine which
+3. **Prioritize re-enabling** - Based on business value, determine which
    disabled pages to restore
+4. **Fix Social Media Sharing** - Placeholder needs implementation
+5. **Consider consolidating** - Old Pitch + new Pitch, Presentation +
+   Presentation Enhanced
 
 ---
 
