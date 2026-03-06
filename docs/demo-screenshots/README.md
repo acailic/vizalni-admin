@@ -1,46 +1,65 @@
 # Demo Screenshots
 
-Screenshots of all working demo pages with charts, captured from the live site.
+Screenshots of demo pages captured from the live site.
 
 **Generated:** 2026-03-06 **Source:**
 https://acailic.github.io/vizualni-admin/demos/
 
-## Active Pages (5)
+## Live Site Status (E2E Verified)
 
-| Screenshot         | Route                 | Description                  |
-| ------------------ | --------------------- | ---------------------------- |
-| `demos-index.png`  | `/demos`              | Main demo gallery index      |
-| `playground.png`   | `/demos/playground`   | Interactive chart playground |
-| `showcase.png`     | `/demos/showcase`     | Featured charts showcase     |
-| `demographics.png` | `/demos/demographics` | Demographics demo page       |
-| `pitch.png`        | `/demos/pitch`        | Pitch presentation page      |
+| Page         | Screenshot         | Route                 | Chart Status   |
+| ------------ | ------------------ | --------------------- | -------------- |
+| Demos Index  | `demos-index.png`  | `/demos`              | N/A (cards)    |
+| Playground   | `playground.png`   | `/demos/playground`   | ✅ Working     |
+| Showcase     | `showcase.png`     | `/demos/showcase`     | N/A (cards)    |
+| Demographics | `demographics.png` | `/demos/demographics` | ⚠️ Placeholder |
+| Pitch        | `pitch.png`        | `/demos/pitch`        | N/A (cards)    |
 
-## Dynamic Demo Pages (20)
+## Dynamic Demo Pages
 
 All accessible via `/demos/{demoId}` route:
 
-| Screenshot                | Demo ID        | Has Chart |
-| ------------------------- | -------------- | --------- |
-| `demo-air-quality.png`    | air-quality    | Yes       |
-| `demo-agriculture.png`    | agriculture    | Yes       |
-| `demo-budget.png`         | budget         | Yes       |
-| `demo-climate.png`        | climate        | Yes       |
-| `demo-culture.png`        | culture        | Yes       |
-| `demo-demographics.png`   | demographics   | Yes       |
-| `demo-digital.png`        | digital        | Yes       |
-| `demo-economy.png`        | economy        | Yes       |
-| `demo-education.png`      | education      | Yes       |
-| `demo-employment.png`     | employment     | Yes       |
-| `demo-energy.png`         | energy         | Yes       |
-| `demo-environment.png`    | environment    | Yes       |
-| `demo-health.png`         | health         | Yes       |
-| `demo-healthcare.png`     | healthcare     | Yes       |
-| `demo-infrastructure.png` | infrastructure | Yes       |
-| `demo-modern-api.png`     | modern-api     | Yes       |
-| `demo-playground-v2.png`  | playground-v2  | Yes       |
-| `demo-presentation.png`   | presentation   | Yes       |
-| `demo-tourism.png`        | tourism        | Yes       |
-| `demo-transport.png`      | transport      | Yes       |
+| Screenshot                | Demo ID        | Chart Status   |
+| ------------------------- | -------------- | -------------- |
+| `demo-air-quality.png`    | air-quality    | ⚠️ Placeholder |
+| `demo-agriculture.png`    | agriculture    | ⚠️ Placeholder |
+| `demo-budget.png`         | budget         | ⚠️ Placeholder |
+| `demo-climate.png`        | climate        | ⚠️ Placeholder |
+| `demo-culture.png`        | culture        | ⚠️ Placeholder |
+| `demo-demographics.png`   | demographics   | ⚠️ Placeholder |
+| `demo-digital.png`        | digital        | ⚠️ Placeholder |
+| `demo-economy.png`        | economy        | ⚠️ Placeholder |
+| `demo-education.png`      | education      | ⚠️ Placeholder |
+| `demo-employment.png`     | employment     | ⚠️ Placeholder |
+| `demo-energy.png`         | energy         | ⚠️ Placeholder |
+| `demo-environment.png`    | environment    | ⚠️ Placeholder |
+| `demo-health.png`         | health         | ⚠️ Placeholder |
+| `demo-healthcare.png`     | healthcare     | ⚠️ Placeholder |
+| `demo-infrastructure.png` | infrastructure | ⚠️ Placeholder |
+| `demo-modern-api.png`     | modern-api     | ⚠️ Placeholder |
+| `demo-playground-v2.png`  | playground-v2  | ⚠️ Placeholder |
+| `demo-presentation.png`   | presentation   | ⚠️ Placeholder |
+| `demo-tourism.png`        | tourism        | ⚠️ Placeholder |
+| `demo-transport.png`      | transport      | ⚠️ Placeholder |
+
+## Status Legend
+
+| Status         | Meaning                                           |
+| -------------- | ------------------------------------------------- |
+| ✅ Working     | Chart renders correctly with D3 SVG elements      |
+| ⚠️ Placeholder | Shows "Vizualizacija će biti prikazana ovde"      |
+| N/A (cards)    | Page uses card layout, no actual charts by design |
+
+## Notes
+
+**Placeholder Issue:** Dynamic demo pages show placeholder messages on the live
+GitHub Pages site that don't exist in the current source code. The
+`ChartVisualizer` component in the source code shows different messages ("Nema
+dostupnih podataka za vizualizaciju"). This suggests the deployed version is
+outdated.
+
+**Solution:** Redeploy the current source code to GitHub Pages to get working
+charts on all dynamic demo pages.
 
 ## Regenerating Screenshots
 

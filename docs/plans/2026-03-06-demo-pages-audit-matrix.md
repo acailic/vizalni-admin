@@ -3,13 +3,31 @@
 **Generated:** 2026-03-06 **Purpose:** Track status of all demo pages -
 visualization, data availability, and working state
 
-## Active Demo Pages
+**Last Verified:** 2026-03-06 (E2E tests on live GitHub Pages)
+
+## Live Site Status (GitHub Pages)
+
+| Page         | Route                 | Chart Renders  | Notes                                        |
+| ------------ | --------------------- | -------------- | -------------------------------------------- |
+| Playground   | `/demos/playground`   | ✅ Yes         | D3 LineChart with SVG, paths, axes           |
+| Showcase     | `/demos/showcase`     | N/A (cards)    | Card gallery by design, no actual charts     |
+| Demographics | `/demos/demographics` | ⚠️ Placeholder | Shows "Vizualizacija će biti prikazana ovde" |
+| Air Quality  | `/demos/air-quality`  | ⚠️ Placeholder | Shows "Vizualizacija će biti prikazana ovde" |
+| Economy      | `/demos/economy`      | ⚠️ Placeholder | Shows "Vizualizacija će biti prikazana ovde" |
+
+**Finding:** Dynamic demo pages show placeholder messages on the live site that
+don't exist in the current source code. This suggests the deployed version is
+outdated or from a different branch.
+
+---
+
+## Active Demo Pages (Source Code)
 
 | Page Name    | Route                 | Has Visualization                            | Has Data                            | Status     |
 | ------------ | --------------------- | -------------------------------------------- | ----------------------------------- | ---------- |
 | Demo Index   | `/demos`              | ❌ No (cards/stats only)                     | ✅ Yes (DEMO_CONFIGS stats)         | ✅ Working |
 | Playground   | `/demos/playground`   | ✅ Yes (ChartRenderer)                       | ✅ Yes (SAMPLE_DATASETS)            | ✅ Working |
-| Showcase     | `/demos/showcase`     | ✅ Yes (FeaturedChartCard)                   | ✅ Yes (FEATURED_CHARTS)            | ✅ Working |
+| Showcase     | `/demos/showcase`     | ❌ No (FeaturedChartCard - icons only)       | ✅ Yes (FEATURED_CHARTS)            | ✅ Working |
 | Demographics | `/demos/demographics` | ✅ Yes (PopulationPyramid, PopulationTrends) | ✅ Yes (serbia-demographics static) | ✅ Working |
 | Dynamic Demo | `/demos/[demoId]`     | ✅ Yes (ChartVisualizer)                     | ✅ Yes (useDataGovRs + fallbacks)   | ✅ Working |
 | Pitch        | `/demos/pitch`        | ❌ No (cards only)                           | ✅ Yes (DEMO_CONFIGS)               | ✅ Working |
@@ -17,9 +35,9 @@ visualization, data availability, and working state
 ### Summary: Active Pages
 
 - **Total:** 6 pages
-- **With Visualization:** 4
+- **With Visualization:** 4 (Playground, Demographics, Dynamic Demo)
 - **With Data:** 6
-- **All Working:** 6
+- **All Working:** 6 (in source code)
 
 ---
 
@@ -62,27 +80,46 @@ visualization, data availability, and working state
 
 ## Legend
 
-| Symbol      | Meaning                        |
-| ----------- | ------------------------------ |
-| ✅ Yes      | Confirmed working/available    |
-| ❌ No       | Confirmed not present          |
-| ❓ Unknown  | Needs manual verification      |
-| 🔸 Disabled | File has `.disabled` extension |
-| ⚠️ Partial  | Partially working              |
-| N/A         | Not applicable                 |
+| Symbol      | Meaning                                 |
+| ----------- | --------------------------------------- |
+| ✅ Yes      | Confirmed working/available             |
+| ❌ No       | Confirmed not present                   |
+| ❓ Unknown  | Needs manual verification               |
+| 🔸 Disabled | File has `.disabled` extension          |
+| ⚠️ Partial  | Partially working / outdated deployment |
+| N/A         | Not applicable                          |
 
 ---
 
 ## Next Steps
 
 1. ~~**Audit disabled pages**~~ - ✅ Complete (all 22 files reviewed)
-2. **Test active pages** - Run E2E tests to confirm all active pages render
-   correctly
-3. **Prioritize re-enabling** - Based on business value, determine which
+2. ~~**Test active pages**~~ - ✅ Complete (E2E tests on live site)
+3. **Redeploy to GitHub Pages** - Deploy current source code to fix placeholder
+   issue on dynamic demos
+4. **Prioritize re-enabling** - Based on business value, determine which
    disabled pages to restore
-4. **Fix Social Media Sharing** - Placeholder needs implementation
-5. **Consider consolidating** - Old Pitch + new Pitch, Presentation +
+5. **Fix Social Media Sharing** - Placeholder needs implementation
+6. **Consider consolidating** - Old Pitch + new Pitch, Presentation +
    Presentation Enhanced
+
+---
+
+## Technical Details
+
+### Chart Components Used
+
+- **Playground**: Uses `@/exports/charts` with dynamic imports (`ssr: false`)
+- **Dynamic Demos**: Uses `@/components/demos/charts/ChartVisualizer`
+- **Fallback Data**: `DEMO_FALLBACKS` in `app/lib/demos/fallbacks.ts`
+
+### E2E Test Findings
+
+```
+Playground charts: [{"id":"line-chart","width":"799.328125","height":"400","hasPath":true,"hasAxis":true}]
+Showcase: No chart-sized SVGs (expected - card gallery)
+Demographics/Air-Quality/Economy: Placeholder message on live site
+```
 
 ---
 
@@ -92,3 +129,5 @@ visualization, data availability, and working state
 - Demo fallbacks: `app/lib/demos/fallbacks.ts`
 - Validated datasets: `app/lib/demos/validated-datasets.ts`
 - E2E tests: `e2e/public-pages.live.spec.ts`
+- Chart exports: `app/exports/charts/index.ts`
+- Demo charts: `app/components/demos/charts/`
