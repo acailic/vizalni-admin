@@ -1,6 +1,7 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { GetStaticProps } from "next";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 import { AppLayout } from "@/components/layout";
 import { useLocale } from "@/locales/use-locale";
@@ -12,55 +13,35 @@ interface BrowsePageProps {
 
 export function DatasetBrowser({ hideHeader = false }: BrowsePageProps) {
   const locale = useLocale();
-  const isCyrillic = locale === "sr-Cyrl";
-  const isSerbian = locale.startsWith("sr");
+  const router = useRouter();
 
-  // Keep static-export environments on the explanatory fallback view on both
-  // server and client. Attempting to hydrate the full browse flow on GitHub
-  // Pages leads to runtime failures because API routes are unavailable there.
+  // Redirect to showcase in static export mode
+  useEffect(() => {
+    if (isStaticExportMode) {
+      router.replace("/demos/showcase");
+    }
+  }, [router]);
+
+  // Show redirect message in static export mode
   if (isStaticExportMode) {
     return (
       <AppLayout hideHeader={hideHeader}>
         <Container sx={{ py: 6 }}>
-          <Box sx={{ maxWidth: 760 }}>
+          <Box sx={{ maxWidth: 760, mx: "auto", textAlign: "center" }}>
             <Typography variant="h4" gutterBottom>
-              {isCyrillic
-                ? "Ograničenje statičkog izdanja"
-                : isSerbian
-                  ? "Ograničenje statičkog izdanja"
-                  : "Static build limitation"}
+              {locale === "sr-Cyrl"
+                ? "Preusmeravanje..."
+                : locale.startsWith("sr")
+                  ? "Preusmeravanje..."
+                  : "Redirecting..."}
             </Typography>
-            <Typography color="text.secondary" sx={{ mb: 3 }}>
-              {isCyrillic
-                ? "Pregled dataset-a zahteva runtime API pozive. GitHub Pages izdanje zato ne može da učita puni browser, ali možete odmah da otvorite showcase i playground."
-                : isSerbian
-                  ? "Pregled dataseta zahteva runtime API pozive. GitHub Pages izdanje zato ne može da učita puni browser, ali možete odmah da otvorite showcase i playground."
-                  : "Browsing datasets requires runtime API calls. The GitHub Pages build cannot load the full browser, but you can still use the showcase and playground."}
+            <Typography color="text.secondary">
+              {locale === "sr-Cyrl"
+                ? "Preusmeravamo vas na galeriju demo primera..."
+                : locale.startsWith("sr")
+                  ? "Preusmeravamo vas na galeriju demo primera..."
+                  : "Redirecting to demo gallery..."}
             </Typography>
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <Button
-                component={Link}
-                href="/demos/showcase"
-                variant="contained"
-              >
-                {isCyrillic
-                  ? "Pogledaj istaknute demoe"
-                  : isSerbian
-                    ? "Pogledaj istaknute demoe"
-                    : "View featured demos"}
-              </Button>
-              <Button
-                component={Link}
-                href="/demos/playground"
-                variant="outlined"
-              >
-                {isCyrillic
-                  ? "Otvorite playground"
-                  : isSerbian
-                    ? "Otvorite playground"
-                    : "Open playground"}
-              </Button>
-            </Stack>
           </Box>
         </Container>
       </AppLayout>
