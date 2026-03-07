@@ -26,6 +26,12 @@ export function DemoLayout({
 }: DemoLayoutProps) {
   const locale = useDemoLocale();
   const dateLocale = locale === "sr" ? "sr-RS" : "en-US";
+  const backLabel =
+    locale === "sr"
+      ? "Nazad na demo galeriju"
+      : locale === "sr-Cyrl"
+        ? "Назад на демо галерију"
+        : "Back to demo gallery";
 
   const formattedUpdatedAt = datasetInfo?.updatedAt
     ? new Date(datasetInfo.updatedAt).toLocaleDateString(dateLocale, {
@@ -66,7 +72,7 @@ export function DemoLayout({
                   pl: 0,
                 }}
               >
-                <Trans id="demos.layout.back" message="Back to demo gallery" />
+                {backLabel}
               </Button>
             </Box>
           )}

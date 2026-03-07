@@ -470,13 +470,14 @@ describe("DataGovRsClient", () => {
       const fastClient = new DataGovRsClient({ timeout: 100 });
       const pending = fastClient.searchDatasets();
 
-      await vi.runAllTimersAsync();
-
-      await expect(pending).rejects.toMatchObject({
+      // Attach error handler before advancing timers to avoid unhandled rejection
+      const assertion = expect(pending).rejects.toMatchObject({
         message: "Request timeout",
         status: 408,
         isRetryable: true,
       });
+      await vi.runAllTimersAsync();
+      await assertion;
     });
 
     it("should use AbortController to abort request on timeout", async () => {
@@ -498,12 +499,13 @@ describe("DataGovRsClient", () => {
       const fastClient = new DataGovRsClient({ timeout: 100 });
       const pending = fastClient.searchDatasets();
 
-      await vi.runAllTimersAsync();
-
-      await expect(pending).rejects.toMatchObject({
+      // Attach error handler before advancing timers to avoid unhandled rejection
+      const assertion = expect(pending).rejects.toMatchObject({
         message: "Request timeout",
         status: 408,
       });
+      await vi.runAllTimersAsync();
+      await assertion;
 
       expect(capturedSignal).not.toBeNull();
       expect(capturedSignal!.aborted).toBe(true);
@@ -673,11 +675,13 @@ describe("DataGovRsClient", () => {
       });
 
       const pending = client.getDataset("invalid");
-      await vi.runAllTimersAsync();
-      await expect(pending).rejects.toMatchObject({
+      // Attach error handler before advancing timers to avoid unhandled rejection
+      const assertion = expect(pending).rejects.toMatchObject({
         message: "API request failed: Not Found",
         status: 404,
       });
+      await vi.runAllTimersAsync();
+      await assertion;
 
       expect(attemptCount).toBe(1);
     });
@@ -695,11 +699,13 @@ describe("DataGovRsClient", () => {
       });
 
       const pending = client.searchDatasets();
-      await vi.runAllTimersAsync();
-      await expect(pending).rejects.toMatchObject({
+      // Attach error handler before advancing timers to avoid unhandled rejection
+      const assertion = expect(pending).rejects.toMatchObject({
         message: "API request failed: Bad Request",
         status: 400,
       });
+      await vi.runAllTimersAsync();
+      await assertion;
 
       expect(attemptCount).toBe(1);
     });
@@ -721,11 +727,13 @@ describe("DataGovRsClient", () => {
       });
 
       const pending = clientWithMaxRetries.searchDatasets();
-      await vi.runAllTimersAsync();
-      await expect(pending).rejects.toMatchObject({
+      // Attach error handler before advancing timers to avoid unhandled rejection
+      const assertion = expect(pending).rejects.toMatchObject({
         message: "API request failed: Internal Server Error",
         status: 500,
       });
+      await vi.runAllTimersAsync();
+      await assertion;
 
       expect(attemptCount).toBe(3); // Initial attempt + 2 retries
     }, 10000);

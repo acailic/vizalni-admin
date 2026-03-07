@@ -406,31 +406,45 @@ describe("Package Export Validation", () => {
     });
   });
 
-  describe("Preconstruct Configuration", () => {
-    it("should have preconstruct entrypoints configured", () => {
+  describe("Build Entry Configuration", () => {
+    it("should keep preconstruct compatibility flags configured", () => {
       const packageJsonPath = join(appDir, "package.json");
       const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
       expect(packageJson.preconstruct).toBeDefined();
-      expect(packageJson.preconstruct.entrypoints).toBeDefined();
-      expect(Array.isArray(packageJson.preconstruct.entrypoints)).toBe(true);
     });
 
-    it("should have all expected entrypoints in preconstruct config", () => {
-      const packageJsonPath = join(appDir, "package.json");
-      const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+    it("should have all expected entrypoints in tsup config", () => {
+      const tsupConfigPath = join(appDir, "tsup.config.ts");
+      const tsupConfig = readFileSync(tsupConfigPath, "utf-8");
 
-      const entrypoints = packageJson.preconstruct.entrypoints;
-
-      // Should have main entrypoint
-      expect(entrypoints).toContain("./index.ts");
-
-      // Should have subpath entrypoints
-      expect(entrypoints).toContain("./exports/core.ts");
-      expect(entrypoints).toContain("./exports/client.ts");
-      expect(entrypoints).toContain("./exports/charts/index.ts");
-      expect(entrypoints).toContain("./exports/hooks/index.ts");
-      expect(entrypoints).toContain("./exports/utils/index.ts");
+      expect(tsupConfig).toContain('index: "index.ts"');
+      expect(tsupConfig).toContain('core: "exports/core.ts"');
+      expect(tsupConfig).toContain('client: "exports/client.ts"');
+      expect(tsupConfig).toContain('"charts/index": "exports/charts/index.ts"');
+      expect(tsupConfig).toContain(
+        '"charts/LineChart": "exports/charts/LineChart.tsx"'
+      );
+      expect(tsupConfig).toContain(
+        '"charts/BarChart": "exports/charts/BarChart.tsx"'
+      );
+      expect(tsupConfig).toContain(
+        '"charts/ColumnChart": "exports/charts/ColumnChart.tsx"'
+      );
+      expect(tsupConfig).toContain(
+        '"charts/PieChart": "exports/charts/PieChart.tsx"'
+      );
+      expect(tsupConfig).toContain(
+        '"charts/AreaChart": "exports/charts/AreaChart.tsx"'
+      );
+      expect(tsupConfig).toContain(
+        '"charts/MapChart": "exports/charts/MapChart.tsx"'
+      );
+      expect(tsupConfig).toContain('"hooks/index": "exports/hooks/index.ts"');
+      expect(tsupConfig).toContain('"utils/index": "exports/utils/index.ts"');
+      expect(tsupConfig).toContain(
+        '"connectors/index": "exports/connectors/index.ts"'
+      );
     });
   });
 
@@ -461,41 +475,55 @@ describe("Package Export Validation", () => {
   });
 
   describe("Export Consistency", () => {
-    it("should have consistent exports across package.json and preconstruct", () => {
+    it("should have consistent exports across package.json and tsup", () => {
       const packageJsonPath = join(appDir, "package.json");
       const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+      const tsupConfigPath = join(appDir, "tsup.config.ts");
+      const tsupConfig = readFileSync(tsupConfigPath, "utf-8");
 
       const exports = Object.keys(packageJson.exports).filter(
         (key) => key !== "."
       );
-      const entrypoints = packageJson.preconstruct.entrypoints.filter(
-        (ep: string) => ep !== "./index.ts"
+      expect(exports.length).toBe(12);
+
+      expect(tsupConfig).toContain('core: "exports/core.ts"');
+      expect(packageJson.exports["./core"]).toBeDefined();
+      expect(tsupConfig).toContain('client: "exports/client.ts"');
+      expect(packageJson.exports["./client"]).toBeDefined();
+      expect(tsupConfig).toContain('"charts/index": "exports/charts/index.ts"');
+      expect(packageJson.exports["./charts"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/LineChart": "exports/charts/LineChart.tsx"'
       );
-
-      // Should have same number of subpaths (excluding main)
-      expect(exports.length).toBe(entrypoints.length);
-
-      // Map preconstruct entrypoints to export keys
-      const entrypointToExportMap: Record<string, string> = {
-        "./exports/core.ts": "./core",
-        "./exports/client.ts": "./client",
-        "./exports/charts/index.ts": "./charts",
-        "./exports/charts/LineChart.tsx": "./charts/LineChart",
-        "./exports/charts/BarChart.tsx": "./charts/BarChart",
-        "./exports/charts/ColumnChart.tsx": "./charts/ColumnChart",
-        "./exports/charts/PieChart.tsx": "./charts/PieChart",
-        "./exports/charts/AreaChart.tsx": "./charts/AreaChart",
-        "./exports/charts/MapChart.tsx": "./charts/MapChart",
-        "./exports/hooks/index.ts": "./hooks",
-        "./exports/utils/index.ts": "./utils",
-        "./exports/connectors/index.ts": "./connectors",
-      };
-
-      // All preconstruct entrypoints should have corresponding exports
-      for (const entrypoint of entrypoints) {
-        const exportKey = entrypointToExportMap[entrypoint] || entrypoint;
-        expect(packageJson.exports[exportKey]).toBeDefined();
-      }
+      expect(packageJson.exports["./charts/LineChart"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/BarChart": "exports/charts/BarChart.tsx"'
+      );
+      expect(packageJson.exports["./charts/BarChart"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/ColumnChart": "exports/charts/ColumnChart.tsx"'
+      );
+      expect(packageJson.exports["./charts/ColumnChart"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/PieChart": "exports/charts/PieChart.tsx"'
+      );
+      expect(packageJson.exports["./charts/PieChart"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/AreaChart": "exports/charts/AreaChart.tsx"'
+      );
+      expect(packageJson.exports["./charts/AreaChart"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"charts/MapChart": "exports/charts/MapChart.tsx"'
+      );
+      expect(packageJson.exports["./charts/MapChart"]).toBeDefined();
+      expect(tsupConfig).toContain('"hooks/index": "exports/hooks/index.ts"');
+      expect(packageJson.exports["./hooks"]).toBeDefined();
+      expect(tsupConfig).toContain('"utils/index": "exports/utils/index.ts"');
+      expect(packageJson.exports["./utils"]).toBeDefined();
+      expect(tsupConfig).toContain(
+        '"connectors/index": "exports/connectors/index.ts"'
+      );
+      expect(packageJson.exports["./connectors"]).toBeDefined();
     });
 
     it("should have valid file extensions in exports", () => {

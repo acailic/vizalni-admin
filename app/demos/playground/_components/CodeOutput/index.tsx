@@ -2,6 +2,8 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import { useState } from "react";
 
+import { useLocale } from "@/locales/use-locale";
+
 import type { ChartType, Datum, PlaygroundConfig } from "../../_types";
 
 interface GenerateCodeOptions {
@@ -66,6 +68,8 @@ interface CodeOutputProps {
 }
 
 export function CodeOutput({ chartType, data, config }: CodeOutputProps) {
+  const locale = useLocale();
+  const isSerbian = locale.startsWith("sr");
   const [copied, setCopied] = useState(false);
   const code = generateCode({ chartType, data, config });
 
@@ -86,9 +90,19 @@ export function CodeOutput({ chartType, data, config }: CodeOutputProps) {
         }}
       >
         <Typography variant="subtitle2" fontWeight={600}>
-          Generated Code
+          {isSerbian ? "Generisani kod" : "Generated Code"}
         </Typography>
-        <Tooltip title={copied ? "Copied!" : "Copy code"}>
+        <Tooltip
+          title={
+            copied
+              ? isSerbian
+                ? "Kopirano!"
+                : "Copied!"
+              : isSerbian
+                ? "Kopiraj kod"
+                : "Copy code"
+          }
+        >
           <IconButton onClick={handleCopy} size="small">
             <ContentCopyIcon fontSize="small" />
           </IconButton>

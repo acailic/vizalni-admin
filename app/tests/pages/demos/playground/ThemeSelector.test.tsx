@@ -7,15 +7,15 @@ import { ThemeSelector } from "@/demos/playground/_components/ConfigPanel/ThemeS
 describe("ThemeSelector", () => {
   it("should render all theme options", () => {
     render(<ThemeSelector value="indigo" onChange={vi.fn()} />);
-    expect(screen.getByText("Indigo")).toBeInTheDocument();
-    expect(screen.getByText("Emerald")).toBeInTheDocument();
-    expect(screen.getByText("Amber")).toBeInTheDocument();
+    expect(screen.getByLabelText("Indigo")).toBeInTheDocument();
+    expect(screen.getByLabelText("Emerald")).toBeInTheDocument();
+    expect(screen.getByLabelText("Amber")).toBeInTheDocument();
   });
 
   it("should call onChange when theme clicked", () => {
     const onChange = vi.fn();
     render(<ThemeSelector value="indigo" onChange={onChange} />);
-    fireEvent.click(screen.getByText("Emerald"));
+    fireEvent.click(screen.getByLabelText("Emerald"));
     expect(onChange).toHaveBeenCalledWith("emerald");
   });
 });

@@ -1,169 +1,150 @@
-/**
- * Tests for ChartWithFilters component
- * Tests chart rendering, filter interactions, and state management
- */
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "@testing-library/jest-dom/vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import React from "react";
-import { CombinedError } from "urql";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import React, { createRef } from "react";
+import { describe, expect, it, vi } from "vitest";
+
+const mockUseQueryFilters = vi.fn(() => []);
+const mockUseSyncInteractiveFilters = vi.fn();
+
+vi.mock("next/dynamic", () => ({
+  __esModule: true,
+  default: () => {
+    return function MockVisualization(props: any) {
+      return (
+        <div data-testid="chart">
+          <div data-testid="chart-type">{props.chartConfig.chartType}</div>
+          <div data-testid="data-source-type">{props.dataSource.type}</div>
+          <div data-testid="filters-count">
+            {props.observationQueryFilters.length}
+          </div>
+        </div>
+      );
+    };
+  },
+}));
+
+vi.mock("@/charts/shared/chart-helpers", () => ({
+  useQueryFilters: (...args: any[]) => mockUseQueryFilters(...args),
+}));
+
+vi.mock("@/charts/shared/use-sync-interactive-filters", () => ({
+  useSyncInteractiveFilters: (...args: any[]) =>
+    mockUseSyncInteractiveFilters(...args),
+}));
+
+vi.mock("@/charts/shared/use-size", () => ({
+  Observer: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="observer">{children}</div>
+  ),
+}));
 
 import { ChartWithFilters } from "./chart-with-filters";
 
-// Mock chart components
-vi.mock("@/charts", () => ({
-  Chart: ({ config, data }: any) => (
-    <div data-testid="chart">
-      <div data-testid="chart-type">{config.type}</div>
-      <div data-testid="chart-data-count">{data?.length || 0}</div>
-    </div>
-  ),
-}));
-
-// Mock filter components
-vi.mock("@/components/dashboard-interactive-filters", () => ({
-  DashboardInteractiveFilters: ({
-    filters,
-    onFiltersChange,
-    availableDimensions,
-  }: any) => (
-    <div data-testid="interactive-filters">
-      {availableDimensions?.map((dim: string) => (
-        <div key={dim} data-testid={`filter-${dim}`}>
-          <select
-            onChange={(e) =>
-              onFiltersChange({
-                ...filters,
-                [dim]: e.target.value,
-              })
-            }
-            data-testid={`select-${dim}`}
-          >
-            <option value="">All</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-          </select>
-        </div>
-      ))}
-    </div>
-  ),
-}));
-
-// Mock API hooks with explicit function declarations
-const mockUseDataCubesObservationsQuery = vi.fn(() => ({
-  data: {
-    dataCubesObservations: {
-      data: [
-        { year: 2020, value: 100, region: "Beograd" },
-        { year: 2021, value: 150, region: "Beograd" },
-        { year: 2020, value: 80, region: "Novi Sad" },
-        { year: 2021, value: 120, region: "Novi Sad" },
-      ],
+const baseChartConfig = {
+  chartType: "bar",
+  annotations: [],
+  interactiveFiltersConfig: {
+    legend: { active: false, componentId: "" },
+    timeRange: {
+      active: false,
+      componentId: "",
+      presets: { type: "range", from: "", to: "" },
     },
-  },
-  fetching: false,
-  error: null,
-}));
-
-const mockUseDataCubesComponentsQuery = vi.fn(() => ({
-  data: {
-    dataCubesComponents: {
-      dimensions: [
-        { name: "year", label: "Godina" },
-        { name: "region", label: "Region" },
-      ],
-      measures: [{ name: "value", label: "Vrednost" }],
+    dataFilters: {
+      active: false,
+      componentIds: [],
+      defaultValueOverrides: {},
+      filterTypes: {},
     },
+    calculation: { active: false, type: "identity" },
   },
-  fetching: false,
-  error: null,
-}));
+  cubes: [],
+  fields: {},
+} as any;
 
-vi.mock("@/graphql/hooks", () => ({
-  useDataCubesObservationsQuery: mockUseDataCubesObservationsQuery,
-  useDataCubesComponentsQuery: mockUseDataCubesComponentsQuery,
-}));
+const baseDataSource = {
+  type: "sparql",
+  url: "https://example.test/query",
+} as any;
 
 describe("ChartWithFilters", () => {
-  let queryClient: QueryClient;
-  let user: ReturnType<typeof userEvent.setup>;
+  it("renders the selected chart visualization", () => {
+    render(
+      <ChartWithFilters
+        chartConfig={baseChartConfig}
+        dataSource={baseDataSource}
+      />
+    );
 
-  beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false, gcTime: 0 },
-        mutations: { retry: false },
-      },
+    expect(screen.getByTestId("observer")).toBeInTheDocument();
+    expect(screen.getByTestId("chart")).toBeInTheDocument();
+    expect(screen.getByTestId("chart-type")).toHaveTextContent("bar");
+    expect(screen.getByTestId("data-source-type")).toHaveTextContent("sparql");
+  });
+
+  it("passes computed observation filters to the visualization", () => {
+    mockUseQueryFilters.mockReturnValueOnce([{ iri: "foo" }, { iri: "bar" }]);
+
+    render(
+      <ChartWithFilters
+        chartConfig={baseChartConfig}
+        dataSource={baseDataSource}
+        componentIds={["dimension-1"]}
+      />
+    );
+
+    expect(mockUseQueryFilters).toHaveBeenCalledWith({
+      chartConfig: baseChartConfig,
+      dashboardFilters: undefined,
+      componentIds: ["dimension-1"],
     });
-    user = userEvent.setup();
+    expect(screen.getByTestId("filters-count")).toHaveTextContent("2");
   });
 
-  const renderWithProviders = (component: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    );
-  };
+  it("syncs interactive filters with the provided dashboard filters", () => {
+    const dashboardFilters = {
+      dataFilters: {
+        componentIds: [],
+        filters: {},
+      },
+    } as any;
 
-  it("should render chart and filters", () => {
-    renderWithProviders(<ChartWithFilters cubeIri="test-cube" />);
-
-    expect(screen.getByTestId("chart")).toBeInTheDocument();
-    expect(screen.getByTestId("interactive-filters")).toBeInTheDocument();
-  });
-
-  it("should display chart data count", () => {
-    renderWithProviders(<ChartWithFilters cubeIri="test-cube" />);
-
-    expect(screen.getByTestId("chart-data-count")).toHaveTextContent("4");
-  });
-
-  it("should render available dimension filters", () => {
-    renderWithProviders(<ChartWithFilters cubeIri="test-cube" />);
-
-    expect(screen.getByTestId("filter-year")).toBeInTheDocument();
-    expect(screen.getByTestId("filter-region")).toBeInTheDocument();
-  });
-
-  it("should handle filter changes", async () => {
-    const onFiltersChange = vi.fn();
-
-    renderWithProviders(
-      <ChartWithFilters cubeIri="test-cube" onFiltersChange={onFiltersChange} />
+    render(
+      <ChartWithFilters
+        chartConfig={baseChartConfig}
+        dataSource={baseDataSource}
+        dashboardFilters={dashboardFilters}
+      />
     );
 
-    const yearSelect = screen.getByTestId("select-year");
-    await user.selectOptions(yearSelect, "option1");
-
-    expect(onFiltersChange).toHaveBeenCalledWith(
-      expect.objectContaining({ year: "option1" })
+    expect(mockUseSyncInteractiveFilters).toHaveBeenCalledWith(
+      baseChartConfig,
+      dashboardFilters
     );
   });
 
-  it("should show loading state", () => {
-    mockUseDataCubesObservationsQuery.mockReturnValue({
-      data: undefined,
-      fetching: true,
-      error: undefined,
-    } as any);
+  it("forwards refs to the wrapper element", () => {
+    const ref = createRef<HTMLDivElement>();
 
-    renderWithProviders(<ChartWithFilters cubeIri="test-cube" />);
+    render(
+      <ChartWithFilters
+        ref={ref}
+        chartConfig={baseChartConfig}
+        dataSource={baseDataSource}
+      />
+    );
 
-    expect(screen.getByTestId("chart")).toBeInTheDocument();
+    expect(ref.current).toBeInstanceOf(HTMLDivElement);
   });
 
-  it("should show error state", () => {
-    mockUseDataCubesObservationsQuery.mockReturnValue({
-      data: undefined,
-      fetching: false,
-      error: new CombinedError({ networkError: new Error("Test error") }),
-    } as any);
+  it("renders different chart types using the same wrapper contract", () => {
+    render(
+      <ChartWithFilters
+        chartConfig={{ ...baseChartConfig, chartType: "pie" }}
+        dataSource={baseDataSource}
+      />
+    );
 
-    renderWithProviders(<ChartWithFilters cubeIri="test-cube" />);
-
-    expect(screen.getByTestId("chart")).toBeInTheDocument();
+    expect(screen.getByTestId("chart-type")).toHaveTextContent("pie");
   });
 });

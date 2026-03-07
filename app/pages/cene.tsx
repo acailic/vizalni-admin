@@ -1,8 +1,10 @@
+import { Box, Container } from "@mui/material";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 
 import { Header } from "@/components/header";
+import { useLocale } from "@/locales/use-locale";
 
 interface PriceData {
   id: string;
@@ -40,6 +42,9 @@ export default function CenePage({
 }: {
   initialData: ApiResponse;
 }) {
+  const locale = useLocale();
+  const isCyrillic = locale === "sr-Cyrl";
+  const isSerbian = locale.startsWith("sr");
   const [data, _setData] = useState<PriceData[]>(initialData.data);
   const [filteredData, setFilteredData] = useState<PriceData[]>(
     initialData.data
@@ -56,9 +61,6 @@ export default function CenePage({
   const categories = [...new Set(data.map((item) => item.kategorija))].filter(
     Boolean
   );
-  const manufacturers = [
-    ...new Set(data.map((item) => item.proizvodjac)),
-  ].filter(Boolean);
   const locations = [...new Set(data.map((item) => item.lokacija))].filter(
     Boolean
   );
@@ -109,33 +111,106 @@ export default function CenePage({
       ? filteredData.reduce((sum, item) => sum + item.cenaRegular, 0) /
         filteredData.length
       : 0;
+  const filteredCategories = [
+    ...new Set(filteredData.map((item) => item.kategorija)),
+  ].filter(Boolean);
+  const filteredManufacturers = [
+    ...new Set(filteredData.map((item) => item.proizvodjac)),
+  ].filter(Boolean);
+
+  const copy = {
+    title: isCyrillic
+      ? "Analiza cena"
+      : isSerbian
+        ? "Analiza cena"
+        : "Price analysis",
+    description: isCyrillic
+      ? "Poređenje cena proizvoda iz različitih kategorija"
+      : isSerbian
+        ? "Poređenje cena proizvoda iz različitih kategorija"
+        : "Compare product prices across categories",
+    totalProducts: isCyrillic
+      ? "Ukupno proizvoda"
+      : isSerbian
+        ? "Ukupno proizvoda"
+        : "Total products",
+    averagePrice: isCyrillic
+      ? "Prosečna cena"
+      : isSerbian
+        ? "Prosečna cena"
+        : "Average price",
+    categories: isCyrillic
+      ? "Kategorije"
+      : isSerbian
+        ? "Kategorije"
+        : "Categories",
+    manufacturers: isCyrillic
+      ? "Proizvođači"
+      : isSerbian
+        ? "Proizvođači"
+        : "Manufacturers",
+    filters: isCyrillic ? "Filteri" : isSerbian ? "Filteri" : "Filters",
+    search: isCyrillic ? "Pretraga" : isSerbian ? "Pretraga" : "Search",
+    category: isCyrillic ? "Kategorija" : isSerbian ? "Kategorija" : "Category",
+    manufacturer: isCyrillic
+      ? "Proizvođač"
+      : isSerbian
+        ? "Proizvođač"
+        : "Manufacturer",
+    minPrice: isCyrillic
+      ? "Minimalna cena"
+      : isSerbian
+        ? "Minimalna cena"
+        : "Minimum price",
+    maxPrice: isCyrillic
+      ? "Maksimalna cena"
+      : isSerbian
+        ? "Maksimalna cena"
+        : "Maximum price",
+    location: isCyrillic ? "Lokacija" : isSerbian ? "Lokacija" : "Location",
+    allCategories: isCyrillic
+      ? "Sve kategorije"
+      : isSerbian
+        ? "Sve kategorije"
+        : "All categories",
+    allLocations: isCyrillic
+      ? "Sve lokacije"
+      : isSerbian
+        ? "Sve lokacije"
+        : "All locations",
+    productPlaceholder: isCyrillic
+      ? "Naziv proizvoda..."
+      : isSerbian
+        ? "Naziv proizvoda..."
+        : "Product name...",
+    manufacturerPlaceholder: isCyrillic
+      ? "Unesite proizvođača..."
+      : isSerbian
+        ? "Unesite proizvođača..."
+        : "Enter a manufacturer...",
+  };
 
   return (
     <>
       <Head>
-        <title>Анализа цена | Vizualni Admin</title>
-        <meta
-          name="description"
-          content="Анализа и поређење цена производа у Србији"
-        />
+        <title>{`${copy.title} | Vizualni Admin`}</title>
+        <meta name="description" content={copy.description} />
       </Head>
 
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
+      <Container maxWidth="xl" sx={{ py: 6 }}>
+        <Box sx={{ mb: 4 }}>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Анализа цена
+            {copy.title}
           </h1>
-          <p className="text-gray-600">
-            Поређење цена производа из различитих категорија
-          </p>
-        </div>
+          <p className="text-gray-600">{copy.description}</p>
+        </Box>
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Укупно производа
+              {copy.totalProducts}
             </h3>
             <p className="text-2xl font-bold text-gray-900">
               {filteredData.length}
@@ -143,7 +218,7 @@ export default function CenePage({
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Просечна цена
+              {copy.averagePrice}
             </h3>
             <p className="text-2xl font-bold text-gray-900">
               {formatRsd(averagePrice)}
@@ -151,34 +226,34 @@ export default function CenePage({
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Категорије
+              {copy.categories}
             </h3>
             <p className="text-2xl font-bold text-gray-900">
-              {categories.length}
+              {filteredCategories.length}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-sm font-medium text-gray-500 mb-2">
-              Произвођачи
+              {copy.manufacturers}
             </h3>
             <p className="text-2xl font-bold text-gray-900">
-              {manufacturers.length}
+              {filteredManufacturers.length}
             </p>
           </div>
         </div>
 
         {/* Filters */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Филтери</h2>
+          <h2 className="text-xl font-semibold mb-4">{copy.filters}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Претрага
+                {copy.search}
               </label>
               <input
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Назив производа..."
+                placeholder={copy.productPlaceholder}
                 value={filters.searchTerm}
                 onChange={(e) =>
                   setFilters({ ...filters, searchTerm: e.target.value })
@@ -187,7 +262,7 @@ export default function CenePage({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Категорија
+                {copy.category}
               </label>
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -196,7 +271,7 @@ export default function CenePage({
                   setFilters({ ...filters, kategorija: e.target.value })
                 }
               >
-                <option value="">Све категорије</option>
+                <option value="">{copy.allCategories}</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
@@ -206,12 +281,12 @@ export default function CenePage({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Произвођач
+                {copy.manufacturer}
               </label>
               <input
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Унесите произвођача..."
+                placeholder={copy.manufacturerPlaceholder}
                 value={filters.proizvodjac}
                 onChange={(e) =>
                   setFilters({ ...filters, proizvodjac: e.target.value })
@@ -220,7 +295,7 @@ export default function CenePage({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Минимална цена
+                {copy.minPrice}
               </label>
               <input
                 type="number"
@@ -234,7 +309,7 @@ export default function CenePage({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Максимална цена
+                {copy.maxPrice}
               </label>
               <input
                 type="number"
@@ -248,7 +323,7 @@ export default function CenePage({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Локација
+                {copy.location}
               </label>
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -257,7 +332,7 @@ export default function CenePage({
                   setFilters({ ...filters, lokacija: e.target.value })
                 }
               >
-                <option value="">Све локације</option>
+                <option value="">{copy.allLocations}</option>
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
                     {loc}
@@ -341,7 +416,7 @@ export default function CenePage({
             )}
           </div>
         </div>
-      </div>
+      </Container>
     </>
   );
 }

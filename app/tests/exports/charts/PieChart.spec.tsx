@@ -669,7 +669,14 @@ describe("PieChart", () => {
       if (slices.length > 0) {
         fireEvent.click(slices[0]);
         await waitFor(() => {
-          expect(handleClick).toHaveBeenCalled();
+          expect(handleClick).toHaveBeenCalledWith(
+            expect.objectContaining({
+              category: "Product A",
+              sourceIndex: 0,
+              value: 300,
+            }),
+            0
+          );
         });
       }
     });

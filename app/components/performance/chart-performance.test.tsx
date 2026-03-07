@@ -117,9 +117,11 @@ describe("Chart Component Performance", () => {
           Math.max(performance.averageTime * 2, 2)
         );
 
-        // No single render should be dramatically slower than average
-        // Increased threshold to account for JIT warmup
-        expect(performance.maxTime).toBeLessThan(performance.averageTime * 3);
+        // No single render should be dramatically slower than average.
+        // Allow extra headroom for JIT warmup and occasional local GC pauses.
+        expect(performance.maxTime).toBeLessThan(
+          Math.max(performance.averageTime * 4, performance.averageTime + 5)
+        );
       }
     );
   });

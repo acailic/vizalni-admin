@@ -13,18 +13,26 @@ describe("DataEditor", () => {
 
   it("should render dataset selector", () => {
     render(<DataEditor {...defaultProps} />);
-    expect(screen.getByLabelText(/sample dataset/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: /primer dataseta|sample dataset/i })
+    ).toBeInTheDocument();
   });
 
   it("should show current data info", () => {
     render(<DataEditor {...defaultProps} />);
-    expect(screen.getByText(/6 data points/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/6 tačaka podataka|6 data points/i)
+    ).toBeInTheDocument();
   });
 
   it("should call onChange when dataset selected", () => {
     const onChange = vi.fn();
     render(<DataEditor {...defaultProps} onChange={onChange} />);
-    fireEvent.mouseDown(screen.getByLabelText(/sample dataset/i));
+    fireEvent.mouseDown(
+      screen.getByRole("combobox", {
+        name: /primer dataseta|sample dataset/i,
+      })
+    );
     fireEvent.click(screen.getByText("Age Distribution"));
     expect(onChange).toHaveBeenCalled();
   });

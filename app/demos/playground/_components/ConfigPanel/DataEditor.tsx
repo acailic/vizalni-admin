@@ -12,6 +12,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import { useLocale } from "@/locales/use-locale";
+
 import { SAMPLE_DATASETS } from "../../_constants";
 
 import type { Datum } from "../../_types";
@@ -22,8 +24,12 @@ interface DataEditorProps {
 }
 
 export function DataEditor({ data, onChange }: DataEditorProps) {
+  const locale = useLocale();
+  const isSerbian = locale.startsWith("sr");
   const [customJson, setCustomJson] = useState("");
   const [jsonError, setJsonError] = useState<string | null>(null);
+  const datasetSelectLabelId = "sample-dataset-label";
+  const datasetSelectId = "sample-dataset-select";
 
   const handleDatasetSelect = (datasetKey: string) => {
     const dataset = SAMPLE_DATASETS[datasetKey];
@@ -46,28 +52,37 @@ export function DataEditor({ data, onChange }: DataEditorProps) {
         onChange(parsed);
         setJsonError(null);
       } else {
-        setJsonError("Data must be an array");
+        setJsonError(
+          isSerbian
+            ? "Podaci moraju biti niz elemenata"
+            : "Data must be an array"
+        );
       }
     } catch {
-      setJsonError("Invalid JSON");
+      setJsonError(isSerbian ? "Neispravan JSON" : "Invalid JSON");
     }
   };
 
   const currentDatasetKey = Object.entries(SAMPLE_DATASETS).find(
-    ([, ds]) => JSON.stringify(ds.data) === JSON.stringify(data)
+    ([, ds]) =>
+      ds.data === data || JSON.stringify(ds.data) === JSON.stringify(data)
   )?.[0];
 
   return (
     <Box>
       <Typography variant="subtitle2" gutterBottom fontWeight={600}>
-        Data Source
+        {isSerbian ? "Izvor podataka" : "Data Source"}
       </Typography>
 
       <FormControl fullWidth sx={{ mb: 2 }}>
-        <InputLabel>Sample Dataset</InputLabel>
+        <InputLabel id={datasetSelectLabelId}>
+          {isSerbian ? "Primer dataseta" : "Sample Dataset"}
+        </InputLabel>
         <Select
+          labelId={datasetSelectLabelId}
+          id={datasetSelectId}
           value={currentDatasetKey || ""}
-          label="Sample Dataset"
+          label={isSerbian ? "Primer dataseta" : "Sample Dataset"}
           onChange={(e) => handleDatasetSelect(e.target.value)}
         >
           {Object.entries(SAMPLE_DATASETS).map(([key, dataset]) => (
@@ -80,14 +95,22 @@ export function DataEditor({ data, onChange }: DataEditorProps) {
 
       <Box sx={{ mb: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
         <Chip
-          label={`${data.length} data points`}
+          label={
+            isSerbian
+              ? `${data.length} tačaka podataka`
+              : `${data.length} data points`
+          }
           size="small"
           color="primary"
           variant="outlined"
         />
         {data[0] && (
           <Chip
-            label={`${Object.keys(data[0]).length} fields`}
+            label={
+              isSerbian
+                ? `${Object.keys(data[0]).length} polja`
+                : `${Object.keys(data[0]).length} fields`
+            }
             size="small"
             variant="outlined"
           />
@@ -98,7 +121,7 @@ export function DataEditor({ data, onChange }: DataEditorProps) {
         fullWidth
         multiline
         rows={4}
-        label="Custom JSON"
+        label={isSerbian ? "Prilagođeni JSON" : "Custom JSON"}
         placeholder='[{"label": "A", "value": 10}]'
         value={customJson}
         onChange={(e) => handleJsonChange(e.target.value)}

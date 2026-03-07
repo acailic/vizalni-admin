@@ -30,7 +30,7 @@ describe("DatasetCard", () => {
   });
 
   it("renders dataset title in Serbian", () => {
-    render(<DatasetCard dataset={mockDataset} locale="sr" />);
+    render(<DatasetCard dataset={mockDataset} locale="sr-Cyrl" />);
     expect(
       screen.getByText("Републички буџет за 2024. годину")
     ).toBeInTheDocument();
@@ -58,7 +58,7 @@ describe("DatasetCard", () => {
   });
 
   it("renders open button in Serbian", () => {
-    render(<DatasetCard dataset={mockDataset} locale="sr" />);
+    render(<DatasetCard dataset={mockDataset} locale="sr-Cyrl" />);
     expect(
       screen.getByRole("link", { name: /отвори на data.gov.rs/i })
     ).toBeInTheDocument();

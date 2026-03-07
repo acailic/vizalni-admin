@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 
 import { Icon, type IconName } from "@/icons";
+import { useLocale } from "@/locales/use-locale";
 
 import type { ChartType } from "../../_types";
 
@@ -24,10 +25,20 @@ interface ChartTypeSelectorProps {
 }
 
 export function ChartTypeSelector({ value, onChange }: ChartTypeSelectorProps) {
+  const locale = useLocale();
+  const isSerbian = locale.startsWith("sr");
+  const labels: Record<ChartType, string> = {
+    line: isSerbian ? "Linijski" : "Line",
+    bar: isSerbian ? "Stubičasti" : "Bar",
+    area: isSerbian ? "Površinski" : "Area",
+    pie: isSerbian ? "Kružni" : "Pie",
+    scatter: isSerbian ? "Rasuti" : "Scatter",
+  };
+
   return (
     <Box>
       <Typography variant="subtitle2" gutterBottom fontWeight={600}>
-        Chart Type
+        {isSerbian ? "Tip grafikona" : "Chart Type"}
       </Typography>
       <ToggleButtonGroup
         value={value}
@@ -40,7 +51,7 @@ export function ChartTypeSelector({ value, onChange }: ChartTypeSelectorProps) {
           <ToggleButton
             key={type.value}
             value={type.value}
-            aria-label={type.label}
+            aria-label={labels[type.value]}
             sx={{
               px: 2,
               py: 1,
@@ -53,7 +64,7 @@ export function ChartTypeSelector({ value, onChange }: ChartTypeSelectorProps) {
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
               <Icon name={type.icon} size={18} />
-              <Typography variant="body2">{type.label}</Typography>
+              <Typography variant="body2">{labels[type.value]}</Typography>
             </Box>
           </ToggleButton>
         ))}

@@ -4,7 +4,6 @@
  * Modal with mini chart preview, description, and CTA button.
  */
 
-import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Box,
@@ -60,19 +59,14 @@ export function ChartPreviewModal({
   const gradient =
     CATEGORY_GRADIENTS[chart.demoId] || CATEGORY_GRADIENTS.demographics;
 
-  const viewDemoText = i18n._(
-    defineMessage({
-      id: "demos.showcase.modal.viewDemo",
-      message: "View Full Demo",
-    })
-  );
-
-  const closeText = i18n._(
-    defineMessage({
-      id: "demos.showcase.modal.close",
-      message: "Close",
-    })
-  );
+  const isCyrillic = i18n.locale === "sr-Cyrl";
+  const isSerbian = locale === "sr";
+  const viewDemoText = isCyrillic
+    ? "Погледај цео демо"
+    : isSerbian
+      ? "Pogledaj ceo demo"
+      : "View Full Demo";
+  const closeText = isCyrillic ? "Zatvori" : isSerbian ? "Zatvori" : "Close";
 
   return (
     <Dialog
@@ -111,14 +105,54 @@ export function ChartPreviewModal({
             mb: 3,
           }}
         >
-          <Box
-            sx={{
-              fontSize: "4rem",
-              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.3))",
-            }}
+          <svg
+            width="180"
+            height="100"
+            viewBox="0 0 180 100"
+            aria-hidden="true"
           >
-            {icon}
-          </Box>
+            <rect x="20" y="54" width="18" height="26" rx="4" fill="white" />
+            <rect
+              x="48"
+              y="34"
+              width="18"
+              height="46"
+              rx="4"
+              fill="white"
+              opacity="0.9"
+            />
+            <rect
+              x="76"
+              y="18"
+              width="18"
+              height="62"
+              rx="4"
+              fill="white"
+              opacity="0.85"
+            />
+            <rect
+              x="104"
+              y="42"
+              width="18"
+              height="38"
+              rx="4"
+              fill="white"
+              opacity="0.8"
+            />
+            <polyline
+              points="20,40 56,24 88,12 120,28 154,20"
+              fill="none"
+              stroke="rgba(255,255,255,0.8)"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="20" cy="40" r="4" fill="white" />
+            <circle cx="56" cy="24" r="4" fill="white" />
+            <circle cx="88" cy="12" r="4" fill="white" />
+            <circle cx="120" cy="28" r="4" fill="white" />
+            <circle cx="154" cy="20" r="4" fill="white" />
+          </svg>
         </Box>
 
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>

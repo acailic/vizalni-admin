@@ -1,3 +1,4 @@
+import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import {
   render as rtlRender,
@@ -5,15 +6,15 @@ import {
 } from "@testing-library/react";
 import * as React from "react";
 
-// Simple mock i18n object for tests - avoid lingui version conflicts
-const mockI18n: any = {
-  locale: "sr-Latn",
-  load: () => {},
-  activate: () => {},
-};
+// Reuse a real Lingui i18n instance so provider internals behave correctly.
+i18n.load("en", {});
+i18n.activate("en");
+const providerI18n = i18n as unknown as React.ComponentProps<
+  typeof I18nProvider
+>["i18n"];
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return <I18nProvider i18n={mockI18n}>{children}</I18nProvider>;
+  return <I18nProvider i18n={providerI18n}>{children}</I18nProvider>;
 };
 
 export const render = (ui: React.ReactElement, options?: any) =>

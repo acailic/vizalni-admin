@@ -325,59 +325,57 @@ describe("Build Configuration Validation", () => {
     });
   });
 
-  describe("Preconstruct Configuration", () => {
+  describe("Packaging Configuration", () => {
     const packageJsonPath = join(appDir, "package.json");
     const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+    const tsupConfigPath = join(appDir, "tsup.config.ts");
+    const tsupConfig = readFileSync(tsupConfigPath, "utf-8");
 
-    it("should have preconstruct configuration", () => {
+    it("should have preconstruct compatibility flags", () => {
       expect(packageJson.preconstruct).toBeDefined();
     });
 
-    it("should have entrypoints array", () => {
-      expect(packageJson.preconstruct.entrypoints).toBeDefined();
-      expect(Array.isArray(packageJson.preconstruct.entrypoints)).toBe(true);
+    it("should define tsup entry points for all exports", () => {
+      expect(tsupConfig).toMatch(/entry:\s*{/);
     });
 
-    it("should have main entrypoint", () => {
-      expect(packageJson.preconstruct.entrypoints).toContain("./index.ts");
+    it("should have main entrypoint in tsup config", () => {
+      expect(tsupConfig).toMatch(/index:\s*["']index\.ts["']/);
     });
 
-    it("should have subpath entrypoints", () => {
-      const entrypoints = packageJson.preconstruct.entrypoints;
-
-      expect(entrypoints).toContain("./exports/core.ts");
-      expect(entrypoints).toContain("./exports/client.ts");
-      expect(entrypoints).toContain("./exports/charts/index.ts");
-      expect(entrypoints).toContain("./exports/hooks/index.ts");
-      expect(entrypoints).toContain("./exports/utils/index.ts");
+    it("should have subpath entrypoints in tsup config", () => {
+      expect(tsupConfig).toMatch(/core:\s*["']exports\/core\.ts["']/);
+      expect(tsupConfig).toMatch(/client:\s*["']exports\/client\.ts["']/);
+      expect(tsupConfig).toMatch(
+        /"charts\/index":\s*["']exports\/charts\/index\.ts["']/
+      );
+      expect(tsupConfig).toMatch(
+        /"hooks\/index":\s*["']exports\/hooks\/index\.ts["']/
+      );
+      expect(tsupConfig).toMatch(
+        /"utils\/index":\s*["']exports\/utils\/index\.ts["']/
+      );
+      expect(tsupConfig).toMatch(
+        /"connectors\/index":\s*["']exports\/connectors\/index\.ts["']/
+      );
     });
 
-    it("entrypoints should match package.json exports", () => {
-      const entrypoints = packageJson.preconstruct.entrypoints;
+    it("tsup entrypoints should match package.json exports", () => {
       const exports = Object.keys(packageJson.exports || {});
 
-      // Map entrypoints to export keys
-      const entrypointMap: Record<string, string> = {
-        "./index.ts": ".",
-        "./exports/core.ts": "./core",
-        "./exports/client.ts": "./client",
-        "./exports/charts/index.ts": "./charts",
-        "./exports/charts/LineChart.tsx": "./charts/LineChart",
-        "./exports/charts/BarChart.tsx": "./charts/BarChart",
-        "./exports/charts/ColumnChart.tsx": "./charts/ColumnChart",
-        "./exports/charts/PieChart.tsx": "./charts/PieChart",
-        "./exports/charts/AreaChart.tsx": "./charts/AreaChart",
-        "./exports/charts/MapChart.tsx": "./charts/MapChart",
-        "./exports/hooks/index.ts": "./hooks",
-        "./exports/utils/index.ts": "./utils",
-        "./exports/connectors/index.ts": "./connectors",
-      };
-
-      for (const entrypoint of entrypoints) {
-        const expectedExport = entrypointMap[entrypoint];
-        expect(expectedExport).toBeDefined();
-        expect(exports).toContain(expectedExport);
-      }
+      expect(exports).toContain(".");
+      expect(exports).toContain("./core");
+      expect(exports).toContain("./client");
+      expect(exports).toContain("./charts");
+      expect(exports).toContain("./charts/LineChart");
+      expect(exports).toContain("./charts/BarChart");
+      expect(exports).toContain("./charts/ColumnChart");
+      expect(exports).toContain("./charts/PieChart");
+      expect(exports).toContain("./charts/AreaChart");
+      expect(exports).toContain("./charts/MapChart");
+      expect(exports).toContain("./hooks");
+      expect(exports).toContain("./utils");
+      expect(exports).toContain("./connectors");
     });
 
     it("should have experimental flags", () => {
@@ -546,7 +544,9 @@ describe("Build Configuration Validation", () => {
       expect(packageJson.peerDependencies).toBeDefined();
       expect(packageJson.peerDependencies["react-dom"]).toBeDefined();
       // Accept any version range that includes React 18 or 19
-      expect(packageJson.peerDependencies["react-dom"]).toMatch(/(>=18|^\^18|^\^19)/);
+      expect(packageJson.peerDependencies["react-dom"]).toMatch(
+        /(>=18|^\^18|^\^19)/
+      );
     });
 
     it("should have @lingui packages as peer dependencies", () => {

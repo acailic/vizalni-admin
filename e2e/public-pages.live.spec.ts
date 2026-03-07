@@ -20,6 +20,41 @@ const withDataSource = (
   return withPrefix(`${pathname}?${search.toString()}`);
 };
 
+const normalizePathname = (value: string) => value.replace(/\/+$/, "") || "/";
+
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const attachConsoleCollector = (page: Page) => {
+  const errors: string[] = [];
+
+  page.on("console", (message) => {
+    if (message.type() === "error") {
+      errors.push(message.text());
+    }
+  });
+
+  page.on("pageerror", (error) => {
+    errors.push(error.message);
+  });
+
+  return errors;
+};
+
+const getStatCardValue = async (page: Page, label: string) => {
+  const card = page
+    .locator("div.bg-white.rounded-lg.shadow.p-6")
+    .filter({
+      has: page.locator("h3", {
+        hasText: new RegExp(`^${escapeRegExp(label)}$`),
+      }),
+    })
+    .first();
+
+  await expect(card).toBeVisible();
+  return ((await card.locator("p").first().textContent()) ?? "").trim();
+};
+
 const expectInternalHomeTarget = async (page: Page) => {
   const homeLink = page.getByTestId("nav-home").first();
   await expect(homeLink).toBeVisible();
@@ -79,6 +114,53 @@ test.describe("Public pages E2E", () => {
     await expect(galleryCta).toHaveAttribute("href", /\/demos/);
     await expect(page.locator('a[href*="/docs"]')).toHaveCount(0);
     await expect(page.locator('a[href*="/tutorials"]')).toHaveCount(0);
+  });
+
+  test("homepage renders global navigation and visible how-it-works step titles", async ({
+    page,
+  }) => {
+    await page.goto(withDataSource("/"));
+
+    await expect(page.getByTestId("header")).toBeVisible();
+    await expect(
+      page.getByText(/Izaberite dataset|Choose a dataset/i)
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Prilagodite grafikon|Customize your chart/i)
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Podelite ili ugradite|Share or embed/i)
+    ).toBeVisible();
+  });
+
+  test("homepage primary CTA avoids a disabled browse dead-end", async ({
+    page,
+  }) => {
+    await page.goto(withDataSource("/"));
+
+    const primaryCta = page.getByTestId("primary-cta");
+    await expect(primaryCta).toBeVisible();
+
+    const href = (await primaryCta.getAttribute("href")) ?? "";
+    expect(href).toMatch(/\/(browse|demos\/showcase)/);
+
+    await Promise.all([
+      page.waitForURL(/\/(browse|demos\/showcase)/, { timeout: 30_000 }),
+      primaryCta.click(),
+    ]);
+
+    if (/\/browse/.test(page.url())) {
+      await expect(
+        page.getByRole("textbox", { name: /Search|Pretraga/i }).first()
+      ).toBeVisible({ timeout: 20_000 });
+      await expect(
+        page.getByText(/Demo limita za statički build/i)
+      ).toHaveCount(0);
+      return;
+    }
+
+    await expect(page).toHaveURL(/\/demos\/showcase/);
+    await expect(page.locator("h1").first()).toBeVisible();
   });
 
   test("browse page keeps single search control and no empty filter buttons", async ({
@@ -291,6 +373,36 @@ test.describe("Public pages E2E", () => {
     expect(inlineSrc).toContain("lang=en");
   });
 
+  test("homepage featured embed action opens the embed generator inside the app base path", async ({
+    page,
+  }) => {
+    await page.goto(withDataSource("/"));
+
+    const embedButton = page
+      .getByRole("button", {
+        name: /Ugradite|Уградите|Embed/i,
+      })
+      .first();
+    await expect(embedButton).toBeVisible();
+
+    const [popup] = await Promise.all([
+      page.waitForEvent("popup"),
+      embedButton.click(),
+    ]);
+
+    await popup.waitForLoadState("domcontentloaded");
+
+    const popupUrl = new URL(popup.url());
+    const expectedEmbedPath = normalizePathname(
+      new URL(withPrefix("/embed/"), "https://example.com").pathname
+    );
+
+    expect(popupUrl.origin).toBe(new URL(page.url()).origin);
+    expect(normalizePathname(popupUrl.pathname)).toBe(expectedEmbedPath);
+    expect(popupUrl.searchParams.get("type")).toBeTruthy();
+    await expect(popup.getByText("404")).toHaveCount(0);
+  });
+
   test("embed preview reflects requested chart and dataset", async ({
     page,
   }) => {
@@ -302,6 +414,36 @@ test.describe("Public pages E2E", () => {
 
     await expect(page.getByText("Runtime Error")).toHaveCount(0);
     await expect(page.locator("body")).toContainText(/Dataset:/i);
+  });
+
+  test("embed generator inline preview keeps requested params and avoids the generic error boundary", async ({
+    page,
+  }) => {
+    test.fail(
+      true,
+      "BUG-02: inline embed preview still falls back to demo data instead of the requested dataset."
+    );
+
+    await page.goto(
+      withPrefix(
+        "/embed?type=bar&dataset=age&dataSource=Prod&theme=light&lang=sr"
+      )
+    );
+
+    await expect(page.getByText(/Something went wrong|TRY AGAIN/i)).toHaveCount(
+      0
+    );
+
+    const inlinePreview = page.locator('iframe[title="Embed preview"]');
+    await expect(inlinePreview).toHaveAttribute("src", /dataset=age/);
+
+    const previewFrame = page.frameLocator('iframe[title="Embed preview"]');
+    await expect(previewFrame.locator("body")).toContainText(
+      /Dataset:\s*age/i,
+      {
+        timeout: 20_000,
+      }
+    );
   });
 
   test("embed preview shows fallback copy for unknown dataset while staying functional", async ({
@@ -372,6 +514,167 @@ test.describe("Public pages E2E", () => {
 
     const bodyText = await page.locator("body").innerText();
     expect(bodyText).toMatch(/\d{1,3}(?:\.\d{3})*,\d{2}\s?RSD/);
+  });
+
+  test("language picker updates the page copy and picker label across locales", async ({
+    page,
+  }) => {
+    test.fail(
+      true,
+      "BUG-05: the language picker interaction does not currently change locale on the rendered page."
+    );
+
+    await page.goto(withDataSource("/"));
+
+    const languageButton = page.getByRole("button", {
+      name: /Language selector/i,
+    });
+    await expect(languageButton).toContainText("Srpski (Latinica)");
+
+    await page
+      .locator("#language-picker-button")
+      .evaluate((button) => (button as HTMLButtonElement).click());
+    await expect(page.locator("#language-picker-menu")).toBeVisible();
+    await page.locator("#language-picker-menu").evaluate((menu) => {
+      const target = Array.from(
+        menu.querySelectorAll<HTMLElement>('[role="menuitem"]')
+      ).find((item) => item.textContent?.trim() === "English");
+      target?.click();
+    });
+
+    await expect(languageButton).toContainText("English");
+    await expect(page.locator("h1").first()).toContainText(
+      /Transform data\.gov\.rs datasets into beautiful charts/i
+    );
+    await expect(page).toHaveURL(/(\/en(?:\/|\?|$)|uiLocale=en)/);
+
+    await page
+      .locator("#language-picker-button")
+      .evaluate((button) => (button as HTMLButtonElement).click());
+    await expect(page.locator("#language-picker-menu")).toBeVisible();
+    await page.locator("#language-picker-menu").evaluate((menu) => {
+      const target = Array.from(
+        menu.querySelectorAll<HTMLElement>('[role="menuitem"]')
+      ).find((item) => item.textContent?.trim() === "Српски (Ћирилица)");
+      target?.click();
+    });
+
+    await expect(languageButton).toContainText("Српски (Ћирилица)");
+    await expect(page.locator("h1").first()).toContainText(/[А-Яа-яЉЊЋЏЂЈ]/);
+    await expect(page).toHaveURL(/(\/sr-Cyrl(?:\/|\?|$)|uiLocale=sr-Cyrl)/);
+  });
+
+  test("showcase modal uses localized action copy and keeps a rendered preview", async ({
+    page,
+  }) => {
+    await page.goto(withPrefix("/demos/showcase"));
+
+    const previewTrigger = page
+      .getByLabel(/Brzi pregled grafikona|Quick preview chart/i)
+      .first();
+    await expect(previewTrigger).toBeVisible({ timeout: 20_000 });
+    await previewTrigger.click();
+
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText("demos.showcase.modal.close")).toHaveCount(0);
+    await expect(dialog.getByText("demos.showcase.modal.viewDemo")).toHaveCount(
+      0
+    );
+    await expect(
+      dialog.getByRole("button", { name: /Zatvori|Close/i })
+    ).toBeVisible();
+    await expect(
+      dialog.getByRole("link", { name: /Pogledaj ceo demo|View Full Demo/i })
+    ).toBeVisible();
+    await expect(dialog.locator("svg").first()).toBeVisible();
+  });
+
+  test("homepage share action uses the share payload instead of navigating to the topic page", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      Object.defineProperty(window.navigator, "share", {
+        configurable: true,
+        value: async (payload: unknown) => {
+          (
+            window as Window & {
+              __lastSharedPayload?: unknown;
+            }
+          ).__lastSharedPayload = payload;
+        },
+      });
+    });
+
+    await page.goto(withDataSource("/"));
+
+    const initialUrl = page.url();
+    const shareButton = page
+      .getByRole("button", {
+        name: /Podeli|Подели|Share/i,
+      })
+      .first();
+    await expect(shareButton).toBeVisible();
+    await shareButton.click();
+
+    await expect(page).toHaveURL(initialUrl);
+
+    const sharedUrl = await page.evaluate(() => {
+      const payload = (
+        window as Window & {
+          __lastSharedPayload?: { url?: string };
+        }
+      ).__lastSharedPayload;
+      return payload?.url ?? "";
+    });
+
+    expect(sharedUrl).toMatch(/\/topics\//);
+  });
+
+  test("price analysis keeps Latin UI labels and synchronized summary stats after filtering", async ({
+    page,
+  }) => {
+    await page.goto(withPrefix("/cene"));
+
+    await expect(page.locator("h1").first()).toHaveText(/Analiza cena/);
+    await expect(page.getByText(/^Kategorije$/)).toBeVisible();
+    await expect(page.getByText(/^Proizvođači$/)).toBeVisible();
+    await expect(page.getByText("Категорије")).toHaveCount(0);
+    await expect(page.getByText("Произвођачи")).toHaveCount(0);
+
+    await page.getByPlaceholder(/Naziv proizvoda/i).fill("Dell");
+
+    await expect
+      .poll(() => getStatCardValue(page, "Ukupno proizvoda"))
+      .toBe("1");
+    await expect.poll(() => getStatCardValue(page, "Kategorije")).toBe("1");
+    await expect.poll(() => getStatCardValue(page, "Proizvođači")).toBe("1");
+  });
+
+  test("public pages do not emit next-auth client fetch errors on load", async ({
+    page,
+  }) => {
+    const errors = attachConsoleCollector(page);
+    const routes = [
+      withDataSource("/"),
+      withPrefix("/embed?type=bar&dataset=budget&dataSource=Prod"),
+      withPrefix("/demos/showcase"),
+    ];
+
+    for (const route of routes) {
+      errors.length = 0;
+      await page.goto(route);
+      await page.waitForLoadState("networkidle");
+
+      const nextAuthErrors = errors.filter((error) =>
+        /(CLIENT_FETCH_ERROR|Unexpected token '<'|<!DOCTYPE)/i.test(error)
+      );
+
+      expect(
+        nextAuthErrors,
+        `Unexpected auth/session errors on ${route}`
+      ).toEqual([]);
+    }
   });
 });
 

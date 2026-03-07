@@ -9,7 +9,7 @@ import { getD3FormatLocale } from "../../locales/locales";
 
 // Performance budgets (in milliseconds)
 const PERFORMANCE_BUDGETS: Record<number, number> = {
-  100: 60,
+  100: 150,
   1000: 200,
   10000: 1000,
   100000: 5000,

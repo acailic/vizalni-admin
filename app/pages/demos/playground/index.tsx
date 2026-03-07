@@ -1,4 +1,3 @@
-import { Trans } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import {
   Container,
@@ -24,6 +23,7 @@ export default function PlaygroundPage() {
   const { i18n } = useLingui();
   const theme = useTheme();
   const locale = i18n.locale?.startsWith("sr") ? "sr" : "en";
+  const isSerbian = locale === "sr";
 
   const {
     chartType,
@@ -40,22 +40,87 @@ export default function PlaygroundPage() {
 
   const { getStateFromUrl } = useUrlState();
 
+  const loadDefaultDataset = () => {
+    setData(SAMPLE_DATASETS.sales.data);
+    setConfig({
+      xAxis: "label",
+      yAxis: "value",
+      color: theme.palette.primary.main,
+    });
+  };
+
+  const normalizePlayableState = (
+    nextData: typeof data,
+    nextConfig: typeof config
+  ) => {
+    if (!Array.isArray(nextData) || nextData.length === 0) {
+      return null;
+    }
+
+    const firstRow = nextData[0];
+    if (!firstRow || typeof firstRow !== "object") {
+      return null;
+    }
+
+    const keys = Object.keys(firstRow);
+    if (keys.length < 2) {
+      return null;
+    }
+
+    const xAxis =
+      typeof nextConfig.xAxis === "string" && keys.includes(nextConfig.xAxis)
+        ? nextConfig.xAxis
+        : keys.includes("label")
+          ? "label"
+          : keys[0];
+
+    const yAxisCandidate = Array.isArray(nextConfig.yAxis)
+      ? nextConfig.yAxis[0]
+      : nextConfig.yAxis;
+    const yAxis =
+      typeof yAxisCandidate === "string" && keys.includes(yAxisCandidate)
+        ? yAxisCandidate
+        : keys.includes("value")
+          ? "value"
+          : (keys.find((key) => key !== xAxis) ?? keys[1]);
+
+    return {
+      data: nextData,
+      config: {
+        ...nextConfig,
+        xAxis,
+        yAxis,
+        color: nextConfig.color || theme.palette.primary.main,
+      },
+    };
+  };
+
   // Load state from URL on mount
   useEffect(() => {
     const urlState = getStateFromUrl();
     if (urlState) {
       if (urlState.chartType) setChartType(urlState.chartType);
-      if (urlState.data) setData(urlState.data);
-      if (urlState.config) setConfig(urlState.config);
-      if (urlState.themeId) setThemeId(urlState.themeId);
-    } else if (data.length === 0) {
-      // Load default dataset
-      setData(SAMPLE_DATASETS.sales.data);
-      setConfig({
-        xAxis: "label",
-        yAxis: "value",
-        color: theme.palette.primary.main,
+      const normalizedUrlState = normalizePlayableState(urlState.data ?? [], {
+        xAxis: urlState.config?.xAxis ?? "",
+        yAxis: urlState.config?.yAxis ?? "",
+        color: urlState.config?.color ?? theme.palette.primary.main,
       });
+
+      if (normalizedUrlState) {
+        setData(normalizedUrlState.data);
+        setConfig(normalizedUrlState.config);
+      } else {
+        loadDefaultDataset();
+      }
+      if (urlState.themeId) setThemeId(urlState.themeId);
+    } else {
+      const normalizedCurrentState = normalizePlayableState(data, config);
+
+      if (normalizedCurrentState) {
+        setConfig(normalizedCurrentState.config);
+      } else {
+        loadDefaultDataset();
+      }
     }
   }, []);
 
@@ -114,8 +179,11 @@ export default function PlaygroundPage() {
             <Grid item xs={12} md={8}>
               <Box sx={{ mb: 2 }}>
                 <Tabs value={ui.activeTab} onChange={(_, v) => setActiveTab(v)}>
-                  <Tab label={<Trans>Preview</Trans>} value="preview" />
-                  <Tab label={<Trans>Code</Trans>} value="code" />
+                  <Tab
+                    label={isSerbian ? "Pregled" : "Preview"}
+                    value="preview"
+                  />
+                  <Tab label={isSerbian ? "Kod" : "Code"} value="code" />
                 </Tabs>
               </Box>
 

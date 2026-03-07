@@ -8,8 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
+import { useState } from "react";
 
 import { Icon } from "@/icons";
+import { buildAbsolutePublicUrl } from "@/utils/public-paths";
 
 type ShowcaseCardProps = {
   title: string;
@@ -17,6 +19,7 @@ type ShowcaseCardProps = {
   demoUrl: string;
   embedUrl: string;
   shareUrl: string;
+  locale?: "sr" | "sr-Cyrl" | "en";
   onEmbed?: () => void;
   onShare?: () => void;
   thumbnail?: string;
@@ -28,10 +31,29 @@ export const ShowcaseCard = ({
   demoUrl,
   embedUrl,
   shareUrl,
+  locale = "en",
   onEmbed,
   onShare,
   thumbnail,
 }: ShowcaseCardProps) => {
+  const [shareCopied, setShareCopied] = useState(false);
+  const isCyrillic = locale === "sr-Cyrl";
+  const isSerbian = locale.startsWith("sr");
+
+  const embedLabel = isCyrillic ? "Уградите" : isSerbian ? "Ugradite" : "Embed";
+  const shareLabel = shareCopied
+    ? isCyrillic
+      ? "Копирано"
+      : isSerbian
+        ? "Kopirano"
+        : "Copied"
+    : isCyrillic
+      ? "Подели"
+      : isSerbian
+        ? "Podeli"
+        : "Share";
+  const viewLabel = isCyrillic ? "Погледај" : isSerbian ? "Pogledaj" : "View";
+
   const handleEmbed = () => {
     if (onEmbed) {
       onEmbed();
@@ -51,9 +73,14 @@ export const ShowcaseCard = ({
       return;
     }
 
+    const resolvedShareUrl = buildAbsolutePublicUrl(
+      window.location.origin,
+      shareUrl
+    );
+
     if (navigator.share) {
       try {
-        await navigator.share({ title, url: shareUrl });
+        await navigator.share({ title, url: resolvedShareUrl });
         return;
       } catch {
         // Fall through to clipboard/open behavior.
@@ -61,9 +88,11 @@ export const ShowcaseCard = ({
     }
 
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(resolvedShareUrl);
+      setShareCopied(true);
+      window.setTimeout(() => setShareCopied(false), 2000);
     } catch {
-      window.open(shareUrl, "_blank", "noopener,noreferrer");
+      window.open(resolvedShareUrl, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -86,7 +115,8 @@ export const ShowcaseCard = ({
       <Box
         sx={{
           height: 200,
-          bgcolor: "grey.100",
+          background:
+            "linear-gradient(135deg, rgba(12,64,118,0.08) 0%, rgba(14,165,233,0.16) 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -96,7 +126,35 @@ export const ShowcaseCard = ({
         }}
       >
         {!thumbnail && (
-          <Icon name="chartBar" size={48} sx={{ color: "grey.400" }} />
+          <Box sx={{ display: "flex", alignItems: "flex-end", gap: 1.25 }}>
+            <Box
+              sx={{
+                width: 14,
+                height: 42,
+                borderRadius: 2,
+                bgcolor: "#0c4076",
+              }}
+            />
+            <Box
+              sx={{
+                width: 14,
+                height: 68,
+                borderRadius: 2,
+                bgcolor: "#0ea5e9",
+              }}
+            />
+            <Box
+              sx={{
+                width: 14,
+                height: 54,
+                borderRadius: 2,
+                bgcolor: "#38bdf8",
+              }}
+            />
+            <Box sx={{ ml: 1, color: "#0c4076" }}>
+              <Icon name="chartBar" size={26} />
+            </Box>
+          </Box>
         )}
       </Box>
 
@@ -117,20 +175,20 @@ export const ShowcaseCard = ({
             variant="outlined"
             startIcon={<Icon name="embed" size={16} />}
             onClick={handleEmbed}
-            aria-label={`Embed ${title}`}
+            aria-label={`${embedLabel} ${title}`}
             sx={{ textTransform: "none" }}
           >
-            Embed
+            {embedLabel}
           </Button>
           <Button
             size="small"
             variant="outlined"
             startIcon={<Icon name="share" size={16} />}
             onClick={handleShare}
-            aria-label={`Share ${title}`}
+            aria-label={`${shareLabel} ${title}`}
             sx={{ textTransform: "none" }}
           >
-            Share
+            {shareLabel}
           </Button>
           <Button
             size="small"
@@ -139,7 +197,7 @@ export const ShowcaseCard = ({
             href={demoUrl}
             sx={{ textTransform: "none", ml: "auto" }}
           >
-            View
+            {viewLabel}
           </Button>
         </Stack>
       </CardContent>

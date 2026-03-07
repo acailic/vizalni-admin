@@ -16,9 +16,10 @@ import { SnackbarProvider } from "@/components/snackbar";
 import { BASE_PATH, PUBLIC_URL } from "@/domain/env";
 import { flag } from "@/flags/flag";
 import { GraphqlProvider } from "@/graphql/graphql-provider";
-import { i18n, parseLocaleString } from "@/locales/locales";
+import { i18n } from "@/locales/locales";
 import { LocaleProvider } from "@/locales/use-locale";
 import * as federalTheme from "@/themes/theme";
+import { resolveAppLocale } from "@/utils/app-locale";
 import { AsyncLocalizationProvider } from "@/utils/async-localization-provider";
 import { EventEmitterProvider } from "@/utils/event-emitter";
 import { Flashes } from "@/utils/flashes";
@@ -55,7 +56,8 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps<{ session: Session }>) {
   const { events: routerEvents, asPath, locale: routerLocale } = useRouter();
-  const locale = parseLocaleString(routerLocale ?? "");
+  const router = useRouter();
+  const locale = resolveAppLocale(routerLocale ?? "", router.query);
   // Bridge duplicate @lingui/core type instances (hoisted + nested) in workspace builds.
   const providerI18n = i18n as unknown as ComponentProps<
     typeof I18nProvider
@@ -85,7 +87,10 @@ export default function App({
     };
 
     const handleRouteStart = (url: string) => {
-      const locale = parseLocaleString(url.slice(1));
+      const nextUrl = new URL(url, window.location.origin);
+      const locale = resolveAppLocale(undefined, {
+        uiLocale: nextUrl.searchParams.get("uiLocale") ?? undefined,
+      });
       if (i18n.locale !== locale) {
         i18n.activate(locale);
       }
@@ -268,7 +273,7 @@ export default function App({
 
       <AppErrorBoundary>
         <SessionProvider
-          session={session}
+          session={session ?? null}
           refetchOnWindowFocus={false}
           refetchInterval={0}
         >

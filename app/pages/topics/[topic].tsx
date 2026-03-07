@@ -30,6 +30,10 @@ import type {
   LocalizedString,
   Visualization,
 } from "@/types/topics";
+import {
+  getDatasetBrowserPath,
+  isStaticExportMode,
+} from "@/utils/public-paths";
 import { cyrillicToLatin } from "@/utils/serbian-script";
 
 interface TopicPageProps {
@@ -180,8 +184,13 @@ export default function TopicPage({ topic }: TopicPageProps) {
         ? "Vizualizacije"
         : "Visualizations";
 
-  const exploreAllLabel =
-    locale === "sr-Cyrl"
+  const exploreAllLabel = isStaticExportMode
+    ? locale === "sr-Cyrl"
+      ? "Pogledajte istaknute demoe"
+      : locale.startsWith("sr")
+        ? "Pogledajte istaknute demoe"
+        : "View featured demos"
+    : locale === "sr-Cyrl"
       ? "Истражите све скупове података"
       : locale.startsWith("sr")
         ? "Istražite sve skupove podataka"
@@ -303,13 +312,19 @@ export default function TopicPage({ topic }: TopicPageProps) {
               }}
             >
               <Typography variant="h6" sx={{ mb: 2 }}>
-                {locale === "sr-Cyrl"
-                  ? "Желите да видите више скупова података?"
-                  : locale.startsWith("sr")
-                    ? "Želite da vidite više skupova podataka?"
-                    : "Want to see more datasets?"}
+                {isStaticExportMode
+                  ? locale === "sr-Cyrl"
+                    ? "U statičkom izdanju dostupni su showcase i demo primeri."
+                    : locale.startsWith("sr")
+                      ? "U statičkom izdanju dostupni su showcase i demo primeri."
+                      : "The static build exposes showcase and demo flows instead of the live dataset browser."
+                  : locale === "sr-Cyrl"
+                    ? "Желите да видите више скупова података?"
+                    : locale.startsWith("sr")
+                      ? "Želite da vidite više skupova podataka?"
+                      : "Want to see more datasets?"}
               </Typography>
-              <Link href="/browse" passHref legacyBehavior>
+              <Link href={getDatasetBrowserPath()} passHref legacyBehavior>
                 <Button
                   component="a"
                   variant="contained"

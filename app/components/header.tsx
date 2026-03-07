@@ -7,6 +7,7 @@ import { __HEADER_HEIGHT_CSS_VAR } from "@/components/header-constants";
 import { LanguagePicker } from "@/components/language-picker";
 import { SimpleHeader } from "@/components/simple-header";
 import { SOURCE_OPTIONS } from "@/domain/data-source/constants";
+import { useLocale } from "@/locales/use-locale";
 import { useResizeObserver } from "@/utils/use-resize-observer";
 
 export const Header = ({
@@ -16,6 +17,13 @@ export const Header = ({
   hideLogo?: boolean;
   extendTopBar?: boolean;
 }) => {
+  const locale = useLocale();
+  const demoGalleryLabel =
+    locale === "sr-Cyrl"
+      ? "Demo galerija"
+      : locale.startsWith("sr")
+        ? "Demo galerija"
+        : "Demo Gallery";
   const [ref] = useResizeObserver<HTMLDivElement>(({ height }) => {
     if (height) {
       document.documentElement.style.setProperty(
@@ -55,7 +63,7 @@ export const Header = ({
                 },
               }}
             >
-              Demo Gallery
+              {demoGalleryLabel}
             </Box>
           </Link>
           <Box

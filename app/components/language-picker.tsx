@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { MouseEvent, useState } from "react";
 
 import { Icon } from "@/icons";
+import type { Locale } from "@/locales/locales";
 import localeConfig from "@/locales/locales.json";
 import { useLocale } from "@/locales/use-locale";
+import { persistAppLocale } from "@/utils/app-locale";
 
 // Simple Language/Globe icon component
 const LanguageIcon = () => (
@@ -48,7 +50,7 @@ const LOCALE_INFO: Record<string, LocaleInfo> = {
 
 export const LanguagePicker = () => {
   const currentLocale = useLocale();
-  const { push, pathname, query } = useRouter();
+  const { push, pathname, query, locales: routerLocales } = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -60,8 +62,24 @@ export const LanguagePicker = () => {
     setAnchorEl(null);
   };
 
-  const handleLocaleChange = (locale: string) => {
-    push({ pathname, query }, undefined, { locale });
+  const handleLocaleChange = (locale: Locale) => {
+    persistAppLocale(locale);
+
+    if (Array.isArray(routerLocales) && routerLocales.length > 0) {
+      push({ pathname, query }, undefined, { locale });
+      handleClose();
+      return;
+    }
+
+    const nextQuery = {
+      ...query,
+      uiLocale: locale,
+    };
+
+    push({ pathname, query: nextQuery }, undefined, {
+      shallow: false,
+      scroll: false,
+    });
     handleClose();
   };
 
@@ -118,7 +136,7 @@ export const LanguagePicker = () => {
           return (
             <MenuItem
               key={locale}
-              onClick={() => handleLocaleChange(locale)}
+              onClick={() => handleLocaleChange(locale as Locale)}
               selected={locale === currentLocale}
               sx={{
                 minWidth: 200,

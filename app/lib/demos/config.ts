@@ -166,7 +166,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
     slugKeywords: ["zdravstvo", "bolnica", "bolnice"],
     chartType: "bar",
     tags: ["Zdravstvo", "Bolnice"],
-    icon: "🚨",
+    icon: "🏥",
   },
   health: {
     id: "health",

@@ -167,8 +167,9 @@ export const PieChart = memo(
       const centerY = innerHeight / 2;
 
       // Process data and calculate total
-      const processedData = data.map((d) => ({
+      const processedData = data.map((d, sourceIndex) => ({
         ...d,
+        sourceIndex,
         value: Number(d[valueKey]) || 0,
         category: String(d[categoryKey]),
       }));
@@ -216,7 +217,7 @@ export const PieChart = memo(
         .style("filter", "drop-shadow(0 2px 4px rgba(0,0,0,0.1))")
         .on("click", (_event, d) => {
           if (onDataPointClick) {
-            onDataPointClick(d.data, processedData.indexOf(d.data));
+            onDataPointClick(d.data, d.data.sourceIndex);
           }
         })
         .on("mouseenter", function (_event, _d) {

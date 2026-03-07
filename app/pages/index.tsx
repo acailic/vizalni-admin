@@ -13,14 +13,19 @@ import {
 import { GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode } from "react";
 
 import { ContentMDXProvider } from "@/components/content-mdx-provider";
 import { ShowcaseCard } from "@/components/demos/showcase-card";
-import { PUBLIC_URL } from "@/domain/env";
+import { Header } from "@/components/header";
 import { DEMO_CONFIGS, FEATURED_CHARTS } from "@/lib/demos/config";
+import { useLocale } from "@/locales/use-locale";
 import { staticPages } from "@/static-pages";
+import {
+  buildPublicPath,
+  getDatasetBrowserPath,
+  isStaticExportMode,
+} from "@/utils/public-paths";
 
 interface ContentPageProps {
   staticPage: string;
@@ -636,6 +641,15 @@ const SectionShell = ({
 const HeroSection = ({ locale }: { locale: Locale }) => {
   const theme = useTheme();
   const copy = heroCopy[locale];
+  const datasetBrowserPath = getDatasetBrowserPath();
+  const isCyrillic = locale === "sr-Cyrl";
+  const staticNote = isStaticExportMode
+    ? isCyrillic
+      ? "GitHub Pages demo koristi showcase i playground umesto live browser-a dataset-a."
+      : locale === "sr"
+        ? "GitHub Pages demo koristi showcase i playground umesto live browsera dataseta."
+        : "The GitHub Pages demo uses showcase and playground flows instead of the live dataset browser."
+    : null;
 
   return (
     <SectionShell
@@ -709,7 +723,7 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
               size="large"
               data-testid="primary-cta"
               component={Link}
-              href="/browse"
+              href={datasetBrowserPath}
               sx={{
                 py: 1.5,
                 px: 4,
@@ -771,6 +785,11 @@ const HeroSection = ({ locale }: { locale: Locale }) => {
               {copy.secondary}
             </Button>
           </Stack>
+          {staticNote ? (
+            <Typography variant="body2" sx={{ mt: 2.5, opacity: 0.85 }}>
+              {staticNote}
+            </Typography>
+          ) : null}
         </Grid>
         <Grid item xs={12} md={5}>
           <Box
@@ -1068,6 +1087,24 @@ const UseCasesSection = ({ locale }: { locale: Locale }) => {
 
 const ResourcesSection = ({ locale }: { locale: Locale }) => {
   const copy = resourcesCopy[locale];
+  const browseFallbackTitle =
+    locale === "sr-Cyrl"
+      ? "Istaknuti demoi"
+      : locale === "sr"
+        ? "Istaknuti demoi"
+        : "Featured demos";
+  const browseFallbackDescription =
+    locale === "sr-Cyrl"
+      ? "U statičkom izdanju pregledajte showcase i playground tokove."
+      : locale === "sr"
+        ? "U statičkom izdanju pregledajte showcase i playground tokove."
+        : "Use the showcase and playground flows in the static deployment.";
+  const browseFallbackCta =
+    locale === "sr-Cyrl"
+      ? "Pogledaj showcase"
+      : locale === "sr"
+        ? "Pogledaj showcase"
+        : "Open showcase";
 
   return (
     <SectionShell background="grey.50" id="resources">
@@ -1086,41 +1123,54 @@ const ResourcesSection = ({ locale }: { locale: Locale }) => {
         </Typography>
       </Box>
       <Grid container spacing={3}>
-        {copy.cards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
-            <Card
-              elevation={0}
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 3,
-                backgroundColor: "background.paper",
-              }}
-            >
-              <CardContent sx={{ flexGrow: 1, p: 3 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-                  {card.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {card.description}
-                </Typography>
-              </CardContent>
-              <CardActions sx={{ px: 3, pb: 3 }}>
-                <Button
-                  size="small"
-                  component={Link}
-                  href={card.link}
-                  sx={{ fontWeight: 600, textTransform: "none" }}
-                >
-                  {card.cta}
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
+        {copy.cards.map((card, index) => {
+          const resolvedCard =
+            isStaticExportMode && card.link === "/browse"
+              ? {
+                  ...card,
+                  title: browseFallbackTitle,
+                  description: browseFallbackDescription,
+                  link: "/demos/showcase",
+                  cta: browseFallbackCta,
+                }
+              : card;
+
+          return (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                elevation={0}
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  borderRadius: 3,
+                  backgroundColor: "background.paper",
+                }}
+              >
+                <CardContent sx={{ flexGrow: 1, p: 3 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+                    {resolvedCard.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {resolvedCard.description}
+                  </Typography>
+                </CardContent>
+                <CardActions sx={{ px: 3, pb: 3 }}>
+                  <Button
+                    size="small"
+                    component={Link}
+                    href={resolvedCard.link}
+                    sx={{ fontWeight: 600, textTransform: "none" }}
+                  >
+                    {resolvedCard.cta}
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
     </SectionShell>
   );
@@ -1151,10 +1201,12 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
             ? `/topics/${chart.demoId}`
             : `/demos/${chart.demoId}`;
           const chartConfig = DEMO_CONFIGS[chart.demoId];
-          const embedUrl = `/embed?type=${encodeURIComponent(
-            chartConfig?.chartType || "bar"
-          )}`;
-          const shareUrl = `${PUBLIC_URL}${chartPath}`;
+          const embedUrl = buildPublicPath(
+            `/embed/?type=${encodeURIComponent(
+              chartConfig?.chartType || "bar"
+            )}`
+          );
+          const shareUrl = chartPath;
 
           return (
             <Grid item xs={12} md={4} key={chart.id}>
@@ -1172,16 +1224,7 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
                 demoUrl={chartPath}
                 embedUrl={embedUrl}
                 shareUrl={shareUrl}
-                onEmbed={() => {
-                  if (typeof window !== "undefined") {
-                    window.open(embedUrl, "_blank", "noopener,noreferrer");
-                  }
-                }}
-                onShare={() => {
-                  if (typeof window !== "undefined") {
-                    window.open(shareUrl, "_blank", "noopener,noreferrer");
-                  }
-                }}
+                locale={locale}
               />
             </Grid>
           );
@@ -1204,6 +1247,14 @@ const FeaturedSection = ({ locale }: { locale: Locale }) => {
 
 const CTASection = ({ locale }: { locale: Locale }) => {
   const copy = ctaCopy[locale];
+  const datasetBrowserPath = getDatasetBrowserPath();
+  const staticNote = isStaticExportMode
+    ? locale === "sr-Cyrl"
+      ? "Live browser dataset-a nije dostupan u GitHub Pages izdanju."
+      : locale === "sr"
+        ? "Live browser dataseta nije dostupan u GitHub Pages izdanju."
+        : "The live dataset browser is not available in the GitHub Pages deployment."
+    : null;
 
   return (
     <SectionShell background="linear-gradient(135deg, #0c4076, #0e2a45)">
@@ -1218,7 +1269,7 @@ const CTASection = ({ locale }: { locale: Locale }) => {
           variant="contained"
           size="large"
           component={Link}
-          href="/browse"
+          href={datasetBrowserPath}
           sx={{
             py: 1.5,
             px: 5,
@@ -1233,6 +1284,11 @@ const CTASection = ({ locale }: { locale: Locale }) => {
         >
           {copy.button}
         </Button>
+        {staticNote ? (
+          <Typography variant="body2" sx={{ mt: 2, opacity: 0.85 }}>
+            {staticNote}
+          </Typography>
+        ) : null}
       </Box>
     </SectionShell>
   );
@@ -1245,20 +1301,18 @@ const CTASection = ({ locale }: { locale: Locale }) => {
 function ContentPage({ staticPage }: ContentPageProps) {
   const Component = staticPages[staticPage]?.component;
   const isHomePage = staticPage === "/sr/index" || staticPage === "/en/index";
-  const router = useRouter();
-  const locale: Locale = useMemo(() => {
-    if (router.locale?.startsWith("sr")) {
-      return router.locale === "sr-Cyrl" ? "sr-Cyrl" : "sr";
-    }
-    if (staticPage.startsWith("/sr")) {
-      return "sr";
-    }
-    return "en";
-  }, [router.locale, staticPage]);
+  const activeLocale = useLocale();
+  const locale: Locale =
+    activeLocale === "sr-Cyrl"
+      ? "sr-Cyrl"
+      : activeLocale.startsWith("sr")
+        ? "sr"
+        : "en";
 
   if (isHomePage) {
     return (
       <ContentMDXProvider>
+        <Header />
         <HeroSection locale={locale} />
         <FeaturesSection locale={locale} />
         <FeaturedSection locale={locale} />

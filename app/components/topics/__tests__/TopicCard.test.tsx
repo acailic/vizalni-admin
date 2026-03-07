@@ -28,7 +28,7 @@ describe("TopicCard", () => {
   });
 
   it("renders topic title in Serbian", () => {
-    render(<TopicCard topic={mockTopic} locale="sr" />);
+    render(<TopicCard topic={mockTopic} locale="sr-Cyrl" />);
     expect(screen.getByText("Економија и финансије")).toBeInTheDocument();
   });
 

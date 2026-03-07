@@ -8,7 +8,6 @@
  * @route /demos/showcase
  */
 
-import { defineMessage } from "@lingui/macro";
 import { useLingui } from "@lingui/react";
 import { Box, Grid, Typography, alpha, useTheme } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -47,50 +46,44 @@ export default function ShowcasePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const pageTitle = i18n._(
-    defineMessage({
-      id: "demos.showcase.title",
-      message: "Featured Charts Showcase",
-    })
-  );
+  const isCyrillic = i18n.locale === "sr-Cyrl";
+  const isSerbian = locale === "sr";
 
-  const pageDescription = i18n._(
-    defineMessage({
-      id: "demos.showcase.description",
-      message:
-        "A curated collection of highlight charts across economy, transport, energy, and digitalization domains.",
-    })
-  );
+  const pageTitle = isCyrillic
+    ? "Galerija demo vizualizacija"
+    : isSerbian
+      ? "Galerija demo vizualizacija"
+      : "Featured Charts Showcase";
 
-  const introText = i18n._(
-    defineMessage({
-      id: "demos.showcase.intro",
-      message:
-        "Explore key visualizations from Serbian open data. Click any chart to preview it.",
-    })
-  );
+  const pageDescription = isCyrillic
+    ? "Pregled ključnih grafikona iz otvorenih podataka Srbije."
+    : isSerbian
+      ? "Pregled ključnih grafikona iz otvorenih podataka Srbije."
+      : "A curated collection of highlight charts across Serbian open data domains.";
 
-  const featuredChartsTitle = i18n._(
-    defineMessage({
-      id: "demos.showcase.featured.title",
-      message: "Featured Charts",
-    })
-  );
+  const introText = isCyrillic
+    ? "Istražite ključne vizualizacije iz otvorenih podataka Srbije. Kliknite na karticu za brzi pregled."
+    : isSerbian
+      ? "Istražite ključne vizualizacije iz otvorenih podataka Srbije. Kliknite na karticu za brzi pregled."
+      : "Explore key visualizations from Serbian open data. Click any chart to preview it.";
 
-  const dataSourceTitle = i18n._(
-    defineMessage({
-      id: "demos.showcase.datasource.title",
-      message: "Data Source",
-    })
-  );
+  const featuredChartsTitle = isCyrillic
+    ? "Istaknuti grafikoni"
+    : isSerbian
+      ? "Istaknuti grafikoni"
+      : "Featured Charts";
 
-  const dataSourceDescription = i18n._(
-    defineMessage({
-      id: "demos.showcase.datasource.description",
-      message:
-        "All data displayed on this page comes from the Republic of Serbia open data portal (data.gov.rs).",
-    })
-  );
+  const dataSourceTitle = isCyrillic
+    ? "Izvor podataka"
+    : isSerbian
+      ? "Izvor podataka"
+      : "Data Source";
+
+  const dataSourceDescription = isCyrillic
+    ? "Svi podaci prikazani na ovoj strani dolaze sa portala otvorenih podataka Republike Srbije (data.gov.rs)."
+    : isSerbian
+      ? "Svi podaci prikazani na ovoj strani dolaze sa portala otvorenih podataka Republike Srbije (data.gov.rs)."
+      : "All data displayed on this page comes from the Republic of Serbia open data portal (data.gov.rs).";
 
   const handleCardClick = (chart: (typeof FEATURED_CHARTS)[0]) => {
     setSelectedChart(chart);

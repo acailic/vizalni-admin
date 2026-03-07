@@ -19,8 +19,8 @@ describe("ConfigPanel", () => {
         onThemeChange={() => {}}
       />
     );
-    expect(screen.getByText(/chart type/i)).toBeInTheDocument();
-    expect(screen.getByText(/data source/i)).toBeInTheDocument();
-    expect(screen.getByText(/theme/i)).toBeInTheDocument();
+    expect(screen.getByText(/chart type|tip grafikona/i)).toBeInTheDocument();
+    expect(screen.getByText(/data source|izvor podataka/i)).toBeInTheDocument();
+    expect(screen.getByText(/theme|tema/i)).toBeInTheDocument();
   });
 });
