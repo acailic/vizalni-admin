@@ -64,15 +64,20 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
     const fallbackDatasetInfo = DEMO_FALLBACKS[demoId]?.fallbackDatasetInfo;
     if (!fallbackDatasetInfo) return undefined;
 
+    const localizedFallbackTitle =
+      locale === "sr"
+        ? fallbackDatasetInfo.title
+        : `${demoConfig?.title.en ?? "Demo dataset"} (sample data)`;
+
     return {
-      title: fallbackDatasetInfo.title,
+      title: localizedFallbackTitle,
       organization: {
         id: "demo-org",
         name: fallbackDatasetInfo.organization ?? "Demo data.gov.rs",
         title: fallbackDatasetInfo.organization ?? "Demo data.gov.rs",
       },
     };
-  }, [demoConfig?.id]);
+  }, [demoConfig, locale]);
 
   const {
     data,
@@ -80,6 +85,8 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
     loading: dataLoading,
     error,
     usingFallback,
+    fallbackReason,
+    fallbackError,
     refetch,
   } = useDataGovRs({
     searchQuery: demoConfig?.searchQuery,
@@ -161,6 +168,42 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
     ? title.slice(demoConfig.icon.length).trimStart()
     : title;
   const displayTitle = `${demoConfig.icon} ${normalizedTitle}`;
+  const fallbackNotice =
+    usingFallback && fallbackReason
+      ? {
+          severity:
+            fallbackReason === "fetch-error"
+              ? ("warning" as const)
+              : ("info" as const),
+          title:
+            locale === "sr"
+              ? "Prikazujemo demo podatke"
+              : "Showing demo fallback data",
+          message:
+            fallbackReason === "static-export"
+              ? locale === "sr"
+                ? "Ova GitHub Pages verzija nema serverski pristup API-ju data.gov.rs, pa koristimo ugrađen primer podataka da stranica ostane funkcionalna."
+                : "This GitHub Pages build cannot fetch live data from data.gov.rs, so the page uses built-in sample data to stay functional."
+              : fallbackReason === "dataset-unavailable"
+                ? locale === "sr"
+                  ? "Nismo pronašli odgovarajući dataset za ovu temu, pa prikazujemo reprezentativan demo skup podataka."
+                  : "We could not find a matching live dataset for this topic, so a representative demo dataset is shown instead."
+                : fallbackReason === "resource-unavailable"
+                  ? locale === "sr"
+                    ? "Dataset je pronađen, ali nema resurs pogodan za vizualizaciju, zato prikazujemo demo podatke."
+                    : "A dataset was found, but it does not expose a resource suitable for visualization, so demo data is shown instead."
+                  : locale === "sr"
+                    ? "Živi podaci trenutno nisu dostupni. Demo podaci ostaju prikazani dok ponovni pokušaj ne uspe."
+                    : "Live data is temporarily unavailable. Demo data stays visible until a retry succeeds.",
+          detail:
+            fallbackReason === "fetch-error" && fallbackError
+              ? locale === "sr"
+                ? `Razlog poslednjeg neuspelog pokušaja: ${fallbackError.message}`
+                : `Last live-data error: ${fallbackError.message}`
+              : null,
+        }
+      : null;
+  const refreshDisabled = usingFallback && fallbackReason === "static-export";
 
   if (isLoading) {
     return (
@@ -218,8 +261,15 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
                   size="small"
                   variant="outlined"
                   onClick={() => refetch()}
+                  disabled={refreshDisabled}
                 >
-                  {locale === "sr" ? "Osveži podatke" : "Refresh data"}
+                  {refreshDisabled
+                    ? locale === "sr"
+                      ? "Živi refresh nije dostupan"
+                      : "Live refresh unavailable"
+                    : locale === "sr"
+                      ? "Osveži podatke"
+                      : "Refresh data"}
                 </Button>
                 {dataset?.page ? (
                   <Button
@@ -256,6 +306,23 @@ export default function DynamicDemoPage({ demoConfig }: DemoPageProps) {
             </Stack>
           </CardContent>
         </Card>
+
+        {fallbackNotice ? (
+          <Alert
+            severity={fallbackNotice.severity}
+            sx={{ mb: 3, borderRadius: 3 }}
+          >
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+              {fallbackNotice.title}
+            </Typography>
+            <Typography variant="body2">{fallbackNotice.message}</Typography>
+            {fallbackNotice.detail ? (
+              <Typography variant="caption" sx={{ display: "block", mt: 1 }}>
+                {fallbackNotice.detail}
+              </Typography>
+            ) : null}
+          </Alert>
+        ) : null}
 
         {dataLoading && chartData.length === 0 ? (
           <DemoLoading

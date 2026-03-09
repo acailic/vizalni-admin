@@ -138,8 +138,13 @@ export const BarChart = ({
     gridGroup.selectAll("line").style("stroke-dasharray", "3,3");
     gridGroup.select(".domain").remove();
 
-    // Add bars with animation
-    g.selectAll("rect")
+    // Some static/embed builds can load d3-selection without the transition
+    // prototype patch. Fall back to immediate rendering instead of crashing.
+    const canAnimateSelection = (selection: unknown) =>
+      typeof (selection as { transition?: unknown })?.transition === "function";
+
+    const bars = g
+      .selectAll("rect")
       .data(data)
       .enter()
       .append("rect")
@@ -156,11 +161,19 @@ export const BarChart = ({
       })
       .on("mouseout", function () {
         d3.select(this).attr("opacity", 0.8);
-      })
-      .transition()
-      .duration(800)
-      .attr("y", (d) => yScale(Number(d[yKey]) || 0))
-      .attr("height", (d) => innerHeight - yScale(Number(d[yKey]) || 0));
+      });
+
+    if (canAnimateSelection(bars)) {
+      (bars as any)
+        .transition()
+        .duration(800)
+        .attr("y", (d) => yScale(Number(d[yKey]) || 0))
+        .attr("height", (d) => innerHeight - yScale(Number(d[yKey]) || 0));
+    } else {
+      bars
+        .attr("y", (d) => yScale(Number(d[yKey]) || 0))
+        .attr("height", (d) => innerHeight - yScale(Number(d[yKey]) || 0));
+    }
 
     // Add X axis label
     if (xLabel) {
@@ -186,7 +199,8 @@ export const BarChart = ({
     }
 
     // Add value labels on bars
-    g.selectAll(".bar-label")
+    const labels = g
+      .selectAll(".bar-label")
       .data(data)
       .enter()
       .append("text")
@@ -200,11 +214,13 @@ export const BarChart = ({
         const value = Number(d[yKey]);
         return value > 0 ? format(".2s")(value) : "";
       })
-      .style("opacity", 0)
-      .transition()
-      .delay(800)
-      .duration(400)
-      .style("opacity", 1);
+      .style("opacity", 0);
+
+    if (canAnimateSelection(labels)) {
+      (labels as any).transition().delay(800).duration(400).style("opacity", 1);
+    } else {
+      labels.style("opacity", 1);
+    }
   }, [color, computedWidth, data, height, margin, xKey, xLabel, yKey, yLabel]);
 
   return (

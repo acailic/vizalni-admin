@@ -95,6 +95,21 @@ interface UseDataGovRsReturn {
   usingFallback: boolean;
 
   /**
+   * Why fallback data is currently shown.
+   */
+  fallbackReason:
+    | "static-export"
+    | "dataset-unavailable"
+    | "resource-unavailable"
+    | "fetch-error"
+    | null;
+
+  /**
+   * Last live-data error captured while falling back.
+   */
+  fallbackError: Error | null;
+
+  /**
    * Manually trigger a refetch
    */
   refetch: () => Promise<void>;
@@ -130,6 +145,9 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [usingFallback, setUsingFallback] = useState(false);
+  const [fallbackReason, setFallbackReason] =
+    useState<UseDataGovRsReturn["fallbackReason"]>(null);
+  const [fallbackError, setFallbackError] = useState<Error | null>(null);
 
   const getFallbackDataset = (
     fallbackInfo: Partial<DatasetMetadata> | DemoDatasetInfo | undefined
@@ -180,18 +198,23 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
 
   const applyFallback = (
     fallbackInfo: Partial<DatasetMetadata> | DemoDatasetInfo | undefined,
-    fallback: any[]
+    fallback: any[],
+    reason: NonNullable<UseDataGovRsReturn["fallbackReason"]>,
+    nextFallbackError: Error | null = null
   ) => {
     setDataset(getFallbackDataset(fallbackInfo));
     setResource(null);
     setData(fallback);
     setUsingFallback(true);
+    setFallbackReason(reason);
+    setFallbackError(nextFallbackError);
   };
 
   const fetchData = async () => {
     try {
       setLoading(true);
       setError(null);
+      setFallbackError(null);
 
       // Defensive check for fallbackData availability and GitHub Pages detection
       if (
@@ -200,7 +223,7 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
         fallbackData.length > 0
       ) {
         // On GitHub Pages, use fallback data directly (static export limitation)
-        applyFallback(fallbackDatasetInfo, fallbackData);
+        applyFallback(fallbackDatasetInfo, fallbackData, "static-export");
         return;
       }
 
@@ -226,6 +249,8 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
               );
               setResource(bestResource);
               setData(resourceData);
+              setUsingFallback(false);
+              setFallbackReason(null);
               return;
             }
             // Unsupported resources in this dataset; try next strategy
@@ -256,7 +281,11 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
         if (!foundDataset) {
           if (fallbackData && fallbackData.length > 0) {
             // Use fallback data instead of throwing error
-            applyFallback(fallbackDatasetInfo, fallbackData);
+            applyFallback(
+              fallbackDatasetInfo,
+              fallbackData,
+              "dataset-unavailable"
+            );
             return;
           }
           // Only throw error if no fallback is available
@@ -284,8 +313,11 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
 
       if (!bestResource) {
         if (fallbackData && fallbackData.length > 0) {
-          setResource(null);
-          setData(fallbackData);
+          applyFallback(
+            fallbackDatasetInfo,
+            fallbackData,
+            "resource-unavailable"
+          );
           return;
         }
         throw new Error("No suitable resource found for visualization");
@@ -294,16 +326,23 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
       setResource(bestResource);
       const resourceData = await loadResourceData(bestResource, parseCSV);
       setData(resourceData);
+      setUsingFallback(false);
+      setFallbackReason(null);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err : new Error("Unknown error occurred");
 
       if (fallbackData && fallbackData.length > 0) {
         // Use fallback data and don't show error to user
-        applyFallback(fallbackDatasetInfo, fallbackData);
+        applyFallback(
+          fallbackDatasetInfo,
+          fallbackData,
+          "fetch-error",
+          errorMessage
+        );
         setError(null);
         // Only log as info, not error
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === "development") {
           console.info(
             "📊 Using demo data (data.gov.rs API not available):",
             errorMessage.message
@@ -332,6 +371,8 @@ export function useDataGovRs(options: UseDataGovRsOptions): UseDataGovRsReturn {
     loading,
     error,
     usingFallback,
+    fallbackReason,
+    fallbackError,
     refetch: fetchData,
   };
 }
@@ -362,7 +403,7 @@ async function loadResourceData(bestResource: Resource, parseCSV: boolean) {
 
 async function parseExcelData(buffer: ArrayBuffer): Promise<any[]> {
   // Dynamic import to keep bundle size low
-  const ExcelJS = await import('exceljs');
+  const ExcelJS = await import("exceljs");
   const Workbook = ExcelJS.Workbook || ExcelJS.default.Workbook;
 
   const workbook = new Workbook();
@@ -391,17 +432,30 @@ async function parseExcelData(buffer: ArrayBuffer): Promise<any[]> {
           let value = cell.value;
 
           // Handle rich text
-          if (typeof value === 'object' && value !== null && 'richText' in value) {
-            value = (value as any).richText.map((t: any) => t.text).join('');
+          if (
+            typeof value === "object" &&
+            value !== null &&
+            "richText" in value
+          ) {
+            value = (value as any).richText.map((t: any) => t.text).join("");
           }
 
           // Handle formulas
-          if (typeof value === 'object' && value !== null && 'result' in value) {
+          if (
+            typeof value === "object" &&
+            value !== null &&
+            "result" in value
+          ) {
             value = (value as any).result;
           }
 
           // Handle hyperlinks
-          if (typeof value === 'object' && value !== null && 'text' in value && 'hyperlink' in value) {
+          if (
+            typeof value === "object" &&
+            value !== null &&
+            "text" in value &&
+            "hyperlink" in value
+          ) {
             value = (value as any).text;
           }
 

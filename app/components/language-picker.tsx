@@ -7,7 +7,7 @@ import type { Locale } from "@/locales/locales";
 import localeConfig from "@/locales/locales.json";
 import { useLocale } from "@/locales/use-locale";
 import { persistAppLocale } from "@/utils/app-locale";
-import { buildPublicPath, isStaticExportMode } from "@/utils/public-paths";
+import { isStaticExportMode } from "@/utils/public-paths";
 
 // Simple Language/Globe icon component
 const LanguageIcon = () => (
@@ -49,6 +49,15 @@ const LOCALE_INFO: Record<string, LocaleInfo> = {
   },
 };
 
+export const buildStaticLocaleChangeUrl = (
+  currentHref: string,
+  locale: Locale
+) => {
+  const nextUrl = new URL(currentHref);
+  nextUrl.searchParams.set("uiLocale", locale);
+  return nextUrl.toString();
+};
+
 export const LanguagePicker = () => {
   const currentLocale = useLocale();
   const { push, pathname, query, locales: routerLocales } = useRouter();
@@ -67,21 +76,11 @@ export const LanguagePicker = () => {
     persistAppLocale(locale);
 
     if (isStaticExportMode) {
-      // In static mode, use URL query params with full page reload
-      const nextQuery = {
-        ...query,
-        uiLocale: locale,
-      };
-      const queryString = new URLSearchParams(
-        Object.entries(nextQuery).reduce(
-          (acc, [k, v]) => {
-            acc[k] = String(v);
-            return acc;
-          },
-          {} as Record<string, string>
-        )
-      ).toString();
-      window.location.href = `${buildPublicPath(pathname)}?${queryString}`;
+      // In static mode, preserve the current full URL so GitHub Pages base paths
+      // and any already-resolved locale/static segments remain intact.
+      window.location.assign(
+        buildStaticLocaleChangeUrl(window.location.href, locale)
+      );
       handleClose();
       return;
     }

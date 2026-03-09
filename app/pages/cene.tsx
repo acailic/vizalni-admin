@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 import { Header } from "@/components/header";
 import { useLocale } from "@/locales/use-locale";
+import { cyrillicToLatin } from "@/utils/serbian-script";
 
 interface PriceData {
   id: string;
@@ -29,8 +30,45 @@ interface ApiResponse {
   };
 }
 
-const formatRsd = (value: number) =>
-  new Intl.NumberFormat("sr-RS", {
+type LocaleMode = "sr-Cyrl" | "sr-Latn" | "en";
+
+const ENGLISH_TEXT: Record<string, string> = {
+  "Лаптоп Dell Inspiron 15": "Dell Inspiron 15 laptop",
+  "Мобилни телефон Samsung Galaxy A54": "Samsung Galaxy A54 mobile phone",
+  "Сунђер за судове": "Dish sponge",
+  "Пириначе Тamoти": "Tamoti rice",
+  "Сок наранџа 1L": "Orange juice 1L",
+  Електроника: "Electronics",
+  "Кућне потрепштине": "Household supplies",
+  Храна: "Food",
+  Пиће: "Beverages",
+  Београд: "Belgrade",
+  "Нови Сад": "Novi Sad",
+  Ниш: "Nis",
+  Суботица: "Subotica",
+};
+
+const getLocaleMode = (locale: string): LocaleMode => {
+  if (locale === "en") return "en";
+  return locale === "sr-Cyrl" ? "sr-Cyrl" : "sr-Latn";
+};
+
+const localizeText = (value: string, localeMode: LocaleMode) => {
+  if (!value) return value;
+
+  if (localeMode === "sr-Cyrl") {
+    return value;
+  }
+
+  if (localeMode === "en") {
+    return ENGLISH_TEXT[value] ?? cyrillicToLatin(value);
+  }
+
+  return cyrillicToLatin(value);
+};
+
+const formatRsd = (value: number, localeMode: LocaleMode) =>
+  new Intl.NumberFormat(localeMode === "en" ? "en-US" : "sr-RS", {
     style: "currency",
     currency: "RSD",
     minimumFractionDigits: 2,
@@ -43,8 +81,9 @@ export default function CenePage({
   initialData: ApiResponse;
 }) {
   const locale = useLocale();
-  const isCyrillic = locale === "sr-Cyrl";
-  const isSerbian = locale.startsWith("sr");
+  const localeMode = getLocaleMode(locale);
+  const isCyrillic = localeMode === "sr-Cyrl";
+  const isSerbian = localeMode !== "en";
   const [data, _setData] = useState<PriceData[]>(initialData.data);
   const [filteredData, setFilteredData] = useState<PriceData[]>(
     initialData.data
@@ -188,6 +227,52 @@ export default function CenePage({
       : isSerbian
         ? "Unesite proizvođača..."
         : "Enter a manufacturer...",
+    resultsTitle: isCyrillic
+      ? "Резултати претраге"
+      : isSerbian
+        ? "Rezultati pretrage"
+        : "Search results",
+    tableName: isCyrillic
+      ? "Назив производа"
+      : isSerbian
+        ? "Naziv proizvoda"
+        : "Product name",
+    tableManufacturer: isCyrillic
+      ? "Произвођач"
+      : isSerbian
+        ? "Proizvođač"
+        : "Manufacturer",
+    tableCategory: isCyrillic
+      ? "Категорија"
+      : isSerbian
+        ? "Kategorija"
+        : "Category",
+    tableRegularPrice: isCyrillic
+      ? "Регуларна цена"
+      : isSerbian
+        ? "Regularna cena"
+        : "Regular price",
+    tableDiscountPrice: isCyrillic
+      ? "Цена са попустом"
+      : isSerbian
+        ? "Cena sa popustom"
+        : "Discount price",
+    tableLocation: isCyrillic
+      ? "Локација"
+      : isSerbian
+        ? "Lokacija"
+        : "Location",
+    tableDate: isCyrillic ? "Датум" : isSerbian ? "Datum" : "Date",
+    noDiscount: isCyrillic
+      ? "Без попуста"
+      : isSerbian
+        ? "Bez popusta"
+        : "No discount",
+    firstResults: isCyrillic
+      ? `Приказано првих 50 од ${filteredData.length} резултата`
+      : isSerbian
+        ? `Prikazano prvih 50 od ${filteredData.length} rezultata`
+        : `Showing the first 50 of ${filteredData.length} results`,
   };
 
   return (
@@ -221,7 +306,7 @@ export default function CenePage({
               {copy.averagePrice}
             </h3>
             <p className="text-2xl font-bold text-gray-900">
-              {formatRsd(averagePrice)}
+              {formatRsd(averagePrice, localeMode)}
             </p>
           </div>
           <div className="bg-white rounded-lg shadow p-6">
@@ -274,7 +359,7 @@ export default function CenePage({
                 <option value="">{copy.allCategories}</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
-                    {cat}
+                    {localizeText(cat, localeMode)}
                   </option>
                 ))}
               </select>
@@ -335,7 +420,7 @@ export default function CenePage({
                 <option value="">{copy.allLocations}</option>
                 {locations.map((loc) => (
                   <option key={loc} value={loc}>
-                    {loc}
+                    {localizeText(loc, localeMode)}
                   </option>
                 ))}
               </select>
@@ -346,32 +431,32 @@ export default function CenePage({
         {/* Price Table */}
         <div className="bg-white rounded-lg shadow overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold">Резултати претраге</h2>
+            <h2 className="text-xl font-semibold">{copy.resultsTitle}</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Назив производа
+                    {copy.tableName}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Произвођач
+                    {copy.tableManufacturer}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Категорија
+                    {copy.tableCategory}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Регуларна цена
+                    {copy.tableRegularPrice}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Цена са попустом
+                    {copy.tableDiscountPrice}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Локација
+                    {copy.tableLocation}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Датум
+                    {copy.tableDate}
                   </th>
                 </tr>
               </thead>
@@ -379,31 +464,33 @@ export default function CenePage({
                 {filteredData.slice(0, 50).map((item) => (
                   <tr key={item.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {item.naziv}
+                      {localizeText(item.naziv, localeMode)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {item.proizvodjac}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {item.kategorija}
+                      {localizeText(item.kategorija, localeMode)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {formatRsd(item.cenaRegular)}
+                      {formatRsd(item.cenaRegular, localeMode)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {item.cenaPopust > 0 ? (
                         <span className="text-green-600 font-semibold">
-                          {formatRsd(item.cenaPopust)}
+                          {formatRsd(item.cenaPopust, localeMode)}
                         </span>
                       ) : (
-                        "-"
+                        copy.noDiscount
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {item.lokacija}
+                      {localizeText(item.lokacija, localeMode)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(item.datum).toLocaleDateString("sr-RS")}
+                      {new Date(item.datum).toLocaleDateString(
+                        localeMode === "en" ? "en-US" : "sr-RS"
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -411,7 +498,7 @@ export default function CenePage({
             </table>
             {filteredData.length > 50 && (
               <div className="px-6 py-3 bg-gray-50 text-center text-sm text-gray-500">
-                Приказано првих 50 од {filteredData.length} резултата
+                {copy.firstResults}
               </div>
             )}
           </div>

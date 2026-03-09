@@ -219,7 +219,7 @@ export const DEMO_CONFIGS: Record<string, DemoConfig> = {
     slugKeywords: ["energija", "ugalj", "struja"],
     chartType: "column",
     tags: ["Energija", "Energetska tranzicija"],
-    icon: "🚨",
+    icon: "⚡",
   },
   agriculture: {
     id: "agriculture",
