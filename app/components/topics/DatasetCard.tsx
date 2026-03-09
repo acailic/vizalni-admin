@@ -62,7 +62,13 @@ export function DatasetCard({ dataset, locale }: DatasetCardProps) {
               {description}
             </Typography>
             <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-              <Chip label={dataset.format} size="small" variant="outlined" />
+              <Chip
+                label={
+                  dataset.format || (locale === "en" ? "Unknown" : "Nepoznato")
+                }
+                size="small"
+                variant="outlined"
+              />
               <Typography
                 variant="caption"
                 color="text.secondary"
@@ -77,7 +83,10 @@ export function DatasetCard({ dataset, locale }: DatasetCardProps) {
                 }}
               >
                 <Box component="span">{`${updatedLabel}:`}</Box>
-                <Box component="span">{dataset.lastUpdated}</Box>
+                <Box component="span">
+                  {dataset.lastUpdated ||
+                    (locale === "en" ? "Unknown" : "Nepoznato")}
+                </Box>
               </Typography>
             </Box>
           </Box>
