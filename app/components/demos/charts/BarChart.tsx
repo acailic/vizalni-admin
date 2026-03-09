@@ -9,6 +9,7 @@ import { axisBottom, axisLeft } from "d3-axis";
 import { format } from "d3-format";
 import { scaleBand, scaleLinear } from "d3-scale";
 import * as d3 from "d3-selection";
+import "d3-transition";
 import { useEffect, useMemo, useRef } from "react";
 
 export interface BarChartProps {
