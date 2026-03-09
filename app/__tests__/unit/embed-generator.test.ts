@@ -91,4 +91,39 @@ describe("embed generator helpers", () => {
       }).trim()
     ).toMatch(/<\/iframe>$/);
   });
+
+  it("reduces height when optimizeSpace is true and height is default", () => {
+    // With optimizeSpace=true and default height, should reduce to 320px
+    expect(
+      buildIframeSnippet({
+        iframeSrc: "https://example.com/embed/demo?type=bar",
+        width: "100%",
+        height: "520px",
+        removeBorder: false,
+        optimizeSpace: true,
+      })
+    ).toContain("height: 320px");
+
+    // With optimizeSpace=false, should keep original height
+    expect(
+      buildIframeSnippet({
+        iframeSrc: "https://example.com/embed/demo?type=bar",
+        width: "100%",
+        height: "520px",
+        removeBorder: false,
+        optimizeSpace: false,
+      })
+    ).toContain("height: 520px");
+
+    // With optimizeSpace=true but custom height, should keep custom height
+    expect(
+      buildIframeSnippet({
+        iframeSrc: "https://example.com/embed/demo?type=bar",
+        width: "100%",
+        height: "720px",
+        removeBorder: false,
+        optimizeSpace: true,
+      })
+    ).toContain("height: 720px");
+  });
 });
