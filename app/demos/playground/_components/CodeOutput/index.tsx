@@ -28,8 +28,7 @@ export function generateCode({
             ? "PieChart"
             : "ScatterChart";
 
-  const dataStr = JSON.stringify(data.slice(0, 4), null, 2);
-  const truncated = data.length > 4 ? "\n  // ..." : "";
+  const dataStr = JSON.stringify(data, null, 2);
 
   const configStr =
     chartType === "pie"
@@ -47,7 +46,7 @@ export function generateCode({
   return `import { ${chartComponent} } from '@vizualni/react';
 
 function MyChart() {
-  const data = ${dataStr}${truncated};
+  const data = ${dataStr};
 
   return (
     <${chartComponent}
