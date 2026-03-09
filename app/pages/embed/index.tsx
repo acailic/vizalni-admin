@@ -162,6 +162,61 @@ export default function EmbedGeneratorPage() {
     resolvedQuery.width,
   ]);
 
+  const isSerbian = lang === "sr";
+
+  const labels = {
+    overline: isSerbian ? "Ugrađivanje" : "Embeds",
+    heading: isSerbian
+      ? "Generišite iframe kod za vizualni-admin grafikone"
+      : "Generate iframe code for vizualni-admin charts",
+    subheading: isSerbian
+      ? "Prilagodite veličinu, temu, jezik, parametre grafikona i opcije rasporeda, zatim kopirajte kod za ugrađivanje."
+      : "Customize size, theme, language, chart params, and layout options, then copy/paste the embed snippet. The preview is embedded on this same screen and updates live.",
+    settingsTitle: isSerbian ? "Podešavanja" : "Settings",
+    settingsSub: isSerbian ? "Podesite parametre" : "Tweak embed parameters",
+    widthLabel: isSerbian ? "Širina" : "Width",
+    widthHelper: isSerbian
+      ? 'Bilo koja CSS dužina (npr. "100%" ili "720px")'
+      : 'Any CSS length (e.g., "100%" or "720px")',
+    heightLabel: isSerbian ? "Visina" : "Height",
+    heightHelper: isSerbian
+      ? 'Bilo koja CSS dužina (npr. "520px")'
+      : 'Any CSS length (e.g., "520px")',
+    themeLabel: isSerbian ? "Tema" : "Theme",
+    languageLabel: isSerbian ? "Jezik" : "Language",
+    chartParamsTitle: isSerbian ? "Parametri grafikona" : "Chart parameters",
+    chartTypeLabel: isSerbian ? "Tip grafikona" : "Chart type",
+    chartTypeHelper: isSerbian
+      ? 'Primeri: "bar", "line", "column", "pie"'
+      : 'Examples: "bar", "line", "column", "pie"',
+    datasetLabel: isSerbian ? "Skup podataka" : "Dataset",
+    datasetHelper: isSerbian
+      ? 'Primeri: "age", "budget", "air"'
+      : 'Examples: "age", "budget", "air"',
+    dataSourceLabel: isSerbian ? "Izvor podataka" : "Data source",
+    dataSourceHelper: isSerbian ? 'Primer: "Prod"' : 'Example: "Prod"',
+    layoutTitle: isSerbian ? "Opcije rasporeda" : "Layout options",
+    previewButton: isSerbian ? "Pregled ugrađenog" : "Preview embed",
+    copyTitle: isSerbian ? "Kopirajte kod za ugrađivanje" : "Copy embed code",
+    copyDescription: isSerbian
+      ? "Zalepite ovaj iframe u bilo koji sajt ili CMS."
+      : "Paste this iframe into any site or CMS. The generated `src` mirrors the selected chart parameters and locale/theme options.",
+    targetRoute: isSerbian ? "Ciljna ruta" : "Target route",
+    inlinePreview: isSerbian ? "Pregled uživo" : "Inline preview",
+    paramsInUrl: isSerbian ? "Parametri u URL-u:" : "Parameters in embed URL:",
+  };
+
+  const layoutParamLabels: Record<EmbedLayoutParam, string> = isSerbian
+    ? {
+        removeBorder: "Ukloni okvir",
+        optimizeSpace: "Optimizuj prostor",
+        removeMoreOptionsButton: "Ukloni dugme za više opcija",
+        removeLabelsInteractivity: "Onemogući interaktivnost oznaka",
+        removeFootnotes: "Ukloni fusnote",
+        removeFilters: "Ukloni filtere",
+      }
+    : LAYOUT_PARAM_LABELS;
+
   const embedPreviewPath = useMemo(() => {
     // Keep generator preview pinned to a stable embed-safe route.
     // Dynamic chart routes are not pre-rendered in static builds.
@@ -229,60 +284,55 @@ export default function EmbedGeneratorPage() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
       <Head>
-        <title>Embed | vizualni-admin</title>
-        <meta
-          name="description"
-          content="Generate iframe embed code for vizualni-admin charts with theme and language toggles. Copy/paste into any site or CMS."
-        />
-        <meta property="og:title" content="Embed vizualni-admin charts" />
-        <meta
-          property="og:description"
-          content="Customize size, theme, and language, then copy/paste the iframe embed snippet."
-        />
+        <title>{isSerbian ? "Ugrađivanje" : "Embed"} | vizualni-admin</title>
+        <meta name="description" content={labels.subheading} />
+        <meta property="og:title" content={labels.overline} />
+        <meta property="og:description" content={labels.subheading} />
         <meta property="og:type" content="website" />
       </Head>
       <Header />
       <Container maxWidth="lg" sx={{ py: 6 }}>
         <Typography variant="overline" color="primary" sx={{ fontWeight: 700 }}>
-          Embeds
+          {labels.overline}
         </Typography>
         <Typography
           variant="h3"
           sx={{ fontWeight: 800, mt: 1, mb: 2, letterSpacing: "-0.02em" }}
         >
-          Generate iframe code for vizualni-admin charts
+          {labels.heading}
         </Typography>
         <Typography
           variant="h6"
           color="text.secondary"
           sx={{ mb: 4, maxWidth: 800 }}
         >
-          Customize size, theme, language, chart params, and layout options,
-          then copy/paste the embed snippet. The preview is embedded on this
-          same screen and updates live.
+          {labels.subheading}
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} md={5}>
             <Card variant="outlined">
-              <CardHeader title="Settings" subheader="Tweak embed parameters" />
+              <CardHeader
+                title={labels.settingsTitle}
+                subheader={labels.settingsSub}
+              />
               <CardContent>
                 <Stack spacing={2}>
                   <TextField
-                    label="Width"
+                    label={labels.widthLabel}
                     value={width}
                     onChange={(e) => setWidth(e.target.value)}
-                    helperText='Any CSS length (e.g., "100%" or "720px")'
+                    helperText={labels.widthHelper}
                   />
                   <TextField
-                    label="Height"
+                    label={labels.heightLabel}
                     value={height}
                     onChange={(e) => setHeight(e.target.value)}
-                    helperText='Any CSS length (e.g., "520px")'
+                    helperText={labels.heightHelper}
                   />
                   <TextField
                     select
-                    label="Theme"
+                    label={labels.themeLabel}
                     value={theme}
                     onChange={(e) =>
                       setTheme(e.target.value as "light" | "dark")
@@ -293,7 +343,7 @@ export default function EmbedGeneratorPage() {
                   </TextField>
                   <TextField
                     select
-                    label="Language"
+                    label={labels.languageLabel}
                     value={lang}
                     onChange={(e) => setLang(e.target.value as "en" | "sr")}
                   >
@@ -302,29 +352,29 @@ export default function EmbedGeneratorPage() {
                   </TextField>
                   <Divider />
                   <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                    Chart parameters
+                    {labels.chartParamsTitle}
                   </Typography>
                   <TextField
-                    label="Chart type"
+                    label={labels.chartTypeLabel}
                     value={chartType}
                     onChange={(e) => setChartType(e.target.value)}
-                    helperText='Examples: "bar", "line", "column", "pie"'
+                    helperText={labels.chartTypeHelper}
                   />
                   <TextField
-                    label="Dataset"
+                    label={labels.datasetLabel}
                     value={dataset}
                     onChange={(e) => setDataset(e.target.value)}
-                    helperText='Examples: "age", "budget", "air"'
+                    helperText={labels.datasetHelper}
                   />
                   <TextField
-                    label="Data source"
+                    label={labels.dataSourceLabel}
                     value={dataSource}
                     onChange={(e) => setDataSource(e.target.value)}
-                    helperText='Example: "Prod"'
+                    helperText={labels.dataSourceHelper}
                   />
                   <Divider />
                   <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-                    Layout options
+                    {labels.layoutTitle}
                   </Typography>
                   <FormGroup>
                     {EMBED_LAYOUT_PARAMS.map((param) => (
@@ -341,7 +391,7 @@ export default function EmbedGeneratorPage() {
                             }
                           />
                         }
-                        label={LAYOUT_PARAM_LABELS[param]}
+                        label={layoutParamLabels[param]}
                       />
                     ))}
                   </FormGroup>
@@ -350,7 +400,7 @@ export default function EmbedGeneratorPage() {
                   {Object.keys(passthroughParams).length > 0 && (
                     <Box sx={{ mt: 1 }}>
                       <Typography variant="caption" color="text.secondary">
-                        Parameters in embed URL:
+                        {labels.paramsInUrl}
                       </Typography>
                       <Box
                         sx={{
@@ -379,7 +429,7 @@ export default function EmbedGeneratorPage() {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Preview embed
+                    {labels.previewButton}
                   </Button>
                 </Stack>
               </CardContent>
@@ -389,26 +439,24 @@ export default function EmbedGeneratorPage() {
             <Card variant="outlined" sx={{ height: "100%" }}>
               <CardContent>
                 <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 1 }}>
-                  Copy embed code
+                  {labels.copyTitle}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
                   sx={{ mb: 2 }}
                 >
-                  Paste this iframe into any site or CMS. The generated `src`
-                  mirrors the selected chart parameters and locale/theme
-                  options.
+                  {labels.copyDescription}
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  Target route: <code>{embedPreviewPath}</code>
+                  {labels.targetRoute}: <code>{embedPreviewPath}</code>
                 </Typography>
                 <CodeBlock
                   code={iframeSnippet}
                   language="html"
                   fileName="embed.html"
                   maxLines={10}
-                  copyLabel="Copy embed code"
+                  copyLabel={labels.copyTitle}
                 />
 
                 <Box sx={{ mt: 3 }}>
@@ -416,7 +464,7 @@ export default function EmbedGeneratorPage() {
                     variant="subtitle2"
                     sx={{ fontWeight: 700, mb: 1 }}
                   >
-                    Inline preview
+                    {labels.inlinePreview}
                   </Typography>
                   <Box
                     component="iframe"
