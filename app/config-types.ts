@@ -9,6 +9,9 @@ export type { SankeyConfig };
 // Import and re-export ChartThemeVariant from use-chart-theme to avoid duplication
 import type { ChartThemeVariant as ChartThemeVariantType } from "./charts/shared/use-chart-theme";
 export type ChartThemeVariant = ChartThemeVariantType;
+// Import SunburstConfig for type guard
+import type { SunburstConfig } from "./charts/sunburst/sunburst-types";
+export type { SunburstConfig };
 // Import TreemapConfig for type guard
 import type { TreemapConfig } from "./charts/treemap/treemap-types";
 export type { TreemapConfig };
@@ -1174,6 +1177,55 @@ const SankeyConfigCodec = t.intersection([
   }),
 ]);
 
+// Sunburst chart types
+const SunburstHierarchyField = t.type({
+  componentId: t.string,
+  type: t.literal("nominal"),
+});
+export type SunburstHierarchyField = t.TypeOf<typeof SunburstHierarchyField>;
+
+const SunburstSizeField = t.type({
+  componentId: t.string,
+  type: t.literal("quantitative"),
+});
+export type SunburstSizeField = t.TypeOf<typeof SunburstSizeField>;
+
+const SunburstColorField = t.type({
+  componentId: t.string,
+});
+export type SunburstColorField = t.TypeOf<typeof SunburstColorField>;
+
+const SunburstFields = t.type({
+  hierarchy: t.array(SunburstHierarchyField),
+  size: SunburstSizeField,
+  color: SunburstColorField,
+});
+export type SunburstFields = t.TypeOf<typeof SunburstFields>;
+
+const SunburstVisualOptions = t.partial({
+  enableZoomOnClick: t.boolean,
+  showBreadcrumb: t.boolean,
+  enableArcHighlight: t.boolean,
+  enableAnimations: t.boolean,
+  innerRadiusRatio: t.number,
+  cornerRadius: t.number,
+  padAngle: t.number,
+});
+
+const SunburstConfigCodec = t.intersection([
+  GenericChartConfig,
+  t.type(
+    {
+      chartType: t.literal("sunburst"),
+      fields: SunburstFields,
+    },
+    "SunburstConfig"
+  ),
+  t.partial({
+    visualOptions: SunburstVisualOptions,
+  }),
+]);
+
 const RegularChartConfig = t.union([
   AreaConfig,
   ColumnConfig,
@@ -1182,6 +1234,7 @@ const RegularChartConfig = t.union([
   MapConfigRuntime,
   PieConfig,
   SankeyConfigCodec,
+  SunburstConfigCodec,
   ScatterPlotConfig,
   TableConfig,
 ]);
@@ -1320,6 +1373,12 @@ export const isSankeyConfig = (chartConfig: {
   chartType: string;
 }): chartConfig is SankeyConfig => {
   return chartConfig.chartType === "sankey";
+};
+
+export const isSunburstConfig = (chartConfig: {
+  chartType: string;
+}): chartConfig is SunburstConfig => {
+  return chartConfig.chartType === "sunburst";
 };
 
 export const canBeNormalized = (

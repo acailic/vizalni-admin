@@ -104,6 +104,7 @@ const chartTypes: ChartType[] = [
   "table",
   "map",
   "sankey",
+  "sunburst",
   "comboLineSingle",
   "comboLineDual",
   "comboLineColumn",
@@ -119,6 +120,7 @@ export const regularChartTypes: RegularChartType[] = [
   "table",
   "map",
   "sankey",
+  "sunburst",
 ] as string[]; // Cast to allow treemap which may not be in RegularChartType union yet
 
 const comboDifferentUnitChartTypes: ComboChartType[] = [
@@ -146,9 +148,10 @@ function getChartTypeOrder({ cubeCount }: { cubeCount: number }): ChartOrder {
     map: 6,
     table: 7,
     sankey: 8,
-    comboLineSingle: 9 + multiCubeBoost,
-    comboLineDual: 10 + multiCubeBoost,
-    comboLineColumn: 11 + multiCubeBoost,
+    sunburst: 9,
+    comboLineSingle: 10 + multiCubeBoost,
+    comboLineDual: 11 + multiCubeBoost,
+    comboLineColumn: 12 + multiCubeBoost,
   };
 }
 
@@ -788,6 +791,29 @@ export const getInitialConfig = (
               componentId: numericalMeasures[0]?.id ?? "",
               type: "quantitative",
             },
+          },
+        },
+      };
+    }
+    case "sunburst": {
+      // Sunburst charts need hierarchy levels and a size measure
+      const nominalDimensions = dimensions.filter(isNominalDimension);
+
+      return {
+        ...getGenericConfig(),
+        chartType: "sunburst",
+        interactiveFiltersConfig: getInitialInteractiveFiltersConfig(),
+        fields: {
+          hierarchy: nominalDimensions.slice(0, 3).map((d) => ({
+            componentId: d.id,
+            type: "nominal" as const,
+          })),
+          size: {
+            componentId: numericalMeasures[0]?.id ?? "",
+            type: "quantitative" as const,
+          },
+          color: {
+            componentId: nominalDimensions[0]?.id ?? "",
           },
         },
       };
@@ -2410,6 +2436,64 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
     },
     interactiveFiltersConfig: interactiveFiltersAdjusters,
   },
+  sunburst: {
+    cubes: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.cubes = oldValue;
+      });
+    },
+    annotations: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.annotations = oldValue;
+      });
+    },
+    limits: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.limits = oldValue;
+      });
+    },
+    conversionUnitsByComponentId: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.conversionUnitsByComponentId = oldValue;
+      });
+    },
+    fields: {
+      hierarchy: {
+        componentId: ({ oldValue, newChartConfig, dimensions }) => {
+          if (dimensions.find((d) => d.id === oldValue)) {
+            return produce(newChartConfig, (draft) => {
+              // Update the first hierarchy level
+              if (draft.fields.hierarchy.length > 0) {
+                draft.fields.hierarchy[0].componentId = oldValue;
+              }
+            });
+          }
+          return newChartConfig;
+        },
+      },
+      size: {
+        componentId: ({ oldValue, newChartConfig, measures }) => {
+          if (measures.find((m) => m.id === oldValue)) {
+            return produce(newChartConfig, (draft) => {
+              draft.fields.size.componentId = oldValue;
+            });
+          }
+          return newChartConfig;
+        },
+      },
+      color: {
+        componentId: ({ oldValue, newChartConfig, dimensions }) => {
+          if (dimensions.find((d) => d.id === oldValue)) {
+            return produce(newChartConfig, (draft) => {
+              draft.fields.color.componentId = oldValue;
+            });
+          }
+          return newChartConfig;
+        },
+      },
+    },
+    interactiveFiltersConfig: interactiveFiltersAdjusters,
+  },
 };
 type ChartConfigAdjusters = (typeof chartConfigsAdjusters)[ChartType];
 
@@ -2864,6 +2948,61 @@ const chartConfigsPathOverrides: {
           path: "fields.links.value.componentId",
           oldValue: (d) => d.columnComponentId,
         },
+      ],
+    },
+  },
+  sunburst: {
+    column: {
+      "fields.y.componentId": [{ path: "fields.size.componentId" }],
+      "fields.x.componentId": [{ path: "fields.hierarchy[0].componentId" }],
+    },
+    bar: {
+      "fields.x.componentId": [{ path: "fields.size.componentId" }],
+      "fields.y.componentId": [{ path: "fields.hierarchy[0].componentId" }],
+    },
+    line: {
+      "fields.y.componentId": [{ path: "fields.size.componentId" }],
+      "fields.x.componentId": [{ path: "fields.hierarchy[0].componentId" }],
+    },
+    area: {
+      "fields.y.componentId": [{ path: "fields.size.componentId" }],
+      "fields.x.componentId": [{ path: "fields.hierarchy[0].componentId" }],
+    },
+    scatterplot: {
+      "fields.y.componentId": [{ path: "fields.size.componentId" }],
+      "fields.x.componentId": [{ path: "fields.hierarchy[0].componentId" }],
+    },
+    pie: {
+      "fields.y.componentId": [{ path: "fields.size.componentId" }],
+      "fields.segment.componentId": [
+        { path: "fields.hierarchy[0].componentId" },
+      ],
+    },
+    map: {
+      "fields.areaLayer.color.componentId": [
+        { path: "fields.size.componentId" },
+      ],
+    },
+    comboLineSingle: {
+      "fields.y.componentIds": [
+        { path: "fields.size.componentId", oldValue: (d) => d[0] },
+      ],
+    },
+    comboLineDual: {
+      "fields.y.leftAxisComponentId": [{ path: "fields.size.componentId" }],
+    },
+    comboLineColumn: {
+      "fields.y": [
+        {
+          path: "fields.size.componentId",
+          oldValue: (d) => d.columnComponentId,
+        },
+      ],
+    },
+    sankey: {
+      "fields.links.value.componentId": [{ path: "fields.size.componentId" }],
+      "fields.links.source.componentId": [
+        { path: "fields.hierarchy[0].componentId" },
       ],
     },
   },

@@ -34,6 +34,7 @@ import {
   ScatterPlotConfig,
   ScatterPlotFields,
   ScatterPlotSegmentField,
+  SunburstConfig,
   TableConfig,
   TableFields,
 } from "@/config-types";
@@ -301,6 +302,16 @@ type SankeyAdjusters = BaseAdjusters<SankeyConfig> & {
   };
 };
 
+type SunburstAdjusters = BaseAdjusters<SunburstConfig> & {
+  fields: {
+    hierarchy: {
+      componentId: FieldAdjuster<SunburstConfig, ComponentId>;
+    };
+    size: { componentId: FieldAdjuster<SunburstConfig, ComponentId> };
+    color: { componentId: FieldAdjuster<SunburstConfig, ComponentId> };
+  };
+};
+
 export type ChartConfigsAdjusters = {
   column: ColumnAdjusters;
   bar: BarAdjusters;
@@ -311,6 +322,7 @@ export type ChartConfigsAdjusters = {
   table: TableAdjusters;
   map: MapAdjusters;
   sankey: SankeyAdjusters;
+  sunburst: SunburstAdjusters;
   comboLineSingle: ComboLineSingleAdjusters;
   comboLineDual: ComboLineDualAdjusters;
   comboLineColumn: ComboLineColumnAdjusters;
