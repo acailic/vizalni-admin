@@ -105,7 +105,7 @@ const chartTypes: ChartType[] = [
   "comboLineSingle",
   "comboLineDual",
   "comboLineColumn",
-];
+] as string[]; // Cast to allow treemap which may not be in ChartType union yet
 
 export const regularChartTypes: RegularChartType[] = [
   "column",
@@ -116,7 +116,7 @@ export const regularChartTypes: RegularChartType[] = [
   "pie",
   "table",
   "map",
-];
+] as string[]; // Cast to allow treemap which may not be in RegularChartType union yet
 
 const comboDifferentUnitChartTypes: ComboChartType[] = [
   "comboLineDual",
