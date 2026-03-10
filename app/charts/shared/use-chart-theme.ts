@@ -1,17 +1,43 @@
 import { useMediaQuery } from "@mui/material";
+import { createContext, useContext, createElement, ReactNode } from "react";
 
 import { useTheme } from "../../themes";
 
 import { chartMotion, chartStroke, chartColors } from "./chart-theme-tokens";
+import { ChartThemeVariant as ThemeVariant } from "./chart-theme-variants";
 
 export const TICK_FONT_SIZE = 12;
 const AXIS_LABEL_FONT_SIZE_XXS = 12;
 const AXIS_LABEL_FONT_SIZE_XL = 14;
 
 /**
- * Chart theme variant types
+ * Chart theme variant types - re-exported from chart-theme-variants
  */
-export type ChartThemeVariant = "default" | "modern" | "minimal" | "dark";
+export type ChartThemeVariant = ThemeVariant;
+
+/**
+ * Context for chart theme variant selection
+ */
+export const ChartThemeContext = createContext<ChartThemeVariant | undefined>(
+  undefined
+);
+
+/**
+ * Provider component for chart theme variant
+ */
+export function ChartThemeProvider({
+  variant,
+  children,
+}: {
+  variant: ChartThemeVariant;
+  children: ReactNode;
+}) {
+  return createElement(
+    ChartThemeContext.Provider,
+    { value: variant },
+    children
+  );
+}
 
 /**
  * Chart theme interface with all visual styling properties
@@ -51,6 +77,7 @@ export interface ChartTheme {
 
 /**
  * Variant-specific overrides for chart theming
+ * Values derived from chart-theme-variants.ts stroke tokens
  */
 const themeVariants: Record<ChartThemeVariant, Partial<ChartTheme>> = {
   default: {
@@ -60,16 +87,16 @@ const themeVariants: Record<ChartThemeVariant, Partial<ChartTheme>> = {
     dotGlowRadius: 6,
   },
   modern: {
-    lineWidth: chartStroke.lineWidth,
-    barRadius: chartStroke.barRadius,
-    dotRadius: chartStroke.dotRadius,
-    dotGlowRadius: chartStroke.dotGlowRadius,
+    lineWidth: 2.5,
+    barRadius: 8, // More rounded than default
+    dotRadius: 5,
+    dotGlowRadius: 10,
   },
   minimal: {
-    lineWidth: 1.5,
+    lineWidth: 1, // Thinner lines (from chart-theme-variants.ts)
     barRadius: 2,
-    dotRadius: 2,
-    dotGlowRadius: 4,
+    dotRadius: 3,
+    dotGlowRadius: 6,
   },
   dark: {
     lineWidth: chartStroke.lineWidth,
@@ -140,8 +167,11 @@ export const useChartThemeWithVariant = (
 
 /**
  * Hook to get chart theme with default ("modern") variant
+ * Uses context if available, falls back to "modern" if no provider
  * @returns ChartTheme object with all styling properties
  */
 export const useChartTheme = (): ChartTheme => {
-  return useChartThemeWithVariant("modern");
+  const contextVariant = useContext(ChartThemeContext);
+  const variant = contextVariant ?? "modern";
+  return useChartThemeWithVariant(variant);
 };
