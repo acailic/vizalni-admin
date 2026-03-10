@@ -77,6 +77,7 @@ import {
   OnOffControlTabField,
 } from "@/configurator/components/field";
 import { canRenderDatePickerField } from "@/configurator/components/field-date-picker";
+import { ThemeVariantSelector } from "@/configurator/components/theme-variant-selector";
 import {
   getFiltersByMappingStatus,
   isConfiguring,
@@ -846,6 +847,18 @@ export const ChartConfigurator = ({
         </ControlSection>
       )}
       <ChartAnnotator />
+      <ControlSection
+        role="tablist"
+        aria-labelledby="controls-chart-design"
+        collapse
+      >
+        <SectionTitle id="controls-chart-design">
+          <Trans id="controls.section.chart.design">Chart Design</Trans>
+        </SectionTitle>
+        <ControlSectionContent>
+          <ThemeVariantSelector />
+        </ControlSectionContent>
+      </ControlSection>
       <ChartAnnotations />
       {chartConfig.chartType !== "table" && (
         <InteractiveFiltersConfigurator state={state} />

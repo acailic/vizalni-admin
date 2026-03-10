@@ -1,4 +1,5 @@
 import { EncodingFieldType } from "@/charts/chart-config-ui-options";
+import { ChartThemeVariant } from "@/charts/shared/chart-theme-variants";
 import {
   Annotation,
   BaseLayer,
@@ -395,5 +396,11 @@ export type ConfiguratorStateAction =
       type: "DASHBOARD_DATA_FILTER_REMOVE";
       value: {
         dimensionId: string;
+      };
+    }
+  | {
+      type: "CHART_THEME_VARIANT_CHANGED";
+      payload: {
+        variant: ChartThemeVariant;
       };
     };

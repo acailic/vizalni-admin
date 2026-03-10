@@ -1489,6 +1489,12 @@ const reducer_: Reducer<ConfiguratorState, ConfiguratorStateAction> = (
 
       return draft;
 
+    case "CHART_THEME_VARIANT_CHANGED": {
+      const chartConfig = getChartConfig(draft);
+      chartConfig.themeVariant = action.payload.variant;
+      break;
+    }
+
     default:
       throw unreachableError(action as never);
   }

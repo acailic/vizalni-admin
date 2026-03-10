@@ -391,17 +391,22 @@ const ConversionUnit = t.type({
 });
 export type ConversionUnit = t.TypeOf<typeof ConversionUnit>;
 
-const GenericChartConfig = t.type({
-  key: t.string,
-  version: t.string,
-  meta: Meta,
-  cubes: t.array(Cube),
-  interactiveFiltersConfig: InteractiveFiltersConfig,
-  annotations: t.array(Annotation),
-  limits: t.record(t.string, t.array(Limit)),
-  conversionUnitsByComponentId: t.record(t.string, ConversionUnit),
-  activeField: t.union([t.string, t.undefined]),
-});
+const GenericChartConfig = t.intersection([
+  t.type({
+    key: t.string,
+    version: t.string,
+    meta: Meta,
+    cubes: t.array(Cube),
+    interactiveFiltersConfig: InteractiveFiltersConfig,
+    annotations: t.array(Annotation),
+    limits: t.record(t.string, t.array(Limit)),
+    conversionUnitsByComponentId: t.record(t.string, ConversionUnit),
+    activeField: t.union([t.string, t.undefined]),
+  }),
+  t.partial({
+    themeVariant: t.string,
+  }),
+]);
 
 export type GenericChartConfig = t.TypeOf<typeof GenericChartConfig>;
 
