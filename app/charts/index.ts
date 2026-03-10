@@ -3458,6 +3458,7 @@ export const getChartSymbol = (
 };
 
 // Re-export chart visualization components
+export { ChartGaugeVisualization } from "./gauge/chart-gauge";
 export { ChartSankeyVisualization } from "./sankey/chart-sankey";
 export { ChartSunburstVisualization } from "./sunburst/chart-sunburst";
 export { ChartTreemapVisualization } from "./treemap/chart-treemap";
