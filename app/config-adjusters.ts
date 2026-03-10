@@ -17,6 +17,7 @@ import {
   ComboLineDualFields,
   ComboLineSingleConfig,
   ComboLineSingleFields,
+  GaugeConfig,
   GenericChartConfig,
   InteractiveFiltersCalculation,
   InteractiveFiltersConfig,
@@ -312,6 +313,12 @@ type SunburstAdjusters = BaseAdjusters<SunburstConfig> & {
   };
 };
 
+type GaugeAdjusters = BaseAdjusters<GaugeConfig> & {
+  fields: {
+    value: { componentId: FieldAdjuster<GaugeConfig, ComponentId> };
+  };
+};
+
 export type ChartConfigsAdjusters = {
   column: ColumnAdjusters;
   bar: BarAdjusters;
@@ -323,6 +330,7 @@ export type ChartConfigsAdjusters = {
   map: MapAdjusters;
   sankey: SankeyAdjusters;
   sunburst: SunburstAdjusters;
+  gauge: GaugeAdjusters;
   comboLineSingle: ComboLineSingleAdjusters;
   comboLineDual: ComboLineDualAdjusters;
   comboLineColumn: ComboLineColumnAdjusters;

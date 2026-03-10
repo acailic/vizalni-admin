@@ -105,6 +105,7 @@ const chartTypes: ChartType[] = [
   "map",
   "sankey",
   "sunburst",
+  "gauge",
   "comboLineSingle",
   "comboLineDual",
   "comboLineColumn",
@@ -121,6 +122,7 @@ export const regularChartTypes: RegularChartType[] = [
   "map",
   "sankey",
   "sunburst",
+  "gauge",
 ] as string[]; // Cast to allow treemap which may not be in RegularChartType union yet
 
 const comboDifferentUnitChartTypes: ComboChartType[] = [
@@ -149,9 +151,10 @@ function getChartTypeOrder({ cubeCount }: { cubeCount: number }): ChartOrder {
     table: 7,
     sankey: 8,
     sunburst: 9,
-    comboLineSingle: 10 + multiCubeBoost,
-    comboLineDual: 11 + multiCubeBoost,
-    comboLineColumn: 12 + multiCubeBoost,
+    gauge: 10,
+    comboLineSingle: 11 + multiCubeBoost,
+    comboLineDual: 12 + multiCubeBoost,
+    comboLineColumn: 13 + multiCubeBoost,
   };
 }
 
@@ -814,6 +817,20 @@ export const getInitialConfig = (
           },
           color: {
             componentId: nominalDimensions[0]?.id ?? "",
+          },
+        },
+      };
+    }
+    case "gauge": {
+      // Gauge charts need a value measure
+      return {
+        ...getGenericConfig(),
+        chartType: "gauge",
+        interactiveFiltersConfig: getInitialInteractiveFiltersConfig(),
+        fields: {
+          value: {
+            componentId: numericalMeasures[0]?.id ?? "",
+            type: "quantitative" as const,
           },
         },
       };
@@ -2494,6 +2511,41 @@ const chartConfigsAdjusters: ChartConfigsAdjusters = {
     },
     interactiveFiltersConfig: interactiveFiltersAdjusters,
   },
+  gauge: {
+    cubes: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.cubes = oldValue;
+      });
+    },
+    annotations: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.annotations = oldValue;
+      });
+    },
+    limits: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.limits = oldValue;
+      });
+    },
+    conversionUnitsByComponentId: ({ oldValue, newChartConfig }) => {
+      return produce(newChartConfig, (draft) => {
+        draft.conversionUnitsByComponentId = oldValue;
+      });
+    },
+    fields: {
+      value: {
+        componentId: ({ oldValue, newChartConfig, measures }) => {
+          if (measures.find((m) => m.id === oldValue)) {
+            return produce(newChartConfig, (draft) => {
+              draft.fields.value.componentId = oldValue;
+            });
+          }
+          return newChartConfig;
+        },
+      },
+    },
+    interactiveFiltersConfig: interactiveFiltersAdjusters,
+  },
 };
 type ChartConfigAdjusters = (typeof chartConfigsAdjusters)[ChartType];
 
@@ -3006,6 +3058,32 @@ const chartConfigsPathOverrides: {
       ],
     },
   },
+  gauge: {
+    column: {
+      "fields.y.componentId": [{ path: "fields.value.componentId" }],
+    },
+    bar: {
+      "fields.x.componentId": [{ path: "fields.value.componentId" }],
+    },
+    line: {
+      "fields.y.componentId": [{ path: "fields.value.componentId" }],
+    },
+    area: {
+      "fields.y.componentId": [{ path: "fields.value.componentId" }],
+    },
+    scatterplot: {
+      "fields.y.componentId": [{ path: "fields.value.componentId" }],
+    },
+    pie: {
+      "fields.y.componentId": [{ path: "fields.value.componentId" }],
+    },
+    sunburst: {
+      "fields.size.componentId": [{ path: "fields.value.componentId" }],
+    },
+    sankey: {
+      "fields.links.value.componentId": [{ path: "fields.value.componentId" }],
+    },
+  },
 };
 type ChartConfigPathOverrides =
   (typeof chartConfigsPathOverrides)[ChartType][ChartType];
@@ -3364,6 +3442,8 @@ export const getChartSymbol = (
     case "map":
     case "sankey":
     case "table":
+    case "sunburst":
+    case "gauge":
       return "square";
     case "comboLineDual":
     case "comboLineSingle":

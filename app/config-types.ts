@@ -3,6 +3,9 @@ import { fold } from "fp-ts/lib/Either";
 import { pipe } from "fp-ts/lib/function";
 import * as t from "io-ts";
 
+// Import GaugeConfig for type guard
+import type { GaugeConfig } from "./charts/gauge/gauge-types";
+export type { GaugeConfig };
 // Import SankeyConfig for type guard
 import type { SankeyConfig } from "./charts/sankey/sankey-types";
 export type { SankeyConfig };
@@ -1226,6 +1229,63 @@ const SunburstConfigCodec = t.intersection([
   }),
 ]);
 
+// Gauge chart types
+const GaugeValueField = t.type({
+  componentId: t.string,
+  type: t.literal("quantitative"),
+});
+export type GaugeValueField = t.TypeOf<typeof GaugeValueField>;
+
+const GaugeThreshold = t.type({
+  value: t.number,
+  color: t.string,
+});
+export type GaugeThreshold = t.TypeOf<typeof GaugeThreshold>;
+
+const GaugeFields = t.type({
+  value: GaugeValueField,
+});
+export type GaugeFields = t.TypeOf<typeof GaugeFields>;
+
+const GaugeValueDisplay = t.union([
+  t.literal("inside"),
+  t.literal("outside"),
+  t.literal("none"),
+]);
+export type GaugeValueDisplay = t.TypeOf<typeof GaugeValueDisplay>;
+
+const GaugeLayout = t.union([t.literal("single"), t.literal("comparison")]);
+export type GaugeLayout = t.TypeOf<typeof GaugeLayout>;
+
+const GaugeVisualOptions = t.partial({
+  min: t.number,
+  max: t.number,
+  thresholds: t.array(GaugeThreshold),
+  showValue: t.boolean,
+  valueDisplay: GaugeValueDisplay,
+  layout: GaugeLayout,
+  enableAnimations: t.boolean,
+  animationDuration: t.number,
+  startAngle: t.number,
+  endAngle: t.number,
+  cornerRadius: t.number,
+  arcPadding: t.number,
+});
+
+const GaugeConfigCodec = t.intersection([
+  GenericChartConfig,
+  t.type(
+    {
+      chartType: t.literal("gauge"),
+      fields: GaugeFields,
+    },
+    "GaugeConfig"
+  ),
+  t.partial({
+    visualOptions: GaugeVisualOptions,
+  }),
+]);
+
 const RegularChartConfig = t.union([
   AreaConfig,
   ColumnConfig,
@@ -1235,6 +1295,7 @@ const RegularChartConfig = t.union([
   PieConfig,
   SankeyConfigCodec,
   SunburstConfigCodec,
+  GaugeConfigCodec,
   ScatterPlotConfig,
   TableConfig,
 ]);
@@ -1379,6 +1440,12 @@ export const isSunburstConfig = (chartConfig: {
   chartType: string;
 }): chartConfig is SunburstConfig => {
   return chartConfig.chartType === "sunburst";
+};
+
+export const isGaugeConfig = (chartConfig: {
+  chartType: string;
+}): chartConfig is GaugeConfig => {
+  return chartConfig.chartType === "gauge";
 };
 
 export const canBeNormalized = (
