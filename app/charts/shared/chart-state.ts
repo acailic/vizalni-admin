@@ -19,6 +19,7 @@ import { ComboLineSingleState } from "@/charts/combo/combo-line-single-state";
 import { LinesState } from "@/charts/line/lines-state";
 import { MapState } from "@/charts/map/map-state";
 import { PieState } from "@/charts/pie/pie-state";
+import { SankeyState } from "@/charts/sankey/sankey-state";
 import { ScatterplotState } from "@/charts/scatterplot/scatterplot-state";
 import {
   getLabelWithUnit,
@@ -91,6 +92,7 @@ export type ChartState =
   | LinesState
   | MapState
   | PieState
+  | SankeyState
   | ScatterplotState
   | TableChartState
   | undefined;

@@ -3,6 +3,8 @@
  * These types define the configuration schema for sankey charts.
  */
 
+import { AnimationField } from "@/config-types";
+
 /**
  * Field configuration for sankey chart nodes.
  * Each node represents an entity in the flow diagram.
@@ -40,6 +42,8 @@ export interface SankeyFields {
   nodes: SankeyNodeField;
   /** Link fields (source, target, value) */
   links: SankeyLinkFields;
+  /** Animation configuration (optional) */
+  animation?: AnimationField;
 }
 
 /**

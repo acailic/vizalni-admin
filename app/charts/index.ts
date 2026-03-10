@@ -3239,4 +3239,5 @@ export const getChartSymbol = (
 };
 
 // Re-export chart visualization components
+export { ChartSankeyVisualization } from "./sankey/chart-sankey";
 export { ChartTreemapVisualization } from "./treemap/chart-treemap";

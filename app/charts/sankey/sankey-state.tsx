@@ -1,6 +1,10 @@
 import { sum } from "d3-array";
 import {
   sankey as d3Sankey,
+  sankeyCenter,
+  sankeyJustify,
+  sankeyLeft,
+  sankeyRight,
   SankeyGraph,
   SankeyNode as D3SankeyNode,
 } from "d3-sankey";
@@ -179,6 +183,13 @@ const useSankeyState = (
     }));
 
     // Create sankey layout
+    const alignmentMap = {
+      justify: sankeyJustify,
+      left: sankeyLeft,
+      right: sankeyRight,
+      center: sankeyCenter,
+    };
+
     const sankeyLayout = d3Sankey<
       InternalSankeyNode,
       InternalSankeyLink & { observation: Observation }
@@ -186,6 +197,7 @@ const useSankeyState = (
       .nodeId((d) => d.id)
       .nodeWidth(nodeWidth)
       .nodePadding(nodePadding)
+      .nodeAlign(alignmentMap[nodeAlignment] || sankeyJustify)
       .extent([
         [0, 0],
         [chartWidth, bounds.chartHeight],
@@ -248,6 +260,7 @@ const useSankeyState = (
     rawLinks,
     nodeWidth,
     nodePadding,
+    nodeAlignment,
     chartWidth,
     bounds.chartHeight,
     colors,
@@ -256,16 +269,19 @@ const useSankeyState = (
   // Get measure for formatting
   const measure = measures.find((m) => m.id === valueMeasure);
 
-  const valueFormatter = (value: number | null) => {
-    if (value === null) {
-      return "-";
-    }
-    return formatNumberWithUnit(
-      value,
-      formatters[valueMeasure] ?? formatNumber,
-      measure?.unit
-    );
-  };
+  const valueFormatter = useCallback(
+    (value: number | null) => {
+      if (value === null) {
+        return "-";
+      }
+      return formatNumberWithUnit(
+        value,
+        formatters[valueMeasure] ?? formatNumber,
+        measure?.unit
+      );
+    },
+    [formatters, formatNumber, measure?.unit, valueMeasure]
+  );
 
   const getColorLabel = useCallback(
     (nodeId: string) => {
@@ -315,33 +331,36 @@ const useSankeyState = (
     [links, colors, getSource, getTarget]
   );
 
-  const getTooltipInfo = (datum: Observation): TooltipInfo => {
-    const link = links.find(
-      (l) =>
-        l.source.id === getSource(datum) && l.target.id === getTarget(datum)
-    );
+  const getTooltipInfo = useCallback(
+    (datum: Observation): TooltipInfo => {
+      const link = links.find(
+        (l) =>
+          l.source.id === getSource(datum) && l.target.id === getTarget(datum)
+      );
 
-    const xAnchor = link
-      ? ((link.source.x1 ?? 0) + (link.target.x0 ?? 0)) / 2
-      : chartWidth / 2;
-    const yAnchor = link ? ((link.y0 ?? 0) + (link.y1 ?? 0)) / 2 : 0;
+      const xAnchor = link
+        ? ((link.source.x1 ?? 0) + (link.target.x0 ?? 0)) / 2
+        : chartWidth / 2;
+      const yAnchor = link ? ((link.y0 ?? 0) + (link.y1 ?? 0)) / 2 : 0;
 
-    const xPlacement = "center";
-    const yPlacement = "top";
+      const xPlacement = "center";
+      const yPlacement = "top";
 
-    return {
-      xAnchor,
-      yAnchor,
-      placement: { x: xPlacement, y: yPlacement },
-      value: `${getSource(datum)} → ${getTarget(datum)}`,
-      datum: {
-        value: valueFormatter(getValue(datum)),
-        color: colors(getSource(datum)) as string,
-      },
-      values: undefined,
-      withTriangle: false,
-    };
-  };
+      return {
+        xAnchor,
+        yAnchor,
+        placement: { x: xPlacement, y: yPlacement },
+        value: `${getSource(datum)} → ${getTarget(datum)}`,
+        datum: {
+          value: valueFormatter(getValue(datum)),
+          color: colors(getSource(datum)) as string,
+        },
+        values: undefined,
+        withTriangle: false,
+      };
+    },
+    [links, getSource, getTarget, chartWidth, valueFormatter, getValue, colors]
+  );
 
   return {
     chartType: "sankey",
