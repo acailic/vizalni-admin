@@ -35,24 +35,40 @@ export function MainNav({ locale = "en" }: MainNavProps) {
 
   return (
     <Box
+      component="nav"
+      role="navigation"
+      aria-label="Main navigation"
       sx={{
         display: { xs: "none", md: "flex" },
         alignItems: "center",
         gap: 1,
       }}
     >
-      {NAV_ITEMS.map((item) => {
-        const basePath = "/" + item.href.split("/")[1];
-        const isActive = router.pathname.startsWith(basePath);
-        return (
-          <NavItem
-            key={item.href}
-            href={item.href}
-            label={item.label[locale]}
-            isActive={isActive}
-          />
-        );
-      })}
+      <Box
+        component="ul"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          listStyle: "none",
+          m: 0,
+          p: 0,
+        }}
+      >
+        {NAV_ITEMS.map((item) => {
+          const basePath = "/" + item.href.split("/")[1];
+          const isActive = router.pathname.startsWith(basePath);
+          return (
+            <Box component="li" role="none" key={item.href}>
+              <NavItem
+                href={item.href}
+                label={item.label[locale]}
+                isActive={isActive}
+              />
+            </Box>
+          );
+        })}
+      </Box>
     </Box>
   );
 }

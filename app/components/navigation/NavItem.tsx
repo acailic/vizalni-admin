@@ -15,6 +15,8 @@ export function NavItem({
   isActive = false,
   external = false,
 }: NavItemProps) {
+  const ariaCurrent = isActive ? ("page" as const) : undefined;
+
   if (external) {
     return (
       <Box
@@ -22,6 +24,7 @@ export function NavItem({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
+        aria-current={ariaCurrent}
         sx={{
           color: "white",
           textDecoration: "none",
@@ -42,6 +45,7 @@ export function NavItem({
     <Link href={href} passHref legacyBehavior>
       <Box
         component="a"
+        aria-current={ariaCurrent}
         sx={{
           color: "white",
           textDecoration: "none",
