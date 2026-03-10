@@ -10,20 +10,22 @@ describe("chart-theme-variants", () => {
 
   it("should return modern variant with softer colors", () => {
     const theme = getChartThemeVariant("modern");
-    expect(theme.stroke.barRadius).toBeGreaterThan(4);
+    expect(theme.stroke.barRadius).toBe(8);
   });
 
   it("should return minimal variant with thin strokes", () => {
     const theme = getChartThemeVariant("minimal");
-    expect(theme.stroke.lineWidth).toBeLessThan(2);
+    expect(theme.stroke.lineWidth).toBe(1);
   });
 
-  it("should return dark variant with dark background", () => {
+  it("should return dark variant with dark-optimized colors", () => {
     const theme = getChartThemeVariant("dark");
-    expect(theme.colors.tooltip.background).toBeDefined();
+    expect(theme.colors.primary).toBe("#60A5FA"); // Lighter blue for dark mode
+    expect(theme.colors.tooltip.background).toBe("#111827");
   });
 
   it("should throw for invalid variant", () => {
-    expect(() => getChartThemeVariant("invalid" as any)).toThrow();
+    // @ts-expect-error - Testing runtime error for invalid variant
+    expect(() => getChartThemeVariant("invalid")).toThrow();
   });
 });
