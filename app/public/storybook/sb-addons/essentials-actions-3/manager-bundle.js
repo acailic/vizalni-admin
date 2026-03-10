@@ -248,8 +248,7 @@ try {
               return !1;
           return !0;
         }
-        if (r === ArrayBuffer)
-          ((e = new Uint8Array(e)), (t = new Uint8Array(t)));
+        if (r === ArrayBuffer) (e = new Uint8Array(e)), (t = new Uint8Array(t));
         else if (r === DataView) {
           if ((n = e.byteLength) === t.byteLength)
             for (; n-- && e.getInt8(n) === t.getInt8(n); );
@@ -328,15 +327,15 @@ try {
         (R = Object.setPrototypeOf
           ? Object.setPrototypeOf.bind()
           : function (r, n) {
-              return ((r.__proto__ = n), r);
+              return (r.__proto__ = n), r;
             }),
         R(e, t)
       );
     }
     function Ue(e, t) {
-      ((e.prototype = Object.create(t.prototype)),
+      (e.prototype = Object.create(t.prototype)),
         (e.prototype.constructor = e),
-        R(e, t));
+        R(e, t);
     }
     function G(e) {
       return (
@@ -370,7 +369,7 @@ try {
       var n = [null];
       n.push.apply(n, t);
       var a = new (e.bind.apply(e, n))();
-      return (r && R(a, r.prototype), a);
+      return r && R(a, r.prototype), a;
     }
     function W(e) {
       var t = typeof Map == "function" ? new Map() : void 0;
@@ -467,14 +466,14 @@ try {
       a >= 0 && a < 1
         ? ((l = i), (u = s))
         : a >= 1 && a < 2
-          ? ((l = s), (u = i))
-          : a >= 2 && a < 3
-            ? ((u = i), (c = s))
-            : a >= 3 && a < 4
-              ? ((u = s), (c = i))
-              : a >= 4 && a < 5
-                ? ((l = s), (c = i))
-                : a >= 5 && a < 6 && ((l = i), (c = s));
+        ? ((l = s), (u = i))
+        : a >= 2 && a < 3
+        ? ((u = i), (c = s))
+        : a >= 3 && a < 4
+        ? ((u = s), (c = i))
+        : a >= 4 && a < 5
+        ? ((l = s), (c = i))
+        : a >= 5 && a < 6 && ((l = i), (c = s));
       var p = r - i / 2,
         d = l + p,
         f = u + p,
@@ -1014,8 +1013,7 @@ try {
       fe = (e, t) =>
         function () {
           return (
-            t || (0, e[tt(e)[0]])((t = { exports: {} }).exports, t),
-            t.exports
+            t || (0, e[tt(e)[0]])((t = { exports: {} }).exports, t), t.exports
           );
         },
       Kt = (e, t) => {
@@ -1598,21 +1596,21 @@ try {
             return e === null
               ? o.createElement("span", { style: n("objectValueNull") }, "null")
               : e instanceof Date
-                ? o.createElement("span", null, e.toString())
-                : e instanceof RegExp
-                  ? o.createElement(
-                      "span",
-                      { style: n("objectValueRegExp") },
-                      e.toString()
-                    )
-                  : Array.isArray(e)
-                    ? o.createElement("span", null, `Array(${e.length})`)
-                    : e.constructor
-                      ? typeof e.constructor.isBuffer == "function" &&
-                        e.constructor.isBuffer(e)
-                        ? o.createElement("span", null, `Buffer[${e.length}]`)
-                        : o.createElement("span", null, e.constructor.name)
-                      : o.createElement("span", null, "Object");
+              ? o.createElement("span", null, e.toString())
+              : e instanceof RegExp
+              ? o.createElement(
+                  "span",
+                  { style: n("objectValueRegExp") },
+                  e.toString()
+                )
+              : Array.isArray(e)
+              ? o.createElement("span", null, `Array(${e.length})`)
+              : e.constructor
+              ? typeof e.constructor.isBuffer == "function" &&
+                e.constructor.isBuffer(e)
+                ? o.createElement("span", null, `Buffer[${e.length}]`)
+                : o.createElement("span", null, e.constructor.name)
+              : o.createElement("span", null, "Object");
           case "function":
             return o.createElement(
               "span",
@@ -2015,10 +2013,10 @@ try {
                 };
                 M = ye(P[he], P[Ee]);
               }
-              return (w || (M = -M), M);
+              return w || (M = -M), M;
             },
             y = E.sort(m((O) => O[0], s)).map((O) => O[1]);
-          ((p = y.map((O) => p[O])), (f = y.map((O) => f[O])));
+          (p = y.map((O) => p[O])), (f = y.map((O) => f[O]));
         }
         return o.createElement(
           "div",
@@ -2182,8 +2180,8 @@ try {
         e
           ? o.createElement(vr, { data: t, ...r })
           : (0, Lr.default)(t)
-            ? o.createElement(xr, { data: t, ...r })
-            : o.createElement(br, { data: t, ...r }),
+          ? o.createElement(xr, { data: t, ...r })
+          : o.createElement(br, { data: t, ...r }),
       Dr = B.div({
         display: "flex",
         padding: 0,
@@ -2267,7 +2265,7 @@ try {
       },
       Ur = class extends _e {
         constructor(e) {
-          (super(e),
+          super(e),
             (this.handleStoryChange = () => {
               let { actions: t } = this.state;
               t.length > 0 &&
@@ -2288,20 +2286,20 @@ try {
             }),
             (this.clearActions = () => {
               let { api: t } = this.props;
-              (t.emit(et), this.setState({ actions: [] }));
+              t.emit(et), this.setState({ actions: [] });
             }),
             (this.mounted = !1),
-            (this.state = { actions: [] }));
+            (this.state = { actions: [] });
         }
         componentDidMount() {
           this.mounted = !0;
           let { api: e } = this.props;
-          (e.on(se, this.addAction), e.on(k, this.handleStoryChange));
+          e.on(se, this.addAction), e.on(k, this.handleStoryChange);
         }
         componentWillUnmount() {
           this.mounted = !1;
           let { api: e } = this.props;
-          (e.off(k, this.handleStoryChange), e.off(se, this.addAction));
+          e.off(k, this.handleStoryChange), e.off(se, this.addAction);
         }
         render() {
           let { actions: e = [] } = this.state,

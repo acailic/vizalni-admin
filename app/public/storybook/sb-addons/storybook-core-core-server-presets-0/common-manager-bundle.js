@@ -44,12 +44,12 @@ try {
           typeof window < "u"
             ? (e = window)
             : typeof globalThis < "u"
-              ? (e = globalThis)
-              : typeof window < "u"
-                ? (e = window)
-                : typeof self < "u"
-                  ? (e = self)
-                  : (e = {}),
+            ? (e = globalThis)
+            : typeof window < "u"
+            ? (e = window)
+            : typeof self < "u"
+            ? (e = self)
+            : (e = {}),
           e
         );
       })(),
@@ -58,7 +58,7 @@ try {
     n.register(S, (e) => {
       let i = Object.entries(c.TAGS_OPTIONS ?? {}).reduce((t, r) => {
         let [o, u] = r;
-        return (u.excludeFromSidebar && (t[o] = !0), t);
+        return u.excludeFromSidebar && (t[o] = !0), t;
       }, {});
       e.experimental_setFilter(p, (t) => {
         let r = t.tags ?? [];

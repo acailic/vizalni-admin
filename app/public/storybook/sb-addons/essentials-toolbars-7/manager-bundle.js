@@ -170,7 +170,7 @@ try {
       $ = (r) => r.filter((t) => !Y.includes(t.type)).map((t) => t.value),
       S = "addon-toolbars",
       z = async (r, t, e) => {
-        (e &&
+        e &&
           e.next &&
           (await r.setAddonShortcut(S, {
             label: e.next.label,
@@ -193,7 +193,7 @@ try {
               defaultShortcut: e.reset.keys,
               actionName: `${t}:reset`,
               action: e.reset.action,
-            })));
+            }));
       },
       q = (r) => (t) => {
         let {
@@ -287,7 +287,7 @@ try {
             disabled: _,
             onClick: c,
           };
-        return (o && !a && (u.icon = l), u);
+        return o && !a && (u.icon = l), u;
       },
       Q = q(
         ({
@@ -309,9 +309,9 @@ try {
             d = r in C,
             p = o,
             b = c;
-          (_ || (p = X({ currentValue: s, items: a }) || p),
+          _ || (p = X({ currentValue: s, items: a }) || p),
             i && (b = j({ currentValue: s, items: a }) || b),
-            !b && !p && console.warn(`Toolbar '${t}' has no title or icon`));
+            !b && !p && console.warn(`Toolbar '${t}' has no title or icon`);
           let G = v(
             (x) => {
               u({ [r]: x });
@@ -326,7 +326,7 @@ try {
                 let W = a
                   .filter(({ type: f }) => {
                     let A = !0;
-                    return (f === "reset" && !s && (A = !1), A);
+                    return f === "reset" && !s && (A = !1), A;
                   })
                   .map((f) =>
                     J({
@@ -334,7 +334,7 @@ try {
                       currentValue: s,
                       disabled: d,
                       onClick: () => {
-                        (G(f.value), x());
+                        G(f.value), x();
                       },
                     })
                   );

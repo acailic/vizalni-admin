@@ -32,7 +32,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T,
+  K extends keyof T
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
@@ -301,7 +301,7 @@ export type Resolver<
   TResult,
   TParent = Record<PropertyKey, never>,
   TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>
 > =
   | ResolverFn<TResult, TParent, TContext, TArgs>
   | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
@@ -332,7 +332,7 @@ export interface SubscriptionSubscriberObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs,
+  TArgs
 > {
   subscribe: SubscriptionSubscribeFn<
     { [key in TKey]: TResult },
@@ -358,7 +358,7 @@ export type SubscriptionObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs,
+  TArgs
 > =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
@@ -368,7 +368,7 @@ export type SubscriptionResolver<
   TKey extends string,
   TParent = Record<PropertyKey, never>,
   TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>
 > =
   | ((
       ...args: any[]
@@ -378,7 +378,7 @@ export type SubscriptionResolver<
 export type TypeResolveFn<
   TTypes,
   TParent = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>
 > = (
   parent: TParent,
   context: TContext,
@@ -387,7 +387,7 @@ export type TypeResolveFn<
 
 export type IsTypeOfResolverFn<
   T = Record<PropertyKey, never>,
-  TContext = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>
 > = (
   obj: T,
   context: TContext,
@@ -400,7 +400,7 @@ export type DirectiveResolverFn<
   TResult = Record<PropertyKey, never>,
   TParent = Record<PropertyKey, never>,
   TContext = Record<PropertyKey, never>,
-  TArgs = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>
 > = (
   next: NextResolverFn<TResult>,
   parent: TParent,
@@ -513,57 +513,45 @@ export type SafeUrlDirectiveResolver<
   Result,
   Parent,
   ContextType = VisualizeGraphQLContext,
-  Args = SafeUrlDirectiveArgs,
+  Args = SafeUrlDirectiveArgs
 > = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export interface ComponentTermsetsScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["ComponentTermsets"],
-  any
-> {
+export interface ComponentTermsetsScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["ComponentTermsets"], any> {
   name: "ComponentTermsets";
 }
 
-export interface DataCubeComponentsScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DataCubeComponents"],
-  any
-> {
+export interface DataCubeComponentsScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DataCubeComponents"], any> {
   name: "DataCubeComponents";
 }
 
-export interface DataCubeMetadataScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DataCubeMetadata"],
-  any
-> {
+export interface DataCubeMetadataScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DataCubeMetadata"], any> {
   name: "DataCubeMetadata";
 }
 
-export interface DataCubeObservationsScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DataCubeObservations"],
-  any
-> {
+export interface DataCubeObservationsScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DataCubeObservations"], any> {
   name: "DataCubeObservations";
 }
 
 export type DataCubeOrganizationResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["DataCubeOrganization"] =
-    ResolversParentTypes["DataCubeOrganization"],
+  ParentType extends ResolversParentTypes["DataCubeOrganization"] = ResolversParentTypes["DataCubeOrganization"]
 > = ResolversObject<{
   iri?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   label?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
 }>;
 
-export interface DataCubePreviewScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DataCubePreview"],
-  any
-> {
+export interface DataCubePreviewScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DataCubePreview"], any> {
   name: "DataCubePreview";
 }
 
 export type DataCubeTermsetResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["DataCubeTermset"] =
-    ResolversParentTypes["DataCubeTermset"],
+  ParentType extends ResolversParentTypes["DataCubeTermset"] = ResolversParentTypes["DataCubeTermset"]
 > = ResolversObject<{
   iri?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   label?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
@@ -571,66 +559,50 @@ export type DataCubeTermsetResolvers<
 
 export type DataCubeThemeResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["DataCubeTheme"] =
-    ResolversParentTypes["DataCubeTheme"],
+  ParentType extends ResolversParentTypes["DataCubeTheme"] = ResolversParentTypes["DataCubeTheme"]
 > = ResolversObject<{
   iri?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   label?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
 }>;
 
-export interface DataSourceUrlScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DataSourceUrl"],
-  any
-> {
+export interface DataSourceUrlScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DataSourceUrl"], any> {
   name: "DataSourceUrl";
 }
 
-export interface DimensionValueScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["DimensionValue"],
-  any
-> {
+export interface DimensionValueScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["DimensionValue"], any> {
   name: "DimensionValue";
 }
 
-export interface FilterValueScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["FilterValue"],
-  any
-> {
+export interface FilterValueScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["FilterValue"], any> {
   name: "FilterValue";
 }
 
-export interface FiltersScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["Filters"],
-  any
-> {
+export interface FiltersScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Filters"], any> {
   name: "Filters";
 }
 
-export interface GeoShapesScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["GeoShapes"],
-  any
-> {
+export interface GeoShapesScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["GeoShapes"], any> {
   name: "GeoShapes";
 }
 
-export interface HierarchyValueScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["HierarchyValue"],
-  any
-> {
+export interface HierarchyValueScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["HierarchyValue"], any> {
   name: "HierarchyValue";
 }
 
-export interface ObservationScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["Observation"],
-  any
-> {
+export interface ObservationScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Observation"], any> {
   name: "Observation";
 }
 
 export type PossibleFilterValueResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["PossibleFilterValue"] =
-    ResolversParentTypes["PossibleFilterValue"],
+  ParentType extends ResolversParentTypes["PossibleFilterValue"] = ResolversParentTypes["PossibleFilterValue"]
 > = ResolversObject<{
   id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   type?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
@@ -643,8 +615,7 @@ export type PossibleFilterValueResolvers<
 
 export type QueryResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["Query"] =
-    ResolversParentTypes["Query"],
+  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = ResolversObject<{
   dataCubeComponentTermsets?: Resolver<
     Array<ResolversTypes["ComponentTermsets"]>,
@@ -735,17 +706,14 @@ export type QueryResolvers<
   >;
 }>;
 
-export interface RawObservationScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["RawObservation"],
-  any
-> {
+export interface RawObservationScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["RawObservation"], any> {
   name: "RawObservation";
 }
 
 export type RelatedDimensionResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["RelatedDimension"] =
-    ResolversParentTypes["RelatedDimension"],
+  ParentType extends ResolversParentTypes["RelatedDimension"] = ResolversParentTypes["RelatedDimension"]
 > = ResolversObject<{
   id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   type?: Resolver<
@@ -755,17 +723,14 @@ export type RelatedDimensionResolvers<
   >;
 }>;
 
-export interface SearchCubeScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["SearchCube"],
-  any
-> {
+export interface SearchCubeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["SearchCube"], any> {
   name: "SearchCube";
 }
 
 export type SearchCubeResultResolvers<
   ContextType = VisualizeGraphQLContext,
-  ParentType extends ResolversParentTypes["SearchCubeResult"] =
-    ResolversParentTypes["SearchCubeResult"],
+  ParentType extends ResolversParentTypes["SearchCubeResult"] = ResolversParentTypes["SearchCubeResult"]
 > = ResolversObject<{
   cube?: Resolver<ResolversTypes["SearchCube"], ParentType, ContextType>;
   highlightedDescription?: Resolver<
@@ -781,31 +746,23 @@ export type SearchCubeResultResolvers<
   score?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;
 }>;
 
-export interface SingleFiltersScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["SingleFilters"],
-  any
-> {
+export interface SingleFiltersScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["SingleFilters"], any> {
   name: "SingleFilters";
 }
 
-export interface TermsetScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["Termset"],
-  any
-> {
+export interface TermsetScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Termset"], any> {
   name: "Termset";
 }
 
-export interface ValueIdentifierScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["ValueIdentifier"],
-  any
-> {
+export interface ValueIdentifierScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["ValueIdentifier"], any> {
   name: "ValueIdentifier";
 }
 
-export interface ValuePositionScalarConfig extends GraphQLScalarTypeConfig<
-  ResolversTypes["ValuePosition"],
-  any
-> {
+export interface ValuePositionScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["ValuePosition"], any> {
   name: "ValuePosition";
 }
 

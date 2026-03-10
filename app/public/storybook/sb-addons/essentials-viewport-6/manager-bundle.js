@@ -10,17 +10,16 @@ try {
       typeof require < "u"
         ? require
         : typeof Proxy < "u"
-          ? new Proxy(e, {
-              get: (t, a) => (typeof require < "u" ? require : t)[a],
-            })
-          : e)(function (e) {
+        ? new Proxy(e, {
+            get: (t, a) => (typeof require < "u" ? require : t)[a],
+          })
+        : e)(function (e) {
       if (typeof require < "u") return require.apply(this, arguments);
       throw Error('Dynamic require of "' + e + '" is not supported');
     });
     var N = (e, t) => () => (e && (t = e((e = 0))), t);
     var be = (e, t) => () => (
-      t || e((t = { exports: {} }).exports, t),
-      t.exports
+      t || e((t = { exports: {} }).exports, t), t.exports
     );
     var Se = (e, t, a, s) => {
       if ((t && typeof t == "object") || typeof t == "function")
@@ -54,12 +53,12 @@ try {
         else if (typeof define == "function" && define.amd) define([], e);
         else {
           var t;
-          (typeof window < "u" || typeof window < "u"
+          typeof window < "u" || typeof window < "u"
             ? (t = window)
             : typeof self < "u"
-              ? (t = self)
-              : (t = this),
-            (t.memoizerific = e()));
+            ? (t = self)
+            : (t = this),
+            (t.memoizerific = e());
         }
       })(function () {
         var e, t, a;
@@ -116,12 +115,12 @@ try {
                     this
                   );
                 }
-                ((p.prototype.get = function (o) {
+                (p.prototype.get = function (o) {
                   var i;
                   if (this.lastItem && this.isEqual(this.lastItem.key, o))
                     return this.lastItem.val;
                   if (((i = this.indexOf(o)), i >= 0))
-                    return ((this.lastItem = this.list[i]), this.list[i].val);
+                    return (this.lastItem = this.list[i]), this.list[i].val;
                 }),
                   (p.prototype.set = function (o, i) {
                     var m;
@@ -146,7 +145,7 @@ try {
                       (i = this.indexOf(o)),
                       i >= 0)
                     )
-                      return (this.size--, this.list.splice(i, 1)[0]);
+                      return this.size--, this.list.splice(i, 1)[0];
                   }),
                   (p.prototype.has = function (o) {
                     var i;
@@ -174,7 +173,7 @@ try {
                   (p.prototype.isEqual = function (o, i) {
                     return o === i || (o !== o && i !== i);
                   }),
-                  (c.exports = p));
+                  (c.exports = p);
               },
               {},
             ],
@@ -205,10 +204,10 @@ try {
                           h = h.get(arguments[C]);
                           continue;
                         }
-                        ((k = !1),
+                        (k = !1),
                           (S = new p(!1)),
                           h.set(arguments[C], S),
-                          (h = S));
+                          (h = S);
                       }
                       return (
                         k &&
@@ -763,7 +762,7 @@ try {
         return a < 1 ? e[e.length - 1] : e[a - 1];
       },
       de = async (e, t, a, s) => {
-        (await e.setAddonShortcut(B, {
+        await e.setAddonShortcut(B, {
           label: "Previous viewport",
           defaultShortcut: ["alt", "shift", "V"],
           actionName: "previous",
@@ -786,7 +785,7 @@ try {
             action: () => {
               a(Te);
             },
-          }));
+          });
       },
       ke = v.div({ display: "inline-flex", alignItems: "center" }),
       se = v.div(({ theme: e }) => ({
@@ -887,7 +886,7 @@ try {
                             title: "Reset viewport",
                             icon: l.createElement(ie, null),
                             onClick: () => {
-                              (d({ value: void 0, isRotated: !1 }), r());
+                              d({ value: void 0, isRotated: !1 }), r();
                             },
                           },
                         ]
@@ -898,7 +897,7 @@ try {
                       icon: Oe[u.type],
                       active: I === s,
                       onClick: () => {
-                        (d({ value: I, isRotated: !1 }), r());
+                        d({ value: I, isRotated: !1 }), r();
                       },
                     })),
                   ].flat(),
@@ -975,7 +974,7 @@ try {
           .map((c) => ({
             ...c,
             onClick: () => {
-              (a({ viewport: c.id }), s());
+              a({ viewport: c.id }), s();
             },
           }))
       ),
@@ -1015,7 +1014,7 @@ try {
           p = Pe(a),
           o = oe(),
           [i, m] = z(!1);
-        (c &&
+        c &&
           !p.find((I) => I.id === c) &&
           console.warn(
             `Cannot find "defaultViewport" of "${c}" in addon-viewport configs, please check the "viewports" setting in the configuration.`
@@ -1027,7 +1026,7 @@ try {
             let I = s === "landscape";
             ((c && e.viewport !== c) || (s && e.viewportRotated !== I)) &&
               t({ viewport: c, viewportRotated: I });
-          }, [s, c, t]));
+          }, [s, c, t]);
         let n =
             p.find((I) => I.id === e.viewport) ||
             p.find((I) => I.id === c) ||

@@ -10,17 +10,16 @@ try {
       typeof require < "u"
         ? require
         : typeof Proxy < "u"
-          ? new Proxy(e, {
-              get: (o, c) => (typeof require < "u" ? require : o)[c],
-            })
-          : e)(function (e) {
+        ? new Proxy(e, {
+            get: (o, c) => (typeof require < "u" ? require : o)[c],
+          })
+        : e)(function (e) {
       if (typeof require < "u") return require.apply(this, arguments);
       throw Error('Dynamic require of "' + e + '" is not supported');
     });
     var M = (e, o) => () => (e && (o = e((e = 0))), o);
     var se = (e, o) => () => (
-      o || e((o = { exports: {} }).exports, o),
-      o.exports
+      o || e((o = { exports: {} }).exports, o), o.exports
     );
     var ue = (e, o, c, r) => {
       if ((o && typeof o == "object") || typeof o == "function")
@@ -54,12 +53,12 @@ try {
         else if (typeof define == "function" && define.amd) define([], e);
         else {
           var o;
-          (typeof window < "u" || typeof window < "u"
+          typeof window < "u" || typeof window < "u"
             ? (o = window)
             : typeof self < "u"
-              ? (o = self)
-              : (o = this),
-            (o.memoizerific = e()));
+            ? (o = self)
+            : (o = this),
+            (o.memoizerific = e());
         }
       })(function () {
         var e, o, c;
@@ -116,12 +115,12 @@ try {
                     this
                   );
                 }
-                ((l.prototype.get = function (t) {
+                (l.prototype.get = function (t) {
                   var n;
                   if (this.lastItem && this.isEqual(this.lastItem.key, t))
                     return this.lastItem.val;
                   if (((n = this.indexOf(t)), n >= 0))
-                    return ((this.lastItem = this.list[n]), this.list[n].val);
+                    return (this.lastItem = this.list[n]), this.list[n].val;
                 }),
                   (l.prototype.set = function (t, n) {
                     var u;
@@ -146,7 +145,7 @@ try {
                       (n = this.indexOf(t)),
                       n >= 0)
                     )
-                      return (this.size--, this.list.splice(n, 1)[0]);
+                      return this.size--, this.list.splice(n, 1)[0];
                   }),
                   (l.prototype.has = function (t) {
                     var n;
@@ -174,7 +173,7 @@ try {
                   (l.prototype.isEqual = function (t, n) {
                     return t === n || (t !== t && n !== n);
                   }),
-                  (i.exports = l));
+                  (i.exports = l);
               },
               {},
             ],
@@ -205,10 +204,10 @@ try {
                           b = b.get(arguments[O]);
                           continue;
                         }
-                        ((A = !1),
+                        (A = !1),
                           (C = new l(!1)),
                           b.set(arguments[O], C),
-                          (b = C));
+                          (b = C);
                       }
                       return (
                         A &&
@@ -783,7 +782,7 @@ try {
           var u = l.match(/(?:^|\n)( *)$/),
             a = u ? u[1] : "",
             I = t;
-          (typeof t == "string" &&
+          typeof t == "string" &&
             t.includes(`
 `) &&
             (I = String(t)
@@ -795,7 +794,7 @@ try {
                 return S === 0 ? s : "" + a + s;
               }).join(`
 `)),
-            (l += I + r[n + 1]));
+            (l += I + r[n + 1]);
         }),
         l
       );
@@ -879,7 +878,7 @@ try {
                                 title: "Reset background",
                                 icon: g.createElement(X, null),
                                 onClick: () => {
-                                  (a({ value: void 0, grid: n }), I());
+                                  a({ value: void 0, grid: n }), I();
                                 },
                               },
                             ]
@@ -892,7 +891,7 @@ try {
                           }),
                           active: s === l,
                           onClick: () => {
-                            (a({ value: s, grid: n }), I());
+                            a({ value: s, grid: n }), I();
                           },
                         })),
                       ].flat(),
@@ -983,7 +982,7 @@ try {
                 tooltip: ({ onHide: n }) =>
                   g.createElement(F, {
                     links: ge(e.values, l, ({ selected: u }) => {
-                      (l !== u && t(u), n());
+                      l !== u && t(u), n();
                     }),
                   }),
                 onVisibleChange: c,
