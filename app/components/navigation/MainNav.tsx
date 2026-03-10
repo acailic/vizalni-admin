@@ -1,4 +1,4 @@
-// app/components/navigation/MainNav.tsx
+import { t } from "@lingui/macro";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -10,35 +10,32 @@ interface MainNavProps {
   locale?: Locale;
 }
 
-const NAV_ITEMS: { href: string; label: Record<Locale, string> }[] = [
+const getNavItems = () => [
   {
     href: "/browse",
-    label: { en: "Browse", "sr-Latn": "Pretraga", "sr-Cyrl": "Претрага" },
+    label: t({ id: "nav.browse", message: "Browse" }),
   },
   {
     href: "/create/new",
-    label: { en: "Create", "sr-Latn": "Kreiraj", "sr-Cyrl": "Креирај" },
+    label: t({ id: "nav.create", message: "Create" }),
   },
   {
     href: "/topics",
-    label: { en: "Topics", "sr-Latn": "Teme", "sr-Cyrl": "Теме" },
+    label: t({ id: "nav.topics", message: "Topics" }),
   },
   {
     href: "/gallery",
-    label: { en: "Gallery", "sr-Latn": "Galerija", "sr-Cyrl": "Галерија" },
+    label: t({ id: "nav.gallery", message: "Gallery" }),
   },
   {
     href: "/docs",
-    label: {
-      en: "Docs",
-      "sr-Latn": "Dokumentacija",
-      "sr-Cyrl": "Документација",
-    },
+    label: t({ id: "nav.docs", message: "Docs" }),
   },
 ];
 
 export function MainNav({ locale = "en" }: MainNavProps) {
   const router = useRouter();
+  const navItems = getNavItems();
 
   return (
     <Box
@@ -62,14 +59,14 @@ export function MainNav({ locale = "en" }: MainNavProps) {
           p: 0,
         }}
       >
-        {NAV_ITEMS.map((item) => {
+        {navItems.map((item) => {
           const basePath = "/" + item.href.split("/")[1];
           const isActive = router.pathname.startsWith(basePath);
           return (
             <Box component="li" role="none" key={item.href}>
               <NavItem
                 href={item.href}
-                label={item.label[locale]}
+                label={item.label}
                 isActive={isActive}
               />
             </Box>

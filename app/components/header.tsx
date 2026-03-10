@@ -1,3 +1,4 @@
+import { t } from "@lingui/macro";
 import { Box } from "@mui/material";
 import Link from "next/link";
 
@@ -5,7 +6,7 @@ import { DataSourceMenu } from "@/components/data-source-menu";
 import { Flex } from "@/components/flex";
 import { __HEADER_HEIGHT_CSS_VAR } from "@/components/header-constants";
 import { LanguagePicker } from "@/components/language-picker";
-import { MainNav } from "@/components/navigation";
+import { MainNav, MobileNav } from "@/components/navigation";
 import { SimpleHeader } from "@/components/simple-header";
 import { SOURCE_OPTIONS } from "@/domain/data-source/constants";
 import { useLocale } from "@/locales/use-locale";
@@ -19,12 +20,10 @@ export const Header = ({
   extendTopBar?: boolean;
 }) => {
   const locale = useLocale();
-  const demoGalleryLabel =
-    locale === "sr-Cyrl"
-      ? "Demo galerija"
-      : locale.startsWith("sr")
-        ? "Demo galerija"
-        : "Demo Gallery";
+  const demoGalleryLabel = t({
+    id: "header.demo_gallery",
+    message: "Demo Gallery",
+  });
   const [ref] = useResizeObserver<HTMLDivElement>(({ height }) => {
     if (height) {
       document.documentElement.style.setProperty(
@@ -46,6 +45,7 @@ export const Header = ({
           ...(extendTopBar ? { maxWidth: "unset !important" } : {}),
         }}
       >
+        <MobileNav />
         {SOURCE_OPTIONS.length > 1 && <DataSourceMenu />}
         <MainNav locale={locale} />
         <Flex alignItems="center" gap={3} marginLeft="auto">
@@ -54,6 +54,7 @@ export const Header = ({
               component="a"
               data-testid="nav-demo"
               sx={{
+                display: { xs: "none", md: "inline-flex" },
                 color: "white",
                 fontWeight: 600,
                 textDecoration: "none",
@@ -76,7 +77,7 @@ export const Header = ({
             rel="noopener noreferrer"
             aria-label="GitHub Repository"
             sx={{
-              display: "inline-flex",
+              display: { xs: "none", sm: "inline-flex" },
               alignItems: "center",
               gap: 1,
               color: "white",

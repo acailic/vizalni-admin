@@ -15,6 +15,14 @@
     "en": {
       "title": "Imprint",
       "path": "/en/imprint"
+    },
+    "sr-Latn": {
+      "title": "Impressum",
+      "path": "/en/imprint"
+    },
+    "sr-Cyrl": {
+      "title": "Импресум",
+      "path": "/sr-Cyrl/imprint"
     }
   },
   "legal": {
@@ -33,6 +41,14 @@
     "en": {
       "title": "Legal Framework",
       "path": "/en/legal-framework"
+    },
+    "sr-Latn": {
+      "title": "Pravni okvir",
+      "path": "/en/legal-framework"
+    },
+    "sr-Cyrl": {
+      "title": "Правни оквир",
+      "path": "/sr-Cyrl/legal-framework"
     }
   }
 }

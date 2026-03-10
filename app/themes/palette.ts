@@ -197,5 +197,5 @@ export const darkPalette = {
   blue,
 } satisfies ThemeOptions["palette"];
 
-// Keep the default export as darkPalette for backward compatibility
-export const palette = darkPalette;
+// Light mode for government portal style
+export const palette = lightPalette;

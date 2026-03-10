@@ -2,6 +2,7 @@ import { I18nProvider } from "@lingui/react";
 import "core-js/features/array/flat-map";
 // Used for color-picker component. Must include here because of next.js constraints about global CSS imports
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
 import { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -306,7 +307,17 @@ export default function App({
                         <Flashes />
                         {shouldShowGQLDebug ? <GQLDebugPanel /> : null}
                         <AsyncLocalizationProvider locale={locale}>
-                          <Component {...pageProps} />
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              key={asPath}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <Component {...pageProps} />
+                            </motion.div>
+                          </AnimatePresence>
                         </AsyncLocalizationProvider>
                       </PerformanceInitializer>
                     </SnackbarProvider>

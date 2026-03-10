@@ -6,6 +6,7 @@ import { Footer as FooterComponent } from "@/components/footer-components";
 import contentRoutes from "@/content-routes.json";
 import { BUILD_COMMIT, BUILD_GITHUB_REPO, BUILD_VERSION } from "@/domain/env";
 import { useLocale } from "@/locales/use-locale";
+import { OWNER_ORGANIZATION_EMAIL } from "@/templates/email/config";
 
 const mkVersionLink = () => {
   let commitLink = "";
@@ -30,7 +31,7 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
   const locale = useLocale();
 
   const getLocalizedRoute = <
-    T extends Record<string, { title: string; path: string }>,
+    T extends Record<string, { title: string; path: string }>
   >(
     routes: T
   ) => {
@@ -88,15 +89,15 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
           </Typography>
           <Box sx={{ display: "flex", gap: 2 }}>
             <Link
-              href="https://www.youtube.com/@visualizetutorials"
+              href="https://github.com/acailic/vizualni-admin"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="YouTube"
+              aria-label="GitHub"
             >
-              YouTube
+              GitHub
             </Link>
             <Link
-              href="mailto:visualize@bafu.admin.ch"
+              href={`mailto:${OWNER_ORGANIZATION_EMAIL}`}
               aria-label="Contact via email"
             >
               Email
@@ -112,33 +113,23 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Link
-              href={`https://lindas.admin.ch/?lang=${locale}`}
+              href="https://data.gov.rs"
               target="_blank"
               rel="noopener noreferrer"
             >
               {t({
-                id: "footer.button.lindas",
-                message: "LINDAS Linked Data Services",
+                id: "footer.button.open_data_portal",
+                message: "Serbia Open Data Portal",
               })}
             </Link>
             <Link
-              href={`https://www.youtube.com/@visualizetutorials`}
+              href="https://github.com/acailic/vizualni-admin/wiki"
               target="_blank"
               rel="noopener noreferrer"
             >
               {t({
                 id: "footer.tutorials",
-                message: "Tutorials",
-              })}
-            </Link>
-            <Link
-              href={`https://visualization-tool.status.interactivethings.io/`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t({
-                id: "footer.status",
-                message: "Status",
+                message: "Documentation",
               })}
             </Link>
           </Box>
