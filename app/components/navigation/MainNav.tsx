@@ -4,31 +4,38 @@ import { useRouter } from "next/router";
 
 import { NavItem } from "./NavItem";
 
-type Locale = "en" | "sr" | "sr-Cyrl";
-
-const NAV_ITEMS: { href: string; label: Record<Locale, string> }[] = [
-  {
-    href: "/browse",
-    label: { en: "Browse", sr: "Pretraga", "sr-Cyrl": "Претрага" },
-  },
-  {
-    href: "/create/new",
-    label: { en: "Create", sr: "Kreiraj", "sr-Cyrl": "Креирај" },
-  },
-  { href: "/topics", label: { en: "Topics", sr: "Teme", "sr-Cyrl": "Теме" } },
-  {
-    href: "/gallery",
-    label: { en: "Gallery", sr: "Galerija", "sr-Cyrl": "Галерија" },
-  },
-  {
-    href: "/docs",
-    label: { en: "Docs", sr: "Dokumentacija", "sr-Cyrl": "Документација" },
-  },
-];
+type Locale = "en" | "sr-Latn" | "sr-Cyrl";
 
 interface MainNavProps {
   locale?: Locale;
 }
+
+const NAV_ITEMS: { href: string; label: Record<Locale, string> }[] = [
+  {
+    href: "/browse",
+    label: { en: "Browse", "sr-Latn": "Pretraga", "sr-Cyrl": "Претрага" },
+  },
+  {
+    href: "/create/new",
+    label: { en: "Create", "sr-Latn": "Kreiraj", "sr-Cyrl": "Креирај" },
+  },
+  {
+    href: "/topics",
+    label: { en: "Topics", "sr-Latn": "Teme", "sr-Cyrl": "Теме" },
+  },
+  {
+    href: "/gallery",
+    label: { en: "Gallery", "sr-Latn": "Galerija", "sr-Cyrl": "Галерија" },
+  },
+  {
+    href: "/docs",
+    label: {
+      en: "Docs",
+      "sr-Latn": "Dokumentacija",
+      "sr-Cyrl": "Документација",
+    },
+  },
+];
 
 export function MainNav({ locale = "en" }: MainNavProps) {
   const router = useRouter();

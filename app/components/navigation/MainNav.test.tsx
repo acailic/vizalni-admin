@@ -29,7 +29,7 @@ describe("MainNav", () => {
   });
 
   it("supports localized labels", () => {
-    render(<MainNav locale="sr" />);
+    render(<MainNav locale="sr-Latn" />);
     expect(screen.getByRole("link", { name: "Pretraga" })).toBeInTheDocument();
   });
 });
