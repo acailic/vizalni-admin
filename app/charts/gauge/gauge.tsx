@@ -8,7 +8,7 @@ import {
   GaugeArc,
   GaugeState,
   GaugeValueDisplayData,
-} from "@/charts/gauge/gauge-state";
+} from "@/charts/gauge/gauge-state"; // Types are re-exported from gauge-state.tsx
 import { useIsEditingAnnotation } from "@/charts/shared/annotation-utils";
 import { useChartState } from "@/charts/shared/chart-state";
 import {
@@ -65,7 +65,7 @@ const renderGaugeArcs = (
           .attr("stroke-width", 1)
           .attr("opacity", (d) => d.opacity)
           .style("cursor", "pointer")
-          .on("click", (_, d) => {
+          .on("click", (_, _d) => {
             onClick(undefined);
           })
           .on("mouseenter", function (_, d) {
@@ -214,7 +214,9 @@ const renderGaugeNeedle = (
                   );
                   const i = interpolate(prevAngle, angle);
                   return (t) =>
-                    `translate(${centerX}, ${centerY}) rotate(${(i(t) * 180) / Math.PI})`;
+                    `translate(${centerX}, ${centerY}) rotate(${
+                      (i(t) * 180) / Math.PI
+                    })`;
                 })
                 .attr("fill", color),
           })
@@ -250,7 +252,7 @@ const renderGaugeNeedle = (
  * Create needle path for the given angle
  */
 const createNeedlePath = (
-  angle: number,
+  _angle: number,
   length: number,
   baseWidth: number
 ): string => {
@@ -356,7 +358,7 @@ const renderGaugeMinMaxLabels = (
   },
   options: RenderGaugeValueOptions
 ) => {
-  const { transition, fontFamily } = options;
+  const { fontFamily } = options;
   const { min, max, centerX, centerY, radius, startAngle, endAngle } = data;
 
   // Calculate label positions
@@ -400,19 +402,9 @@ const renderGaugeMinMaxLabels = (
  * Supports threshold arcs, needle indicator, and value display
  */
 export const Gauge = () => {
-  const {
-    bounds: { width, height, chartWidth, chartHeight },
-    arcs,
-    needle,
-    valueDisplay,
-    colors,
-    radius,
-    innerRadius,
-    centerX,
-    centerY,
-    min,
-    max,
-  } = useChartState() as GaugeState;
+  const state = useChartState() as GaugeState;
+  const { arcs, needle, valueDisplay, radius, centerX, centerY, min, max } =
+    state;
   const isEditingAnnotation = useIsEditingAnnotation();
   const { fontFamily, labelFontSize } = useChartTheme();
   const enableTransition = useTransitionStore((state) => state.enable);
@@ -507,11 +499,18 @@ export const Gauge = () => {
           duration: transitionDuration,
         },
         render: (g, opts) =>
-          renderGaugeNeedle(g, needle, {
-            ...opts,
-            centerX,
-            centerY,
-          }),
+          renderGaugeNeedle(
+            g,
+            {
+              ...needle,
+              color: needle.color ?? "#374151",
+            },
+            {
+              ...opts,
+              centerX,
+              centerY,
+            }
+          ),
       });
     }
 
@@ -654,7 +653,9 @@ export const GaugeNeedleComponent = ({
         stroke={color}
         strokeWidth={1}
         strokeLinejoin="round"
-        transform={`translate(${centerX}, ${centerY}) rotate(${(angle * 180) / Math.PI})`}
+        transform={`translate(${centerX}, ${centerY}) rotate(${
+          (angle * 180) / Math.PI
+        })`}
         style={{
           transition: "transform 0.3s ease-out",
         }}

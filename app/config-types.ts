@@ -1554,12 +1554,14 @@ export const isColorInConfig = (
   chartConfig: ChartConfig
 ): chartConfig is Exclude<
   ChartConfig,
-  { chartType: "table" | "map" | "sankey" }
+  { chartType: "table" | "map" | "sankey" | "gauge" | "treemap" }
 > => {
   return (
     !isTableConfig(chartConfig) &&
     !isMapConfig(chartConfig) &&
-    !isSankeyConfig(chartConfig)
+    !isSankeyConfig(chartConfig) &&
+    !isGaugeConfig(chartConfig) &&
+    !isTreemapConfig(chartConfig)
   );
 };
 

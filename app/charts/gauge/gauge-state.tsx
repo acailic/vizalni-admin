@@ -36,6 +36,9 @@ import {
   GaugeValueDisplayData,
 } from "./gauge-types";
 
+// Re-export types needed by gauge.tsx
+export type { GaugeArc, GaugeValueDisplayData } from "./gauge-types";
+
 /** Default colors for gauge thresholds */
 const DEFAULT_THRESHOLD_COLORS = [
   "#22c55e", // green - good
