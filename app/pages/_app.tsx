@@ -29,6 +29,7 @@ import { isStaticExportMode } from "@/utils/public-paths";
 import { useNProgress } from "@/utils/use-nprogress";
 
 import "@/configurator/components/color-picker.css";
+import "@/styles/focus-visible.css";
 
 const withBasePath = (path: string) => `${PUBLIC_URL}${path}`;
 
