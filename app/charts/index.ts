@@ -3379,4 +3379,5 @@ export const getChartSymbol = (
 
 // Re-export chart visualization components
 export { ChartSankeyVisualization } from "./sankey/chart-sankey";
+export { ChartSunburstVisualization } from "./sunburst/chart-sunburst";
 export { ChartTreemapVisualization } from "./treemap/chart-treemap";
