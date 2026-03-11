@@ -1,7 +1,7 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import { ContentWrapper } from "@/components/content-wrapper";
-import { useIsMobile } from "@/utils/use-is-mobile";
+import { Icon } from "@/icons";
 
 type ActionElementProps = {
   headline: string;
@@ -21,48 +21,36 @@ export const Actions = ({
   bugReport: ActionElementProps;
   featureRequest: ActionElementProps;
 }) => {
-  const isMobile = useIsMobile();
+  const actions = [contribute, newsletter, bugReport, featureRequest];
+
   return (
-    <>
+    <Box sx={{ backgroundColor: "background.paper" }}>
       <ContentWrapper
         sx={{
-          alignItems: "unset !important",
-          flexDirection: isMobile ? "column" : "row",
-          gap: 12,
-          py: 15,
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            md: "repeat(2, minmax(0, 1fr))",
+          },
+          gap: 4,
+          py: { xs: 10, md: 14, lg: 16 },
         }}
       >
-        <Action {...contribute} />
-        <Divider flexItem orientation={isMobile ? "horizontal" : "vertical"} />
-        <Action {...newsletter} />
+        {actions.map((action, index) => (
+          <Action key={action.headline} index={index} {...action} />
+        ))}
       </ContentWrapper>
-      <Box sx={{ backgroundColor: "background.paper" }}>
-        <ContentWrapper
-          sx={{
-            alignItems: "unset !important",
-            flexDirection: isMobile ? "column" : "row",
-            gap: 12,
-            py: 15,
-          }}
-        >
-          <Action {...bugReport} />
-          <Divider
-            flexItem
-            orientation={isMobile ? "horizontal" : "vertical"}
-          />
-          <Action {...featureRequest} />
-        </ContentWrapper>
-      </Box>
-    </>
+    </Box>
   );
 };
 
 const Action = ({
+  index,
   headline,
   description,
   buttonLabel,
   buttonUrl,
-}: ActionElementProps) => {
+}: ActionElementProps & { index: number }) => {
   return (
     <Box
       sx={{
@@ -71,19 +59,41 @@ const Action = ({
         justifyContent: "space-between",
         alignItems: "flex-start",
         width: "100%",
+        minHeight: 260,
+        p: { xs: 4, md: 5 },
+        borderRadius: 3,
+        border: "1px solid",
+        borderColor: "divider",
+        background:
+          "linear-gradient(180deg, rgba(248,250,252,1) 0%, rgba(255,255,255,1) 100%)",
+        boxShadow: "0 20px 40px rgba(15, 23, 42, 0.06)",
       }}
     >
       <Box sx={{ mb: 8 }}>
-        <Typography variant="h2">{headline}</Typography>
-        <Typography variant="body2" sx={{ mt: 4 }}>
+        <Typography
+          variant="overline"
+          sx={{
+            color: "primary.main",
+            fontWeight: 700,
+            letterSpacing: "0.08em",
+          }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </Typography>
+        <Typography variant="h2" sx={{ mt: 1.5, mb: 3 }}>
+          {headline}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
           {description}
         </Typography>
       </Box>
       <Button
         href={buttonUrl}
         size="sm"
+        endIcon={<Icon name="arrowRight" size={20} />}
         target="_blank"
         rel="noopener noreferrer"
+        sx={{ mt: "auto" }}
       >
         {buttonLabel}
       </Button>

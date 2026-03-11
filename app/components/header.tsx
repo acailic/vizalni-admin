@@ -1,5 +1,5 @@
 import { t } from "@lingui/macro";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import Link from "next/link";
 
 import { DataSourceMenu } from "@/components/data-source-menu";
@@ -23,6 +23,10 @@ export const Header = ({
   const demoGalleryLabel = t({
     id: "header.demo_gallery",
     message: "Demo Gallery",
+  });
+  const signInLabel = t({
+    id: "login.sign-in",
+    message: "Sign in",
   });
   const [ref] = useResizeObserver<HTMLDivElement>(({ height }) => {
     if (height) {
@@ -49,6 +53,23 @@ export const Header = ({
         {SOURCE_OPTIONS.length > 1 && <DataSourceMenu />}
         <MainNav locale={locale} />
         <Flex alignItems="center" gap={3} marginLeft="auto">
+          <Button
+            component={Link}
+            href="/profile"
+            variant="outlined"
+            size="sm"
+            sx={{
+              display: { xs: "none", sm: "inline-flex" },
+              color: "white",
+              borderColor: "rgba(255,255,255,0.35)",
+              "&:hover": {
+                borderColor: "rgba(255,255,255,0.7)",
+                backgroundColor: "rgba(255,255,255,0.08)",
+              },
+            }}
+          >
+            {signInLabel}
+          </Button>
           <Link href="/demos/showcase" passHref legacyBehavior>
             <Box
               component="a"

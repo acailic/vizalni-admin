@@ -13,6 +13,7 @@ import { useEffect, type ComponentProps } from "react";
 
 import PerformanceInitializer from "@/components/app/PerformanceInitializer";
 import { AppErrorBoundary } from "@/components/app-error-boundary";
+import { MaintenanceNotice } from "@/components/maintenance-notice";
 import { SnackbarProvider } from "@/components/snackbar";
 import { BASE_PATH, PUBLIC_URL } from "@/domain/env";
 import { flag } from "@/flags/flag";
@@ -305,6 +306,7 @@ export default function App({
                       <CssBaseline />
                       <PerformanceInitializer>
                         <Flashes />
+                        <MaintenanceNotice />
                         {shouldShowGQLDebug ? <GQLDebugPanel /> : null}
                         <AsyncLocalizationProvider locale={locale}>
                           <AnimatePresence mode="wait">

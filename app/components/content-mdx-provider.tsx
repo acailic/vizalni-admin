@@ -2,7 +2,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { ReactNode } from "react";
 
 import { ContentLayout, StaticContentLayout } from "@/components/layout";
-import { Actions, Examples, Intro, Tutorial } from "@/homepage";
+import { Actions, Examples, HomepageFooter, Intro, Tutorial } from "@/homepage";
 
 const Wrapper = ({
   contentId,
@@ -12,7 +12,7 @@ const Wrapper = ({
   children: ReactNode;
 }) => {
   return contentId === "home" ? (
-    <ContentLayout>{children}</ContentLayout>
+    <ContentLayout footer={<HomepageFooter />}>{children}</ContentLayout>
   ) : (
     <StaticContentLayout>{children}</StaticContentLayout>
   );

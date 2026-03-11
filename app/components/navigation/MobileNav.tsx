@@ -22,6 +22,10 @@ const getNavItems = () => [
     href: "/demos/showcase",
     label: t({ id: "header.demo_gallery", message: "Demo Gallery" }),
   },
+  {
+    href: "/profile",
+    label: t({ id: "login.sign-in", message: "Sign in" }),
+  },
 ];
 
 export function MobileNav() {

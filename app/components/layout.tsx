@@ -29,8 +29,10 @@ export const AppLayout = ({
 
 export const ContentLayout = ({
   children,
+  footer,
 }: {
   children?: ReactNode;
+  footer?: ReactNode;
 }) => {
   return (
     <Flex
@@ -52,16 +54,12 @@ export const ContentLayout = ({
       >
         {children}
       </Flex>
-      <Footer />
+      {footer ?? <Footer />}
     </Flex>
   );
 };
 
-export const StaticContentLayout = ({
-  children,
-}: {
-  children?: ReactNode;
-}) => {
+export const StaticContentLayout = ({ children }: { children?: ReactNode }) => {
   return (
     <Flex
       sx={{
