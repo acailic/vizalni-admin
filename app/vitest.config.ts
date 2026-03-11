@@ -8,28 +8,26 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
-      // Note: urql alias removed - it was causing circular dependency issues
-      // The urql-compat.ts file provides compatibility instead
     },
   },
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
-    include: ["**/*.{test,spec}.{js,jsx,ts,tsx}"],
+    include: ["./**/*.{test,spec}.{js,jsx,ts,tsx}"],
     exclude: [
-      "node_modules/**",
-      ".git/**",
-      ".next/**",
-      "out/**",
-      "dist/**",
-      "build/**",
-      ".storybook/**",
-      "**/*.config.{js,ts}",
-      "**/vitest.setup.ts",
-      "**/*.stories.{js,jsx,ts,tsx}",
+      "./node_modules/**",
+      "./.git/**",
+      "./.next/**",
+      "./out/**",
+      "./dist/**",
+      "./build/**",
+      "./.storybook/**",
+      "./**/*.config.{js,ts}",
+      "./**/vitest.setup.ts",
+      "./**/*.stories.{js,jsx,ts,tsx}",
       // Visual/playwright tests should be run by Playwright, not Vitest
-      "tests/visual/**",
-      "tests/integration/**/*.integration.test.tsx",
+      "./tests/visual/**",
+      "./tests/integration/**/*.integration.test.tsx",
     ],
     coverage: {
       provider: "v8",
@@ -37,9 +35,7 @@ export default defineConfig({
       reportsDirectory: "./coverage",
       // Vitest 4: coverage.all and coverage.extensions are removed
       // Use include to specify source files for coverage
-      include: [
-        "**/*.{js,jsx,ts,tsx}",
-      ],
+      include: ["**/*.{js,jsx,ts,tsx}"],
       exclude: [
         "node_modules/**",
         ".next/**",

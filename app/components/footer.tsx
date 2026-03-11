@@ -89,6 +89,14 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
           </Typography>
           <Box sx={{ display: "flex", gap: 2 }}>
             <Link
+              href="https://youtube.com/@vizualni"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+            >
+              YouTube
+            </Link>
+            <Link
               href="https://github.com/acailic/vizualni-admin"
               target="_blank"
               rel="noopener noreferrer"
@@ -132,6 +140,14 @@ export const Footer = ({ sx }: { sx?: SxProps }) => {
                 message: "Documentation",
               })}
             </Link>
+            <NextLink href="/statistics" passHref legacyBehavior>
+              <Link>
+                {t({
+                  id: "footer.statistics",
+                  message: "Statistics",
+                })}
+              </Link>
+            </NextLink>
           </Box>
         </Box>
       </Box>

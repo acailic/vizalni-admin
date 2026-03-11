@@ -201,6 +201,23 @@ vi.mock("@deck.gl/mapbox", () => ({
   },
 }));
 
+// Mock Icon component to avoid React version conflicts in tests
+vi.mock("@/icons", () => ({
+  Icon: ({ name, size = 24 }: { name: string; size?: number }) =>
+    React.createElement("svg", {
+      "data-testid": `icon-${name}`,
+      width: size,
+      height: size,
+      children: React.createElement("title", null, name),
+    }),
+  getChartIcon: (chartType: string) => `${chartType}Chart` as any,
+}));
+
+vi.mock("@/icons/components", () => ({
+  Icons: {},
+  IconName: {} as any,
+}));
+
 afterEach(() => {
   cleanup();
   if (typeof __resetQueryCacheForTests === "function") {
