@@ -1,0 +1,457 @@
+/**
+ * Column Chart (Vertical Bars) component using D3
+ * Optimized for data.gov.rs demo visualizations
+ */
+
+import { Box } from "@mui/material";
+import { max } from "d3-array";
+import { axisBottom, axisLeft } from "d3-axis";
+import { format } from "d3-format";
+import { scaleBand, scaleLinear } from "d3-scale";
+import { select } from "d3-selection";
+import "d3-transition";
+import { useMemo, useEffect, useRef } from "react";
+
+import { chartDefaults } from "@/utils/demo-helpers";
+
+type ChartMargin = { top: number; right: number; bottom: number; left: number };
+
+export interface ColumnChartProps {
+  data: Array<Record<string, any>>;
+  xKey: string;
+  yKey: string | string[];
+  width?: number;
+  height?: number;
+  margin?: ChartMargin;
+  color?: string;
+  colors?: string[];
+  xLabel?: string;
+  yLabel?: string;
+  title?: string;
+  description?: string;
+  multiSeries?: boolean;
+  stacked?: boolean;
+  showZeroLine?: boolean;
+  showTooltip?: boolean;
+  showValueLabels?: boolean;
+  animationDuration?: number;
+}
+
+const defaultColumnConfig = chartDefaults.column;
+const MIN_CATEGORY_WIDTH = 56;
+const axisColor = "#d1d5db";
+const tickColor = "#6b7280";
+const gridColor = "#e5e7eb";
+
+function ColumnChartComponent({
+  data,
+  xKey,
+  yKey,
+  width = defaultColumnConfig.width,
+  height = defaultColumnConfig.height,
+  margin = defaultColumnConfig.margin,
+  color,
+  colors = ["#ff9800", "#ff5722", "#f44336", "#e91e63", "#9c27b0", "#673ab7"],
+  xLabel = "",
+  yLabel = "",
+  title,
+  description,
+  multiSeries = false,
+  stacked = false,
+  showZeroLine = false,
+}: ColumnChartProps) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  // Guarantee sufficient horizontal space for every category label
+  const computedWidth = useMemo(() => {
+    const dataLength = Array.isArray(data) ? data.length : 0;
+    const minWidth =
+      dataLength > 0
+        ? dataLength * MIN_CATEGORY_WIDTH + margin.left + margin.right
+        : 0;
+    return Math.max(width, minWidth || width);
+  }, [data, margin.left, margin.right, width]);
+
+  useEffect(() => {
+    if (!svgRef.current || !data || data.length === 0) return;
+
+    const xKeyName = String(xKey);
+
+    // Clear previous chart
+    select(svgRef.current).selectAll("*").remove();
+
+    const palette = color ? [color, ...colors] : colors;
+
+    const svg = select(svgRef.current)
+      .attr("width", computedWidth)
+      .attr("height", height);
+    const innerWidth = computedWidth - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    // Create chart group
+    const g = svg
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Determine numeric series keys
+    const numericKeys = Object.keys(data[0] || {})
+      .filter((key) => key !== xKeyName)
+      .filter(
+        (key) => typeof (data[0] as Record<string, any>)[key] === "number"
+      );
+
+    const requestedKeys = (Array.isArray(yKey) ? yKey : [yKey]).filter(Boolean);
+    const hasMultipleSeries = numericKeys.length > 1;
+
+    const shouldUseAllSeries = multiSeries || hasMultipleSeries;
+    const fallbackSeries = requestedKeys.length ? requestedKeys : numericKeys;
+
+    const seriesKeysCandidate = shouldUseAllSeries
+      ? numericKeys
+      : requestedKeys;
+    const resolvedSeriesKeys = seriesKeysCandidate.length
+      ? seriesKeysCandidate
+      : fallbackSeries;
+
+    if (!resolvedSeriesKeys.length) {
+      return;
+    }
+
+    // Extract values
+    const xValues = data.map((d) => String(d[xKey] ?? ""));
+
+    // Calculate max Y value based on stacked or grouped
+    let maxY: number;
+    if (stacked && shouldUseAllSeries) {
+      maxY =
+        max(
+          data.map((d) =>
+            resolvedSeriesKeys.reduce(
+              (sum, key) =>
+                sum + (Number((d as Record<string, any>)[key]) || 0),
+              0
+            )
+          )
+        ) || 0;
+    } else {
+      const allYValues = data.flatMap((d) =>
+        resolvedSeriesKeys.map(
+          (key) => Number((d as Record<string, any>)[key]) || 0
+        )
+      );
+      maxY = max(allYValues) || 0;
+    }
+
+    // Create scales
+    const xScale = scaleBand()
+      .domain(xValues)
+      .range([0, innerWidth])
+      .padding(0.35);
+
+    const yScale = scaleLinear()
+      .domain([0, maxY])
+      .range([innerHeight, 0])
+      .nice();
+
+    // Add X axis
+    const xAxis = g
+      .append("g")
+      .attr("class", "x-axis")
+      .attr("transform", `translate(0,${innerHeight})`)
+      .call(axisBottom(xScale));
+
+    xAxis
+      .selectAll("text")
+      .attr("transform", "rotate(-45)")
+      .attr("dx", "-0.8em")
+      .attr("dy", "0.15em")
+      .style("text-anchor", "end")
+      .style("font-size", "11px")
+      .style("font-weight", "500")
+      .style("fill", tickColor);
+
+    xAxis.select(".domain").style("stroke", axisColor);
+    xAxis.selectAll("line").style("stroke", axisColor);
+
+    // Add Y axis
+    const yAxis = g
+      .append("g")
+      .attr("class", "y-axis")
+      .call(axisLeft(yScale).ticks(6));
+
+    yAxis
+      .selectAll("text")
+      .style("font-size", "11px")
+      .style("font-weight", "500")
+      .style("fill", tickColor);
+
+    yAxis.select(".domain").style("stroke", axisColor);
+    yAxis.selectAll("line").style("stroke", axisColor);
+
+    // Add grid lines
+    const gridGroup = g
+      .append("g")
+      .attr("class", "grid")
+      .call(
+        axisLeft(yScale)
+          .tickSize(-innerWidth)
+          .tickFormat(() => "")
+      )
+      .style("stroke", gridColor)
+      .style("stroke-opacity", 0.7);
+
+    gridGroup.selectAll("line").style("stroke-dasharray", "3,3");
+    gridGroup.select(".domain").remove();
+
+    // Add zero line if requested
+    if (showZeroLine) {
+      g.append("line")
+        .attr("x1", 0)
+        .attr("x2", innerWidth)
+        .attr("y1", yScale(0))
+        .attr("y2", yScale(0))
+        .attr("stroke", "#666")
+        .attr("stroke-width", 1.5)
+        .attr("stroke-dasharray", "4,4")
+        .attr("opacity", 0.6);
+    }
+
+    if (shouldUseAllSeries && !stacked) {
+      // Grouped bars
+      const xSubScale = scaleBand()
+        .domain(resolvedSeriesKeys as string[])
+        .range([0, xScale.bandwidth()])
+        .padding(0.05);
+
+      resolvedSeriesKeys.forEach((key, index) => {
+        g.selectAll(`.bar-${index}`)
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("class", `bar-${index}`)
+          .attr(
+            "x",
+            (d) =>
+              (xScale(String(d[xKey])) || 0) + (xSubScale(String(key)) || 0)
+          )
+          .attr("y", innerHeight)
+          .attr("width", xSubScale.bandwidth())
+          .attr("height", 0)
+          .attr("fill", palette[index % palette.length])
+          .attr("opacity", 0.85)
+          .attr("rx", 6)
+          .attr("ry", 6)
+          .on("mouseover", function () {
+            select(this).attr("opacity", 1);
+          })
+          .on("mouseout", function () {
+            select(this).attr("opacity", 0.85);
+          })
+          .transition()
+          .duration(800)
+          .delay((_, i) => i * 50 + index * 20)
+          .attr("y", (d) =>
+            yScale(Number((d as Record<string, any>)[key]) || 0)
+          )
+          .attr(
+            "height",
+            (d) =>
+              innerHeight - yScale(Number((d as Record<string, any>)[key]) || 0)
+          );
+      });
+    } else if (shouldUseAllSeries && stacked) {
+      // Stacked bars
+      data.forEach((d, i) => {
+        let cumulativeY = 0;
+        resolvedSeriesKeys.forEach((key, index) => {
+          const value = Number((d as Record<string, any>)[key]) || 0;
+          const barHeight = innerHeight - yScale(value);
+
+          g.append("rect")
+            .attr("x", xScale(String(d[xKey])) || 0)
+            .attr("y", innerHeight)
+            .attr("width", xScale.bandwidth())
+            .attr("height", 0)
+            .attr("fill", palette[index % palette.length])
+            .attr("opacity", 0.85)
+            .attr("rx", 6)
+            .attr("ry", 6)
+            .on("mouseover", function () {
+              select(this).attr("opacity", 1);
+            })
+            .on("mouseout", function () {
+              select(this).attr("opacity", 0.85);
+            })
+            .transition()
+            .duration(800)
+            .delay(i * 50)
+            .attr("y", yScale(cumulativeY + value))
+            .attr("height", barHeight);
+
+          cumulativeY += value;
+        });
+      });
+    } else {
+      // Single series
+      const singleKey = resolvedSeriesKeys[0];
+      g.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x", (d) => xScale(String(d[xKey])) || 0)
+        .attr("y", innerHeight)
+        .attr("width", xScale.bandwidth())
+        .attr("height", 0)
+        .attr("fill", (_, i) => palette[i % palette.length])
+        .attr("opacity", 0.85)
+        .attr("rx", 6)
+        .attr("ry", 6)
+        .on("mouseover", function () {
+          select(this).attr("opacity", 1);
+        })
+        .on("mouseout", function () {
+          select(this).attr("opacity", 0.85);
+        })
+        .transition()
+        .duration(800)
+        .delay((_, i) => i * 50)
+        .attr("y", (d) => yScale(Number(d[singleKey]) || 0))
+        .attr("height", (d) => innerHeight - yScale(Number(d[singleKey]) || 0));
+
+      // Add value labels for single series only
+      g.selectAll(".column-label")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("class", "column-label")
+        .attr(
+          "x",
+          (d) => (xScale(String(d[xKey])) || 0) + xScale.bandwidth() / 2
+        )
+        .attr("y", (d) => yScale(Number(d[singleKey]) || 0) - 5)
+        .attr("text-anchor", "middle")
+        .style("font-size", "11px")
+        .style("font-weight", "600")
+        .style("fill", "#333")
+        .text((d) => {
+          const value = Number(d[singleKey]);
+          return value > 0 ? format(",.0f")(value) : "";
+        })
+        .style("opacity", 0)
+        .transition()
+        .delay((_, i) => 800 + i * 50)
+        .duration(400)
+        .style("opacity", 1);
+    }
+
+    // Add legend for multi-series
+    if (shouldUseAllSeries && resolvedSeriesKeys.length > 1) {
+      const legend = g
+        .append("g")
+        .attr("transform", `translate(${innerWidth - 150}, 10)`);
+
+      resolvedSeriesKeys.forEach((key, i) => {
+        const legendRow = legend
+          .append("g")
+          .attr("transform", `translate(0, ${i * 20})`);
+
+        legendRow
+          .append("rect")
+          .attr("width", 15)
+          .attr("height", 15)
+          .attr("fill", palette[i % palette.length])
+          .attr("opacity", 0.85);
+
+        legendRow
+          .append("text")
+          .attr("x", 20)
+          .attr("y", 12)
+          .style("font-size", "11px")
+          .style("fill", "#333")
+          .text(String(key));
+      });
+    }
+
+    // Add X axis label
+    if (xLabel) {
+      g.append("text")
+        .attr("x", innerWidth / 2)
+        .attr("y", innerHeight + margin.bottom - 5)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("font-weight", "600")
+        .text(xLabel);
+    }
+
+    // Add Y axis label
+    if (yLabel) {
+      g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -innerHeight / 2)
+        .attr("y", -margin.left + 15)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("font-weight", "600")
+        .text(yLabel);
+    }
+  }, [
+    color,
+    colors,
+    computedWidth,
+    data,
+    height,
+    margin,
+    multiSeries,
+    showZeroLine,
+    stacked,
+    xKey,
+    xLabel,
+    yKey,
+    yLabel,
+  ]);
+
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        overflowX: "auto",
+        backgroundColor: "background.paper",
+        borderRadius: 2,
+        boxShadow: 1,
+        p: 2,
+        position: "relative",
+      }}
+    >
+      {/* Visually hidden description for screen readers */}
+      <Box
+        component="span"
+        sx={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {description ||
+          `Column chart displays ${data.length} categories. ${xLabel}: ${xKey}, ${yLabel}: ${yKey}.`}
+      </Box>
+      <svg
+        ref={svgRef}
+        width={computedWidth}
+        height={height}
+        role="img"
+        aria-label={title || `Column chart showing ${xLabel} vs ${yLabel}`}
+        style={{ maxWidth: "100%", height: "auto" }}
+      />
+    </Box>
+  );
+}
+
+export function ColumnChart(props: ColumnChartProps) {
+  return <ColumnChartComponent {...props} />;
+}
+ColumnChart.displayName = "ColumnChart";

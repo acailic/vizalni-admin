@@ -1,0 +1,77 @@
+{
+  "type": "FeatureCollection",
+  "name": "Serbia Statistical Regions (NUTS 2)",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RS00",
+        "code": "RS00",
+        "name_sr_cyrl": "Београдски регион",
+        "name_sr_latn": "Beogradski region",
+        "name_en": "Belgrade Region"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[20.27, 44.65], [20.55, 44.65], [20.55, 44.95], [20.27, 44.95], [20.27, 44.65]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RS10",
+        "code": "RS10",
+        "name_sr_cyrl": "Војводина",
+        "name_sr_latn": "Vojvodina",
+        "name_en": "Vojvodina"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[18.85, 44.65], [20.55, 44.65], [20.55, 46.15], [18.85, 46.15], [18.85, 44.65]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RS11",
+        "code": "RS11",
+        "name_sr_cyrl": "Шумадија и Западна Србија",
+        "name_sr_latn": "Šumadija i Zapadna Srbija",
+        "name_en": "Šumadija and Western Serbia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[19.25, 43.45], [20.55, 43.45], [20.55, 44.65], [19.25, 44.65], [19.25, 43.45]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RS12",
+        "code": "RS12",
+        "name_sr_cyrl": "Јужна и Источна Србија",
+        "name_sr_latn": "Južna i Istočna Srbija",
+        "name_en": "Southern and Eastern Serbia"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[20.55, 42.25], [23.00, 42.25], [23.00, 44.65], [20.55, 44.65], [20.55, 42.25]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "RS13",
+        "code": "RS13",
+        "name_sr_cyrl": "Косово и Метохија",
+        "name_sr_latn": "Kosovo i Metohija",
+        "name_en": "Kosovo and Metohija"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[20.10, 41.85], [21.80, 41.85], [21.80, 43.25], [20.10, 43.25], [20.10, 41.85]]]
+      }
+    }
+  ]
+}

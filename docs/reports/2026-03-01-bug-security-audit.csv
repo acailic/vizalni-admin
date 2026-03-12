@@ -1,0 +1,10 @@
+BUG-ID,Severity,Category,Status,File,Component,Title,Description,OWASP,Impact User,Impact System,Impact Business
+BUG-001,Critical,Security,Fixed,package.json,dependencies,Vulnerable dependencies,"Multiple high-severity vulnerabilities in npm dependencies including node-tar race condition and minimatch ReDoS",,low,high,medium
+BUG-002,High,Security,Fixed,app/pages/api/auth/[...nextauth].ts,authentication,Hardcoded development secret fallback,"Authentication uses hardcoded fallback secret which could be exploited if dev code reaches production",,high,high,high
+BUG-003,High,Security,Fixed,app/browse/ui/dataset-result.tsx,ui,XSS via dangerouslySetInnerHTML,"User-generated content rendered without sanitization in highlightedTitle and highlightedDescription",A03:2021 - Injection,high,medium,high
+BUG-004,High,Security,Fixed,app/components/dataset-metadata.tsx,ui,XSS via dangerouslySetInnerHTML in publisher,"Publisher data rendered without sanitization allowing potential XSS",A03:2021 - Injection,high,medium,medium
+BUG-005,Medium,Security,Fixed,app/lib/python-runner.ts,backend,Command injection risk,"PythonRunner constructs shell commands with user input without proper escaping",A03:2021 - Injection,low,high,medium
+BUG-006,Medium,Security,Fixed,app/pages/api/config/[key].ts,api,Missing input validation,"Config API uses req.query.key directly without validation",,low,medium,low
+BUG-007,Medium,Performance,Fixed,app/hooks/use-data-cache.ts,hooks,Memory leak in useDataCache,"Hook does not clean up memory cache on unmount causing memory bloat",,medium,medium,low
+BUG-008,Low,Code Quality,Fixed,app/pages/api/auth/[...nextauth].ts,logging,Console.error in production,"Using console.error instead of structured logging",,none,low,low
+BUG-009,Low,Code Quality,Documented,Multiple files,various,TODO/FIXME items,"50+ occurrences of TODO and FIXME comments in codebase",,none,low,low

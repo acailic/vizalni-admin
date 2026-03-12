@@ -1,0 +1,21 @@
+[
+  "https://geoportal.gov.rs/ows",
+  "https://geoserver.stat.gov.rs/geoserver/ows",
+  "https://geoserver.rgz.gov.rs/geoserver/ows",
+  "https://geo.ekoplan.gov.rs/geoserver/ows",
+  "https://satellitedata.gov.rs/geoserver/wms",
+  "https://gis.agr.gov.rs/geoserver/ows",
+  "https://map.rgz.gov.rs/geoserver/ows",
+  "https://wms.eea.europa.eu/wms",
+  "https://maps.copernicus.eu/web/viewer",
+  "https://ows.terrestris.de/osm/service",
+  "https://ows.terrestris.de/osm-gray/service",
+  "https://osmlab.github.io/wmts-osm/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Transportation/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/World_Shaded_Relief/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer/WMTS/1.0.0/WMTSCapabilities.xml",
+  "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer/WMTS/1.0.0/WMTSCapabilities.xml"
+]

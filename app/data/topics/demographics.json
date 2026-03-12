@@ -1,0 +1,81 @@
+{
+  "id": "demographics",
+  "title": {
+    "sr": "Демографија",
+    "sr-Latn": "Demografija",
+    "en": "Demographics"
+  },
+  "description": {
+    "sr": "Популација, миграције, старосна структура и становништво",
+    "en": "Population, migrations, age structure and residents"
+  },
+  "datasets": [
+    {
+      "id": "population-by-municipality",
+      "title": {
+        "sr": "Становништво по општинама",
+        "en": "Population by Municipality"
+      },
+      "description": {
+        "sr": "Број становника по општинама и градовима",
+        "en": "Population count by municipalities and cities"
+      },
+      "dataGovRsId": "stanovnistvo-opstine",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/stanovnistvo-opstine/",
+      "tags": ["population", "municipalities", "census"],
+      "lastUpdated": "2022-12-31",
+      "format": "CSV",
+      "recommendedChart": "map"
+    },
+    {
+      "id": "age-structure",
+      "title": {
+        "sr": "Старосна структура",
+        "en": "Age Structure"
+      },
+      "description": {
+        "sr": "Расподела становништва по старосним групама",
+        "en": "Population distribution by age groups"
+      },
+      "dataGovRsId": "starosna-struktura",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/starosna-struktura/",
+      "tags": ["population", "age", "demographics"],
+      "lastUpdated": "2022-12-31",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    },
+    {
+      "id": "migration-statistics",
+      "title": {
+        "sr": "Миграције становништва",
+        "en": "Population Migration"
+      },
+      "description": {
+        "sr": "Подаци о усељавању и исељавању",
+        "en": "Data on immigration and emigration"
+      },
+      "dataGovRsId": "migracije-stanovnistva",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/migracije-stanovnistva/",
+      "tags": ["migration", "population", "demographics"],
+      "lastUpdated": "2023-06-30",
+      "format": "CSV",
+      "recommendedChart": "line"
+    }
+  ],
+  "visualizations": [
+    {
+      "id": "age-distribution",
+      "title": {
+        "sr": "Старосна структура становништва",
+        "en": "Population Age Distribution"
+      },
+      "description": {
+        "sr": "Тракасти графикон који приказује расподелу по старосним групама",
+        "en": "Bar chart showing distribution by age groups"
+      },
+      "chartType": "bar",
+      "dataSource": "age-structure",
+      "embedUrl": "/embed?type=bar&dataset=age"
+    }
+  ]
+}

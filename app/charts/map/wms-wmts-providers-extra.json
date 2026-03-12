@@ -1,0 +1,58 @@
+{
+  "https://geoportal.gov.rs/ows": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Administrativne granice", "Topografska karta", "Satelitski snimak"],
+    "note": "Nacionalni geoportal Republike Srbije"
+  },
+  "https://geoserver.stat.gov.rs/geoserver/ows": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Popis stanovništva", "Statističke oblasti", "Demografski podaci"],
+    "note": "Statistički zavod Republike Srbije"
+  },
+  "https://geoserver.rgz.gov.rs/geoserver/ows": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Katastarske parcele", "Zgrade", "Zemljišta"],
+    "note": "Republički geodetski zavod"
+  },
+  "https://satellitedata.gov.rs/geoserver/wms": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Satelitski snimci", "NDVI", "Infracrveni snimci"],
+    "note": "Nacionalna platforma za satelitske podatke"
+  },
+  "https://map.rgz.gov.rs/geoserver/ows": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Digitalni model terena", "Ortofoto snimci"],
+    "note": "Geodetski zavod portal za karte"
+  },
+  "https://wms.eea.europa.eu/wms": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["Corine Land Cover", "Natura 2000", "Air Quality"],
+    "note": "European Environment Agency - Regional data for Serbia"
+  },
+  "https://osmlab.github.io/wmts-osm/WMTSCapabilities.xml": {
+    "canListLayers": true,
+    "canDisplayLayers": false,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": [],
+    "note": "OpenStreetMap base layer"
+  },
+  "https://ows.terrestris.de/osm/service": {
+    "canListLayers": true,
+    "canDisplayLayers": true,
+    "canDisplayOnMapGeoAdmin": false,
+    "workingLayers": ["osm:osm"],
+    "note": "OpenStreetMap WMS service"
+  }
+}

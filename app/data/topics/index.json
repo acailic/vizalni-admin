@@ -1,0 +1,94 @@
+{
+  "topics": [
+    {
+      "id": "economy",
+      "title": {
+        "sr": "Економија и финансије",
+        "sr-Latn": "Ekonomija i finansije",
+        "en": "Economy & Finance"
+      },
+      "icon": "AttachMoney",
+      "description": {
+        "sr": "Буджети, порези, јавни дуг и финансијски показатељи",
+        "sr-Latn": "Budžeti, porezi, javni dug i finansijski pokazatelji",
+        "en": "Budgets, taxes, public debt and financial indicators"
+      },
+      "datasetCount": 3
+    },
+    {
+      "id": "health",
+      "title": {
+        "sr": "Здравство",
+        "sr-Latn": "Zdravstvo",
+        "en": "Health"
+      },
+      "icon": "LocalHospital",
+      "description": {
+        "sr": "Здравствени подаци, болнице, апотеке и јавно здравље",
+        "sr-Latn": "Zdravstveni podaci, bolnice, apoteke i javno zdravlje",
+        "en": "Health data, hospitals, pharmacies and public health"
+      },
+      "datasetCount": 3
+    },
+    {
+      "id": "education",
+      "title": {
+        "sr": "Образовање",
+        "sr-Latn": "Obrazovanje",
+        "en": "Education"
+      },
+      "icon": "School",
+      "description": {
+        "sr": "Школе, универзитети, ученици и образовни ресурси",
+        "sr-Latn": "Škole, univerziteti, učenici i obrazovni resursi",
+        "en": "Schools, universities, students and educational resources"
+      },
+      "datasetCount": 3
+    },
+    {
+      "id": "demographics",
+      "title": {
+        "sr": "Демографија",
+        "sr-Latn": "Demografija",
+        "en": "Demographics"
+      },
+      "icon": "Groups",
+      "description": {
+        "sr": "Популација, миграције, старосна структура и становништво",
+        "sr-Latn": "Populacija, migracije, starosna struktura i stanovništvo",
+        "en": "Population, migrations, age structure and residents"
+      },
+      "datasetCount": 3
+    },
+    {
+      "id": "environment",
+      "title": {
+        "sr": "Животна средина",
+        "sr-Latn": "Životna sredina",
+        "en": "Environment"
+      },
+      "icon": "Nature",
+      "description": {
+        "sr": "Квалитет ваздуха, вода, отпад и заштита животне средине",
+        "sr-Latn": "Kvalitet vazduha, voda, otpad i zaštita životne sredine",
+        "en": "Air quality, water, waste and environmental protection"
+      },
+      "datasetCount": 3
+    },
+    {
+      "id": "transport",
+      "title": {
+        "sr": "Саобраћај",
+        "sr-Latn": "Saobraćaj",
+        "en": "Transport"
+      },
+      "icon": "DirectionsCar",
+      "description": {
+        "sr": "Путни саобраћај, безбедност, јавни превоз и инфраструктура",
+        "sr-Latn": "Putni saobraćaj, bezbednost, javni prevoz i infrastruktura",
+        "en": "Road traffic, safety, public transport and infrastructure"
+      },
+      "datasetCount": 3
+    }
+  ]
+}

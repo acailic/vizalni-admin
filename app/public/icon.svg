@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Vizualni Admin Serbian flag icon">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <rect x="0" y="0" width="64" height="21.34" rx="14" ry="14" fill="#C6363C"/>
+  <rect x="0" y="21.33" width="64" height="21.34" fill="#0C4076"/>
+  <rect x="0" y="42.66" width="64" height="21.34" fill="#ffffff"/>
+
+  <path d="M21 15h8v7h7v8h-7v7h-8v-7h-7v-8h7z" fill="#F5D06F"/>
+
+  <polyline points="40,44 45,38 50,41 55,34" fill="none" stroke="#C6363C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="40" cy="44" r="2" fill="#C6363C"/>
+  <circle cx="45" cy="38" r="2" fill="#C6363C"/>
+  <circle cx="50" cy="41" r="2" fill="#C6363C"/>
+  <circle cx="55" cy="34" r="2" fill="#C6363C"/>
+
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#D9DDE7" stroke-width="2"/>
+</svg>

@@ -1,0 +1,14 @@
+{
+  "columns": ["region", "count"],
+  "observations": [
+    { "region": "Београд", "count": 450000 },
+    { "region": "Војводина", "count": 320000 },
+    { "region": "Шумадија", "count": 180000 },
+    { "region": "Јужна Србија", "count": 150000 },
+    { "region": "Источна Србија", "count": 95000 }
+  ],
+  "source": {
+    "format": "json",
+    "url": "mock://youth-demographics.json"
+  }
+}

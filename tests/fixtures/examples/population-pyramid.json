@@ -1,0 +1,21 @@
+{
+  "columns": ["age_group", "gender", "population"],
+  "observations": [
+    { "age_group": "0-14", "gender": "Мушки", "population": 350000 },
+    { "age_group": "0-14", "gender": "Женски", "population": 340000 },
+    { "age_group": "15-29", "gender": "Мушки", "population": 450000 },
+    { "age_group": "15-29", "gender": "Женски", "population": 440000 },
+    { "age_group": "30-44", "gender": "Мушки", "population": 520000 },
+    { "age_group": "30-44", "gender": "Женски", "population": 510000 },
+    { "age_group": "45-59", "gender": "Мушки", "population": 480000 },
+    { "age_group": "45-59", "gender": "Женски", "population": 500000 },
+    { "age_group": "60-74", "gender": "Мушки", "population": 320000 },
+    { "age_group": "60-74", "gender": "Женски", "population": 380000 },
+    { "age_group": "75+", "gender": "Мушки", "population": 120000 },
+    { "age_group": "75+", "gender": "Женски", "population": 180000 }
+  ],
+  "source": {
+    "format": "json",
+    "url": "mock://population-pyramid.json"
+  }
+}

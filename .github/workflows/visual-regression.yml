@@ -1,0 +1,184 @@
+name: Visual Regression Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build application
+        run: yarn build:static
+        env:
+          NODE_ENV: production
+
+      - name: Run visual regression tests
+        run: yarn test:visual
+        continue-on-error: true
+        env:
+          CI: true
+
+      - name: Upload visual test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-results
+          path: |
+            playwright-visual-results/
+            playwright-visual-report/
+            app/tests/visual/__screenshots__/
+          retention-days: 7
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-test-report
+          path: playwright-visual-report.html
+          retention-days: 7
+
+      - name: Comment PR with results
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const { execSync } = require('child_process');
+
+            let comment = '## 🎨 Visual Regression Test Results\n\n';
+
+            try {
+              // Check if test results JSON exists
+              if (fs.existsSync('./playwright-visual-results.json')) {
+                const results = JSON.parse(fs.readFileSync('./playwright-visual-results.json', 'utf8'));
+                const total = results.stats?.expected || 0;
+                const passed = results.stats?.expected || 0;
+                const failed = results.stats?.unexpected || 0;
+                const skipped = results.stats?.skipped || 0;
+
+                comment += `### Summary\n\n`;
+                comment += `- ✅ **Passed**: ${passed}\n`;
+                comment += `- ❌ **Failed**: ${failed}\n`;
+                comment += `- ⏭️ **Skipped**: ${skipped}\n`;
+                comment += `- 📊 **Total**: ${total}\n\n`;
+
+                if (failed > 0) {
+                  comment += `### ⚠️ Visual Changes Detected\n\n`;
+                  comment += `Some visual changes were detected. Please review the changes:\n\n`;
+                  comment += `1. Download the artifacts from this run\n`;
+                  comment += `2. Check the HTML report for detailed diffs\n`;
+                  comment += `3. If changes are intentional, run \`yarn test:visual:update\` locally\n\n`;
+                } else {
+                  comment += `### ✅ All Tests Passed\n\n`;
+                  comment += `No visual regressions detected!\n\n`;
+                }
+              }
+
+              comment += `### 📦 Artifacts\n\n`;
+              comment += `Download the visual test results artifact to view:\n`;
+              comment += `- Screenshot comparisons\n`;
+              comment += `- Diff images\n`;
+              comment += `- Detailed HTML report\n\n`;
+
+              comment += `### 📚 Resources\n\n`;
+              comment += `- [Test Documentation](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/app/tests/visual/README.md)\n`;
+              comment += `- [Playwright Report](https://playwright.dev/docs/test-reporters)\n`;
+
+            } catch (error) {
+              comment += `Error generating results: ${error.message}\n`;
+            }
+
+            // Post comment
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Fail on visual regressions
+        if: hashFiles('playwright-visual-results.json') != ''
+        run: |
+          if [ -f playwright-visual-results.json ]; then
+            FAILED=$(node -e "const r=require('./playwright-visual-results.json'); console.log(r.stats?.unexpected || 0)")
+            if [ "$FAILED" -gt 0 ]; then
+              echo "❌ Visual regressions detected: $FAILED test(s) failed"
+              exit 1
+            fi
+          fi
+
+  # Optional job to compare with baseline from main branch
+  compare-with-main:
+    name: Compare with Main Branch
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Checkout main baseline
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          path: baseline
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Copy main baseline
+        run: |
+          mkdir -p app/tests/visual/__screenshots__
+          if [ -d "baseline/app/tests/visual/__screenshots__" ]; then
+            cp -r baseline/app/tests/visual/__screenshots__/* app/tests/visual/__screenshots__/ || true
+          fi
+
+      - name: Run comparison
+        run: yarn test:visual
+        continue-on-error: true
+        env:
+          CI: true
+
+      - name: Upload comparison results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-comparison-results
+          path: playwright-visual-results/
+          retention-days: 7

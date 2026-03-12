@@ -1,0 +1,81 @@
+{
+  "id": "education",
+  "title": {
+    "sr": "Образовање",
+    "sr-Latn": "Obrazovanje",
+    "en": "Education"
+  },
+  "description": {
+    "sr": "Школе, универзитети, ученици и образовни ресурси",
+    "en": "Schools, universities, students and educational resources"
+  },
+  "datasets": [
+    {
+      "id": "primary-schools",
+      "title": {
+        "sr": "Основне школе",
+        "en": "Primary Schools"
+      },
+      "description": {
+        "sr": "Основне школе у Републици Србији са подацима о ученицима",
+        "en": "Primary schools in Serbia with student data"
+      },
+      "dataGovRsId": "osnovne-skole",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/osnovne-skole/",
+      "tags": ["schools", "primary", "education"],
+      "lastUpdated": "2023-09-01",
+      "format": "CSV",
+      "recommendedChart": "map"
+    },
+    {
+      "id": "secondary-schools",
+      "title": {
+        "sr": "Средње школе",
+        "en": "Secondary Schools"
+      },
+      "description": {
+        "sr": "Средње школе и гимназије са подацима о ученицима",
+        "en": "Secondary schools and gymnasiums with student data"
+      },
+      "dataGovRsId": "srednje-skole",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/srednje-skole/",
+      "tags": ["schools", "secondary", "education"],
+      "lastUpdated": "2023-09-01",
+      "format": "CSV",
+      "recommendedChart": "map"
+    },
+    {
+      "id": "university-enrollment",
+      "title": {
+        "sr": "Упис на факултете",
+        "en": "University Enrollment"
+      },
+      "description": {
+        "sr": "Број уписаних студената по факултетима и годинама",
+        "en": "Number of enrolled students by faculty and year"
+      },
+      "dataGovRsId": "univerzitet-upis",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/univerzitet-upis/",
+      "tags": ["university", "enrollment", "education"],
+      "lastUpdated": "2023-10-15",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    }
+  ],
+  "visualizations": [
+    {
+      "id": "student-enrollment-trend",
+      "title": {
+        "sr": "Тренд уписа студената",
+        "en": "Student Enrollment Trend"
+      },
+      "description": {
+        "sr": "Линијски графикон који приказује кретање броја уписаних студената",
+        "en": "Line chart showing the trend of enrolled students"
+      },
+      "chartType": "line",
+      "dataSource": "university-enrollment",
+      "embedUrl": "/embed?type=line&dataset=students"
+    }
+  ]
+}

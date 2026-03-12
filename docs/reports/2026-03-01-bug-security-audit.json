@@ -1,0 +1,206 @@
+{
+  "audit": {
+    "date": "2026-03-01",
+    "repository": "vizualni-admin",
+    "auditor": "Claude Code",
+    "version": "1.0.0"
+  },
+  "summary": {
+    "total_issues": 9,
+    "critical": 1,
+    "high": 3,
+    "medium": 3,
+    "low": 2,
+    "fixed": 8,
+    "documented": 1
+  },
+  "findings": [
+    {
+      "id": "BUG-001",
+      "severity": "critical",
+      "category": "security",
+      "status": "fixed",
+      "file": "package.json",
+      "component": "dependencies",
+      "title": "Vulnerable dependencies (tar, minimatch, etc.)",
+      "description": "Multiple high-severity vulnerabilities in npm dependencies including node-tar race condition and minimatch ReDoS",
+      "cve_references": [
+        "CVE-2026-23950",
+        "GHSA-r6q2-hw4h-h46w"
+      ],
+      "impact": {
+        "user": "low",
+        "system": "high",
+        "business": "medium"
+      },
+      "root_cause": "Outdated dependencies with known security vulnerabilities",
+      "fix": "Updated compression-webpack-plugin, eslint, and replaced rollup-plugin-terser"
+    },
+    {
+      "id": "BUG-002",
+      "severity": "high",
+      "category": "security",
+      "status": "fixed",
+      "file": "app/pages/api/auth/[...nextauth].ts",
+      "component": "authentication",
+      "title": "Hardcoded development secret fallback",
+      "description": "Authentication configuration uses hardcoded fallback secret 'development-only-secret' which could be exploited if development code is deployed to production",
+      "impact": {
+        "user": "high",
+        "system": "high",
+        "business": "high"
+      },
+      "root_cause": "Convenience fallback for development environment",
+      "fix": "Removed hardcoded fallback, added proper validation and warnings"
+    },
+    {
+      "id": "BUG-003",
+      "severity": "high",
+      "category": "security",
+      "status": "fixed",
+      "file": "app/browse/ui/dataset-result.tsx",
+      "component": "ui",
+      "title": "XSS via dangerouslySetInnerHTML in highlightedTitle",
+      "description": "User-generated content in highlightedTitle and highlightedDescription is rendered without sanitization, allowing potential XSS attacks",
+      "owasp": "A03:2021 - Injection",
+      "impact": {
+        "user": "high",
+        "system": "medium",
+        "business": "high"
+      },
+      "root_cause": "Direct rendering of highlighted search results without sanitization",
+      "fix": "Added sanitizeHtml utility to strip dangerous HTML while preserving formatting"
+    },
+    {
+      "id": "BUG-004",
+      "severity": "high",
+      "category": "security",
+      "status": "fixed",
+      "file": "app/components/dataset-metadata.tsx",
+      "component": "ui",
+      "title": "XSS via dangerouslySetInnerHTML in publisher field",
+      "description": "Publisher data is rendered without sanitization, allowing potential XSS if malicious publisher data is imported",
+      "owasp": "A03:2021 - Injection",
+      "impact": {
+        "user": "high",
+        "system": "medium",
+        "business": "medium"
+      },
+      "root_cause": "Trusted external data source without validation",
+      "fix": "Applied sanitizeHtml with anchor tag support and URL validation"
+    },
+    {
+      "id": "BUG-005",
+      "severity": "medium",
+      "category": "security",
+      "status": "fixed",
+      "file": "app/lib/python-runner.ts",
+      "component": "backend",
+      "title": "Command injection risk in Python script execution",
+      "description": "The PythonRunner constructs shell commands with user input without proper escaping, potentially allowing command injection",
+      "owasp": "A03:2021 - Injection",
+      "impact": {
+        "user": "low",
+        "system": "high",
+        "business": "medium"
+      },
+      "root_cause": "Direct string interpolation in shell command construction",
+      "fix": "Added escapeShellArg method and input validation"
+    },
+    {
+      "id": "BUG-006",
+      "severity": "medium",
+      "category": "security",
+      "status": "fixed",
+      "file": "app/pages/api/config/[key].ts",
+      "component": "api",
+      "title": "Missing input validation in config API",
+      "description": "The config API endpoint uses req.query.key directly without validation, potentially allowing directory traversal or injection attacks",
+      "impact": {
+        "user": "low",
+        "system": "medium",
+        "business": "low"
+      },
+      "root_cause": "Missing input validation layer in API route",
+      "fix": "Added validateConfigKey utility with comprehensive validation"
+    },
+    {
+      "id": "BUG-007",
+      "severity": "medium",
+      "category": "performance",
+      "status": "fixed",
+      "file": "app/hooks/use-data-cache.ts",
+      "component": "hooks",
+      "title": "Memory leak in useDataCache hook",
+      "description": "The useDataCache hook does not clean up memory cache entries when components unmount, potentially causing memory bloat in SPA navigation",
+      "impact": {
+        "user": "medium",
+        "system": "medium",
+        "business": "low"
+      },
+      "root_cause": "Global cache without cleanup mechanism",
+      "fix": "Added useEffect cleanup and active key tracking"
+    },
+    {
+      "id": "BUG-008",
+      "severity": "low",
+      "category": "code-quality",
+      "status": "fixed",
+      "file": "app/pages/api/auth/[...nextauth].ts",
+      "component": "logging",
+      "title": "Console.error in production code",
+      "description": "Using console.error instead of structured logging in authentication error handling",
+      "impact": {
+        "user": "none",
+        "system": "low",
+        "business": "low"
+      },
+      "root_cause": "Development convenience not replaced with proper logging",
+      "fix": "Replaced with structured logger"
+    },
+    {
+      "id": "BUG-009",
+      "severity": "low",
+      "category": "code-quality",
+      "status": "documented",
+      "file": "Multiple files",
+      "component": "various",
+      "title": "TODO/FIXME items (50+ occurrences)",
+      "description": "Multiple code locations contain TODO and FIXME comments indicating incomplete implementations or known issues",
+      "files_affected": [
+        "app/config-types.ts",
+        "app/charts/chart-config-ui-types.ts",
+        "app/formatters.ts",
+        "app/rdf/query-hierarchies.ts",
+        "app/configurator/configurator-state/reducer.tsx"
+      ],
+      "impact": {
+        "user": "none",
+        "system": "low",
+        "business": "low"
+      },
+      "recommendation": "Review and address during regular maintenance cycles"
+    }
+  ],
+  "recommendations": {
+    "immediate": [
+      "Deploy dependency updates to all environments",
+      "Review authentication configuration in production"
+    ],
+    "short_term": [
+      "Add pre-commit hooks for security scanning",
+      "Implement input validation on all API routes",
+      "Review CSP headers"
+    ],
+    "long_term": [
+      "Integrate Snyk or Dependabot for continuous monitoring",
+      "Add schema validation (Zod) for all API inputs",
+      "Implement error tracking (Sentry)"
+    ]
+  },
+  "testing": {
+    "unit_tests_added": 6,
+    "files_modified": 8,
+    "new_files_created": 4
+  }
+}

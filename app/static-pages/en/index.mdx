@@ -1,0 +1,76 @@
+import { bugReportTemplates } from "@/templates/email/bug-report";
+import { featureRequestTemplates } from "@/templates/email/feature-request";
+import { newsletterTemplates } from "@/templates/email/newsletter";
+import { Divider } from "@mui/material";
+import { createMailtoLink } from "../../../app/templates/email";
+import {
+  OWNER_ORGANIZATION_EMAIL,
+  SUPPORT_EMAIL,
+} from "../../../app/templates/email/config";
+
+export const contentId = "home";
+
+<Intro
+  title="Visualize Serbia's open data 🇷🇸"
+  teaser="Build and embed visualizations from any dataset on Serbia's Open Data Portal (data.gov.rs)."
+  buttonLabel="Start a visualization"
+/>
+<Tutorial
+  headline="Visualize data in a few steps"
+  step1="Choose a dataset"
+  step2="Refine the visualization"
+  step3="Share or embed"
+/>
+<Examples
+  headline="Make it yours"
+  example1Headline="Design clear visualizations"
+  example1Description="Pick from chart types and configure them for your audience."
+  example2Headline="Go deeper with filters"
+  example2Description="Use filters and segmentation to highlight the insights that matter."
+/>
+<Actions
+  contribute={{
+    headline: "Want to publish your own data?",
+    description: "See how to publish your datasets to Serbia's Open Data Portal.",
+    buttonLabel: "See how",
+    buttonUrl: "https://data.gov.rs",
+  }}
+  newsletter={{
+    headline: "Stay in the loop",
+    description: "Get product updates and tips in your inbox.",
+    buttonLabel: "Subscribe",
+    buttonUrl: createMailtoLink("en", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+      },
+      template: newsletterTemplates,
+      subject: "Vizualni Admin Newsletter Subscribe",
+    }),
+  }}
+  bugReport={{
+    headline: "Notice an issue?",
+    description: "Report it so we can fix it quickly.",
+    buttonLabel: "Report a bug",
+    buttonUrl: createMailtoLink("en", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+        bcc: SUPPORT_EMAIL,
+      },
+      template: bugReportTemplates,
+      subject: "Vizualni Admin Bug Report",
+    }),
+  }}
+  featureRequest={{
+    headline: "Request a feature",
+    description: "Share ideas to help shape the platform.",
+    buttonLabel: "Submit request",
+    buttonUrl: createMailtoLink("en", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+        bcc: SUPPORT_EMAIL,
+      },
+      template: featureRequestTemplates,
+      subject: "Vizualni Admin Feature Request",
+    }),
+  }}
+/>

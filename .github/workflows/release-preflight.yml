@@ -1,0 +1,271 @@
+name: Release Preflight Checks
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      run_build_tests:
+        description: "Run build and packaging tests"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  preflight-checks:
+    name: Preflight Checks
+    runs-on: ubuntu-latest
+    outputs:
+      should-proceed: ${{ steps.checks.outputs.should-proceed }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint check
+        id: lint
+        run: |
+          echo "Running linting checks..."
+          yarn lint
+          echo "lint=success" >> $GITHUB_OUTPUT
+
+      - name: Type check
+        id: typecheck
+        run: |
+          echo "Running type check..."
+          yarn typecheck
+          echo "typecheck=success" >> $GITHUB_OUTPUT
+
+      - name: Unit tests
+        id: tests
+        run: |
+          echo "Running unit tests..."
+          yarn test:coverage
+          echo "tests=success" >> $GITHUB_OUTPUT
+
+      - name: Security audit
+        id: audit
+        run: |
+          echo "Running security audit..."
+          yarn audit --audit-level moderate
+          echo "audit=success" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Build library
+        id: build
+        run: |
+          echo "Building library..."
+          cd app && yarn build:lib
+          echo "build=success" >> $GITHUB_OUTPUT
+
+      - name: Verify build output
+        id: verify-build
+        run: |
+          echo "Verifying build output..."
+
+          if [ ! -d "app/dist" ]; then
+            echo "❌ Build directory not found"
+            exit 1
+          fi
+
+          # Check for required files
+          required_files=(
+            "app/dist/index.js"
+            "app/dist/index.mjs"
+          )
+
+          missing_files=()
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              missing_files+=("$file")
+            fi
+          done
+
+          if [ ${#missing_files[@]} -gt 0 ]; then
+            echo "❌ Missing required build files:"
+            printf '  %s\n' "${missing_files[@]}"
+            exit 1
+          fi
+
+          # Check bundle sizes
+          cjs_size=$(stat -f%z "app/dist/index.js" 2>/dev/null || stat -c%s "app/dist/index.js")
+          esm_size=$(stat -f%z "app/dist/index.mjs" 2>/dev/null || stat -c%s "app/dist/index.mjs")
+
+          cjs_size_kb=$((cjs_size / 1024))
+          esm_size_kb=$((esm_size / 1024))
+
+          echo "✓ CJS bundle size: ${cjs_size_kb}KB"
+          echo "✓ ESM bundle size: ${esm_size_kb}KB"
+
+          # Reject bundles larger than 10MB
+          if [ $cjs_size -gt 10485760 ] || [ $esm_size -gt 10485710 ]; then
+            echo "❌ Bundle size exceeds 10MB limit"
+            exit 1
+          fi
+
+          echo "verify-build=success" >> $GITHUB_OUTPUT
+
+      - name: Run packaging tests
+        id: packaging-tests
+        run: |
+          echo "Running packaging validation tests..."
+          cd app && yarn test tests/packaging/
+          echo "packaging-tests=success" >> $GITHUB_OUTPUT
+
+      - name: Validate export map
+        id: export-map
+        run: |
+          echo "Validating export map..."
+
+          # Parse package.json exports
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+
+            const pkgJson = JSON.parse(fs.readFileSync('app/package.json', 'utf8'));
+            const exports = pkgJson.exports || {};
+
+            console.log('Checking export map...');
+            let missing = [];
+            let hasErrors = false;
+
+            for (const [subpath, config] of Object.entries(exports)) {
+              if (!config || typeof config !== 'object') continue;
+
+              const conditions = ['import', 'require', 'types'];
+              for (const condition of conditions) {
+                if (config[condition]) {
+                  const target = config[condition];
+                  if (!target.startsWith('./dist/')) {
+                    console.log(\`❌ Export \${subpath} [\${condition}] does not point to dist/: \${target}\`);
+                    hasErrors = true;
+                  }
+
+                  const fullPath = path.join('app', target);
+                  if (!fs.existsSync(fullPath)) {
+                    missing.push(\`\${subpath} [\${condition}] -> \${target}\`);
+                  }
+                }
+              }
+            }
+
+            if (hasErrors) {
+              process.exit(1);
+            }
+
+            if (missing.length > 0) {
+              console.log('❌ Missing export files:');
+              missing.forEach(f => console.log(\`  \${f}\`));
+              process.exit(1);
+            }
+
+            console.log('✓ All export targets validated');
+          "
+
+          echo "export-map=success" >> $GITHUB_OUTPUT
+
+      - name: Validate version consistency
+        id: version-check
+        run: |
+          echo "Validating version consistency..."
+
+          # Get version from package.json
+          PACKAGE_VERSION=$(node -e "console.log(require('./app/package.json').version)")
+
+          # Get tag name (ref without 'refs/tags/')
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+
+          # Remove 'v' prefix from tag if present
+          TAG_VERSION="${TAG_NAME#v}"
+
+          echo "Package version: $PACKAGE_VERSION"
+          echo "Tag version: $TAG_VERSION"
+
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "❌ Version mismatch: package.json has $PACKAGE_VERSION but tag is $TAG_VERSION"
+            exit 1
+          fi
+
+          echo "✓ Version consistency validated"
+          echo "version-check=success" >> $GITHUB_OUTPUT
+
+      - name: Check for uncommitted changes
+        id: git-check
+        run: |
+          echo "Checking git status..."
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "❌ Working directory has uncommitted changes"
+            git status
+            exit 1
+          fi
+
+          echo "✓ Working directory is clean"
+          echo "git-check=success" >> $GITHUB_OUTPUT
+
+      - name: Generate preflight report
+        id: checks
+        run: |
+          echo "# Release Preflight Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Tag:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ steps.lint.outputs.lint == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Type Check | ${{ steps.typecheck.outputs.typecheck == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ steps.tests.outputs.tests == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Audit | ${{ steps.audit.outputs.audit == 'success' && '✅ Pass' || '⚠️ Warning' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Library | ${{ steps.build.outputs.build == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Verify Build | ${{ steps.verify-build.outputs.verify-build == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Packaging Tests | ${{ steps.packaging-tests.outputs.packaging-tests == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Export Map | ${{ steps.export-map.outputs.export-map == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Version Check | ${{ steps.version-check.outputs.version-check == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Git Status | ${{ steps.git-check.outputs.git-check == 'success' && '✅ Pass' || '❌ Fail' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Determine if all critical checks passed
+          if [[ "${{ steps.lint.outputs.lint }}" == "success" ]] && \
+             [[ "${{ steps.typecheck.outputs.typecheck }}" == "success" ]] && \
+             [[ "${{ steps.tests.outputs.tests }}" == "success" ]] && \
+             [[ "${{ steps.build.outputs.build }}" == "success" ]] && \
+             [[ "${{ steps.verify-build.outputs.verify-build }}" == "success" ]] && \
+             [[ "${{ steps.packaging-tests.outputs.packaging-tests }}" == "success" ]] && \
+             [[ "${{ steps.export-map.outputs.export-map }}" == "success" ]] && \
+             [[ "${{ steps.version-check.outputs.version-check }}" == "success" ]] && \
+             [[ "${{ steps.git-check.outputs.git-check }}" == "success" ]]; then
+            echo "## ✅ All Critical Checks Passed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The release is ready to proceed." >> $GITHUB_STEP_SUMMARY
+            echo "should-proceed=true" >> $GITHUB_OUTPUT
+          else
+            echo "## ❌ Preflight Checks Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "One or more critical checks failed. Please review the errors above." >> $GITHUB_STEP_SUMMARY
+            echo "should-proceed=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v5
+        with:
+          name: release-build-${{ github.ref_name }}
+          path: app/dist/
+          retention-days: 30

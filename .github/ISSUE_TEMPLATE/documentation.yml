@@ -1,0 +1,79 @@
+name: Documentation
+description: Report a problem or suggest improvements for documentation
+title: '[DOCS]: '
+labels: ['documentation']
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Documentation Issue
+      description: Describe the documentation problem or improvement you'd like to suggest.
+      placeholder: "The documentation for X is unclear because..."
+    validations:
+      required: true
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation needs attention?
+      options:
+        - API Reference
+        - User Guide
+        - Developer Guide
+        - Tutorial
+        - README
+        - Code Comments
+        - Type Definitions
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: Document Location
+      description: Where is the documentation that needs improvement? Please provide file path or URL.
+      placeholder: "docs/GETTING-STARTED.md or https://acailic.github.io/vizualni-admin/api"
+    validations:
+      required: true
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue Type
+      description: What kind of documentation issue is this?
+      options:
+        - Missing Information
+        - Unclear or Confusing
+        - Out of Date
+        - Typo or Grammar
+        - Missing Examples
+        - Inaccurate Information
+        - Hard to Find
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: suggested_content
+    attributes:
+      label: Suggested Content (Optional)
+      description: If you have specific wording or content in mind, please share it here.
+      placeholder: "I suggest changing 'X' to 'Y' or adding the following explanation..."
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples (Optional)
+      description: If you're requesting examples, describe what would be helpful.
+      placeholder: "An example showing how to use X with Y would be helpful because..."
+  - type: checkboxes
+    id: willingness
+    attributes:
+      label: Willingness to Contribute
+      description: Would you like to help improve this documentation?
+      options:
+        - label: I am willing to submit a pull request to fix this documentation issue.
+        - label: I can provide more details or examples if needed.
+        - label: I am not able to contribute at this time.
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or references about the documentation issue.

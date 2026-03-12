@@ -1,0 +1,81 @@
+{
+  "id": "health",
+  "title": {
+    "sr": "Здравство",
+    "sr-Latn": "Zdravstvo",
+    "en": "Health"
+  },
+  "description": {
+    "sr": "Здравствени подаци, болнице, апотеке и јавно здравље",
+    "en": "Health data, hospitals, pharmacies and public health"
+  },
+  "datasets": [
+    {
+      "id": "healthcare-institutions",
+      "title": {
+        "sr": "Здравствене установе",
+        "en": "Healthcare Institutions"
+      },
+      "description": {
+        "sr": "Листа болница, здравствених центара и амбуланти",
+        "en": "List of hospitals, health centers and clinics"
+      },
+      "dataGovRsId": "zdravstvene-ustanove",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/zdravstvene-ustanove/",
+      "tags": ["hospitals", "facilities", "healthcare"],
+      "lastUpdated": "2023-12-01",
+      "format": "CSV",
+      "recommendedChart": "map"
+    },
+    {
+      "id": "pharmacies",
+      "title": {
+        "sr": "Јавно здравствена апотеке",
+        "en": "Public Health Pharmacies"
+      },
+      "description": {
+        "sr": "Листа јавних апотека и њихова локација",
+        "en": "List of public pharmacies and their locations"
+      },
+      "dataGovRsId": "javne-apoteke",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/javne-apoteke/",
+      "tags": ["pharmacies", "facilities", "healthcare"],
+      "lastUpdated": "2023-11-15",
+      "format": "CSV",
+      "recommendedChart": "map"
+    },
+    {
+      "id": "vaccination-coverage",
+      "title": {
+        "sr": "Вакцинација и превенција",
+        "en": "Vaccination and Prevention"
+      },
+      "description": {
+        "sr": "Стопа вакцинисаности по старосним групама",
+        "en": "Vaccination coverage rates by age groups"
+      },
+      "dataGovRsId": "vakcinacija-prevencija",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/vakcinacija-prevencija/",
+      "tags": ["vaccination", "prevention", "public-health"],
+      "lastUpdated": "2023-12-31",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    }
+  ],
+  "visualizations": [
+    {
+      "id": "vaccination-rates",
+      "title": {
+        "sr": "Степен вакцинације по старосним групама",
+        "en": "Vaccination Rates by Age Group"
+      },
+      "description": {
+        "sr": "Тракасти графикон који приказује степен обухвата вакцинацијом",
+        "en": "Bar chart showing vaccination coverage rates"
+      },
+      "chartType": "bar",
+      "dataSource": "vaccination-coverage",
+      "embedUrl": "/embed?type=bar&dataset=vaccination"
+    }
+  ]
+}

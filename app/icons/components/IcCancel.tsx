@@ -1,0 +1,19 @@
+import * as React from "react";
+
+import type { SVGProps } from "react";
+const SvgIcCancel = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    fill="none"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      d="m17.156 7.063-4.8 4.8-4.78-4.778-.53.53 4.78 4.778-4.757 4.756.53.531 4.757-4.756 4.778 4.779.53-.53-4.778-4.78 4.8-4.8z"
+    />
+  </svg>
+);
+export default SvgIcCancel;

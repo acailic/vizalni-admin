@@ -1,0 +1,17 @@
+{
+  "columns": ["year", "indicator", "value"],
+  "observations": [
+    { "year": "2020", "indicator": "Болнички кревети", "value": 45000 },
+    { "year": "2021", "indicator": "Болнички кревети", "value": 44500 },
+    { "year": "2022", "indicator": "Болнички кревети", "value": 44200 },
+    { "year": "2023", "indicator": "Болнички кревети", "value": 44000 },
+    { "year": "2020", "indicator": "Лекари", "value": 32000 },
+    { "year": "2021", "indicator": "Лекари", "value": 32500 },
+    { "year": "2022", "indicator": "Лекари", "value": 33100 },
+    { "year": "2023", "indicator": "Лекари", "value": 33800 }
+  ],
+  "source": {
+    "format": "json",
+    "url": "mock://health-statistics.json"
+  }
+}

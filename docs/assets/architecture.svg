@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <style>
+    .box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; rx: 8; }
+    .core { fill: #fff3e0; stroke: #f57c00; }
+    .react { fill: #e8f5e9; stroke: #388e3c; }
+    .connectors { fill: #fce4ec; stroke: #c2185b; }
+    .text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; text-anchor: middle; }
+    .title { font-size: 12px; font-weight: bold; }
+    .subtitle { font-size: 10px; fill: #666; }
+  </style>
+  
+  <!-- Core package -->
+  <rect x="200" y="30" width="200" height="80" class="box core"/>
+  <text x="300" y="55" class="text title">@vizualni/core</text>
+  <text x="300" y="75" class="text subtitle">11 KB gzipped</text>
+  <text x="300" y="95" class="text subtitle">scales, layouts, shapes</text>
+  
+  <!-- React package -->
+  <rect x="50" y="180" width="160" height="80" class="box react"/>
+  <text x="130" y="205" class="text title">@vizualni/react</text>
+  <text x="130" y="225" class="text subtitle">8 KB gzipped</text>
+  <text x="130" y="245" class="text subtitle">components, hooks</text>
+  
+  <!-- Connectors package -->
+  <rect x="240" y="180" width="160" height="80" class="box connectors"/>
+  <text x="320" y="205" class="text title">@vizualni/connectors</text>
+  <text x="320" y="225" class="text subtitle">3 KB gzipped</text>
+  <text x="320" y="245" class="text subtitle">CSV, JSON, REST</text>
+  
+  <!-- External apps -->
+  <rect x="430" y="180" width="130" height="80" class="box"/>
+  <text x="495" y="205" class="text title">Your App</text>
+  <text x="495" y="225" class="text subtitle">React, Vue, Svelte</text>
+  <text x="495" y="245" class="text subtitle">Vanilla JS</text>
+  
+  <!-- Arrows -->
+  <path d="M 300 110 L 130 180" stroke="#999" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 300 110 L 320 180" stroke="#999" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 300 110 L 495 180" stroke="#999" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+    </marker>
+  </defs>
+</svg>

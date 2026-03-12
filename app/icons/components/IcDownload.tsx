@@ -1,0 +1,19 @@
+import * as React from "react";
+
+import type { SVGProps } from "react";
+const SvgIcDownload = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="1em"
+    height="1em"
+    fill="none"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      d="m19 13.123-.373-.64-6.254 3.586V4h-.746v12.069l-6.254-3.587-.373.64 7 4.015zM5.672 19.258H18.36v.74H5.67z"
+    />
+  </svg>
+);
+export default SvgIcDownload;

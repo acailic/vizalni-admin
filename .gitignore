@@ -1,0 +1,154 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/.next-dev/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Build artifacts
+dist/
+*.tgz
+*.tar.gz
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+.temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Package manager files
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Generated files
+*.generated.*
+*.generated.ts
+*.generated.tsx
+
+# Goose transient files
+recipes/current-task.yml
+.playwright-mcp/
+
+# Claude Code
+.claude/
+.superpowers/
+.playwright-mcp/
+
+# Build outputs
+.next-dev/
+
+# Test artifacts
+playwright-report/
+test-results/
+
+# Screenshots
+*.png
+!public/**/*.png
+
+# Superpowers docs
+docs/superpowers/
+
+# Husky
+.husky/
+
+# Database
+*.db
+*.db-journal
+
+# Project status docs (keep README)
+PROJECT_*.md
+QA_REPORT.md
+SETUP_COMPLETE.md
+RESEARCH_ENHANCEMENT.md
+PLATFORMS_RESEARCH.md
+
+# Recipes/automation
+recipes/
+
+# Tool configs
+.husky/
+.changeset/
+.storybook/
+.size-limit.json
+.lighthouserc.json
+
+# Duplicate JS files (keep TS)
+app/**/*.js
+!app/bin/**/*.js
+
+# Test artifacts
+app/__tests__/
+app/tests/
+app/**/__tests__/
+
+# Summary docs
+**/IMPLEMENTATION_*.md
+**/REFACTORING_*.md
+**/LINGUI_*.md
+**/LOCALIZATION_*.md

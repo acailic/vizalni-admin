@@ -1,0 +1,76 @@
+import { bugReportTemplates } from "@/templates/email/bug-report";
+import { featureRequestTemplates } from "@/templates/email/feature-request";
+import { newsletterTemplates } from "@/templates/email/newsletter";
+import { Divider } from "@mui/material";
+import { createMailtoLink } from "../../../app/templates/email";
+import {
+  OWNER_ORGANIZATION_EMAIL,
+  SUPPORT_EMAIL,
+} from "../../../app/templates/email/config";
+
+export const contentId = "home";
+
+<Intro
+  title="Визуализујте отворене податке Србије 🇷🇸"
+  teaser="Направите и уградите визуализације из било ког скупа података на Порталу отворених података Србије (data.gov.rs)."
+  buttonLabel="Започните визуализацију"
+/>
+<Tutorial
+  headline="Визуализујте податке у неколико корака"
+  step1="Изаберите скуп података"
+  step2="Прилагодите визуализацију"
+  step3="Поделите или уградите"
+/>
+<Examples
+  headline="Прилагодите по својој мери"
+  example1Headline="Дизајнирајте јасне визуализације"
+  example1Description="Бирајте типове графикона и подесите их према публици."
+  example2Headline="Идите дубље филтрима"
+  example2Description="Користите филтере и сегментацију да истакнете најважније увиде."
+/>
+<Actions
+  contribute={{
+    headline: "Желите да објавите своје податке?",
+    description: "Погледајте како да објавите скупове података на Порталу отворених података Србије.",
+    buttonLabel: "Погледајте упутство",
+    buttonUrl: "https://data.gov.rs",
+  }}
+  newsletter={{
+    headline: "Будите у току",
+    description: "Примајте новости и савете директно у inbox.",
+    buttonLabel: "Претплатите се",
+    buttonUrl: createMailtoLink("sr-Cyrl", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+      },
+      template: newsletterTemplates,
+      subject: "Vizualni Admin Претплата на новости",
+    }),
+  }}
+  bugReport={{
+    headline: "Приметите проблем?",
+    description: "Пријавите га како бисмо га брзо исправили.",
+    buttonLabel: "Пријавите грешку",
+    buttonUrl: createMailtoLink("sr-Cyrl", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+        bcc: SUPPORT_EMAIL,
+      },
+      template: bugReportTemplates,
+      subject: "Vizualni Admin Пријава грешке",
+    }),
+  }}
+  featureRequest={{
+    headline: "Предложите функционалност",
+    description: "Поделите идеје и помозите да платформу развијамо у правом смеру.",
+    buttonLabel: "Пошаљите захтев",
+    buttonUrl: createMailtoLink("sr-Cyrl", {
+      recipients: {
+        to: OWNER_ORGANIZATION_EMAIL,
+        bcc: SUPPORT_EMAIL,
+      },
+      template: featureRequestTemplates,
+      subject: "Vizualni Admin Захтев за функционалност",
+    }),
+  }}
+/>

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://data.gov.rs/json-schema/configurator-state.json",
+  "type": "object",
+  "schema": {
+    "state": "INITIAL",
+    "version": "",
+    "dataSource": {
+      "type": "sparql",
+      "url": ""
+    }
+  }
+}

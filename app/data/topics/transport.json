@@ -1,0 +1,81 @@
+{
+  "id": "transport",
+  "title": {
+    "sr": "Саобраћај",
+    "sr-Latn": "Saobraćaj",
+    "en": "Transport"
+  },
+  "description": {
+    "sr": "Путни саобраћај, безбедност, јавни превоз и инфраструктура",
+    "en": "Road traffic, safety, public transport and infrastructure"
+  },
+  "datasets": [
+    {
+      "id": "traffic-accidents",
+      "title": {
+        "sr": "Саобраћајне незгоде",
+        "en": "Traffic Accidents"
+      },
+      "description": {
+        "sr": "Број и врсте саобраћајних незгода по регионима",
+        "en": "Number and types of traffic accidents by region"
+      },
+      "dataGovRsId": "saobracajne-nezgode",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/saobracajne-nezgode/",
+      "tags": ["traffic", "accidents", "safety"],
+      "lastUpdated": "2023-12-31",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    },
+    {
+      "id": "registered-vehicles",
+      "title": {
+        "sr": "Регистрована возила",
+        "en": "Registered Vehicles"
+      },
+      "description": {
+        "sr": "Број регистрованих возила по врсти и региону",
+        "en": "Number of registered vehicles by type and region"
+      },
+      "dataGovRsId": "registrovana-vozila",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/registrovana-vozila/",
+      "tags": ["vehicles", "registration", "transport"],
+      "lastUpdated": "2024-01-31",
+      "format": "CSV",
+      "recommendedChart": "bar"
+    },
+    {
+      "id": "road-network",
+      "title": {
+        "sr": "Мрежа путева",
+        "en": "Road Network"
+      },
+      "description": {
+        "sr": "Дужина и категорије путева у Србији",
+        "en": "Length and categories of roads in Serbia"
+      },
+      "dataGovRsId": "mreza-puteva",
+      "dataGovRsUrl": "https://data.gov.rs/sr/datasets/mreza-puteva/",
+      "tags": ["roads", "infrastructure", "transport"],
+      "lastUpdated": "2023-06-30",
+      "format": "CSV",
+      "recommendedChart": "pie"
+    }
+  ],
+  "visualizations": [
+    {
+      "id": "accidents-by-region",
+      "title": {
+        "sr": "Саобраћајне незгоде по регионима",
+        "en": "Traffic Accidents by Region"
+      },
+      "description": {
+        "sr": "Тракасти графикон који приказује број незгода по регионима",
+        "en": "Bar chart showing accidents by region"
+      },
+      "chartType": "bar",
+      "dataSource": "traffic-accidents",
+      "embedUrl": "/embed?type=bar&dataset=accidents"
+    }
+  ]
+}

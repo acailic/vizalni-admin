@@ -1,0 +1,601 @@
+import { t, Trans } from "@lingui/macro";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Button,
+  FormControlLabel,
+  IconButton,
+  Popover,
+  PopoverProps,
+  Snackbar,
+  Stack,
+  Switch,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { useRouter } from "next/router";
+import {
+  ChangeEvent,
+  ReactNode,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import { CHART_RESIZE_EVENT_TYPE } from "@/charts/shared/use-size";
+import { CopyToClipboardTextInput } from "@/components/copy-to-clipboard-text-input";
+import {
+  isEmbedQueryParam,
+  useEmbedQueryParams,
+} from "@/components/embed-params";
+import { Flex } from "@/components/flex";
+import { QRCodeShare } from "@/components/qr-code-share";
+import { Icon } from "@/icons";
+import { useI18n } from "@/utils/use-i18n";
+import { useResizeObserver } from "@/utils/use-resize-observer";
+
+type PublishActionProps = {
+  chartWrapperRef: RefObject<HTMLDivElement>;
+  configKey: string;
+  locale: string;
+};
+
+export const PublishActions = (props: PublishActionProps) => {
+  return (
+    <Stack direction="row" spacing={2}>
+      <Share {...props} />
+      <Embed {...props} />
+    </Stack>
+  );
+};
+
+type TriggeredPopoverProps = {
+  children: ReactNode;
+  renderTrigger?: (
+    setAnchorEl: (el: HTMLElement | undefined) => void
+  ) => ReactNode;
+  popoverProps: Omit<PopoverProps, "open" | "anchorEl" | "onClose">;
+  trigger?: HTMLElement;
+};
+
+export const TriggeredPopover = (props: TriggeredPopoverProps) => {
+  const { children, renderTrigger, popoverProps, trigger } = props;
+  const [anchorEl, setAnchorEl] = useState<Element | undefined>();
+
+  useEffect(() => {
+    setAnchorEl(trigger);
+  }, [trigger]);
+
+  const [ref, width, height] = useResizeObserver<HTMLDivElement>();
+
+  return (
+    <>
+      {renderTrigger && renderTrigger(setAnchorEl)}
+      <Popover
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        {...popoverProps}
+        anchorPosition={
+          popoverProps.anchorPosition
+            ? {
+                top: popoverProps.anchorPosition?.top - height / 2,
+                left: popoverProps.anchorPosition?.left - width,
+              }
+            : undefined
+        }
+        elevation={4}
+        onClose={() => setAnchorEl(undefined)}
+      >
+        <Box ref={ref}>{children}</Box>
+      </Popover>
+    </>
+  );
+};
+
+const Embed = ({ configKey, locale }: PublishActionProps) => {
+  return (
+    <TriggeredPopover
+      popoverProps={{
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        transformOrigin: {
+          vertical: -4,
+          horizontal: "right",
+        },
+      }}
+      renderTrigger={(setAnchorEl) => (
+        <Button
+          size="sm"
+          startIcon={<Icon name="embed" size={20} />}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        >
+          <Trans id="button.embed">Embed</Trans>
+        </Button>
+      )}
+    >
+      <EmbedContent configKey={configKey} locale={locale} />
+    </TriggeredPopover>
+  );
+};
+
+const EmbedToggleSwitch = ({
+  infoMessage,
+  label,
+  ...rest
+}: {
+  checked: boolean;
+  onChange: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  label: string;
+  infoMessage?: string;
+}) => {
+  return (
+    <Flex sx={{ alignItems: "center", gap: 1 }}>
+      <FormControlLabel
+        control={<Switch {...rest} />}
+        label={<Typography variant="body2">{label}</Typography>}
+        sx={{ mr: 0 }}
+      />
+      {infoMessage && (
+        <Tooltip
+          arrow
+          title={infoMessage}
+          PopperProps={{ sx: { width: 190, p: 0 } }}
+        >
+          <div style={{ fontSize: 0 }}>
+            <Icon name="infoCircle" size={16} />
+          </div>
+        </Tooltip>
+      )}
+    </Flex>
+  );
+};
+
+const Share = ({ configKey, locale }: PublishActionProps) => {
+  return (
+    <TriggeredPopover
+      popoverProps={{
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "right",
+        },
+        transformOrigin: {
+          vertical: -4,
+          horizontal: "right",
+        },
+      }}
+      renderTrigger={(setAnchorEl) => {
+        return (
+          <Button
+            size="sm"
+            onClick={(e) => {
+              setAnchorEl(e.target as HTMLElement);
+            }}
+            startIcon={<Icon name="share" size={20} />}
+          >
+            <Trans id="button.share">Share</Trans>
+          </Button>
+        );
+      }}
+    >
+      <ShareContent configKey={configKey} locale={locale} />
+    </TriggeredPopover>
+  );
+};
+
+export const EmbedContent = ({
+  locale,
+  configKey,
+}: Omit<PublishActionProps, "chartWrapperRef" | "state">) => {
+  const router = useRouter();
+  const [embedUrl, setEmbedUrl] = useState("");
+  const [embedAEMUrl, setEmbedAEMUrl] = useState("");
+  const { embedParams, setEmbedQueryParam } = useEmbedQueryParams();
+
+  type EmbedSizePreset = "small" | "medium" | "large" | "responsive";
+
+  const SIZE_PRESETS: Record<
+    EmbedSizePreset,
+    { width: string; height: string; label: string }
+  > = {
+    small: { width: "100%", height: "400px", label: "Small (400px)" },
+    medium: { width: "100%", height: "640px", label: "Medium (640px)" },
+    large: { width: "100%", height: "960px", label: "Large (960px)" },
+    responsive: { width: "100%", height: "auto", label: "Responsive" },
+  };
+
+  const [sizePreset, setSizePreset] = useState<EmbedSizePreset>("responsive");
+  const [showPreview, setShowPreview] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const previewRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const { origin } = window.location;
+    const utmParams =
+      "?utm_source=embed&utm_medium=iframe&utm_campaign=vizualni-admin";
+    const activeEmbedParams = Object.entries(embedParams)
+      .filter(([_, value]) => value)
+      .map(([key]) => `${key}=true`)
+      .join("&");
+    const embedPath = `${configKey}${utmParams}${activeEmbedParams ? `&${activeEmbedParams}` : ""}`;
+    setEmbedUrl(`${origin}/${locale}/embed/${embedPath}`);
+    setEmbedAEMUrl(`${origin}/api/embed-aem-ext/${locale}/${embedPath}`);
+
+    if (router.isReady) {
+      const nonEmbedParams = Object.fromEntries(
+        Object.entries(router.query).filter(([key]) => !isEmbedQueryParam(key))
+      );
+      const updatedQuery = {
+        ...nonEmbedParams,
+        ...Object.fromEntries(
+          Object.entries(embedParams)
+            .filter(([_, v]) => v)
+            .map(([k]) => [k, "true"])
+        ),
+      } as Record<string, string>;
+      const currentQueryString = new URLSearchParams(
+        router.query as Record<string, string>
+      ).toString();
+      const newQueryString = new URLSearchParams(updatedQuery).toString();
+
+      if (currentQueryString !== newQueryString) {
+        router.replace(
+          { pathname: router.pathname, query: updatedQuery },
+          undefined,
+          { shallow: true }
+        );
+      }
+    }
+  }, [configKey, locale, embedParams, router]);
+
+  return (
+    <>
+      <Flex sx={{ flexDirection: "column", gap: 4, p: 4 }}>
+        <Flex sx={{ flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+            <Trans id="publication.embed.iframe">Iframe Embed Code</Trans>
+          </Typography>
+          <Typography variant="body2">
+            <Trans id="publication.embed.iframe.caption">
+              Use this link to embed the chart into other webpages.
+            </Trans>
+          </Typography>
+          <Accordion
+            defaultExpanded={Object.values(embedParams).some((d) => d)}
+            sx={{
+              boxShadow: 0,
+
+              "&::before": {
+                display: "none",
+              },
+            }}
+          >
+            <AccordionSummary
+              sx={{
+                width: "fit-content",
+                gap: 1,
+                minHeight: 0,
+                color: "primary.main",
+                transition: "color 0.2s ease",
+
+                "&:hover": {
+                  color: "primary.dark",
+                },
+
+                "& > .MuiAccordionSummary-content": {
+                  m: 0,
+                  p: 0,
+                },
+
+                "& svg": {
+                  color: "primary.main",
+                },
+              }}
+            >
+              <Typography variant="h6" component="p">
+                <Trans id="publication.embed.advanced-settings">
+                  Advanced settings
+                </Trans>
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ pt: 3 }}>
+              <EmbedToggleSwitch
+                checked={embedParams.removeBorder}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeBorder", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-border",
+                  message: "Remove border",
+                })}
+                infoMessage={t({
+                  id: "publication.embed.iframe.remove-border.warn",
+                  message:
+                    "For embedding visualizations in systems without a border.",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.optimizeSpace}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("optimizeSpace", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.optimize-space",
+                  message: "Optimize white space around and within chart",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeMoreOptionsButton}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeMoreOptionsButton", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-more-options-button",
+                  message:
+                    "Remove options for table view, copy & edit, sharing, and downloading",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeLabelsInteractivity}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeLabelsInteractivity", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-axis-labels-interactivity",
+                  message: "Hide interactive labels",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeFootnotes}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeFootnotes", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-legend",
+                  message: "Hide footnotes",
+                })}
+              />
+              <EmbedToggleSwitch
+                checked={embedParams.removeFilters}
+                onChange={(_, checked) => {
+                  setEmbedQueryParam("removeFilters", checked);
+                }}
+                label={t({
+                  id: "publication.embed.iframe.remove-filters",
+                  message: "Hide filters",
+                })}
+              />
+            </AccordionDetails>
+          </Accordion>
+        </Flex>
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
+            Size Preset
+          </Typography>
+          <ToggleButtonGroup
+            value={sizePreset}
+            exclusive
+            onChange={(_, value) => value && setSizePreset(value)}
+            size="small"
+            sx={{ flexWrap: "wrap", gap: 0.5 }}
+          >
+            {Object.entries(SIZE_PRESETS).map(([key, preset]) => (
+              <ToggleButton
+                key={key}
+                value={key}
+                sx={{ textTransform: "none", px: 2 }}
+              >
+                {preset.label}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Box>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={showPreview}
+              onChange={(_, checked) => setShowPreview(checked)}
+            />
+          }
+          label={<Typography variant="body2">Show preview</Typography>}
+          sx={{ mb: 2 }}
+        />
+        {showPreview && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body2" sx={{ mb: 1.5, fontWeight: 600 }}>
+              Preview
+            </Typography>
+            <Box
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 2,
+                overflow: "hidden",
+                bgcolor: "grey.50",
+                height:
+                  sizePreset === "responsive"
+                    ? 400
+                    : parseInt(SIZE_PRESETS[sizePreset].height),
+              }}
+            >
+              <iframe
+                ref={previewRef}
+                src={embedUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                title="Embed preview"
+              />
+            </Box>
+          </Box>
+        )}
+        {(() => {
+          const heightStyle =
+            sizePreset === "responsive"
+              ? ""
+              : `height: ${SIZE_PRESETS[sizePreset].height}; `;
+          const embedCode = `<iframe src="${embedUrl}" width="${SIZE_PRESETS[sizePreset].width}" style="${heightStyle}border: 0px #ffffff none;" name="visualize.admin.ch"></iframe>${sizePreset === "responsive" ? `<script type="text/javascript">!function(){window.addEventListener("message", function (e) { if (e.data.type === "${CHART_RESIZE_EVENT_TYPE}") { document.querySelectorAll("iframe").forEach((iframe) => { if (iframe.contentWindow === e.source) { iframe.style.height = e.data.height + "px"; } }); } })}();</script>` : ""}`;
+
+          return (
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                startIcon={<Icon name="copy" size={20} />}
+                onClick={() => {
+                  navigator.clipboard.writeText(embedCode);
+                  setCopied(true);
+                }}
+                sx={{ mb: 2, py: 1.5, fontWeight: 700 }}
+              >
+                Copy Embed Code
+              </Button>
+              <CopyToClipboardTextInput content={embedCode} />
+            </>
+          );
+        })()}
+        <Flex sx={{ flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+            <Trans id="publication.embed.external-application">
+              Embed Code for &quot;External Application&quot;
+            </Trans>
+          </Typography>
+          <Typography variant="body2">
+            <Trans id="publication.embed.external-application.caption">
+              Use this link to embed the chart without iframe tags.
+            </Trans>
+          </Typography>
+          <CopyToClipboardTextInput content={embedAEMUrl} />
+        </Flex>
+      </Flex>
+      <Snackbar
+        open={copied}
+        autoHideDuration={2000}
+        onClose={() => setCopied(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          Embed code copied to clipboard!
+        </Alert>
+      </Snackbar>
+    </>
+  );
+};
+
+export const ShareContent = ({
+  configKey,
+  locale,
+}: Omit<PublishActionProps, "chartWrapperRef">) => {
+  const [shareUrl, setShareUrl] = useState("");
+  const [linkCopied, setLinkCopied] = useState(false);
+  const i18n = useI18n();
+
+  useEffect(() => {
+    setShareUrl(`${window.location.origin}/${locale}/v/${configKey}`);
+  }, [configKey, locale]);
+
+  return (
+    <Flex sx={{ flexDirection: "column", gap: 2, p: 4 }}>
+      <Typography variant="h6" component="div" sx={{ fontWeight: 700 }}>
+        <Trans id="publication.popup.share">Share</Trans>
+      </Typography>
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        startIcon={<Icon name="link" size={20} />}
+        onClick={() => {
+          navigator.clipboard.writeText(shareUrl);
+          setLinkCopied(true);
+          setTimeout(() => setLinkCopied(false), 2000);
+        }}
+        sx={{ py: 1.5, fontWeight: 700 }}
+      >
+        {linkCopied ? "Copied!" : "Copy Link"}
+      </Button>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 2 }}>
+        <QRCodeShare url={shareUrl} size={100} />
+      </Box>
+      <Flex sx={{ justifyContent: "center", gap: 1 }}>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.linkedin",
+              message: `Share on LinkedIn`,
+            })
+          )}
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="linkedIn" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.x",
+              message: `Share on X (Twitter)`,
+            })
+          )}
+          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&via=bafuCH`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="twitter" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.facebook",
+              message: `Share on Facebook`,
+            })
+          )}
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="facebook" />
+        </IconButton>
+        <IconButton
+          title={i18n._(
+            t({
+              id: "publication.share.linktitle.mail",
+              message: `Share via email`,
+            })
+          )}
+          href={`mailto:?subject=${i18n._(
+            t({
+              id: "publication.share.mail.subject",
+              message: `visualize.admin.ch`,
+            })
+          )}&body=${i18n._(
+            t({
+              id: "publication.share.mail.body",
+              message: `Here is a link to a visualization I created on visualize.admin.ch`,
+            })
+          )}: ${shareUrl}`}
+        >
+          <Icon name="envelope" />
+        </IconButton>
+      </Flex>
+      <div>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ mb: 1, fontWeight: 700 }}
+        >
+          <Trans id="publication.share.chart.url">Chart URL</Trans>
+        </Typography>
+        <CopyToClipboardTextInput content={shareUrl} />
+      </div>
+    </Flex>
+  );
+};
