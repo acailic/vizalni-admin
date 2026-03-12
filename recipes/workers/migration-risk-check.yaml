@@ -1,0 +1,83 @@
+title: Migration Risk Check
+description: >
+  Assesses risk for pending or in-progress migrations: framework upgrades,
+  dependency major versions, structural changes, and deprecation exposure.
+
+prompt: |
+  Assess migration risks for this repository. Identify what needs upgrading, what's deprecated, and what's risky to change.
+
+  Read {{ recipe_dir }}/../repo-context.md for project context.
+
+  ## Checks
+
+  ### 1. Framework version exposure
+  Check current versions against latest stable:
+  - `next` — current vs latest (is a major upgrade available?)
+  - `react` / `react-dom` — current vs latest
+  - `typescript` — current vs latest
+
+  For each: note breaking changes in the upgrade path that affect this codebase.
+
+  ### 2. Deprecation exposure
+  Search for usage of known deprecated APIs:
+  - Next.js: `getServerSideProps`, `getStaticProps` (if using App Router, these are legacy)
+  - React: `componentDidMount`, `componentWillMount`, string refs, `defaultProps` on function components
+  - Node.js: check if any Node APIs used are deprecated in current LTS
+
+  ### 3. Breaking change preview
+  For each core dependency with a major version bump available, check:
+  - What breaks in the new version?
+  - How much of this codebase is affected?
+  - Is there a migration guide?
+
+  ### 4. Configuration migration needs
+  - Is `next.config.js` using any deprecated Next.js config options?
+  - Is `tsconfig.json` using any compiler options that changed behavior in newer TS versions?
+  - Are there any PostCSS or Tailwind options that changed in newer versions?
+
+  ### 5. Ecosystem drift
+  Check for patterns that are becoming outdated:
+  - Are there better alternatives to current dependencies that the community has moved to?
+  - Are any dependencies unmaintained (no releases in 12+ months)?
+
+  ### 6. Migration complexity estimate
+  For each identified migration:
+  - Estimate: trivial / moderate / complex
+  - List affected files/patterns
+  - Note if it can be done incrementally or requires a big-bang change
+
+  ## Output format
+
+  ```
+  ## Migration Risk Assessment — [DATE]
+
+  ### Pending migrations
+  | Dependency | Current | Latest | Breaking | Complexity | Priority |
+  |------------|---------|--------|----------|------------|----------|
+  | next | 14.2.0 | X.X.X | yes/no | trivial/moderate/complex | high/medium/low |
+
+  ### Deprecation exposure
+  | Pattern | Location | Urgency |
+  |---------|----------|---------|
+  | getStaticProps | src/... | migrate before Next 15 |
+
+  ### Unmaintained dependencies
+  - [package] — last release: [date]
+
+  ### Migration roadmap (recommended order)
+  1. [migration] — [why first] — [estimated scope]
+  2. [migration] — [why next] — [estimated scope]
+
+  ### Risks if migrations are deferred
+  - [specific risk for each deferred migration]
+
+  ### Status: [LOW RISK / MODERATE RISK / HIGH RISK]
+  ```
+
+  ## Rules
+
+  - Report only. Do not perform any migrations.
+  - Be specific about what breaks. "Breaking changes" is not useful. "useRouter import moves from next/router to next/navigation" is useful.
+  - Distinguish between "should upgrade soon" and "must upgrade now."
+  - If a migration can be done incrementally, note how.
+  - Check npm for actual latest versions rather than guessing.

@@ -1,0 +1,307 @@
+schedule:
+  interval_hours: 4
+  enabled: true
+
+# Roadmap status updated 2026-03-12
+# Features 1-16 were pre-existing implementations detected during codebase review.
+# Feature 17 (Time-Based Animation) was implemented in this session.
+# Feature 18 (Accessibility) was implemented.
+# Feature 19 (Filter Pills and Dataset Info Footer) was implemented.
+# Feature 28 (Pro-Serbian Government Styling) was implemented.
+features:
+  - id: feature-01
+    name: Dataset Browser
+    spec: recipes/inputs/plans/feature-01-dataset-browser.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-02
+    name: Data Transformation Pipeline
+    spec: recipes/inputs/plans/feature-02-data-pipeline.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-03
+    name: Expanded Chart Type System
+    spec: recipes/inputs/plans/feature-03-chart-types.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-04
+    name: Chart Configurator UI
+    spec: recipes/inputs/plans/feature-04-chart-configurator.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-05
+    name: Interactive Filters
+    spec: recipes/inputs/plans/feature-05-interactive-filters.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-06
+    name: Multi-Dataset Support
+    spec: recipes/inputs/plans/feature-06-multi-dataset.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-07
+    name: Dashboard Layouts
+    spec: recipes/inputs/plans/feature-07-dashboard-layouts.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-08
+    name: Chart Export
+    spec: recipes/inputs/plans/feature-08-chart-export.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-09
+    name: Shareable URLs and State Encoding
+    spec: recipes/inputs/plans/feature-09-shareable-urls.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-10
+    name: Embeddable Charts
+    spec: recipes/inputs/plans/feature-10-embeddable-charts.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-11
+    name: Serbian Geographic Maps
+    spec: recipes/inputs/plans/feature-11-serbian-maps.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-12
+    name: Choropleth and Symbol Maps
+    spec: recipes/inputs/plans/feature-12-choropleth-maps.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-13
+    name: Chart Config Persistence
+    spec: recipes/inputs/plans/feature-13-chart-persistence.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-14
+    name: User Auth and Chart Ownership
+    spec: recipes/inputs/plans/feature-14-user-auth.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-15
+    name: Color Palette System
+    spec: recipes/inputs/plans/feature-15-color-palettes.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-16
+    name: Annotations and Reference Lines
+    spec: recipes/inputs/plans/feature-16-annotations.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-17
+    name: Time-Based Animation
+    spec: recipes/inputs/plans/feature-17-animation.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T00:00:00+01:00
+    completed_at: 2026-03-12T00:00:00+01:00
+
+  - id: feature-18
+    name: Accessibility Audit and Fixes
+    spec: recipes/inputs/plans/feature-18-accessibility.md
+    status: completed
+    branch: goose/feature-18-accessibility
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T12:00:00+01:00
+    completed_at: 2026-03-12T16:00:00+01:00
+
+  - id: feature-19
+    name: Filter Pills and Dataset Info Footer
+    spec: recipes/inputs/feature-19-filter-pills-dataset-info.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T17:00:00+01:00
+    completed_at: 2026-03-12T17:30:00+01:00
+
+  - id: feature-20
+    name: Combo Charts
+    spec: recipes/inputs/feature-20-combo-charts.md
+    status: completed
+    branch: null
+    pr: null
+    blocked_reason: Pre-existing implementation detected
+    blocked_issue: null
+    started_at: null
+    completed_at: 2026-03-12T08:13:00+01:00
+
+  - id: feature-21
+    name: Preview Breakpoint System
+    spec: recipes/inputs/feature-21-preview-breakpoints.md
+    status: completed
+    branch: goose/feature-21-preview-breakpoints
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T02:59:00+01:00
+    completed_at: 2026-03-12T04:15:00+01:00
+
+  - id: feature-22
+    name: Interactive Annotation System
+    spec: recipes/inputs/feature-22-annotation-system.md
+    status: completed
+    branch: goose/feature-22-annotation-system
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T08:13:00+01:00
+    completed_at: 2026-03-12T18:30:00+01:00
+
+  - id: feature-25
+    name: Badge Indicators
+    spec: recipes/inputs/feature-25-badge-indicators.md
+    status: not-started
+    branch: null
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: null
+    completed_at: null
+
+  - id: feature-26
+    name: Time Range Brush
+    spec: recipes/inputs/feature-26-time-range-brush.md
+    status: not-started
+    branch: null
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: null
+    completed_at: null
+
+  - id: feature-27
+    name: Advanced Palette System
+    spec: recipes/inputs/feature-27-advanced-palettes.md
+    status: not-started
+    branch: null
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: null
+    completed_at: null
+
+  - id: feature-28
+    name: Pro-Serbian Government Styling
+    spec: recipes/inputs/feature-28-pro-serbian-styling.md
+    status: completed
+    branch: goose/feature-28-pro-serbian-styling
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T03:00:00+01:00
+    completed_at: 2026-03-12T03:16:00+01:00
+
+  - id: swiss-tool-features
+    name: Swiss Tool Features (23-28)
+    spec: docs/superpowers/plans/2026-03-12-swiss-tool-features.md
+    status: completed
+    branch: goose/swiss-tool-features
+    pr: null
+    blocked_reason: null
+    blocked_issue: null
+    started_at: 2026-03-12T12:00:00+01:00
+    completed_at: 2026-03-12T12:30:00+01:00

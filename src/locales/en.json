@@ -1,0 +1,270 @@
+{
+  "common": {
+    "appName": "Serbian Government Data Visualization Platform",
+    "tagline": "A unified approach to open data of the Republic of Serbia",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Export",
+    "print": "Print",
+    "share": "Share",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "more": "More",
+    "less": "Less",
+    "all": "All",
+    "none": "None",
+    "yes": "Yes",
+    "no": "No",
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "home": "Home",
+    "datasets": "Datasets",
+    "organizations": "Organizations",
+    "about": "About",
+    "contact": "Contact",
+    "documentation": "Documentation",
+    "api": "API"
+  },
+  "home": {
+    "hero": {
+      "title": "Open Data of the Republic of Serbia",
+      "subtitle": "Explore, analyze, and visualize Serbian government open data",
+      "description": "Modern platform for accessing open data from official Serbian government sources",
+      "cta": {
+        "explore": "Explore Data",
+        "learn": "Learn More"
+      }
+    },
+    "stats": {
+      "datasets": "datasets",
+      "organizations": "organizations",
+      "resources": "resources",
+      "categories": "categories"
+    },
+    "featured": {
+      "title": "Featured Datasets",
+      "viewAll": "View All"
+    },
+    "categories": {
+      "title": "Explore by Category",
+      "finance": "Public Finance",
+      "mobility": "Mobility",
+      "education": "Education",
+      "health": "Health",
+      "environment": "Environment",
+      "administration": "Administration",
+      "vulnerable": "Vulnerable Groups",
+      "sustainable": "Sustainable Development Goals"
+    }
+  },
+  "datasets": {
+    "title": "Datasets",
+    "search": {
+      "placeholder": "Search datasets...",
+      "noResults": "No results found for your search"
+    },
+    "filters": {
+      "title": "Filters",
+      "organization": "Organization",
+      "category": "Category",
+      "format": "Format",
+      "license": "License",
+      "frequency": "Update Frequency",
+      "clear": "Clear Filters"
+    },
+    "sort": {
+      "relevance": "Relevance",
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "popular": "Most Popular",
+      "title": "Title"
+    },
+    "card": {
+      "organization": "Organization",
+      "resources": "resources",
+      "reuses": "reuses",
+      "views": "views",
+      "updated": "Updated",
+      "frequency": "Update Frequency"
+    },
+    "detail": {
+      "description": "Description",
+      "resources": "Resources",
+      "download": "Download",
+      "preview": "Preview",
+      "metadata": "Metadata",
+      "license": "License",
+      "temporalCoverage": "Temporal Coverage",
+      "spatialCoverage": "Spatial Coverage",
+      "tags": "Tags",
+      "similarDatasets": "Similar Datasets"
+    }
+  },
+  "organizations": {
+    "title": "Organizations",
+    "search": {
+      "placeholder": "Search organizations..."
+    },
+    "card": {
+      "datasets": "datasets",
+      "members": "members",
+      "views": "views"
+    },
+    "detail": {
+      "about": "About Organization",
+      "datasets": "Datasets",
+      "members": "Members",
+      "contact": "Contact"
+    }
+  },
+  "visualization": {
+    "title": "Visualization",
+    "chart": {
+      "line": "Line Chart",
+      "bar": "Bar Chart",
+      "pie": "Pie Chart",
+      "area": "Area Chart",
+      "scatter": "Scatter Plot"
+    },
+    "map": {
+      "title": "Map",
+      "fullscreen": "Fullscreen",
+      "zoomIn": "Zoom In",
+      "zoomOut": "Zoom Out",
+      "reset": "Reset View"
+    },
+    "table": {
+      "title": "Table",
+      "sort": "Sort",
+      "filter": "Filter",
+      "pagination": {
+        "first": "First",
+        "previous": "Previous",
+        "next": "Next",
+        "last": "Last",
+        "page": "Page",
+        "of": "of"
+      }
+    },
+    "export": {
+      "title": "Export",
+      "csv": "CSV",
+      "json": "JSON",
+      "xlsx": "Excel",
+      "pdf": "PDF",
+      "image": "Image"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "message": "The page you're looking for doesn't exist.",
+      "action": "Go Back Home"
+    },
+    "500": {
+      "title": "Server Error",
+      "message": "Something went wrong on our end.",
+      "action": "Try Again"
+    },
+    "api": {
+      "network": "Network error. Please check your internet connection.",
+      "unauthorized": "You're not authorized to access this.",
+      "notFound": "Resource not found.",
+      "rateLimit": "Too many requests. Please try again later.",
+      "generic": "An error occurred. Please try again."
+    }
+  },
+  "configurator": {
+    "filters": "Filters",
+    "noFilters": "No filters applied",
+    "timeRange": "Time range",
+    "calculation": "Calculation",
+    "absolute": "Absolute",
+    "percent": "Percent",
+    "dataset": "Dataset",
+    "latestUpdate": "Latest data update",
+    "previewBreakpoints": {
+      "desktop": "Desktop",
+      "laptop": "Laptop",
+      "tablet": "Tablet",
+      "mobile": "Mobile",
+      "tooltip": "Preview at different screen sizes"
+    },
+    "annotations": {
+      "title": "Annotations",
+      "addAnnotation": "Add annotation",
+      "editAnnotation": "Edit annotation",
+      "annotationTitle": "Title",
+      "description": "Description",
+      "target": "Target data point",
+      "color": "Color",
+      "style": "Style",
+      "filled": "Filled",
+      "outline": "Outline",
+      "defaultOpen": "Open by default",
+      "deleteAnnotation": "Delete annotation",
+      "noAnnotations": "No annotations yet"
+    }
+  },
+  "palettes": {
+    "viridis": "Viridis",
+    "plasma": "Plasma",
+    "inferno": "Inferno",
+    "okabeIto": "Okabe-Ito (Colorblind-safe)"
+  },
+  "filters": {
+    "searchGeography": "Search geography...",
+    "selected": "selected",
+    "clearAll": "Clear all",
+    "timeRange": "Time Range",
+    "play": "Play animation",
+    "pause": "Pause",
+    "reset": "Reset",
+    "selectAll": "Select all"
+  },
+  "table": {
+    "previous": "Previous",
+    "next": "Next",
+    "of": "of",
+    "sortBy": "Sort by",
+    "ascending": "Ascending",
+    "descending": "Descending"
+  },
+  "badges": {
+    "filters": "filters",
+    "columns": "columns",
+    "required": "Required",
+    "completed": "Completed"
+  },
+  "footer": {
+    "about": "About",
+    "aboutText": "Serbian Government Data Visualization Platform is an open-source platform for visualizing open data from the Republic of Serbia.",
+    "links": {
+      "title": "Useful Links",
+      "dataGovRs": "data.gov.rs",
+      "apiDocs": "API Documentation",
+      "github": "GitHub",
+      "openDataHub": "Open Data Hub"
+    },
+    "social": {
+      "title": "Follow Us"
+    },
+    "legal": {
+      "privacy": "Privacy",
+      "terms": "Terms of Use",
+      "accessibility": "Accessibility"
+    },
+    "copyright": "© {year} Serbian Government Data Visualization Platform. All rights reserved.",
+    "madeWith": "Made with ❤️ for the citizens of the Republic of Serbia"
+  }
+}

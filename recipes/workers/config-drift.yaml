@@ -1,0 +1,84 @@
+title: Configuration Drift Check
+description: >
+  Verifies that configuration files are consistent with each other and with the code.
+  Covers TypeScript, Next.js, Tailwind, ESLint, and CI configs.
+
+prompt: |
+  Check configuration files in this repository for inconsistencies and drift.
+
+  ## Checks
+
+  ### 1. TypeScript config
+  Read `tsconfig.json`:
+  - Are path aliases (`@/*`) still matching the actual directory structure?
+  - Is strict mode still enabled?
+  - Are there any unusual or temporary compiler options?
+  - Do the `include`/`exclude` patterns match the actual file layout?
+
+  ### 2. Next.js config
+  Read `next.config.js`:
+  - Are image remote patterns current and necessary?
+  - Are environment variables referenced that don't exist in `.env.example`?
+  - Are there TODO comments or temporary workarounds?
+  - Is the config consistent with `package.json` scripts?
+
+  ### 3. Tailwind config
+  Read `tailwind.config.js`:
+  - Do content paths cover all files that use Tailwind classes?
+  - Are custom colors still referenced in components? Check for unused custom theme values.
+  - Are plugins listed but not used?
+
+  ### 4. ESLint config
+  Read `.eslintrc.json`:
+  - Are extends/plugins still installed as devDependencies?
+  - Are there rules that conflict with Prettier config?
+  - Are there disabled rules that should be re-enabled?
+
+  ### 5. Prettier config
+  Read `.prettierrc`:
+  - Is the config consistent with what ESLint expects?
+  - Does it match the editor settings implied by any `.editorconfig`?
+
+  ### 6. CI config
+  Read files in `.github/workflows/`:
+  - Is the Node version consistent with `package.json` engines field?
+  - Are CI scripts consistent with `package.json` scripts?
+  - Are there syntax errors or YAML issues?
+  - Are there disabled steps or TODO comments?
+
+  ### 7. Cross-config consistency
+  - Do package.json scripts match what CI runs?
+  - Does tsconfig target match the Node version in CI?
+  - Are there conflicting settings between configs?
+
+  ## Output format
+
+  ```
+  ## Configuration Drift — [DATE]
+
+  ### Inconsistencies found
+  | Config file | Issue | Severity |
+  |-------------|-------|----------|
+  | tsconfig.json | path alias @/styles/* has no matching dir | medium |
+  | .github/workflows/ci.yml | uses Node 18 but package.json says >=20 | high |
+
+  ### Stale config values
+  - [values that reference things that no longer exist]
+
+  ### Missing config
+  - [things that should be configured but aren't]
+
+  ### Status: [CONSISTENT / MINOR DRIFT / INCONSISTENT]
+
+  ### Recommended fixes
+  1. [specific fix]
+  ```
+
+  ## Rules
+
+  - Report only. Do not modify configuration files.
+  - Read every config file mentioned. Do not infer contents.
+  - Cross-reference configs against each other and against code.
+  - YAML syntax issues in CI files are high severity.
+  - Unused config values are medium severity.
+  - Cosmetic inconsistencies are low severity.

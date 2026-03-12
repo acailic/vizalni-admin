@@ -1,0 +1,66 @@
+title: Feature Dispatcher
+description: >
+  Reads the roadmap status file and selects the next feature to implement.
+  Writes a current-task.yml handoff file for the worker recipe.
+  Designed for unattended scheduled execution.
+
+prompt: |
+  You are selecting the next feature to implement from the project roadmap.
+
+  ## Context
+
+  Read these files first:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/roadmap-status.yml
+
+  ## Schedule check
+
+  First, check if `schedule.enabled` is `false` in roadmap-status.yml.
+  If so, exit immediately with message: "Schedule paused. Exiting."
+
+  ## Selection logic
+
+  1. If any feature has status "in-progress", select it (resume work).
+  2. Otherwise, select the first feature with status "not-started".
+  3. If no features are available (all completed or blocked),
+     exit with message "Roadmap clear. No features to implement."
+
+  ## Already-done detection
+
+  For a "not-started" feature, check whether it already exists in the
+  codebase before selecting it for implementation:
+  - Read the feature spec file referenced in the `spec` field
+  - Identify the primary routes, pages, and components described in the spec
+  - Check if those files exist AND contain substantive implementation
+    (not just scaffolding, empty exports, or placeholder comments)
+  - If the feature is already implemented, update roadmap-status.yml:
+    set status to "completed", set completed_at to current ISO timestamp,
+    add blocked_reason: "Pre-existing implementation detected"
+  - Commit: "chore: mark <feature-id> completed (pre-existing) [skip ci]"
+  - Pick the next feature and repeat until a genuinely unimplemented
+    feature is found or the roadmap is clear
+
+  ## Handoff
+
+  For the selected feature, write {{ recipe_dir }}/current-task.yml:
+  ```yaml
+  id: <feature-id>
+  name: <feature name>
+  spec: <path to spec file>
+  branch: goose/<feature-id>-<short-kebab-name>
+  ```
+
+  Then update roadmap-status.yml:
+  - Set status to "in-progress"
+  - Set started_at to current ISO timestamp
+  - Set branch to the branch name from current-task.yml
+
+  Commit: "chore: mark <feature-id> in-progress [skip ci]"
+
+  ## Rules
+
+  - This runs unattended. Do not ask questions.
+  - Do not write implementation code. Only update status and task files.
+  - Do not create branches. The worker handles that.
+  - If a command fails, note it and exit cleanly.

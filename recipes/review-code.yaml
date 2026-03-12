@@ -1,0 +1,66 @@
+title: Review Code
+description: >
+  Deep code review of a specified scope. Works standalone or driven by a review-scope input file.
+  Produces structured findings with severity, location, and suggested fixes.
+
+prompt: |
+  You are reviewing code in this repository. Your goal is to find real problems — not to nitpick style or generate filler.
+
+  ## Context
+
+  Read these files first to understand the project:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/architecture-notes.md
+
+  ## Input
+
+  Check if a review scope file was provided. If so, read it:
+  - Look for files matching `{{ recipe_dir }}/inputs/review-*.md` (excluding the template)
+  - If found, use it to determine: what files to review, what to focus on, and what's out of scope
+  - If no input file exists, ask the user what to review, or review recent changes via `git diff HEAD~3`
+
+  ## Review process
+
+  1. **Read the code before forming opinions.** Open every file in scope. Do not guess at contents.
+  2. **Check against standards.** Reference `standards.md` for expected patterns.
+  3. **Check against architecture.** Reference `architecture-notes.md` for boundary violations.
+  4. **Check i18n compliance.** Any user-facing strings must use translation keys in all three locales.
+  5. **Check type safety.** Look for `any`, unsafe casts, missing null checks.
+  6. **Check error handling.** API calls, data transforms, and user inputs must handle failures.
+  7. **Check accessibility.** Interactive elements need keyboard support and ARIA attributes.
+
+  ## Output format
+
+  Produce a structured review:
+
+  ```
+  ## Review Summary
+  - Scope: [what was reviewed]
+  - Files reviewed: [count]
+  - Findings: [count by severity]
+
+  ## Critical (must fix before merge)
+  - [FILE:LINE] Description. Why it matters. Suggested fix.
+
+  ## Warning (should fix soon)
+  - [FILE:LINE] Description. Why it matters. Suggested fix.
+
+  ## Suggestion (consider for quality)
+  - [FILE:LINE] Description. Why it matters. Suggested fix.
+
+  ## Observations
+  - Things that are done well
+  - Patterns worth replicating
+
+  ## Assumptions made during this review
+  - [list any assumptions you made about intent or behavior]
+  ```
+
+  ## Rules
+
+  - Do not suggest style changes that Prettier or ESLint would catch.
+  - Do not add comments, docstrings, or type annotations to code you didn't flag for a real issue.
+  - Every finding must reference a specific file and line.
+  - Distinguish facts from opinions. Mark opinions as suggestions.
+  - If you are unsure whether something is a bug, say so explicitly.

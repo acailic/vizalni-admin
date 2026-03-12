@@ -1,0 +1,110 @@
+title: Test Health Check
+description: >
+  Scheduled assessment of test suite quality, coverage gaps, and test reliability.
+  Goes beyond pass/fail to evaluate whether tests are meaningful and maintainable.
+
+prompt: |
+  You are assessing the health of this repository's test suite.
+
+  ## Context
+
+  Read:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+
+  ## Assessment
+
+  ### 1. Run the suite
+  ```bash
+  npm test 2>&1
+  ```
+  Record: total, passed, failed, skipped, duration.
+
+  ### 2. Test inventory
+  List all test files:
+  ```bash
+  find tests/ -name "*.test.*" -o -name "*.spec.*" 2>/dev/null
+  find src/ -name "*.test.*" -o -name "*.spec.*" 2>/dev/null
+  ```
+  Categorize: unit, component, integration, E2E.
+
+  ### 3. Coverage map
+  Map source files to test files. For each directory in `src/`:
+  - Count source files (*.ts, *.tsx, excluding test files)
+  - Count corresponding test files
+  - Report coverage ratio
+
+  ### 4. Test quality scan
+  Read test files and check for:
+  - **Shallow tests**: Tests that only assert "renders without crashing" or `toBeTruthy()` with no behavioral check
+  - **Missing edge cases**: Tests for happy paths only, no error handling tests
+  - **Brittle selectors**: E2E tests using fragile CSS selectors instead of test IDs or roles
+  - **Mock quality**: MSW handlers that return hardcoded data not matching `src/types/api.ts` contracts
+  - **Snapshot overuse**: Excessive snapshot tests that will break on any style change
+
+  ### 5. Flakiness indicators
+  Look for:
+  - Tests with arbitrary `setTimeout` or `waitFor` with long timeouts
+  - Tests that depend on execution order
+  - Tests with commented-out assertions
+  - `.skip` or `.todo` tests
+
+  ### 6. Missing critical tests
+  Identify high-risk code paths without tests:
+  - API client methods (`src/lib/api/datagov-client.ts`)
+  - Data transformations
+  - i18n configuration logic
+  - Chart rendering logic
+  - Error boundaries and fallbacks
+
+  ## Output format
+
+  ```
+  # Test Health Check — [DATE]
+
+  ## Summary
+  - Total tests: X
+  - Passing: X
+  - Failing: X
+  - Skipped: X
+  - Duration: Xs
+
+  ## Coverage map
+  | Directory | Source files | Test files | Coverage ratio |
+  |-----------|-------------|------------|----------------|
+  | src/app/ | X | Y | Y/X |
+  | src/components/ | X | Y | Y/X |
+  | src/lib/ | X | Y | Y/X |
+  | src/services/ | X | Y | Y/X |
+
+  ## Quality findings
+  | Finding | Location | Severity |
+  |---------|----------|----------|
+  | shallow test | tests/unit/... | medium |
+  | missing error test | src/lib/api/... | high |
+
+  ## Flakiness risks
+  - [list or "none found"]
+
+  ## Critical gaps (highest priority)
+  1. [untested critical path] — [risk if it breaks]
+  2. [untested critical path] — [risk if it breaks]
+
+  ## Recommendations
+  1. [specific test to add, what it should cover]
+  2. [specific test to improve, how]
+  3. [specific flaky test to fix, why]
+
+  ## Trend
+  [improving / stable / declining — compared to prior report if available]
+  ```
+
+  Save the report to `recipes/outputs/test-health-[DATE].md` for trend tracking.
+
+  ## Rules
+
+  - Do not modify any test files. Report only.
+  - Do not write tests. Recommend what tests to write.
+  - Prioritize gaps in critical code paths over coverage percentage.
+  - A test that asserts nothing useful is worse than no test (false confidence).
+  - This runs unattended. Complete all sections.

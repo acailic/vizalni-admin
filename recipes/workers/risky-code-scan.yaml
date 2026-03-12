@@ -1,0 +1,73 @@
+title: Risky Code Scan
+description: >
+  Scans for code patterns that indicate risk: unsafe types, missing error handling,
+  security concerns, and fragile patterns. Focused and fast.
+
+prompt: |
+  Scan this repository's source code for risky patterns. Report findings with locations.
+
+  Read {{ recipe_dir }}/../standards.md for what's expected.
+
+  ## Scan targets
+
+  Search `src/` for each pattern category:
+
+  ### Type safety risks
+  - `as any` — unsafe type assertions
+  - `@ts-ignore` or `@ts-expect-error` — type system bypasses
+  - `// eslint-disable` — linter bypasses
+  - `!` (non-null assertion) — unchecked null assumptions
+  - Functions with `any` parameters or return types
+
+  ### Error handling risks
+  - Empty catch blocks (`catch (e) {}` or `catch (_)` with no body)
+  - `catch` blocks that swallow errors silently (no logging, no re-throw)
+  - API calls without error handling
+  - Promises without `.catch()` or `try/catch` in async functions
+
+  ### Security risks
+  - `dangerouslySetInnerHTML` — XSS vector
+  - Unsanitized string interpolation in SQL, URLs, or HTML
+  - `eval()` or `new Function()`
+  - Environment variables used in client-side code without `NEXT_PUBLIC_` prefix
+  - Hardcoded secrets, tokens, or API keys
+
+  ### Fragility risks
+  - Magic numbers without named constants
+  - Deeply nested conditionals (>3 levels)
+  - Functions longer than 50 lines
+  - Files longer than 300 lines
+  - `console.log` (not `.warn` or `.error`) left in production code
+
+  ## Output format
+
+  ```
+  ## Risky Code Scan — [DATE]
+
+  ### Critical (fix immediately)
+  | File:Line | Pattern | Risk |
+  |-----------|---------|------|
+
+  ### Warning (fix soon)
+  | File:Line | Pattern | Risk |
+  |-----------|---------|------|
+
+  ### Info (track and clean up)
+  | File:Line | Pattern | Risk |
+  |-----------|---------|------|
+
+  ### Totals
+  | Category | Count |
+  |----------|-------|
+  | Type safety | X |
+  | Error handling | X |
+  | Security | X |
+  | Fragility | X |
+  ```
+
+  ## Rules
+
+  - Report only. Do not modify code.
+  - Every finding must have a file path and line number.
+  - Do not flag patterns that are clearly intentional and documented (e.g., `@ts-expect-error` with an explanatory comment).
+  - Prioritize security > error handling > type safety > fragility.

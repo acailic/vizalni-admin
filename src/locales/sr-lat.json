@@ -1,0 +1,258 @@
+{
+  "common": {
+    "appName": "Vizuelni Admin Srbije",
+    "tagline": "Jedinstveni pristup otvorenim podacima Republike Srbije",
+    "loading": "Učitavanje...",
+    "error": "Greška",
+    "retry": "Pokušaj ponovo",
+    "search": "Pretraga",
+    "filter": "Filter",
+    "sort": "Sort",
+    "export": "Izvezi",
+    "print": "Štampaj",
+    "share": "Del",
+    "close": "Zatvori",
+    "save": "Sačuvaj",
+    "cancel": "Otkaži",
+    "delete": "Obriši",
+    "edit": "Uredi",
+    "view": "Pogledaj",
+    "more": "Više",
+    "less": "Manje",
+    "all": "Sve",
+    "none": "Nijedno",
+    "yes": "Da",
+    "no": "Ne",
+    "language": "Jezik",
+    "theme": "Tema",
+    "darkMode": "Tamni režim",
+    "lightMode": "Svetli režim",
+    "home": "Početna",
+    "datasets": "Skupovi podataka",
+    "organizations": "Organizacije",
+    "about": "O nama",
+    "contact": "Kontakt",
+    "documentation": "Dokumentacija",
+    "api": "API"
+  },
+  "home": {
+    "hero": {
+      "title": "Otvoreni podaci Republike Srbije",
+      "subtitle": "Istražite, analizirajte i vizualizujte podatke srpskih vlada Srbije"
+    },
+    "featured": {
+      "title": "Istaknuti podaci",
+      "subtitle": "Najpopularniji skupovi podataka",
+    },
+    "categories": {
+      "title": "Kategorije",
+      "subtitle": "Pregledajte podatke po temama"
+    },
+    "stats": {
+      "title": "Statistike",
+      "datasets": "skupova podataka",
+      "organizations": "organizacije",
+      "resources": "resursa",
+      "views": "pregleda"
+    }
+  },
+  "datasets": {
+    "title": "Skupovi podataka",
+    "search": {
+      "placeholder": "Pretraži skupove podataka..."
+    },
+    "filters": {
+      "title": "Filteri",
+      "organization": "Organizacija",
+      "category": "Kategorija",
+      "format": "Format",
+      "license": "Licenca",
+      "frequency": "Učestalost ažuriranja",
+      "clear": "Očisti filter"
+    },
+    "sort": {
+      "relevance": "Relevantnost",
+      "newest": "Najnoviji",
+      "oldest": "Najstariji",
+      "popular": "Najpopularniji",
+      "title": "Naslov"
+    },
+    "card": {
+      "organization": "Organizacija",
+      "resources": "resursa",
+      "reuses": "primera upotrebe",
+      "views": "pregleda",
+      "updated": "Ažuriranja",
+      "frequency": "Učestalost ažuriranja"
+    },
+    "detail": {
+      "description": "Opis",
+      "resources": "Resursi",
+      "download": "Preuzmi",
+      "preview": "Pregled",
+      "metadata": "Metapodaci",
+      "license": "Licenca",
+      "temporalCoverage": "Vremenski period",
+      "spatialCoverage": "Geografski obuhvat",
+      "tags": "Oznake",
+      "similarDatasets": "Slični skupovi podataka"
+    }
+  },
+  "organizations": {
+    "title": "Organizacije",
+    "search": {
+      "placeholder": "Pretraži organizacije..."
+    },
+    "card": {
+      "datasets": "skupova podataka",
+      "members": "članovi",
+      "views": "pregleda"
+    },
+    "detail": {
+      "about": "O organizaciji",
+      "datasets": "Skupovi podataka",
+      "members": "Članovi",
+      "contact": "Kontakt"
+    }
+  },
+  "visualization": {
+    "title": "Vizualizacije",
+    "chart": {
+      "line": "Linijski grafikon",
+      "bar": "Stubasti grafikon",
+      "pie": "Pita grafikon",
+      "area": "Površinski grafikon",
+      "scatter": "Dijagram rasejanja"
+    },
+    "map": {
+      "title": "Mapa",
+      "fullscreen": "Pun ekran",
+      "zoomIn": "Uvećaj",
+      "zoomOut": "Umanji",
+      "reset": "Resetuj pogled"
+    },
+    "table": {
+      "title": "Tabela",
+      "sort": "Sortiraj",
+      "filter": "Filtriraj",
+      "pagination": {
+        "first": "Prva",
+        "previous": "Prethodna",
+        "next": "Sledeća",
+        "last": "Poslednja",
+        "page": "Stranica",
+        "of": "od"
+      }
+    },
+    "export": {
+      "title": "Izvezi",
+      "csv": "CSV",
+      "json": "JSON",
+      "xlsx": "Excel",
+      "pdf": "PDF",
+      "image": "Slika"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Stranica nije pronađena",
+      "message": "Stranica koju tražite ne postoji.",
+      "action": "Vrati se na početnu"
+    },
+    "500": {
+      "title": "Serverska greška",
+      "message": "Došlo je do greške na serveru.",
+      "action": "Pokušaj ponovo"
+    },
+    "api": {
+      "network": "Greška mreže. Proverite vašu internet vezu.",
+      "unauthorized": "Niste ovlašćeni za pristup.",
+      "notFound": "Resurs nije pronađen.",
+      "rateLimit": "Prekoračena ograničenja. Pokušajte kasnije.",
+      "generic": "Došlo je do greške. Pokušajte ponovo."
+    }
+  },
+  "configurator": {
+    "filters": "Filteri",
+    "noFilters": "Nema primenjenih filtera",
+    "timeRange": "Vremenski opseg",
+    "calculation": "Proračun",
+    "absolute": "Apsolutno",
+    "percent": "Procenat",
+    "dataset": "Skup podataka",
+    "latestUpdate": "Poslednje ažuriranje",
+    "previewBreakpoints": {
+      "desktop": "Desktop",
+      "laptop": "Laptop",
+      "tablet": "Tablet",
+      "mobile": "Mobilni",
+      "tooltip": "Pregled na različitim veličinama ekrana"
+    },
+    "annotations": {
+      "title": "Anotacije",
+      "addAnnotation": "Dodaj anotaciju",
+      "editAnnotation": "Uredi anotaciju",
+      "annotationTitle": "Naslov",
+      "description": "Opis",
+      "target": "Tačka podataka",
+      "color": "Boja",
+      "style": "Stil",
+      "filled": "Ispunjeno",
+      "outline": "Kontura",
+      "defaultOpen": "Otvoreno podrazumevano",
+      "deleteAnnotation": "Obriši anotaciju",
+      "noAnnotations": "Još nema anotacija"
+    }
+  },
+  "palettes": {
+    "viridis": "Viridis",
+    "plasma": "Plasma",
+    "inferno": "Inferno",
+    "okabeIto": "Okabe-Ito (za daltoniste)"
+  },
+  "filters": {
+    "searchGeography": "Pretraži geografiju...",
+    "selected": "izabrano",
+    "clearAll": "Očisti sve",
+    "timeRange": "Vremenski opseg",
+    "play": "Pusti animaciju",
+    "pause": "Pauza",
+    "reset": "Reset",
+    "selectAll": "Izaberi sve"
+  },
+  "table": {
+    "previous": "Prethodna",
+    "next": "Sledeća",
+    "of": "od",
+    "sortBy": "Sortiraj po",
+    "ascending": "Rastuće",
+    "descending": "Opadajuće"
+  },
+  "badges": {
+    "filters": "filtera",
+    "columns": "kolona",
+    "required": "Obavezno",
+    "completed": "Završeno"
+  },
+  "footer": {
+    "about": "O platformi",
+    "aboutText": "Vizuelni Admin Srbije je otvorena platforma za vizualizaciju otvorenih podataka Republike Srbije.",
+    "links": {
+      "title": "Korisni linkovi",
+      "dataGovRs": "data.gov.rs",
+      "apiDocs": "API dokumentacija",
+      "github": "GitHub",
+      "openDataHub": "Open Data Hub"
+    },
+    "social": {
+      "title": "Pratite nas"
+    },
+    "legal": {
+      "privacy": "Privatnost",
+      "terms": "Uslovi korišćenja",
+      "accessibility": "Pristupačnost"
+    },
+    "copyright": "© {year} Vizuelni Admin Srbije. Sva prava zadržana.",
+    "madeWith": "Napravljeno sa ❤️ za građane Republike Srbije"
+  }
+}

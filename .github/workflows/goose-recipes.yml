@@ -1,0 +1,108 @@
+name: Goose Recipes
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipe:
+        description: Recipe to run
+        required: true
+        type: choice
+        default: recipes/nightly-review.yaml
+        options:
+          - recipes/nightly-review.yaml
+          - recipes/weekly-release-readiness.yaml
+          - recipes/architecture-drift-review.yaml
+          - recipes/test-health-check.yaml
+  schedule:
+    # GitHub Actions cron runs in UTC.
+    - cron: "0 1 * * *"
+    - cron: "0 7 * * 1"
+    - cron: "0 7 * * 3"
+    - cron: "0 7 * * 5"
+
+jobs:
+  run-recipe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select recipe
+        id: select
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            recipe="${{ github.event.inputs.recipe }}"
+          else
+            case "${{ github.event.schedule }}" in
+              "0 1 * * *")
+                recipe="recipes/nightly-review.yaml"
+                ;;
+              "0 7 * * 1")
+                recipe="recipes/weekly-release-readiness.yaml"
+                ;;
+              "0 7 * * 3")
+                recipe="recipes/architecture-drift-review.yaml"
+                ;;
+              "0 7 * * 5")
+                recipe="recipes/test-health-check.yaml"
+                ;;
+              *)
+                echo "Unsupported schedule: ${{ github.event.schedule }}" >&2
+                exit 1
+                ;;
+            esac
+          fi
+
+          echo "recipe=$recipe" >> "$GITHUB_OUTPUT"
+          echo "recipe_name=$(basename "${recipe%.*}")" >> "$GITHUB_OUTPUT"
+
+      - name: Install goose CLI
+        shell: bash
+        run: |
+          mkdir -p /home/runner/.local/bin
+          if [[ -n "${GOOSE_VERSION:-}" ]]; then
+            curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh \
+              | GOOSE_VERSION="$GOOSE_VERSION" CONFIGURE=false GOOSE_BIN_DIR=/home/runner/.local/bin bash
+          else
+            curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh \
+              | CONFIGURE=false GOOSE_BIN_DIR=/home/runner/.local/bin bash
+          fi
+          echo "/home/runner/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Configure goose
+        shell: bash
+        env:
+          GOOSE_CONFIG_YAML: ${{ secrets.GOOSE_CONFIG_YAML }}
+          GOOSE_SECRETS_YAML: ${{ secrets.GOOSE_SECRETS_YAML }}
+        run: |
+          if [[ -z "${GOOSE_CONFIG_YAML}" ]]; then
+            echo "Missing GOOSE_CONFIG_YAML secret." >&2
+            exit 1
+          fi
+
+          mkdir -p ~/.config/goose
+          printf '%s\n' "$GOOSE_CONFIG_YAML" > ~/.config/goose/config.yaml
+          chmod 600 ~/.config/goose/config.yaml
+
+          if [[ -n "${GOOSE_SECRETS_YAML}" ]]; then
+            printf '%s\n' "$GOOSE_SECRETS_YAML" > ~/.config/goose/secrets.yaml
+            chmod 600 ~/.config/goose/secrets.yaml
+          fi
+
+      - name: Run recipe
+        shell: bash
+        env:
+          GOOSE_BIN: /home/runner/.local/bin/goose
+        run: |
+          bash ./scripts/goose/run-recipe.sh "${{ steps.select.outputs.recipe }}"
+
+      - name: Upload recipe logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: goose-${{ steps.select.outputs.recipe_name }}-${{ github.run_id }}
+          path: recipes/outputs/

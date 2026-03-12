@@ -1,0 +1,131 @@
+title: Feature Worker
+description: >
+  Implements the feature specified in current-task.yml. Works in phases:
+  plan, scaffold, implement, test, ship. Opens a PR when done or a
+  GitHub issue if blocked. Designed for unattended scheduled execution.
+
+prompt: |
+  You are autonomously implementing a feature for this project.
+
+  ## Context
+
+  Read these files first to understand the project, its conventions,
+  and its architecture:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/architecture-notes.md
+
+  Then read your assignment:
+  - {{ recipe_dir }}/current-task.yml
+
+  Then read the feature spec file referenced in current-task.yml.
+
+  ## Guardrails (MUST follow)
+
+  - Do NOT add new dependencies to package.json (or equivalent manifest).
+    If a dependency is genuinely required, note it in the PR description
+    under "## Requires Human Action" and continue without it.
+  - Do NOT modify CI/CD configs (.github/), infrastructure files,
+    or deployment configs.
+  - Do NOT modify files outside the feature's scope.
+  - Follow all conventions described in standards.md and repo-context.md.
+    This includes locale/i18n requirements, naming conventions, code style,
+    and architectural boundaries.
+  - If any guardrail-restricted action is needed to complete the feature,
+    note it in the PR description and continue without it.
+
+  ## Phases
+
+  ### Phase 1: Plan
+  - Read the feature spec thoroughly
+  - Explore the existing codebase to understand current patterns
+  - Identify all files to create or modify
+  - Note the plan — it will go in the PR description later
+
+  ### Phase 2: Scaffold
+  - Create the branch (name from current-task.yml)
+  - Create new files with type signatures, interfaces, and exports
+  - Add any required translation/locale keys if the project uses i18n
+  - Commit: "feat: scaffold <feature-id>"
+
+  ### Phase 3: Implement
+  - Build out the actual logic, components, routes, and utilities
+  - Follow existing patterns in the codebase
+  - Commit in logical chunks with conventional commit messages
+  - Each commit should be independently valid (no broken intermediate states)
+
+  ### Phase 4: Test
+  - Write unit tests for utilities and logic
+  - Write component/integration tests where appropriate
+  - Run the project's test and lint commands (check package.json scripts)
+  - Typical: npm run type-check && npm run lint && npm run test
+  - If tests fail, fix and retry up to 3 times
+  - If still failing after 3 attempts, proceed to Phase 5 with
+    failures noted
+
+  ### Phase 5: Ship
+  - Push the branch
+  - If all tests passed, open a regular PR against main
+  - If tests failed, open a DRAFT PR against main
+  - PR format:
+    ```
+    Title: feat: implement <feature name>
+
+    ## Summary
+    <what was implemented, 2-3 sentences>
+
+    ## Implementation Plan
+    <brief plan from Phase 1>
+
+    ## Changes
+    <file-by-file summary of what changed and why>
+
+    ## Test Results
+    <pass/fail details, coverage if available>
+
+    ## Requires Human Action
+    <any guardrail items that need manual intervention, or "None">
+
+    ---
+    Automated by Goose
+    ```
+  - After opening the PR, update the status file on main:
+    ```bash
+    git stash --include-untracked
+    git checkout main
+    git pull --rebase
+    ```
+    - Edit {{ recipe_dir }}/roadmap-status.yml:
+      set status to "completed", set completed_at, set pr to the PR URL
+    - Commit: "chore: mark <feature-id> completed [skip ci]"
+    - Push to main
+    - Return to feature branch:
+    ```bash
+    git checkout -
+    git stash pop || true
+    ```
+
+  ## On Failure
+
+  If you cannot complete the feature:
+  1. Commit whatever work is done
+  2. Push the branch (even if incomplete)
+  3. Open a GitHub issue:
+     - Title: "Blocked: <feature-id> <feature name>"
+     - Body: what was attempted, what failed, error details,
+       suggested next steps for a human
+  4. Update the status file on main (same checkout flow as above):
+     - Set status to "blocked"
+     - Set blocked_reason to a brief description of the failure
+     - Set blocked_issue to the GitHub issue URL
+     - Commit: "chore: mark <feature-id> blocked [skip ci]"
+     - Push to main
+
+  ## Rules
+
+  - This runs unattended. Do not ask questions. Use sensible defaults.
+  - Do not modify roadmap-status.yml on the feature branch — only on main.
+  - Keep commits atomic and use conventional commit messages.
+  - If a command hangs or times out, note it and move on.
+  - Prefer extending existing patterns over inventing new ones.
+  - Read files before modifying them. Understand context before changing code.

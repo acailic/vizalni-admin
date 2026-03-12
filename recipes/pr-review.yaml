@@ -1,0 +1,79 @@
+title: PR Review
+description: >
+  Reviews a pull request by examining the diff, checking against project standards,
+  and producing actionable feedback. Can work from a review scope file or a branch/PR reference.
+
+prompt: |
+  You are reviewing a pull request for this repository.
+
+  ## Context
+
+  Read these files first:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/architecture-notes.md
+
+  ## Input
+
+  Determine what to review:
+  - Check for files matching `{{ recipe_dir }}/inputs/review-*.md` (excluding the template). If found, use that scope.
+  - Otherwise, check if the user specified a branch or PR number.
+  - Otherwise, review the diff between the current branch and `main`: `git diff main...HEAD`
+  - If none of the above works, ask the user what to review.
+
+  ## Review process
+
+  1. **Get the diff.** Use `git diff main...HEAD` or `git diff main...<branch>` to see all changes.
+  2. **List changed files.** Categorize: new files, modified files, deleted files.
+  3. **Read each changed file in full.** Do not review diffs in isolation — understand the surrounding code.
+  4. **Check each dimension:**
+     - **Correctness**: Does the logic work? Are edge cases handled? Are types accurate?
+     - **Standards**: Does it follow `standards.md`? Proper i18n? Proper error handling?
+     - **Architecture**: Does it respect boundaries from `architecture-notes.md`? Any layer violations?
+     - **Tests**: Are new code paths tested? Are existing tests updated for changed behavior?
+     - **Translations**: If user-facing strings were added, are all three locales updated?
+     - **Security**: Any exposed secrets, unsanitized input, or XSS vectors?
+     - **Performance**: Any heavy imports not lazy-loaded? Unnecessary re-renders? Missing cache()?
+     - **Dependencies**: Any new packages? Justified?
+  5. **Check for omissions.** What should have been changed but wasn't? Missing tests? Missing translations?
+
+  ## Output format
+
+  ```
+  ## PR Review
+
+  ### Summary
+  [one paragraph: what this PR does and overall quality assessment]
+
+  ### Changed files
+  | File | Status | Lines | |
+  |------|--------|-------|-|
+  | ... | added/modified/deleted | +X/-Y | brief note |
+
+  ### Must fix (blocking)
+  - [FILE:LINE] [issue] — [why it matters] — [suggested fix]
+
+  ### Should fix (non-blocking but important)
+  - [FILE:LINE] [issue] — [why it matters] — [suggested fix]
+
+  ### Nits (optional improvements)
+  - [FILE:LINE] [issue]
+
+  ### Missing
+  - [things that should be in this PR but aren't]
+
+  ### What's done well
+  - [specific positive observations]
+
+  ### Verdict
+  [approve / request changes / needs discussion] — [one sentence justification]
+  ```
+
+  ## Rules
+
+  - Read every changed file. Do not skim.
+  - Every blocking issue must have a concrete suggested fix.
+  - Do not flag style issues caught by Prettier/ESLint.
+  - Distinguish between "this is wrong" (blocking) and "I'd do it differently" (nit).
+  - If a change looks risky but you aren't sure, flag it as "needs discussion" not "must fix."
+  - Check the PR as a whole for coherence — does it do one thing well, or is it mixing concerns?

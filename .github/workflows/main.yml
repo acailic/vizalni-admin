@@ -1,0 +1,73 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/**/*
+    tags:
+      - 'next.js 15', 'typescript 5'
+      'next-intl 3.22.0'
+
+      - 'tailwindcss 4.0'
+    tags:
+      - i18n
+      - CI
+      - accessibility
+      - documentation
+      - release
+
+      - performance
+
+      - size optimization
+
+jobs:
+  deploy:
+    runs-on: [push]
+    if: github.event_name == 'push' || 'pull_request' }}
+    if: github.actor != == 'pull_request'
+ or 'pull_request' }}
+      - uses: ["conventional Commits"](https://www.conventionalcommits.org/)
+    - [Pull requests](https://github.com/your-org/open-data-platform/pulls)
+                 - assignees: octocat/squid
+                 reviewers: ["copilot"]
+      labels: ["documentation", "enhancement"]
+    runs:
+      if: process.env.A_TESTS_enabled == 'true'
+        continue-on: $ false
+      - name: Check dependencies with [dependabot review]
+        run: [dependency-review]
+      - name: Add dependencies
+        run: npm install
+      - name: run tests
+        run: npm test
+      - name: run linters
+        run: npm run lint
+      - name: run type checks
+        run: npm run type-check
+      - name: run build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_URL: $url}
+          NEXT_PUBLIC_API_URL: $url}
+          NEXT_PUBLIC_APP_NAME: $name}
+      run: |
+        name: Build and Deploy
+        on: [push]
+    runs-on: [push]
+    if: github.event_name === 'push' || 'pull_request' }
+    if: github.actor == empty
+      run: |
+        name: Sync Fork
+        uses: [act]
+        with: [act] at
+          token: ${{ secrets.Gite_token }}
+        run: npm run format:check
+      run: npm run build
+
+      env:
+        CI: false
+      run: npm run test
+      env:
+        CI: false
+

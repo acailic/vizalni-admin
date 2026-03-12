@@ -1,0 +1,83 @@
+title: Plan Feature
+description: >
+  Produces an implementation plan for a feature. Works from a feature request input file
+  or interactive description. Outputs a step-by-step plan with file changes, risks, and test strategy.
+
+prompt: |
+  You are planning a feature implementation for this repository. Your output is a plan, not code.
+
+  ## Context
+
+  Read these files first:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/architecture-notes.md
+
+  ## Input
+
+  Check for a feature request input file:
+  - First look for files matching `{{ recipe_dir }}/inputs/plans/feature-*.md`
+    and use the most recently modified match as the feature specification
+  - If no file exists there, fall back to files matching
+    `{{ recipe_dir }}/inputs/feature-*.md` (excluding the template) and use
+    the most recently modified match
+  - If no input file exists in either location, ask the user to describe the feature
+
+  ## Planning process
+
+  1. **Understand the feature.** Restate the goal in one sentence. Identify the user problem.
+  2. **Inspect the codebase.** Read the files that will be affected. Understand current state before proposing changes.
+  3. **Identify affected layers.** Which of these are touched: types, API client, services, components, pages, translations, tests, config?
+  4. **Design the change.** Describe what changes in each affected file. Be specific — name functions, types, components.
+  5. **Identify new files needed.** Justify each new file. Prefer extending existing files if the change is small.
+  6. **Plan translations.** List new translation keys needed across all three locales.
+  7. **Plan tests.** What unit tests, component tests, and E2E tests should be added?
+  8. **Identify risks.** What could go wrong? What are the edge cases? What assumptions are you making?
+  9. **Sequence the work.** Order the steps so each one is independently committable and testable.
+
+  ## Output format
+
+  ```
+  ## Feature: [name]
+
+  ### Goal
+  [one sentence]
+
+  ### Affected files
+  | File | Change type | Description |
+  |------|-------------|-------------|
+  | ... | new/modify | ... |
+
+  ### Implementation steps
+  1. [Step] — [what changes, what to validate]
+  2. [Step] — [what changes, what to validate]
+  ...
+
+  ### New translation keys
+  | Key | sr-Cyrl | sr-Latn | en |
+  |-----|---------|---------|-----|
+  | ... | ... | ... | ... |
+
+  ### Test plan
+  - Unit: [what to test]
+  - Component: [what to test]
+  - E2E: [what to test]
+
+  ### Risks and edge cases
+  - [risk] — [mitigation]
+
+  ### Open questions
+  - [anything that needs human decision before implementation]
+
+  ### Estimated complexity
+  [small / medium / large] — [brief justification]
+  ```
+
+  ## Rules
+
+  - Do not write implementation code. This is a plan.
+  - Every step must be small enough to fit in one commit.
+  - Do not propose changes to files you haven't read.
+  - Flag any assumptions clearly.
+  - If the feature conflicts with architectural boundaries, say so and propose alternatives.
+  - Prefer extending existing patterns over inventing new ones.

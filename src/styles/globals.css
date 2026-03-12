@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode colors */
+    --color-primary: 33 150 243; /* Serbian Blue */
+    --color-secondary: 255 152 0; /* Serbian Orange */
+    
+    /* Background colors */
+    --color-bg-primary: 255 255 255;
+    --color-bg-secondary: 249 250 251;
+    --color-bg-tertiary: 243 244 246;
+    
+    /* Text colors */
+    --color-text-primary: 17 24 39;
+    --color-text-secondary: 55 65 81;
+    --color-text-tertiary: 107 114 128;
+    
+    /* Border colors */
+    --color-border-primary: 229 231 235;
+    --color-border-secondary: 209 213 219;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --color-bg-primary: 10 10 10;
+    --color-bg-secondary: 17 24 39;
+    --color-bg-tertiary: 31 41 55;
+    
+    /* Text colors */
+    --color-text-primary: 249 250 251;
+    --color-text-secondary: 229 231 235;
+    --color-text-tertiary: 156 163 175;
+    
+    /* Border colors */
+    --color-border-primary: 55 65 81;
+    --color-border-secondary: 75 85 99;
+  }
+
+  /* Base styles */
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Cyrillic font optimization */
+  body[data-lang="sr-cyr"] {
+    font-family: 'Noto Sans', 'Open Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Latin font optimization */
+  body[data-lang="sr-lat"],
+  body[data-lang="en"] {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary-500 text-white;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-950;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-600;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-custom {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-card border border-gray-200 dark:border-gray-700 overflow-hidden;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-elevated hover:scale-[1.02];
+  }
+
+  /* Button */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500;
+  }
+
+  .btn-outline {
+    @apply btn bg-transparent border-2 border-primary-600 text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950;
+  }
+
+  /* Input */
+  .input {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600;
+    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
+    @apply placeholder:text-gray-400 dark:placeholder:text-gray-500;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    @apply transition-colors duration-200;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200;
+  }
+
+  .badge-secondary {
+    @apply badge bg-secondary-100 text-secondary-800 dark:bg-secondary-900 dark:text-secondary-200;
+  }
+
+  /* Loading */
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary-600;
+  }
+
+  /* Skeleton */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+}
+
+@layer utilities {
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+
+  /* Aspect ratios */
+  .aspect-video-custom {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* Gradients */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-500;
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-600 to-secondary-500;
+  }
+
+  .gradient-hero {
+    @apply bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500;
+  }
+
+  /* Animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.5s ease-out;
+  }
+
+  /* Responsive text */
+  .text-responsive-sm {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-base {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-lg {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+
+  /* Serbian specific */
+  .text-cyrillic {
+    font-family: 'Noto Sans', 'Open Sans', serif;
+  }
+
+  .text-latin {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Print styles */
+@media print {
+  @page {
+    margin: 1cm;
+  }
+
+  body {
+    @apply bg-white text-black;
+  }
+
+  .no-print {
+    @apply hidden;
+  }
+
+  .print-break-before {
+    break-before: page;
+  }
+
+  .print-break-after {
+    break-after: page;
+  }
+}

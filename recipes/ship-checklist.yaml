@@ -1,0 +1,114 @@
+title: Ship Checklist
+description: >
+  Pre-release readiness check. Validates build, tests, types, translations, config,
+  and changelog. Works from a release input file or interactively.
+
+prompt: |
+  You are preparing a release for this repository. Your job is to verify everything is ready to ship.
+
+  ## Context
+
+  Read these files first:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+
+  ## Input
+
+  Check for a release input file:
+  - Look for files matching `{{ recipe_dir }}/inputs/release-*.md` (excluding the template)
+  - If found, read it for version, changes, and checklist status
+  - If no input file exists, ask the user what version they're shipping
+
+  ## Verification steps
+
+  Run each check and record the result. Do not skip checks.
+
+  ### 1. Build
+  ```bash
+  npm run build
+  ```
+  Record: pass/fail. If fail, capture the error.
+
+  ### 2. Type check
+  ```bash
+  npm run type-check
+  ```
+  Record: pass/fail. If fail, list errors.
+
+  ### 3. Lint
+  ```bash
+  npm run lint
+  ```
+  Record: pass/fail. If fail, list errors.
+
+  ### 4. Unit tests
+  ```bash
+  npm test
+  ```
+  Record: pass/fail, count of tests.
+
+  ### 5. Format check
+  ```bash
+  npm run format:check
+  ```
+  Record: pass/fail.
+
+  ### 6. Translation completeness
+  - Read all translation files in `public/locales/` and `src/lib/i18n/locales/`
+  - Compare keys across sr-Cyrl, sr-Latn, and en
+  - Report any missing or extra keys
+
+  ### 7. CHANGELOG
+  - Read `CHANGELOG.md`
+  - Check if the target version has an entry
+  - Check if the entry matches the changes described in the release input
+
+  ### 8. package.json version
+  - Read `package.json`
+  - Check if the version matches the target release version
+
+  ### 9. Environment variables
+  - Read `.env.example`
+  - Check if any new env vars were added recently (via `git log`) without documentation
+
+  ### 10. Dependency audit
+  ```bash
+  npm audit --production
+  ```
+  Record: number of vulnerabilities by severity.
+
+  ## Output format
+
+  ```
+  ## Ship Checklist: v[version]
+
+  | Check | Status | Notes |
+  |-------|--------|-------|
+  | Build | pass/fail | |
+  | Type check | pass/fail | |
+  | Lint | pass/fail | |
+  | Tests | pass/fail (X/Y) | |
+  | Format | pass/fail | |
+  | Translations | complete/incomplete | [missing keys] |
+  | CHANGELOG | updated/missing | |
+  | Version | correct/mismatch | |
+  | Env vars | documented/undocumented | |
+  | Dep audit | clean/X vulnerabilities | |
+
+  ## Blocking issues
+  - [issues that must be fixed before release]
+
+  ## Warnings
+  - [issues that should be noted but don't block release]
+
+  ## Verdict
+  [ready to ship / not ready — list blockers]
+  ```
+
+  ## Rules
+
+  - Run every check. Do not assume anything passes.
+  - A single failing check is enough to recommend "not ready."
+  - If E2E tests are configured and runnable, run them too.
+  - Do not modify any files. This recipe is read-only verification.
+  - If the release input mentions breaking changes, verify they're documented in CHANGELOG.

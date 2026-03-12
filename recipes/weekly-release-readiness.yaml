@@ -1,0 +1,126 @@
+title: Weekly Release Readiness
+description: >
+  Scheduled weekly assessment of whether the codebase is in a shippable state.
+  Broader and more strategic than the nightly review. Designed for unattended execution.
+
+prompt: |
+  You are running a weekly release readiness assessment. Determine if this codebase could ship today and what's blocking it.
+
+  ## Context
+
+  Read:
+  - {{ recipe_dir }}/repo-context.md
+  - {{ recipe_dir }}/standards.md
+  - {{ recipe_dir }}/architecture-notes.md
+
+  ## Assessment sections
+
+  Complete all sections. Do not skip any.
+
+  ### 1. Full verification pipeline
+  Run in sequence and record each result:
+  ```bash
+  npm run type-check
+  npm run lint
+  npm test
+  npm run build
+  ```
+
+  ### 2. Changelog review
+  - Read `CHANGELOG.md`
+  - Check: is there an unreleased section? Are recent changes captured?
+  - List any commits in the last week that don't appear in the changelog
+
+  ### 3. Translation audit
+  - Compare translation keys across `public/locales/sr-Cyrl/common.json`, `public/locales/sr-Latn/common.json`, `public/locales/en/common.json`
+  - Also check `src/lib/i18n/locales/` directories
+  - Report: missing keys, extra keys, empty values
+
+  ### 4. Dependency health
+  ```bash
+  npm outdated 2>/dev/null || true
+  npm audit --production 2>/dev/null || true
+  ```
+  Flag: critical/high vulnerabilities, major version bumps available for core dependencies (next, react, typescript)
+
+  ### 5. Configuration consistency
+  - Check `.env.example` for any variables referenced in code but missing from the example file
+  - Check `next.config.js` for any TODO comments or temporary overrides
+  - Check `tsconfig.json` for any unusual or temporary compiler options
+
+  ### 6. Code debt assessment
+  Search for and count:
+  - TODO/FIXME/HACK comments
+  - Type suppressions (@ts-ignore, @ts-expect-error, as any)
+  - Disabled ESLint rules (eslint-disable)
+  - Empty catch blocks
+  - Console.log statements (not console.warn/error)
+
+  Compare to previous week if prior report is available in `recipes/outputs/`.
+
+  ### 7. Test coverage gaps
+  - List source files in `src/` that have no corresponding test file
+  - Identify recently changed files (last 7 days) that have no test coverage
+
+  ### 8. CI/CD status
+  - Read `.github/workflows/` files
+  - Check for any known issues (syntax errors, disabled steps, TODO comments)
+
+  ## Output format
+
+  ```
+  # Weekly Release Readiness — [DATE]
+
+  ## Verdict: [READY / NOT READY / READY WITH CAVEATS]
+
+  ## Pipeline Status
+  | Check | Status |
+  |-------|--------|
+  | Type check | pass/fail |
+  | Lint | pass/fail |
+  | Tests | pass/fail (X/Y) |
+  | Build | pass/fail |
+
+  ## Blockers (must fix before any release)
+  - [list, or "None"]
+
+  ## Warnings (should fix but not blocking)
+  - [list, or "None"]
+
+  ## Translation Status
+  - sr-Cyrl: X keys
+  - sr-Latn: X keys
+  - en: X keys
+  - Missing: [list]
+
+  ## Dependency Health
+  - Outdated: X packages
+  - Vulnerabilities: X critical, X high, X moderate
+  - Action needed: [list packages requiring attention]
+
+  ## Code Debt Trend
+  | Marker | Count | Change |
+  |--------|-------|--------|
+  | TODO | X | |
+  | FIXME | X | |
+  | Type suppressions | X | |
+  | Console.log | X | |
+
+  ## Test Coverage Gaps
+  - [untested source files, prioritized by risk]
+
+  ## Recommended actions for this week
+  1. [highest priority]
+  2. [next priority]
+  3. [next priority]
+  ```
+
+  Save the report to `recipes/outputs/release-readiness-[DATE].md` for trend tracking.
+
+  ## Rules
+
+  - This runs unattended. Do not ask questions.
+  - Complete all sections even if some checks fail.
+  - Do not modify source code. Only create the output report.
+  - Be concrete. "Fix the tests" is not useful. "Fix the failing test in tests/unit/api-client.test.ts: assertion on line 47 expects 200 but handler returns 201" is useful.
+  - If you cannot determine a trend (no prior reports), omit the trend column.

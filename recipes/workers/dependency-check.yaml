@@ -1,0 +1,76 @@
+title: Dependency Check
+description: >
+  Checks dependency health: outdated packages, security vulnerabilities,
+  unused dependencies, and license concerns.
+
+prompt: |
+  Assess dependency health for this repository.
+
+  ## Steps
+
+  ### 1. Outdated packages
+  ```bash
+  npm outdated 2>/dev/null || true
+  ```
+  Categorize by severity: major version behind (high), minor (medium), patch (low).
+  Flag core framework updates separately: next, react, typescript.
+
+  ### 2. Security audit
+  ```bash
+  npm audit --production 2>/dev/null || true
+  ```
+  Record vulnerabilities by severity (critical, high, moderate, low).
+  For critical/high: note the package name and whether a fix is available.
+
+  ### 3. Potentially unused dependencies
+  Read `package.json` dependencies. For each, search `src/` for imports:
+  - Check for `import ... from '<package>'` or `require('<package>')`
+  - Flag packages with zero import matches as potentially unused
+  - Note: some packages are used implicitly (postcss plugins, babel plugins, type packages). Don't flag those.
+
+  ### 4. Heavy dependencies
+  Identify the heaviest packages by checking known sizes:
+  - plotly.js-dist-min, d3, mapbox-gl, leaflet — are they lazy-loaded?
+  - Check `next.config.js` for any bundle optimization settings
+
+  ### 5. Duplicate purpose
+  Check for packages that serve overlapping purposes:
+  - Multiple chart libraries (intentional per architecture notes, but verify usage)
+  - Multiple HTTP clients (axios, fetch, swr, react-query)
+  - Multiple i18n libraries (next-intl, i18next, react-i18next)
+
+  ## Output format
+
+  ```
+  ## Dependency Health
+
+  ### Security
+  | Severity | Count | Fixable |
+  |----------|-------|---------|
+  | Critical | X | Y |
+  | High | X | Y |
+  | Moderate | X | Y |
+
+  ### Outdated (major version behind)
+  | Package | Current | Latest | Risk |
+  |---------|---------|--------|------|
+
+  ### Potentially unused
+  - [package] — no imports found in src/
+
+  ### Heavy packages needing lazy-load verification
+  - [package] — [lazy-loaded: yes/no/unclear]
+
+  ### Recommendations
+  1. [highest priority action]
+  2. [next action]
+
+  ### Status: [HEALTHY / NEEDS ATTENTION / AT RISK]
+  ```
+
+  ## Rules
+
+  - Report only. Do not modify package.json or run npm install/update.
+  - Do not flag devDependencies as unused (they're used in build/test tooling).
+  - Multiple chart libraries are intentional — see architecture notes. Only flag if one has zero usage.
+  - Be specific about which vulnerabilities have available fixes.
