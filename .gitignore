@@ -116,3 +116,17 @@ docs/superpowers/
 
 # Husky
 .husky/
+
+# Database
+*.db
+*.db-journal
+
+# Project status docs (keep README)
+PROJECT_*.md
+QA_REPORT.md
+SETUP_COMPLETE.md
+RESEARCH_ENHANCEMENT.md
+PLATFORMS_RESEARCH.md
+
+# Recipes/automation
+recipes/
